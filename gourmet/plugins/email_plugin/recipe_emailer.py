@@ -2,7 +2,7 @@ import os.path, tempfile
 from gourmet.GourmetRecipeManager import get_application
 from .emailer import Emailer
 import io
-import gourmet.exporters.exportManager as exportManager
+from gourmet.exporters.exportManager import ExportManager
 import gourmet.exporters.exporter as exporter
 
 class StringIOfaker (io.StringIO):
@@ -42,7 +42,7 @@ class RecipeEmailer (Emailer):
         s.close_really()
 
     def write_attachments (self):
-        em = exportManager.get_export_manager()
+        em = ExportManager.instance()
         for typ in self.attachment_types:
             name = _('Recipes')
             if len(self.recipes)==1:

@@ -10,7 +10,7 @@ from PIL import Image
 import xml.sax.saxutils
 
 from gourmet import convert, defaults, prefs, plugin_loader, timeScanner, Undo
-from gourmet.exporters import exportManager
+from gourmet.exporters.exportManager import ExportManager
 from gourmet.exporters.printer import PrintManager
 
 from gourmet.gdebug import debug
@@ -555,8 +555,10 @@ class RecCardDisplay (plugin_loader.Pluggable):
 
     def export_cb (self, *args):
         opt = self.prefs.get('save_recipe_as','html')
-        fn = exportManager.get_export_manager().offer_single_export(self.current_rec,self.prefs,parent=self.window,
-                                                                    mult=self.mult)
+        fn = ExportManager.instance().offer_single_export(self.current_rec,
+                                                          self.prefs,
+                                                          parent=self.window,
+                                                          mult=self.mult)
         if fn:
             self.offer_url(_('Recipe successfully exported to '
                              '<a href="file:///%s">%s</a>')%(fn,fn),

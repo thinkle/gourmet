@@ -5,9 +5,8 @@ os.makedirs(tmpdir)
 gourmet.gglobals.gourmetdir = tmpdir
 import gourmet.GourmetRecipeManager
 import gourmet.backends.db
-gourmet.backends.db.RecData.__single = None
-gourmet.GourmetRecipeManager.GourmetApplication.__single = None
-from gourmet.exporters import exportManager
+from gourmet.exporters.exportManager import ExportManager, EXTRA_PREFS_DEFAULT
+
 
 class SampleRecipeSetterUpper:
 
@@ -112,7 +111,7 @@ class TestExports (unittest.TestCase):
         self.sample_recs = setup_sample_recs()
         self.recs = self.sample_recs.recipes
         print("in setUp 1", file=sys.stderr)
-        self.em = exportManager.get_export_manager()
+        self.em = ExportManager.instance()
         print("in setUp 2", file=sys.stderr)
         self.db = gourmet.backends.db.get_database()
         print("finish setUp", file=sys.stderr)
@@ -132,7 +131,7 @@ class TestExports (unittest.TestCase):
                       self.db.get_rec(self.recs['formatting']['recipe_id']),
                       ]
             plugin,exporter = self.em.get_multiple_exporter(recs,'/tmp/All.'+ext,format,
-                                                   extra_prefs=exportManager.EXTRA_PREFS_DEFAULT)
+                                                   extra_prefs=EXTRA_PREFS_DEFAULT)
             exporter.connect('error', fail_on_fail)
             done = False
             def done (*args):
@@ -150,7 +149,7 @@ class TestExports (unittest.TestCase):
                            (self.db.get_rec(self.recs['formatting']['recipe_id']),'/tmp/Formatted.'+ext),
                            ]:
                 self.em.do_single_export(rec,f,format,
-                                         extra_prefs=exportManager.EXTRA_PREFS_DEFAULT)
+                                         extra_prefs=EXTRA_PREFS_DEFAULT)
                 if hasattr(plugin,'check_export'):
                     print('Checking export for ',plugin,rec,f)
                     fi = open(f,'r')

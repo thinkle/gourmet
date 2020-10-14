@@ -16,7 +16,7 @@ from gourmet import (
 from gourmet.defaults.defaults import lang as defaults
 from gourmet.defaults.defaults import get_pluralized_form
 
-from gourmet.exporters.exportManager import get_export_manager
+from gourmet.exporters.exportManager import ExportManager
 from gourmet.exporters.printer import PrintManager
 
 from gourmet.gdebug import debug
@@ -698,8 +698,10 @@ class ImporterExporter:
 
     @property
     def exportManager(self):
+        # FIXME: The export manager is a singleton, this property can be
+        # refactored out.
         if self.__export_manager is None:
-            self.__export_manager = get_export_manager()
+            self.__export_manager = ExportManager.instance()
         return self.__export_manager
 
     def do_export (self, export_all=False):
