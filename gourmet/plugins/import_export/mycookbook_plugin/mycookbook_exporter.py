@@ -5,7 +5,7 @@ import os
 import tempfile
 import zipfile
 from gourmet import convert
-import gourmet.ImageExtras
+import gourmet.image_utils
 import shutil
 import unicodedata
 
@@ -68,9 +68,9 @@ class rec_to_mcb (XmlExporter):
 
     def write_image (self, image):
         # write image file to the temp directory
-        imageFilename = unicodedata.normalize('NFKD', unicode(self.current_title + '.png')).encode('ascii', 'ignore')
+        imageFilename = unicodedata.normalize('NFKD', str(self.current_title + '.png')).encode('ascii', 'ignore')
         pic_fullpath = os.path.join(tempfile.gettempdir(),'images',imageFilename)
-        result = gourmet.ImageExtras.get_image_from_string(image)
+        result = gourmet.image_utils.bytes_to_image(image)
         result.save(pic_fullpath)
 
         # write imagepath in the xml
@@ -95,7 +95,7 @@ class rec_to_mcb (XmlExporter):
 
     def write_ing (self, amount=1, unit=None, item=None, key=None, optional=False):
         ing_txt=''
-        if type(amount)==type(1.0) or type(amount)==type(1):
+        if isinstance(amount, (float, int)):
             amount = convert.float_to_frac(amount)
         ing_txt = ing_txt + amount
         if unit:
@@ -124,12 +124,12 @@ class recipe_table_to_xml (exporter.ExporterMultirec, XmlExporter):
 
         self.outputfilename = ''
 
-        if type(out) is file:
-            self.out=out
-            self.outputfilename=str(out.name)
-        else:
-            self.outputfilename=out
-            self.out=open(out,'w')
+        if isinstance(out, str):
+            self.outputfilename = out
+            self.out = open(out, 'w')
+        else:  # File object
+            self.out = out
+            self.outputfilename = str(out.name)
 
         #prepare temp directory for images
         self.ostempdir_bck = tempfile.tempdir
@@ -138,7 +138,7 @@ class recipe_table_to_xml (exporter.ExporterMultirec, XmlExporter):
         picdirname = os.path.join(dirname,'images')
         if os.path.isdir(picdirname):
             shutil.rmtree(picdirname)
-        os.mkdir(picdirname, 0777 );
+        os.mkdir(picdirname, 0o777 );
 
         self.create_xmldoc()
         exporter.ExporterMultirec.__init__(
@@ -167,10 +167,8 @@ class recipe_table_to_xml (exporter.ExporterMultirec, XmlExporter):
         basename = os.path.basename(self.outputfilename)
         xml_basename = os.path.splitext(basename)[0] +'.xml'
         xml_path = os.path.join(tempfile.gettempdir(), xml_basename)
-        self.xml_ofi = open(xml_path,'wb')
-        self.xmlDoc.writexml(self.xml_ofi, newl = '\n', addindent = "\t", encoding = "UTF-8")
-        # flush to the disk
-        self.xml_ofi.close()
+        with open(xml_path, 'w', encoding='utf-8') as xml_ofi:
+            self.xmlDoc.writexml(xml_ofi, newl = '\n', addindent = "\t", encoding = "UTF-8")
 
         # add xml and images to the zip (mcb)
         myfile = zipfile.ZipFile(self.outputfilename, mode='w')

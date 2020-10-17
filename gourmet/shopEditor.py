@@ -1,8 +1,14 @@
-import gtk, gobject, backends.db, re, pickle
-from gglobals import uibase
-from gtk_extras import WidgetSaver
-from gtk_extras import cb_extras as cb
-from gtk_extras import dialog_extras as de
+import os
+import pickle
+import re
+
+from gi.repository import GObject, Gtk
+
+from .backends import db
+from .gglobals import uibase
+from .gtk_extras import WidgetSaver
+from .gtk_extras import cb_extras as cb
+from .gtk_extras import dialog_extras as de
 
 class ShopEditor:
 
@@ -11,8 +17,8 @@ class ShopEditor:
     database. It is useful for corrections or changes to category info
     en masse and for reordering shopping categories."""
 
-    def __init__ (self, rd=backends.db.recipeManager(), rg=None):
-        self.ui = gtk.Builder()
+    def __init__ (self, rd=db.recipeManager(), rg=None):
+        self.ui = Gtk.Builder()
         self.ui.add_from_file(os.path.join(uibase,'shopCatEditor.ui'))
         self.rd = rd
         self.rg = rg
@@ -28,12 +34,12 @@ class ShopEditor:
         self.makeTreeModel()
         self.search_string=""
         self.treeModel.set_default_sort_func(self.sort_model_fun)
-        self.treeModel.set_sort_column_id(-1,gtk.SORT_ASCENDING)
+        self.treeModel.set_sort_column_id(-1,Gtk.SortType.ASCENDING)
         self.filteredModel = self.treeModel.filter_new()
         self.filteredModel.set_visible_func(self.filter_visibility_fun)
         self.setupTreeView()
         self.treeview.set_model(self.filteredModel)
-        self.treeview.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
+        self.treeview.get_selection().set_mode(Gtk.SelectionMode.MULTIPLE)
         #self.treeview.set_model(self.treeModel)
         self.ui.connect_signals({
             'iSearch':self.isearchCB,
@@ -65,12 +71,12 @@ class ShopEditor:
 
     def sort_model_fun (model, iter1, iter2, data):
         c1 = model.get_value(iter1, self.CAT_COL)
-        if self.rg.sl.sh.catorder_dic.has_key(c1):
+        if c1 in self.rg.sl.sh.catorder_dic:
             c1_order = self.rg.sl.sh.catorder_dic[c1]
         else:
             c1_order = None
         c2 = model.get_value(iter2, self.CAT_COL)
-        if self.rg.sl.sh.catorder_dic.has_key(c1):
+        if c1 in self.rg.sl.sh.catorder_dic:
             c2_order = self.rg.sl.sh.catorder_dic[c2]
         else:
             c2_order = None
@@ -100,7 +106,7 @@ class ShopEditor:
             # then we need to make sure we show key header rows
             # whose items include an item w/ the proper title...
             cat = mod.get_value(iter,self.CAT_COL)
-            if self.cat_to_key.has_key(cat):
+            if cat in self.cat_to_key:
                 for itm in self.cat_to_key[cat]:
                     if self.use_regexp:
                         if re.search(self.search_string, itm): return True
@@ -117,10 +123,10 @@ class ShopEditor:
         for n,head in [[self.CAT_COL,'Category'],
                        [self.KEY_COL,'Key'],
                        ]:
-            renderer = gtk.CellRendererText()
+            renderer = Gtk.CellRendererText()
             renderer.set_property('editable',True)
             renderer.connect('edited',self.tree_edited,n,head)
-            col = gtk.TreeViewColumn(head, renderer, text=n)
+            col = Gtk.TreeViewColumn(head, renderer, text=n)
             col.set_resizable(True)
             self.treeview.append_column(col)
             self.treeview.connect('row-expanded',self.populateChild)
@@ -183,7 +189,7 @@ class ShopEditor:
                 self.rd.changed=True
 
     def makeTreeModel (self):
-        self.treeModel = gtk.TreeStore(gobject.TYPE_PYOBJECT, str, str)
+        self.treeModel = Gtk.TreeStore(GObject.TYPE_PYOBJECT, str, str)
         unique_cat_vw = self.rd.shopcats_table.groupby(self.rd.shopcats_table.category, 'groupvw')
         self.cat_to_key={}
         for c in unique_cat_vw:
@@ -255,4 +261,4 @@ class ShopEditor:
 
 if __name__ == '__main__':
     ke=ShopEditor()
-    gtk.main()
+    Gtk.main()

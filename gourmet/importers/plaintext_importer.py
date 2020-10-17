@@ -1,7 +1,9 @@
-import importer, re, string
+from gourmet.importers import importer
 from gourmet import check_encodings
 from gourmet.gdebug import debug
 from gettext import gettext as _
+
+import re
 
 class TextImporter (importer.Importer):
     ATTR_DICT = {'Recipe By':'source',
@@ -22,7 +24,7 @@ class TextImporter (importer.Importer):
     def pre_run (self):
         self.lines = check_encodings.get_file(self.fn)
         self.total_lines = len(self.lines)
-        print 'we have ',self.total_lines,'lines in file',self.fn
+        print('we have ',self.total_lines,'lines in file',self.fn)
 
     def do_run (self):
         if not hasattr(self,'lines'):
@@ -39,36 +41,36 @@ class TextImporter (importer.Importer):
             self.commit_rec()
         importer.Importer.do_run(self)
 
-    def handle_line (self):
+    def handle_line (self, l):
         raise NotImplementedError
 
     def compile_regexps (self):
-        self.blank_matcher = re.compile("^\s*$")
+        self.blank_matcher = re.compile(r"^\s*$")
         # out unwrap regexp looks for a line with no meaningful characters, or a line that starts in
         # ALLCAPS or a line that is only space. (we use this with .split() to break text up into
         # paragraph breaks.
-        self.unwrap_matcher = re.compile('\n\W*\n')
-        self.find_header_breaks_matcher = re.compile('\s+(?=[A-Z][A-Z][A-Z]+:.*)')
+        self.unwrap_matcher = re.compile(r'\n\W*\n')
+        self.find_header_breaks_matcher = re.compile(r'\s+(?=[A-Z][A-Z][A-Z]+:.*)')
 
     def unwrap_lines (self, blob):
         if blob.find("") >= 0:
             debug('Using built-in paragraph markers',1)
             # then we have paragraph markers in the text already
-            outblob = string.join(blob.split("\n")," ") # get rid of line breaks
+            outblob = " ".join(blob.split("\n")) # get rid of line breaks
             lines = outblob.split("") # split text up into paragraphs
-            outblob = string.join(lines,"\n") # insert linebreaks where paragraphs where
+            outblob = "\n".join(lines) # insert linebreaks where paragraphs were
             return outblob
         outblob = ""
         newline = True
         for l in blob.split('\n'):
             debug('examining %s'%l,3)
-            if re.match('^\W*$',l):
+            if re.match(r'^\W*$',l):
                 # ignore repeated nonword characters (hyphens, stars, etc.)
                 outblob += "\n"
                 continue
             # if we have a non-word character at the start of the line,
             # we assume we need to keep the newline.
-            if len(l)>=3 and re.match('(\W|[0-9])',l[2]):
+            if len(l)>=3 and re.match(r'(\W|[0-9])',l[2]):
                 debug('Match non-word character; add newline before: %s'%l,4)
                 outblob += "\n"
                 outblob += l
@@ -110,7 +112,8 @@ class Tester (importer.Tester):
         if not hasattr(self,'matcher'):
             self.matcher=re.compile(self.regexp)
             self.not_matcher = re.compile(self.not_me)
-        if type(self.ofi) in [str,unicode]: self.ofi = open(filename,'r')
+        if isinstance(self.ofi, str):
+            self.ofi = open(filename,'r')
         l = self.ofi.readline()
         while l:
             if self.not_matcher.match(l):

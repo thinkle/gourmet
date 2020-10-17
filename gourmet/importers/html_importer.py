@@ -1,5 +1,5 @@
-import urllib, re, tempfile, os.path
-import importer
+import urllib.request, urllib.parse, urllib.error, re, tempfile, os.path
+from . import importer
 import BeautifulSoup
 import socket
 from gourmet.gdebug import debug
@@ -34,9 +34,9 @@ def read_socket_w_progress (socket, progress, message):
 
 def get_url (url, progress):
     """Return data from URL, possibly displaying progress."""
-    if type(url) in [str,unicode]:
+    if isinstance(url, str):
         socket.setdefaulttimeout(URLOPEN_SOCKET_TIMEOUT)
-        sock = urllib.urlopen(url)
+        sock = urllib.request.urlopen(url)
         socket.setdefaulttimeout(DEFAULT_SOCKET_TIMEOUT)
         return read_socket_w_progress(sock,progress,_('Retrieving %s'%url))
     else:
@@ -142,7 +142,7 @@ class BeautifulSoupScraper:
         If force_match is True, return '' if there is no
         match. Otherwise, default to the unadulterated value.
         """
-        if type(post_processing) == tuple and len(post_processing)==2:
+        if isinstance(post_processing, tuple) and len(post_processing)==2:
             regexp=re.compile(post_processing[0],re.UNICODE)
             m=regexp.search(value)
             if m: return m.groups()[0]
@@ -162,7 +162,7 @@ class BeautifulSoupScraper:
         base = self.soup
         for step in path:
             base=self.follow_path(base,step)
-            if type(base)==list:
+            if isinstance(base, list):
                 # then we'd better be the last step
                 break
         return base
@@ -182,17 +182,21 @@ class BeautifulSoupScraper:
         """
         if not base: return # path ran out...
         ind=step.get('index',0)
-        if step.has_key('regexp'):
+        if 'regexp' in step:
             ret = base.fetchText(re.compile(step['regexp']))
-        elif step.has_key('string'):
+        elif 'string' in step:
             ret = base.fetchText('string')
         else:
             get_to = None
             if ind:
-                if type(ind)==list: get_to=ind[-1]
-                elif type(ind)==int: get_to=ind
-                if not get_to or get_to < 0: get_to=None
-                else: get_to += 1
+                if isinstance(ind, list):
+                    get_to = ind[-1]
+                elif isinstance(ind, int):
+                    get_to=ind
+                if not get_to or get_to < 0:
+                    get_to = None
+                else:
+                    get_to += 1
             if get_to:
                 ret = base.fetch(step.get('tag'),
                                  step.get('attributes',{}),
@@ -204,31 +208,31 @@ class BeautifulSoupScraper:
             # example, if we have step['moveto']='parent', we grab the
             # parents of each tag we would otherwise return. This can
             # also work for previousSibling, nextSibling, etc.
-            if step.has_key('moveto'):
+            if 'moveto' in step:
                 ret = [getattr(o,step['moveto']) for o in ret]
             else:
                 for motion in ['firstNext','firstPrevious','findParent']:
-                    if step.has_key(motion):
+                    if motion in step:
                         ret = [getattr(o,motion)(step[motion]) for o in ret]
                         break
-            if type(ind)==list or type(ind)==tuple:
+            if isinstance(ind, (list, tuple)):
                 return ret[ind[0]:ind[1]]
             else: #ind is an integer
                 if ind < len(ret):
                     return ret[ind]
                 else:
-                    print 'Problem following path.'
-                    print 'I am supposed to get item: ',ind
-                    print 'from: ',ret
-                    print 'instructions were : ',
-                    try: print 'base: ',base
-                    except UnicodeDecodeError: print '(ugly unicodeness)'
-                    try: print 'step: ',step
-                    except UnicodeDecodeError: print '(ugly unicodeness)'
+                    print('Problem following path.')
+                    print('I am supposed to get item: ',ind)
+                    print('from: ',ret)
+                    print('instructions were : ', end=' ')
+                    try: print('base: ',base)
+                    except UnicodeDecodeError: print('(ugly unicodeness)')
+                    try: print('step: ',step)
+                    except UnicodeDecodeError: print('(ugly unicodeness)')
 
     def store_tag (self, name, tag, method, post_processing=None):
         """Store our tag in our dictionary according to our method."""
-        if type(tag)==list:
+        if isinstance(tag, list):
             for t in tag: self.store_tag(name,t,method,post_processing)
             return
         if method==self.TEXT:
@@ -245,12 +249,14 @@ class BeautifulSoupScraper:
         if post_processing:
             val=self.post_process(post_processing, val, tag)
         if not val: return # don't store empty values
-        if self.dic.has_key(name):
+        if name in self.dic:
             curval = self.dic[name]
-            if type(curval)==list: self.dic[name].append(val)
-            else: self.dic[name]=[self.dic[name],val]
+            if isinstance(curval, list):
+                self.dic[name].append(val)
+            else:
+                self.dic[name] = [self.dic[name],val]
         else:
-            self.dic[name]=val
+            self.dic[name] = val
 
 class GenericScraper (BeautifulSoupScraper):
     """A very simple scraper.
@@ -282,7 +288,8 @@ class GenericScraper (BeautifulSoupScraper):
         dic = BeautifulSoupScraper.scrape(self)
         text = dic.get('title','')+'\n'+dic.get('text','')
         images = dic.get('images',[])
-        if type(images)!=list: images = [images]
+        if not isinstance(images, list):
+            images = [images]
         images = [urllib.basejoin(self.url,i) for i in images]
         return text,images
 
@@ -305,12 +312,12 @@ class FancyTextGetter:
         if strip:
             self.text = self.text.strip()
             # No more than two spaces!
-            self.text = re.sub('\n\t','\n',self.text)
-            self.text = re.sub('\n\s*\n\s+','\n\n',self.text)
+            self.text = re.sub(r'\n\t',r'\n',self.text)
+            self.text = re.sub(r'\n\s*\n\s+',r'\n\n',self.text)
         try:
-            return unicode(self.text,errors='ignore')
+            return str(self.text,errors='ignore')
         except:
-            print 'Odd encoding problems with ',self.text
+            print('Odd encoding problems with ',self.text)
             return self.text
 
     def add_tag (self, t):
@@ -336,11 +343,11 @@ class FancyTextGetter:
                 s = item.string.encode('utf8','replace')
                 self.text += s
             except UnicodeDecodeError:
-                print 'UNICODE DECODING ERROR IN TAG',
+                print('UNICODE DECODING ERROR IN TAG', end=' ')
                 if hasattr(item,'name'):
-                    print item.name
+                    print(item.name)
                 if hasattr(item,'fetchParents'):
-                    print 'CHILD OF: ','<'.join([p.name for p in item.fetchParents()])
+                    print('CHILD OF: ','<'.join([p.name for p in item.fetchParents()]))
 
 get_text = FancyTextGetter()
 
@@ -349,19 +356,18 @@ img_src_regexp = re.compile('<img[^>]+src=[\'\"]([^\'"]+)')
 def get_image_from_tag (iurl, page_url):
     if not iurl: return
     iurl = urllib.basejoin(page_url,iurl)
-    tmpfi,info=urllib.urlretrieve(iurl)
-    ifi=file(tmpfi,'rb')
-    retval=ifi.read()
-    ifi.close()
-    return retval
+    tmpfi,info=urllib.request.urlretrieve(iurl)
+    with open(tmpfi, 'rb') as ifi:
+        return ifi.read()
 
 def scrape_url (url, progress=None):
-    if type(url) in [str,unicode]: domain=url.split('/')[2]
-    if SUPPORTED_URLS.has_key(domain):
+    if isinstance(url, str):
+        domain = url.split('/')[2]
+    if domain in SUPPORTED_URLS:
         bss = BeautifulSoupScraper(SUPPORTED_URLS[domain])
     else:
         bss = None
-        for regexp,v in SUPPORTED_URLS_REGEXPS.items():
+        for regexp,v in list(SUPPORTED_URLS_REGEXPS.items()):
             if re.match(regexp,domain):
                 bss=BeautifulSoupScraper(v)
                 break
@@ -390,7 +396,7 @@ def import_url (url, rd, progress=None, add_webpage_source=True, threaded=False,
     with gui-ness and it's just going to have to be ugly for now
     """
     if progress: progress(0.01,'Fetching webpage')
-    sock=urllib.urlopen(url)
+    sock=urllib.request.urlopen(url)
     header=sock.headers.get('content-type','text/html')
     if progress: progress(0.02, 'Reading headers')
     if header.find('html')>=0:
@@ -450,9 +456,9 @@ class WebPageImporter (importer.Importer):
         try:
             self.d = scrape_url(self.url, progress=self.prog)
         except:
-            print 'Trouble using default recipe filter to download %s'%self.url
+            print('Trouble using default recipe filter to download %s'%self.url)
             traceback.print_exc()
-            print 'We will use a generic importer instead.'
+            print('We will use a generic importer instead.')
             self.d = {}
         debug('Scraping url returned %s'%self.d,0)
         do_generic = not self.d
@@ -463,15 +469,15 @@ class WebPageImporter (importer.Importer):
             except:
                 if not self.interactive: raise
                 do_generic = True
-                print """Automated HTML Import failed
+                print("""Automated HTML Import failed
                 ***Falling back to generic import***
 
                 We were attempting to scrape using the following rules:
-                """
-                print self.d
-                print """The following exception was raised:"""
+                """)
+                print(self.d)
+                print("""The following exception was raised:""")
                 traceback.print_exc()
-                print """If you think automated import should have worked for the webpage you
+                print("""If you think automated import should have worked for the webpage you
                 were importing, copy the output starting at "Automated HTML Import failed" into
                 a bug report and submit it at the GitHub site
 
@@ -479,7 +485,7 @@ class WebPageImporter (importer.Importer):
 
                 Sorry automated import didn't work. I hope you like
                 the new generic web importer!
-                """
+                """)
         if do_generic:
             if not self.interactive:
                 raise Exception("Unable to find importer for %s" % self.url)
@@ -489,7 +495,7 @@ class WebPageImporter (importer.Importer):
             text,images = gs.scrape_url(self.url, progress=self.prog)
             if not text and not images:
                 raise Exception("Unable to obtain text or images from url %s" % self.url)
-            import interactive_importer
+            from . import interactive_importer
             ii = interactive_importer.InteractiveImporter(self.rd)
             ii.set_text(text)
             ii.add_attribute('link',self.url)
@@ -510,28 +516,32 @@ class WebPageImporter (importer.Importer):
             domain = self.url.split('/')[2]
             src=self.d.get('source',None)
             add_str = '(%s)'%domain
-            if type(src)==list: src.append(add_str)
-            elif src: src = [src,add_str]
-            else: src = domain # no parens if we're the only source
+            if isinstance(src, list):
+                src.append(add_str)
+            elif src:
+                src = [src, add_str]
+            else:
+                src = domain # no parens if we're the only source
             self.d['source']=src
-        for k,v in self.d.items():
+        for k,v in list(self.d.items()):
             debug('processing %s:%s'%(k,v),1)
             if self.prog: self.prog(-1,_('Importing recipe'))
             # parsed ingredients...
             if k=='ingredient_parsed':
-                if type(v) != list: v=[v]
+                if not isinstance(v, list):
+                    v = [v]
                 for ingdic in v:
 
                     if self.prog: self.prog(-1,_('Processing ingredients'))
                     # we take a special keyword, "text", which gets
                     # parsed
-                    if ingdic.has_key('text'):
+                    if 'text' in ingdic:
                         d = self.rd.parse_ingredient(ingdic['text'],conv=self.conv)
                         if d:
-                            for dk,dv in d.items():
-                                if not ingdic.has_key(dk) or not ingdic[dk]:
+                            for dk,dv in list(d.items()):
+                                if dk not in ingdic or not ingdic[dk]:
                                     ingdic[dk]=dv
-                        elif not ingdic.has_key('item'):
+                        elif 'item' not in ingdic:
                             ingdic['item']=ingdic['text']
                         del ingdic['text']
                     self.start_ing(**ingdic)
@@ -539,7 +549,7 @@ class WebPageImporter (importer.Importer):
                 continue
 
             # Listy stuff...
-            elif type(v)==list:
+            elif isinstance(v, list):
                 if k in self.JOIN_AS_PARAGRAPHS: v = "\n".join(v)
                 else: v = " ".join(v)
 
@@ -556,8 +566,8 @@ class WebPageImporter (importer.Importer):
                 try:
                     if v: img = get_image_from_tag(v,self.url)
                 except:
-                    print 'Error retrieving image'
-                    print 'tried to retrieve image from %s'%v
+                    print('Error retrieving image')
+                    print('tried to retrieve image from %s'%v)
                 else:
                     if img:
                         self.rec['image'] = img

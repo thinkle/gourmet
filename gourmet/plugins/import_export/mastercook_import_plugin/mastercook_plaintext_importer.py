@@ -1,10 +1,10 @@
 from gourmet.importers import importer, plaintext_importer
-import re, string
+import re
 from gourmet import check_encodings
 from gourmet.gdebug import debug
 from gettext import gettext as _
 
-MASTERCOOK_START_REGEXP='\s*\*\s*Exported\s*from\s*MasterCook.*\*\s*'
+MASTERCOOK_START_REGEXP=r'\s*\*\s*Exported\s*from\s*MasterCook.*\*\s*'
 
 class MastercookPlaintextImporter (plaintext_importer.TextImporter):
     ATTR_DICT = {'Recipe By':'source',
@@ -28,23 +28,23 @@ class MastercookPlaintextImporter (plaintext_importer.TextImporter):
     def compile_regexps (self):
         plaintext_importer.TextImporter.compile_regexps(self)
         self.rec_start_matcher = re.compile(MASTERCOOK_START_REGEXP)
-        self.blank_matcher = re.compile("^\s*$")
+        self.blank_matcher = re.compile(r"^\s*$")
         # strange thing has happened -- some archives have the column
         # off by exactly 1 character, resulting in some fubar'ing of
         # our parsing.  to solve our problem, we first recognize
         # rec_col_matcher, then parse fields using the ------
         # underlining, which appears to line up even in fubared
         # archives.
-        self.rec_col_matcher = re.compile("(\s*Amount\s*)(Measure\s*)(Ingredient.*)")
-        self.rec_col_underline_matcher = re.compile("(\s*-+)(\s*-+)(\s*-+.*)")
+        self.rec_col_matcher = re.compile(r"(\s*Amount\s*)(Measure\s*)(Ingredient.*)")
+        self.rec_col_underline_matcher = re.compile(r"(\s*-+)(\s*-+)(\s*-+.*)")
         # match a string enclosed in a possibly repeated non-word character
         # such as *Group* or ---group--- or =======GROUP======
         # grabbing groups()[1] will get you the enclosed string
-        self.dash_matcher = re.compile("^[ -]*[-][- ]*$")
-        self.ing_or_matcher = re.compile("\W*[Oo][Rr]\W*")
-        self.ing_group_matcher = re.compile("\s*(\W)\\1*(.+?)(\\1+)")
-        self.mods_matcher = re.compile("^\s*NOTES\.*")
-        attr_matcher = "\s*(" + string.join(self.ATTR_DICT.keys(),"|") + ")\s*:(.*)"
+        self.dash_matcher = re.compile(r"^[ -]*[-][- ]*$")
+        self.ing_or_matcher = re.compile(r"\W*[Oo][Rr]\W*")
+        self.ing_group_matcher = re.compile(r"\s*(\W)\\1*(.+?)(\\1+)")
+        self.mods_matcher = re.compile(r"^\s*NOTES\.*")
+        attr_matcher = fr"\s*({'|'.join(list(self.ATTR_DICT.keys()))})\s*:(.*)"
         self.attr_matcher = re.compile(attr_matcher)
 
     def handle_line (self, line):
@@ -187,7 +187,7 @@ class MastercookPlaintextImporter (plaintext_importer.TextImporter):
             self.add_unit(unit)
             self.add_item(itm)
             return
-        elif self.ing and self.ing.has_key('item'):
+        elif self.ing and 'item' in self.ing:
             # otherwise, we assume we are a continuation and
             # add onto the previous item
             self.ing['item']=self.ing['item']+' '+itm.strip()
@@ -196,7 +196,7 @@ class MastercookPlaintextImporter (plaintext_importer.TextImporter):
             self.instr += "\n"+itm.strip()
 
     def commit_ing (self):
-        if not self.ing.has_key('item'):
+        if 'item' not in self.ing:
             return
         key_base = self.ing['item'].split('--')[0]
         self.ing['ingkey']=self.km.get_key_fast(key_base)
@@ -218,7 +218,7 @@ class Tester (importer.Tester):
         if not hasattr(self,'matcher'):
             self.matcher=re.compile(self.regexp)
             self.not_matcher = re.compile(self.not_me)
-        if type(filename)==str:
+        if isinstance(filename, str):
             self.ofi = open(filename,'r')
             CLOSE = True
         else:

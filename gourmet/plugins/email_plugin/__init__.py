@@ -1,2 +1,2 @@
-import emailer_plugin
+from . import emailer_plugin
 plugins = [emailer_plugin.EmailRecipePlugin]

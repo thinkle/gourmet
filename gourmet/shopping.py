@@ -1,6 +1,7 @@
-import convert, sys
+import sys
+from gourmet import convert
 from gettext import gettext as _
-from gdebug import debug
+from .gdebug import debug
 import unittest, time
 
 class Shopper:
@@ -22,7 +23,7 @@ class Shopper:
                              _('oil, olive')]
         self.init_pantry()
         self.mypantry = {}
-        for a,u,k in inglist:
+        for a, u, k in inglist:
             if self.pantry.has_key(k) and self.pantry[k]:
                 # print "%s is in pantry" %k
                 dic=self.mypantry
@@ -31,17 +32,17 @@ class Shopper:
             try:
                 a = float(a)
             except:
-                if type(a) != tuple:
+                if not isinstance(a, tuple):
                     debug("Warning, can't make sense of amount %s; reading as None"%a,0)
                     a = None
-            if dic.has_key(k):
+            if k in dic:
                 dic[k].append([a,u])
             else:
                 dic[k]=[[a,u]]
         self.init_converter()
-        for ing,amts in self.dic.items():
+        for ing,amts in list(self.dic.items()):
             self.dic[ing]=self.combine_ingredient(ing,amts)
-        for ing,amts in self.mypantry.items():
+        for ing,amts in list(self.mypantry.items()):
             self.mypantry[ing]=self.combine_ingredient(ing,amts)
         self.init_orgdic()
         self.init_ingorder_dic()
@@ -64,12 +65,12 @@ class Shopper:
                 ind = 0
                 while not flag and len(itms) > ind:
                     amt,unit = itms[ind]
-                    if type(amt) == tuple or type(a)== tuple :
+                    if isinstance(amt, tuple) or isinstance(a, tuple):
                         # we're adding ranges -- we'll force both
                         # our amounts to look like ranges to simplify the addition
-                        if type(amt) != tuple :
+                        if not isinstance(amt, tuple):
                             amt=(amt,amt)
-                        if type(a) != tuple :
+                        if not isinstance(a, tuple):
                             a=(a,a)
                         # print 'amt:',amt,' unit:',unit,'a:',a,'u:',u
                         add_low = self.cnv.add_reasonably(amt[0],unit,a[0],u,ing)
@@ -152,26 +153,27 @@ class Shopper:
         cats = {}
         if not dic:
             pass
-        for i,a in dic.items():
+        for i,a in list(dic.items()):
             if self.orgdic.has_key(i) and self.orgdic[i]:
                 c = self.orgdic[i]
             else:
                 c = _("Unknown")
-            if cats.has_key(c):
+            if c in cats:
                 cats[c][i]=a
             else:
                 cats[c]={i:a}
         ## next we turn our nested dictionaries into nested lists
         lst = []
-        for c,d in cats.items():
+        for c,d in list(cats.items()):
             itms = []
-            for i,amts in d.items():
+            for i,amts in list(d.items()):
                 itms.append([i,self.amt_to_string(amts)])
             lst.append([c,itms])
         ## now that we have lists, we can sort them
-        lst.sort(self._cat_compare)
+        from functools import cmp_to_key
+        lst.sort(key=cmp_to_key(self._cat_compare))
         for l in lst:
-            l[1].sort(self._ing_compare)
+            l[1].sort(key=cmp_to_key(self._ing_compare))
         return lst
 
     def _cat_compare (self,cata,catb):
@@ -197,7 +199,7 @@ class Shopper:
         """Put two ingredients in order"""
         inga = inga[0]
         ingb = ingb[0]
-        if False and self.ingorder_dic.has_key(inga) and self.ingorder_dic.has_key(ingb):
+        if False and inga in self.ingorder_dic and ingb in self.ingorder_dic:
             # if both ings have known positions, we use them to compare
             inga = self.ingorder_dic[inga]
             ingb = self.ingorder_dic[ingb]
@@ -213,9 +215,9 @@ class Shopper:
     def get_porg_categories (self):
         """Return a list of categories used for sorting."""
         tmp = {}
-        for v in self.orgdic.values():
+        for v in list(self.orgdic.values()):
             tmp[v]=1
-        return tmp.keys()
+        return list(tmp.keys())
 
     def add_org_itm (self, itm, cat):
         self.orgdic[itm]=cat
@@ -248,14 +250,14 @@ class Shopper:
     def get_orgcats (self):
         """Return a list of categories being used for our Shopper"""
         self.orgcats=[]
-        for v in self.orgdic.values():
+        for v in list(self.orgdic.values()):
             if v and (v not in  self.orgcats):
                 self.orgcats.append(v)
         self.orgcats.sort()
         return self.orgcats
 
 def setup_default_orgdic ():
-    from defaults.defaults import lang as defaults
+    from .defaults.defaults import lang as defaults
     return defaults.shopdic
 
 class ShoppingList:
@@ -264,10 +266,10 @@ class ShoppingList:
         self.recs = {}; self.extras = []
         self.includes = {}
         self.data,self.pantry=self.grabIngsFromRecs([])
-        import backends.db
+        from . import backends
         self.rd = backends.db.get_database()
-        import prefs
-        self.prefs = prefs.get_prefs()
+        from . import prefs
+        self.prefs = prefs.Prefs.instance()
 
     def get_shopper (self, lst):
         return Shopper(lst)
@@ -304,9 +306,9 @@ class ShoppingList:
                 # handle boolean includes value which applies to ALL ingredients
                 if not include_dic:
                     continue
-                if type(include_dic) == dict :
+                if isinstance(include_dic, dict):
                     # Then we have to look at the dictionary itself...
-                    if ((not include_dic.has_key(i.ingkey))
+                    if ((i.ingkey not in include_dic)
                         or
                             not include_dic[i.ingkey]):
                         # we ignore our ingredient (don't add it)
@@ -334,7 +336,7 @@ class ShoppingList:
                     amt = self.rd.get_amount_as_float(i)
                     if not amt: amount=amt
                     refmult=mult*amt
-                    if not include_dic.has_key(subrec.id):
+                    if subrec.id not in include_dic:
                         d = self.getOptionalDic(self.rd.get_ings(subrec),
                                                 refmult,
                                                 self.prefs,
@@ -371,25 +373,24 @@ class ShoppingList:
         debug("doSave (self, filename):",5)
         # import exporters.lprprinter
         # self._printList(exporters.lprprinter.SimpleWriter,file=filename,show_dialog=False)
-        ofi = file(filename,'w')
-        ofi.write(_("Shopping list for %s")%time.strftime("%x") + '\n\n')
-        ofi.write(_("For the following recipes:"+'\n'))
-        ofi.write('--------------------------------\n')
-        for r,mult in self.recs.values():
-            itm = "%s"%r.title
-            if mult != 1:
-                itm += _(" x%s")%mult
-            ofi.write(itm+'\n')
-        write_itm = lambda a,i: ofi.write("%s %s"%(a,i) + '\n')
-        write_subh = lambda h: ofi.write('\n_%s_\n'%h)
-        self.sh.list_writer(write_subh,write_itm)
-        ofi.close()
+        with open(filename,'w') as ofi:
+            ofi.write(_("Shopping list for %s") % time.strftime("%x") + '\n\n')
+            ofi.write(_("For the following recipes:"+'\n'))
+            ofi.write('--------------------------------\n')
+            for r,mult in list(self.recs.values()):
+                itm = "%s"%r.title
+                if mult != 1:
+                    itm += _(" x%s")%mult
+                ofi.write(itm+'\n')
+            write_itm = lambda a,i: ofi.write("%s %s"%(a,i) + '\n')
+            write_subh = lambda h: ofi.write('\n_%s_\n'%h)
+            self.sh.list_writer(write_subh,write_itm)
 
     def _printList (self, printer, *args, **kwargs):
         w = printer(*args,**kwargs)
         w.write_header(_("Shopping list for %s")%time.strftime("%x"))
         w.write_subheader(_("For the following recipes:"))
-        for r,mult in self.recs.values():
+        for r,mult in list(self.recs.values()):
             itm = "%s"%r.title
             if mult != 1:
                 itm += _(" x%s")%mult
@@ -411,7 +412,7 @@ class ShoppingList:
         self.reset()
 
     def reset (self):
-        self.grabIngsFromRecs(self.recs.values(),self.extras)
+        self.grabIngsFromRecs(list(self.recs.values()),self.extras)
 
 
 class ShopperTestCase (unittest.TestCase):

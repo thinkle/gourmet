@@ -1,7 +1,8 @@
-#!/usr/bin/env python
-import gtk.gdk
 import os
+from gi.repository import Gdk, Gtk
+
 from gourmet.gdebug import debug
+
 
 class WidgetSaver:
 
@@ -22,11 +23,11 @@ class WidgetSaver:
         if show: self.w.show()
 
     def load_properties (self):
-        for p,v in self.dictionary.items():
+        for p,v in list(self.dictionary.items()):
             self.w.set_property(p,v)
 
     def save_properties (self, *args):
-        for p in self.dictionary.keys():
+        for p in list(self.dictionary.keys()):
             self.dictionary[p]=self.w.get_property(p)
         return False # we don't handle any signals
 
@@ -44,23 +45,23 @@ class WindowSaver (WidgetSaver):
         # disable this whole thing
         if os.name=='nt': return
 
-        widget.set_gravity(gtk.gdk.GRAVITY_STATIC)
-        #widget.set_gravity(gtk.gdk.GRAVITY_NORTH_WEST)
+        widget.set_gravity(Gdk.Gravity.STATIC)
+        #widget.set_gravity(Gdk.GRAVITY_NORTH_WEST)
         WidgetSaver.__init__(self, widget, dictionary, signals, show)
 
     def load_properties (self):
         #if os.name=='nt': return
         for p,f in ['window_size', self.w.resize],['position',self.w.move]:
-            if self.dictionary.has_key(p) and self.dictionary[p]:
+            if p in self.dictionary and self.dictionary[p]:
                 debug('applying %s %s'%(f,self.dictionary[p]),3)
                 #if os.name=='nt' and p=='position' and self.dictionary['position'][1]<20:
                 #    #print 'FIDDLING WITH WINDOW FOR WINDOWS'
                 #    #self.dictionary[p] = self.dictionary[p][0],20
-                apply(f,self.dictionary[p])
+                f(*self.dictionary[p])
 
     def save_properties (self, *args):
         if os.name=='nt': return
-        if self.w.window and not self.w.window.get_state()&gtk.gdk.WINDOW_STATE_MAXIMIZED:
+        if isinstance(self.w, Gtk.Window) and not self.w.get_state()&Gdk.WindowState.MAXIMIZED:
             # ignore the maximized window when we save sizes
             self.dictionary['window_size']=self.w.get_size()
             self.dictionary['position']=self.w.get_position()
@@ -91,7 +92,8 @@ class WidgetPrefs:
         """Toggle the visibility of widget 'w'"""
         if val: method = 'hide'
         else: method = 'show'
-        if type(w)==type(""): w = [w]
+        if isinstance(w, str):
+            w = [w]
         for wn in w:
             widg = self.glade.get_widget(wn)
             if widg:
@@ -112,7 +114,8 @@ class WidgetPrefs:
         return self.prefs.get(self.keyname(w),False)
 
     def keyname (self, w):
-        if type(w)==type([]): w = w[0]
+        if isinstance(w, list):
+            w = w[0]
         return "%s%s"%(self.basename,w)
 
     def set_widget_pref (self,w,val):
@@ -135,7 +138,7 @@ class WidgetPrefs:
         return option_list
 
     def show_pref_dialog (self,*args):
-        import dialog_extras
+        from . import dialog_extras
         pd=dialog_extras.preferences_dialog(
             options=self.make_option_list(),
             apply_func=self.apply_option)

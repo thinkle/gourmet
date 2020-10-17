@@ -1,0 +1,17 @@
+argcomplete
+BeautifulSoup4
+ebooklib
+keyring
+lxml
+Pillow
+pycairo
+pyenchant
+pygobject
+pygtkspellcheck
+reportlab
+requests
+scrape-schema-recipe
+selenium
+setuptools
+SQLAlchemy
+toml

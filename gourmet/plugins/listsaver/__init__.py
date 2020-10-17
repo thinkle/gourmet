@@ -1,3 +1,3 @@
-import shoppingSaverPlugin
+from . import shoppingSaverPlugin
 
 plugins = [shoppingSaverPlugin.ShoppingListSaver]

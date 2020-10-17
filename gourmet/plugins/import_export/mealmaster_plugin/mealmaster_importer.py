@@ -40,7 +40,7 @@ class mmf_constants:
                           'oz' : 'oz'
                           }
         self.unit_convr = {}
-        for k,v in self.unit_conv.items():
+        for k,v in list(self.unit_conv.items()):
             self.unit_convr[v]=k
 
 mmf=mmf_constants()
@@ -109,30 +109,30 @@ class mmf_importer (plaintext_importer.TextImporter):
         debug("start compile_regexps",5)
         plaintext_importer.TextImporter.compile_regexps(self)
         self.start_matcher = re.compile(mm_start_pattern)
-        self.end_matcher = re.compile("^[M-][M-][M-][M-][M-]\s*$")
-        self.group_matcher = re.compile("^\s*([M-][M-][M-][M-][M-])-*\s*([^-]+)\s*-*|^\s*---\s*([^-]+)\s*---\s*$",re.IGNORECASE)
-        self.ing_cont_matcher = re.compile("^\s*[-;]")
-        self.ing_opt_matcher = re.compile("(.+?)\s*\(?\s*optional\)?\s*$",re.IGNORECASE)
+        self.end_matcher = re.compile(r"^[M-][M-][M-][M-][M-]\s*$")
+        self.group_matcher = re.compile(r"^\s*([M-][M-][M-][M-][M-])-*\s*([^-]+)\s*-*|^\s*---\s*([^-]+)\s*---\s*$",re.IGNORECASE)
+        self.ing_cont_matcher = re.compile(r"^\s*[-;]")
+        self.ing_opt_matcher = re.compile(r"(.+?)\s*\(?\s*optional\)?\s*$",re.IGNORECASE)
         self.ing_or_matcher = re.compile("^[- ]*[Oo][Rr][- ]*$",re.IGNORECASE)
-        self.variation_matcher = re.compile("^\s*(VARIATION|HINT|NOTES?)(:.*)?",re.IGNORECASE)
+        self.variation_matcher = re.compile(r"^\s*(VARIATION|HINT|NOTES?)(:.*)?",re.IGNORECASE)
         # a crude ingredient matcher -- we look for two numbers,
         # intermingled with spaces followed by a space or more,
         # followed by a two digit unit (or spaces)
         c = convert.get_converter()
         self.ing_num_matcher = re.compile(
-            "^\s*%s+\s+([a-z ]{1,2}|%s)\s+.*\w+.*"%(
+            r"^\s*%s+\s+([a-z ]{1,2}|%s)\s+.*\w+.*"%(
                 convert.NUMBER_REGEXP,
-                '('+'|'.join(filter(lambda x: x, c.unit_dict.keys()))+')'
+                '('+'|'.join([x for x in list(c.unit_dict.keys()) if x])+')'
                 ),
             re.IGNORECASE)
-        self.amt_field_matcher = re.compile("^(\s*%s\s*)$"%convert.NUMBER_REGEXP)
+        self.amt_field_matcher = re.compile(r"^(\s*%s\s*)$"%convert.NUMBER_REGEXP)
         # we build a regexp to match anything that looks like
         # this: ^\s*ATTRIBUTE: Some entry of some kind...$
         self.mmf = mmf
-        attrmatch="^\s*("
-        for k in self.mmf.recattrs.keys():
+        attrmatch=r"^\s*("
+        for k in list(self.mmf.recattrs.keys()):
             attrmatch += "%s|"%re.escape(k)
-        attrmatch="%s):\s*(.*)\s*$"%attrmatch[0:-1]
+        attrmatch=r"%s):\s*(.*)\s*$"%attrmatch[0:-1]
         self.attr_matcher = re.compile(attrmatch)
         testtimer.end()
 
@@ -319,7 +319,7 @@ class mmf_importer (plaintext_importer.TextImporter):
         else:
             ifield = 0,None
         retval = [[afield,ufield,ifield]]
-        sec_col_fields = filter(lambda x: x[0]>self.two_col_minimum,fields)
+        sec_col_fields = [x for x in fields if x[0]>self.two_col_minimum]
         if sec_col_fields:
             ibase = fields.index(sec_col_fields[0])
             while sec_col_fields and not fields_is_numfield[ibase]:
@@ -436,7 +436,7 @@ class mmf_importer (plaintext_importer.TextImporter):
     def add_unit (self, unit):
         testtimer = TimeAction('mealmaster_importer.add_unit',10)
         unit = unit.strip()
-        if self.mmf.unit_conv.has_key(unit):
+        if unit in self.mmf.unit_conv:
             unit = self.mmf.unit_conv[unit]
         importer.Importer.add_unit(self,unit)
         testtimer.end()
@@ -474,7 +474,7 @@ def fields_match (strings, fields, matcher):
 def field_match (strings, tup, matcher):
     testtimer = TimeAction('mealmaster_importer.field_match',10)
     debug("start field_match",10)
-    if type(matcher)==type(""):
+    if isinstance(matcher, str):
         matcher=re.compile(matcher)
     for f in [s[tup[0]:tup[1]] for s in strings]:
         #f=s[tup[0]:tup[1]]
@@ -515,7 +515,7 @@ def find_fields (strings, char=" "):
     if not cols: return []
     cols.reverse()
     fields = []
-    lens = map(len,strings)
+    lens = list(map(len,strings))
     lens.sort()
     end = lens[-1]
     last_col = end
@@ -539,8 +539,8 @@ def find_columns (strings, char=" "):
     # we start with the columns in the first string
     if not strings:
         return None
-    strings=strings[0:]
-    strings.sort(lambda x,y: len(x)>len(y))
+    strings=list(strings)
+    strings.sort(key=len, reverse=True)
     columns = [match.start() for match in re.finditer(re.escape(char),strings[0])]
     if len(strings)==1:
         return columns
@@ -558,7 +558,7 @@ def find_columns (strings, char=" "):
 if __name__ == '__main__':
     import gourmet.recipeManager as recipeManager
     import tempfile, sys, profile, os.path
-    print 'Testing MealMaster import'
+    print('Testing MealMaster import')
     tmpfile = tempfile.mktemp()
     import backends.db
     rd = backends.db.RecipeManager(tmpfile)

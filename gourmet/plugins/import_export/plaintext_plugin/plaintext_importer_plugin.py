@@ -1,3 +1,4 @@
+from gi.repository import Gtk
 from gourmet.plugin import ImporterPlugin
 from gourmet.importers.importer import Tester
 from gourmet.threadManager import get_thread_manager
@@ -20,16 +21,14 @@ class PlainTextImporter (InteractiveImporter):
     def do_run (self):
         if os.path.getsize(self.filename) > MAX_PLAINTEXT_LENGTH*16:
             del data
-            ifi.close()
             import gourmet.gtk_extras.dialog_extras as de
             de.show_message(title=_('Big File'),
                             label=_('File %s is too big to import'%self.filename),
                             sublabel=_('Your file exceeds the maximum length of %s characters. You probably didn\'t mean to import it anyway. If you really do want to import this file, use a text editor to split it into smaller files and try importing again.')%MAX_PLAINTEXT_LENGTH,
-                            message_type=gtk.MESSAGE_ERROR)
+                            message_type=Gtk.MessageType.ERROR)
             return
-        ifi = file(self.filename,'r')
-        data = '\n'.join(check_encodings.get_file(ifi))
-        ifi.close()
+        with open(self.filename, 'rb') as ifi:
+            data = '\n'.join(check_encodings.get_file(ifi))
         self.set_text(data)
         return InteractiveImporter.do_run(self)
 

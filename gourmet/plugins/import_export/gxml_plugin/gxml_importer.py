@@ -30,11 +30,11 @@ class RecHandler (xml_importer.RecHandler):
             for att in ['cuisine','source','category']:
                 raw = unquoteattr(attrs.get(att,''))
                 if raw:
-                    if self.meta[att].has_key(raw):
+                    if raw in self.meta[att]:
                         self.rec[att]=self.meta[att][raw]
                     else:
                         self.rec[att]=raw
-                        print "Warning: can't translate ",raw
+                        print("Warning: can't translate ",raw)
         if name=='image':
             self.in_mixed=0
         if name=='inggroup':
@@ -61,7 +61,7 @@ class RecHandler (xml_importer.RecHandler):
                 self.ing[att]=unquoteattr(attrs.get(att,""))
         if self.in_mixed:
             self.mixed += "<%s" % name
-            for (n,v) in attrs.items():
+            for (n,v) in list(attrs.items()):
                 self.mixed += " %s='%s'" % (n,v)
             self.mixed += ">"
         if name=='instructions' or name=='modifications':
@@ -94,7 +94,7 @@ class RecHandler (xml_importer.RecHandler):
             self.mixed += self.elbuf
             # special unescaping of our grand little tags
             for (eop,op,ecl,cl) in [('&lt;%s&gt;'%t,'<%s>'%t,'&lt;/%s&gt;'%t,'</%s>'%t)
-                                    for t in 'b','i','u']:
+                                    for t in ('b','i','u')]:
                 self.mixed=self.mixed.replace(eop,op)
                 self.mixed=self.mixed.replace(ecl,cl)
             self.rec[name]=self.mixed

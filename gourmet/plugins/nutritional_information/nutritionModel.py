@@ -1,7 +1,7 @@
-import gtk, gobject
+from gi.repository import GObject, Gtk
 from gettext import gettext as _
 
-class NutritionModel (gtk.TreeStore):
+class NutritionModel (Gtk.TreeStore):
     """Handed ingredients and a nutritional database, display
     our nutritional information thus far."""
     AMOUNT_COL_HEAD = _("Amount")
@@ -14,10 +14,10 @@ class NutritionModel (gtk.TreeStore):
     ING_COL = 3
     USDA_COL = 4
     def __init__ (self, ings, nd):
-        gtk.TreeStore.__init__(self,gobject.TYPE_PYOBJECT,str,str,str,str)
+        Gtk.TreeStore.__init__(self,GObject.TYPE_PYOBJECT,str,str,str,str)
         self.nd = nd
         self.ings = ings
-        map(self.add_ingredient,self.ings)
+        list(map(self.add_ingredient,self.ings))
 
     def add_ingredient (self, ing):
         r=self.nd.get_key(ing.ingkey)

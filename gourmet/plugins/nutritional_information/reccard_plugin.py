@@ -1,8 +1,8 @@
-from nutritionLabel import NutritionLabel
-from nutrition import NutritionInfoList, NutritionVapor
+from gi.repository import Gtk, Pango
+from .nutritionLabel import NutritionLabel
+from .nutrition import NutritionInfoList, NutritionVapor
 #from gourmet.gglobals import gladeCustomHandlers
 from gourmet.plugin import RecDisplayModule, RecDisplayPlugin
-import gtk, pango
 import os.path
 from gettext import gettext as _
 
@@ -41,7 +41,7 @@ class NutritionDisplayModule (RecDisplayModule):
         #                                           lambda *args: NutritionLabel(self.prefs)
         #                                           )
         #    NutritionDisplayModule._custom_handlers_setup = True
-        self.ui = gtk.Builder()
+        self.ui = Gtk.Builder()
         self.ui.add_from_file(os.path.join(current_path,'nut_recipe_card_display.ui'))
         self.ui.connect_signals(
             {'edit_nutrition': lambda *args: self.nutritionLabel.show_druid(nd=self.recipe_display.rg.rd.nd)}
@@ -95,12 +95,12 @@ class NutritionDisplayModule (RecDisplayModule):
                     nutinfo_for_ing = ni
                     break
             if nutinfo_for_ing is None: # if something is wrong...
-                print 'Did not find nutritional info object for ingredient',ing
-                print 'We did have...'
+                print('Did not find nutritional info object for ingredient',ing)
+                print('We did have...')
                 for ni in self.nutinfo:
-                    print ni.__ingobject__
+                    print(ni.__ingobject__)
                 return istr
-            if type(props)==str:
+            if isinstance(props, str):
                 nut_amt = getattr(nutinfo_for_ing,props)
                 tot_amt = getattr(self.nutinfo,props)
             else:
@@ -122,7 +122,7 @@ class NutritionDisplayModule (RecDisplayModule):
                                          faintest_yellow-int(faintest_yellow*(perc**2))
                                         )
                 nut_highlighted = True
-                weight = int(pango.WEIGHT_NORMAL + ((pango.WEIGHT_HEAVY - pango.WEIGHT_NORMAL) * perc))
+                weight = int(Pango.Weight.NORMAL + ((Pango.Weight.HEAVY - Pango.Weight.NORMAL) * perc))
                 if color:
                     istr = '<span background="%s" foreground="black">'%color + istr + '</span>'
                 if weight:

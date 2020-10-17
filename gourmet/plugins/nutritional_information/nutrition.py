@@ -1,6 +1,6 @@
 import re, string
 import sys
-from parser_data import SUMMABLE_FIELDS
+from .parser_data import SUMMABLE_FIELDS
 
 # Our basic module for interaction with our nutritional information DB
 
@@ -17,7 +17,7 @@ class NutritionData:
         self.conv = conv
         self.conv.density_table
         self.gramwght_regexp = re.compile("([0-9.]+)?( ?([^,]+))?(, (.*))?")
-        self.wght_breaker = re.compile('([^ ,]+)([, ]+\(?(.*)\)?)?$')
+        self.wght_breaker = re.compile(r'([^ ,]+)([, ]+\(?(.*)\)?)?$')
 
     def set_key (self, key, row):
         """Create an automatic equivalence for ingredient key 'key' and nutritional DB row ROW
@@ -40,7 +40,7 @@ class NutritionData:
     def set_key_from_ndbno (self, key, ndbno):
         """Create an automatic equivalence between ingredient key 'key' and ndbno
         ndbno is our nutritional database number."""
-        if type(ndbno)!=int:
+        if not isinstance(ndbno, int):
             ndbno = int(ndbno)
         prev_association = self.db.fetch_one(self.db.nutritionaliases_table,ingkey=key)
         if prev_association:
@@ -58,7 +58,7 @@ class NutritionData:
 
         factor is the amount we multiply by to get from unit to grams.
         """
-        if self.conv.unit_dict.has_key(unit):
+        if unit in self.conv.unit_dict:
             unit = self.conv.unit_dict[unit]
         prev_entry = self.db.fetch_one(self.db.nutritionconversions_table,
                                        **{'ingkey':key,'unit':unit})
@@ -78,8 +78,8 @@ class NutritionData:
         If max is not none, we cut our list off at max items (and hope our
         sorting algorithm succeeded in picking out the good matches!).
         """
-        words=re.split("\W",key)
-        words = filter(lambda w: w and not w in ['in','or','and','with'], words)
+        words=re.split(r"\W",key)
+        words = [w for w in words if w and not w in ['in','or','and','with']]
         #words += ['raw']
         result =  self.db.search_nutrition(words)
         while not result and len(words)>1:
@@ -107,7 +107,7 @@ class NutritionData:
             try:
                 amount = (ing.rangeamount + ing.amount)/2
             except TypeError:
-                print 'Failed trying to add',ing.rangeamount,ing.amount
+                print('Failed trying to add',ing.rangeamount,ing.amount)
                 raise
         else:
             amount = ing.amount
@@ -193,13 +193,13 @@ class NutritionData:
         """
         if not unit: unit = ''
         densities,gramweights = self.get_conversions(key,row)
-        if gramweights.has_key(unit):
+        if unit in gramweights:
             mass = gramweights[unit] * amt
             return mass * 0.01
         # Otherwise, we are trying to find our density...
         cnv = None
         if (',' in unit) or ('(' in unit): # Check for density in unit description...
-            print 'Checking for density in unit...','densities=',densities
+            print('Checking for density in unit...','densities=',densities)
             if ',' in unit:
                 unit,description = unit.split(',')
             if '(' in unit:
@@ -207,13 +207,13 @@ class NutritionData:
                 description = description.strip(')')
             description = description.strip()
             unit = unit.strip()
-            print 'description=',description
-            if densities.has_key(description):
-                print 'We got a density!','unit=',unit
+            print('description=',description)
+            if description in densities:
+                print('We got a density!','unit=',unit)
                 density = densities[description]
-                print density,type(density),'(unit=',unit,')'
+                print(density,type(density),'(unit=',unit,')')
                 cnv = self.conv.converter('g.',unit,density=density)
-                print 'We got a conversion!',cnv
+                print('We got a conversion!',cnv)
         # our default is 100g
         if not cnv:
             # Check for convertible mass...
@@ -226,7 +226,7 @@ class NutritionData:
                                       )
         if not cnv:
             # lookup in our custom nutrition-related conversion table
-            if self.conv.unit_dict.has_key(unit):
+            if unit in self.conv.unit_dict:
                 unit = self.conv.unit_dict[unit]
             elif not unit:
                 unit = ''
@@ -256,7 +256,7 @@ class NutritionData:
         if not row: return {},{}
         units = {}
         densities = {}
-        for gd,gw in self.get_gramweights(row).items():
+        for gd,gw in list(self.get_gramweights(row).items()):
             a,u,e=gd
             if a:
                 convfactor = self.conv.converter(u,'ml')
@@ -278,11 +278,11 @@ class NutritionData:
         """Handed key or nutrow, return dictionary with densities."""
         if not row: row = self._get_key(key)
         if not row: return {}
-        if self.conv.density_table.has_key(key):
+        if key in self.conv.density_table:
             return {'':self.conv.density_table[key]}
         else:
             densities = {}
-            for gd,gw in self.get_gramweights(row).items():
+            for gd,gw in list(self.get_gramweights(row).items()):
                 a,u,e = gd
                 if not a:
                     continue
@@ -312,16 +312,16 @@ class NutritionData:
 
     def get_density (self,key=None,row=None, fudge=True):
         densities = self.get_densities(key,row)
-        if densities.has_key(''): densities[None]=densities['']
+        if '' in densities: densities[None]=densities['']
         if key: keyrow=self._get_key(key)
         if densities:
-            if key and keyrow and keyrow.density_equivalent and densities.has_key(keyrow.density_equivalent):
+            if key and keyrow and keyrow.density_equivalent and keyrow.density_equivalent in densities:
                 return densities[keyrow.density_equivalent]
-            elif densities.has_key(None):
+            elif None in densities:
                 self.conv.density_table[key]=densities[None]
                 return densities[None]
             elif len(densities)==1:
-                return densities.values()[0]
+                return list(densities.values())[0]
             elif fudge:
                 return sum(densities.values())/len(densities)
             else:
@@ -395,7 +395,7 @@ class NutritionInfo:
         else:
             # somehow this magically gets us standard
             # attribute handling...
-            raise AttributeError, attr
+            raise AttributeError(attr)
 
     def __add__ (self, obj):
         if isinstance(obj,NutritionInfo):
@@ -473,12 +473,12 @@ class NutritionVapor (NutritionInfo):
         if attr[0]!='_':
             return 0
         else:
-            raise AttributeError,attr
+            raise AttributeError(attr)
 
     def __repr__ (self):
         return '<NutritionVapor %s>'%self.__key__
 
-    def __nonzero__ (self):
+    def __bool__ (self):
         """Vapor is always False."""
         return False
 
@@ -511,7 +511,7 @@ class NutritionInfoList (list, NutritionInfo):
         else:
             # somehow this magically gets us standard
             # attribute handling...
-            raise AttributeError, attr
+            raise AttributeError(attr)
 
     def _reset (self):
         """See if we can turn any of our vapor into matter."""
@@ -582,7 +582,7 @@ if __name__ == '__main__':
     db=rm.RecipeManager(**rm.dbargs)
     import gourmet.convert
     conv = gourmet.convert.converter()
-    import nutritionGrabberGui
+    from . import nutritionGrabberGui
     nutritionGrabberGui.check_for_db(db)
     nd=NutritionData(db,conv)
 
@@ -600,12 +600,12 @@ def foo ():
             self.ings = []
 
         def run (self):
-            choices = self.ACTIONS.keys()
+            choices = list(self.ACTIONS.keys())
             for n,a in enumerate(choices):
-                print n,a
+                print(n,a)
             choice = None
             while not choice:
-                choice = raw_input('Enter number of choice: ')
+                choice = input('Enter number of choice: ')
                 choice = int(choice)
                 if choice < len(choices): choice = self.ACTIONS[choices[choice]]
                 else: choice = None
@@ -618,22 +618,22 @@ def foo ():
 
 
         def add_ingredient (self):
-            key=raw_input('Enter ingredient key: ')
-            amt = convert.frac_to_float(raw_input('Enter amount: '))
-            unit = raw_input('Enter unit: ')
+            key=input('Enter ingredient key: ')
+            amt = convert.frac_to_float(input('Enter amount: '))
+            unit = input('Enter unit: ')
             if not self.ings:
                 self.ings = NutritionInfoList([self.nd.get_nutinfo_for_item(key,amt,unit)])
             else:
                 self.ings = self.ings + self.nd.get_nutinfo_for_item(key,amt,unit)
 
         def add_key (self):
-            key=raw_input('Enter key for which we add info: ')
+            key=input('Enter key for which we add info: ')
             matches = self.nd.get_matches(key,10)
             for n,m in enumerate(matches):
-                print n,'. ',m[0]
+                print(n,'. ',m[0])
             choice = None
             while not choice:
-                choice = raw_input('Enter number of choice: ')
+                choice = input('Enter number of choice: ')
                 choice = int(choice)
                 if choice < len(matches): choice = matches[choice][1]
                 else: choice = None
@@ -641,18 +641,18 @@ def foo ():
             self.ings._reset()
 
         def print_info (self):
-            att = raw_input('What information would you like (e.g. kcal): ')
+            att = input('What information would you like (e.g. kcal): ')
             while not hasattr(self.ings,att):
-                print "I'm sorry, there is no information about ",att
-                att = raw_input('What information would you like (e.g. kcal): ')
-            print att,":",getattr(self.ings,att)
+                print("I'm sorry, there is no information about ",att)
+                att = input('What information would you like (e.g. kcal): ')
+            print(att,":",getattr(self.ings,att))
             vv = self.ings._get_vapor()
             if vv:
                 for v in vv:
                     explanation = v._wheres_the_vapor()
-                    if explanation==KEY_VAPOR: print 'No key'
-                    if explanation==UNIT_VAPOR: print "Can't handle unit ",v.__unit__
-                    if explanation==AMOUNT_VAPOR: print "What am I to do with the amount ",v.__amt__
+                    if explanation==KEY_VAPOR: print('No key')
+                    if explanation==UNIT_VAPOR: print("Can't handle unit ",v.__unit__)
+                    if explanation==AMOUNT_VAPOR: print("What am I to do with the amount ",v.__amt__)
 
 
         def exit (self):

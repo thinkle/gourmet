@@ -1,10 +1,11 @@
-import gtk, gobject
+from gi.repository import Gdk, GObject, Gtk
 from gourmet.gdebug import debug
 
 class FocusFixer:
     key = None
     def __init__ (self,cbe):
-        self.e=cbe.get_children()[0]
+        children = cbe.get_children()
+        self.e = children[0] if children else cbe
         self.e.connect('key-press-event',self.keypress_event_cb)
         self.e.connect('focus-out-event',self.focus_out_cb)
         self.e.connect('focus-in-event',self.focus_in_cb)
@@ -16,13 +17,13 @@ class FocusFixer:
     def focus_out_cb (self, widget, event):
         if not event.in_ and self.key in ['Tab']:
             parent = widget.get_parent()
-            while parent and not isinstance(parent,gtk.Window) :
+            while parent and not isinstance(parent,Gtk.Window) :
                 parent = parent.get_parent()
-            for n in range(2): parent.emit('move-focus',gtk.DIRECTION_LEFT)
-            #parent.emit('move-focus',gtk.DIRECTION_LEFT)
+            for n in range(2): parent.emit('move-focus',Gtk.DIRECTION_LEFT)
+            #parent.emit('move-focus',Gtk.DIRECTION_LEFT)
 
     def keypress_event_cb (self, w, event):
-        self.key = gtk.gdk.keyval_name(event.keyval)
+        self.key = Gdk.keyval_name(event.keyval)
 
 def cb_get_active_text (combobox):
     """Get the selected/active text of combobox"""
@@ -53,7 +54,7 @@ class setup_typeahead:
         # we try to connect to our children renderers...
         if self.cb.get_children():
             for c in cb.get_children():
-                #c.set_direction(gtk.DIR_UP)
+                #c.set_direction(Gtk.DIR_UP)
                 try:
                     c.connect('key_press_event',self.key_press_cb)
                 except:
@@ -69,18 +70,18 @@ class setup_typeahead:
         if not newstr: return
         self.str += newstr
         match=self.match_string_in_combo(self.str)
-        if type(match) == type(0):
+        if isinstance(match, int):
             self.cb.set_active(match)
         ## otherwise, perhaps they didn't mean to combine strings
         else:
             self.str = ""
             match=self.match_string_in_combo(newstr)
-            if type(match) == type(0):
+            if isinstance(match, int):
                 self.cb.set_active(match)
                 self.string = newstr
-        if type(match)==type(0):
-            if self.last_timeout: gobject.source_remove(self.last_timeout)
-            self.last_timeout=gobject.timeout_add(self.typeahead_timeout, self.reset_str)
+        if isinstance(match, int):
+            if self.last_timeout: GObject.source_remove(self.last_timeout)
+            self.last_timeout=GObject.timeout_add(self.typeahead_timeout, self.reset_str)
 
     def reset_str (self, *args):
         self.string = ""
@@ -99,24 +100,26 @@ def setup_completion (cbe, col=0):
     """Setup an EntryCompletion on a ComboBoxEntry based on the
     items in the ComboBox's model"""
     model = cbe.get_model()
-    entry = cbe.get_children()[0]
-    cbe.entry = entry  # for convenience/backward compatability with gtk.Combo
-    make_completion(entry, model, col)
+    children = cbe.get_children()
+    if children:
+        entry = children[0]
+        cbe.entry = entry  # for convenience/backward compatibility with Gtk.Combo
+        make_completion(entry, model, col)
 
 def make_completion (entry, model, col=0):
     """Setup completion for an entry based on model."""
-    if not isinstance(entry,gtk.Entry):
+    if not isinstance(entry,Gtk.Entry):
         import traceback
-        if isinstance(entry.child,gtk.Entry):
-            print 'WARNING: make_completion() called with ',entry,'and model',model
-            entry = entry.child
+        if isinstance(entry.get_child(),Gtk.Entry):
+            print('WARNING: make_completion() called with ',entry,'and model',model)
+            entry = entry.get_child()
             traceback.print_stack(limit=3)
-            print 'Using its child, ',entry,'instead.'
+            print('Using its child, ',entry,'instead.')
         else:
-            print 'WARNING: ',entry,'is not a GTK Entry'
+            print('WARNING: ',entry,'is not a GTK Entry')
             traceback.print_stack(limit=3)
             return
-    completion = gtk.EntryCompletion()
+    completion = Gtk.EntryCompletion()
     completion.set_model(model)
     completion.set_text_column(col)
     entry.set_completion(completion)
@@ -138,29 +141,31 @@ def make_completion (entry, model, col=0):
 
 def set_model_from_list (cb, list, expand=True):
     """Setup a ComboBox based on a list of strings."""
-    model = gtk.ListStore(str)
+    model = Gtk.ListStore(str)
     for l in list:
         model.append([l])
     cb.set_model(model)
-    if type(cb) == gtk.ComboBoxEntry:
+    if type(cb) == (Gtk.ComboBox,):
         cb.set_text_column(0)
         setup_completion(cb)
-    elif type(cb) == gtk.ComboBox:
+    elif type(cb) == Gtk.ComboBox:
         cb.clear()
-        cell = gtk.CellRendererText()
-        cb.pack_start(cell, expand=expand)
+        cell = Gtk.CellRendererText()
+        # help(cb)
+        #  |      pack_start(self, cell:Gtk.CellRenderer, expand:bool)
+        cb.pack_start(cell, expand)
         cb.add_attribute(cell, 'text',0)
         setup_typeahead(cb, 0)
 
 if __name__ == '__main__':
-    w = gtk.Window()
-    vb = gtk.VBox()
-    #vb.add(gtk.Button('Blank button'))
-    #for n in range(10): vb.add(gtk.Button('Other blank'))
-    hbox = gtk.HBox()
-    label = gtk.Label()
+    w = Gtk.Window()
+    vb = Gtk.VBox()
+    #vb.add(Gtk.Button('Blank button'))
+    #for n in range(10): vb.add(Gtk.Button('Other blank'))
+    hbox = Gtk.HBox()
+    label = Gtk.Label()
     label.set_text_with_mnemonic('Enter a _fruit: ')
-    cbe = gtk.ComboBoxEntry()
+    cbe = Gtk.ComboBoxEntry()
     FocusFixer(cbe)
     label.set_mnemonic_widget(cbe)
     set_model_from_list(cbe, ['Apples','Oranges','Grapes','Mango',
@@ -168,33 +173,31 @@ if __name__ == '__main__':
                               'Bananas'])
     hbox.add(label)
     hbox.add(cbe)
-    vb.add(gtk.Label("""Here's an EntryCompletion widget automatically
+    vb.add(Gtk.Label(label="""Here's an EntryCompletion widget automatically
     in sync with the ComboBoxEntry widget. Hitting return will select
     the first item in the EntryCompletion popup window."""))
     vb.add(hbox)
     def make_combo (expand=True):
-        label2 = gtk.Label()
+        label2 = Gtk.Label()
         label2.set_text_with_mnemonic('Mode of _Transportation')
-        cb = gtk.ComboBox()
+        cb = Gtk.ComboBox()
         label2.set_mnemonic_widget(cb)
         set_model_from_list(cb, ['Planes','Trains','Automobiles','Spacecraft','Bicycles'],
                             expand=expand)
         setup_typeahead(cb)
-        hb2 = gtk.HBox()
+        hb2 = Gtk.HBox()
         hb2.add(label2)
         hb2.add(cb)
         hb2.show_all()
         return hb2
-    vb.add(gtk.Label("""Here's a ComboBox widget. With the widget selected,
+    vb.add(Gtk.Label("""Here's a ComboBox widget. With the widget selected,
     you can type e.g. "a" to select "airplane." Once the cb-popup window
     is up, however, typing doesn't do anything (doh!)"""))
     vb.add(make_combo())
-    vb.add(gtk.Label("""ComboBox, expand=False"""))
+    vb.add(Gtk.Label("""ComboBox, expand=False"""))
     vb.add(make_combo(expand=False))
     vb.show_all()
     w.add(vb)
     w.show_all()
-    w.connect('destroy',lambda *args: gtk.main_quit())
-    gtk.main()
-
-
+    w.connect('destroy',lambda *args: Gtk.main_quit())
+    Gtk.main()

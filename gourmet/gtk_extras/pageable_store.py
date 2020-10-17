@@ -1,6 +1,6 @@
-import gtk, gobject
+from gi.repository import GObject, Gtk
 
-class PageableListStore (gtk.ListStore):
+class PageableListStore (Gtk.ListStore):
     """A ListStore designed to show bits of data at a time.
 
     We show chunks of data from our parent list in pages of a set size.
@@ -14,12 +14,12 @@ class PageableListStore (gtk.ListStore):
 
     # convenient constants for sorting
     OFF = None
-    FORWARD = gtk.SORT_ASCENDING
-    REVERSE = gtk.SORT_DESCENDING
+    FORWARD = Gtk.SortType.ASCENDING
+    REVERSE = Gtk.SortType.DESCENDING
 
     __gsignals__ = {
-        'page-changed':(gobject.SIGNAL_RUN_LAST,
-                        gobject.TYPE_NONE, #RETURN
+        'page-changed':(GObject.SignalFlags.RUN_LAST,
+                        None, #RETURN
                         () # PARAMS
                         ),
         }
@@ -37,12 +37,13 @@ class PageableListStore (gtk.ListStore):
 
         per_page is the default number of items we show at a time.
         """
-        #gtk.ListStore.__init__(self,*types)
-        self.__gobject_init__()
-        gtk.ListStore.__init__(self, *types)
+        #GObject.GObject.__init__(self,*types)
+        # self.__gobject_init__()
+        # GObject.GObject.__init__(self, *types)
+        Gtk.ListStore.__init__(self, *types)
         self.per_page = per_page
         self._setup_parent_(*parent_args,**parent_kwargs)
-        #self.grab_items()
+        # self.grab_items()
         # a dictionary for tracking our sorting
         self.sort_dict = {}
         self.update_tree()
@@ -128,7 +129,7 @@ class PageableListStore (gtk.ListStore):
         # This will only work with ListStores -- if we update to
         # accomodate TreeStores, this is one of the things that must
         # change
-        if type(itr)==tuple:
+        if isinstance(itr, tuple):
             path = itr
             itr=self.get_iter(path)
         else:
@@ -152,14 +153,11 @@ class PageableListStore (gtk.ListStore):
         if start_at > length: return # we're empty then...
         if end_at > length: end_at = length
         for row in self._get_slice_(int(start_at),int(end_at)):
-            try: self.append(row)
-            except TypeError:
-                print 'columns          : ',self.columns
-                print 'problem adding row ',row
-                raise
-            except ValueError:
-                print 'columns          : ',self.columns
-                print 'problem adding row ',row
+            try:
+                self.append(row)
+            except (TypeError, ValueError) as e:
+                print('columns          : ',self.columns)
+                print('problem adding row ',row)
                 raise
     # Sorting functions
 
@@ -168,24 +166,20 @@ class PageableListStore (gtk.ListStore):
 
         Note -- to remove term we use direction=OFF
         """
+        assert(direction in (self.FORWARD, self.REVERSE, self.OFF))
 
         self.sort_dict[column]=direction
         if direction==self.OFF:
             self.parent_list = self.unsorted_parent
             return
-        if direction==self.FORWARD: shift_by = 1
-        elif direction==self.REVERSE: shift_by = -1
-        self.parent_list.sort(lambda r1,r2: ((r1[column]>r2[column] and 1*shift_by) or
-                                             (r1[column]<r2[column] and -1*shift_by) or
-                                             0)
-                              )
+        self.parent_list.sort(key=lambda x: x[column], reverse=(direction == self.REVERSE))
         self.update_tree()
 
     def toggle_sort (self, column):
         """Toggle sorting by column.
 
         We cycle through three positions: forward, backward, None,
-        which is what standard gtk.TreeSort does as well!
+        which is what standard Gtk.TreeSort does as well!
 
         Return the direction we've toggled to (this allows our caller
         to be able to update the UI without having to know beforehand
@@ -201,7 +195,7 @@ class PageableListStore (gtk.ListStore):
         self.sort(column,toggle_to)
         return toggle_to
 
-class PageableTreeStore (gtk.TreeStore, PageableListStore):
+class PageableTreeStore (Gtk.TreeStore, PageableListStore):
     """A TreeStore designed to show bits of data at a time.
 
     We show chunks of data from our parent in pages of a set size.
@@ -211,8 +205,8 @@ class PageableTreeStore (gtk.TreeStore, PageableListStore):
     """
 
     __gsignals__ = {
-        'page-changed':(gobject.SIGNAL_RUN_LAST,
-                        gobject.TYPE_NONE, #RETURN
+        'page-changed':(GObject.SignalFlags.RUN_LAST,
+                        None, #RETURN
                         () # PARAMS
                         ),
         }
@@ -221,8 +215,8 @@ class PageableTreeStore (gtk.TreeStore, PageableListStore):
 
     # convenient constants for sorting
     OFF = None
-    FORWARD = gtk.SORT_ASCENDING
-    REVERSE = gtk.SORT_DESCENDING
+    FORWARD = Gtk.SortType.ASCENDING
+    REVERSE = Gtk.SortType.DESCENDING
 
     def __init__ (self, types, parent_args=[], parent_kwargs={}, per_page=15):
         """
@@ -240,8 +234,8 @@ class PageableTreeStore (gtk.TreeStore, PageableListStore):
         We include all children by default -- subclasses can override
         update_tree to get fancier.
         """
-        self.__gobject_init__()
-        gtk.TreeStore.__init__(self, *types)
+        # self.__gobject_init__()
+        Gtk.TreeStore.__init__(self, *types)
         self.per_page = per_page
         self._setup_parent_(*parent_args,**parent_kwargs)
         self.update_tree()
@@ -305,13 +299,13 @@ class ColumnSortSetterUpper:
 class PageableViewStore (PageableListStore):
 
     __gsignals__ = {
-        'view-changed':(gobject.SIGNAL_RUN_LAST,
-                         gobject.TYPE_NONE,
+        'view-changed':(GObject.SignalFlags.RUN_LAST,
+                         None,
                          ()
                          ),
-        'view-sort':(gobject.SIGNAL_RUN_LAST,
-                     gobject.TYPE_PYOBJECT,
-                     (gobject.TYPE_PYOBJECT,)
+        'view-sort':(GObject.SignalFlags.RUN_LAST,
+                     GObject.TYPE_PYOBJECT,
+                     (GObject.TYPE_PYOBJECT,)
                      ),
         }
 
@@ -349,14 +343,6 @@ class PageableViewStore (PageableListStore):
             self.__sorts__.append((attr,-1))
         self.emit('view-sort',self.__sorts__)
 
-    #def _do_sort_ (self):
-    #    if self.__all_sorts__:
-    #        self.do_change_view(self.view.sortrev([getattr(self.view,a) for a in self.__all_sorts__],
-    #                                              [getattr(self.view,a) for a in self.__reverse_sorts__])
-    #                            )
-    #    else:
-    #        self.do_change_view(self.unsorted_view)
-
     def do_change_view (self, vw, length=None):
         self.parent_list = self.view = vw
         self.__length__ = None
@@ -377,24 +363,24 @@ if __name__ == '__main__':
     pts=PageableTreeStore([str,str],parent_args=[[str(n),str(30-n)] for n in range(30)])
     #for n in range(30): pts.append(None,[str(n),str(n)])
     cssu = ColumnSortSetterUpper(pts)
-    tv=gtk.TreeView()
-    renderer = gtk.CellRendererText()
-    tvc=gtk.TreeViewColumn('first',renderer,text=0)
+    tv=Gtk.TreeView()
+    renderer = Gtk.CellRendererText()
+    tvc=Gtk.TreeViewColumn('first',renderer,text=0)
     cssu.set_sort_column_id(tvc,0)
     tv.append_column(tvc)
-    tvc2=gtk.TreeViewColumn('first',renderer,text=1)
+    tvc2=Gtk.TreeViewColumn('first',renderer,text=1)
     cssu.set_sort_column_id(tvc2,1)
     tv.append_column(tvc2)
     tv.set_model(pts)
-    sw = gtk.ScrolledWindow()
+    sw = Gtk.ScrolledWindow()
     sw.add(tv)
-    vb = gtk.VBox()
-    w = gtk.Window()
+    vb = Gtk.VBox()
+    w = Gtk.Window()
     w.add(vb)
     vb.add(sw)
 
     # add buttons
-    b=gtk.Button('next page')
+    b=Gtk.Button('next page')
     def nxt ():
         #tv.set_model(None)
         pts.next_page()
@@ -403,12 +389,11 @@ if __name__ == '__main__':
         pts.prev_page()
     b.connect('clicked',lambda *args: nxt())
     vb.pack_start(b,False)
-    pb = gtk.Button('prev')
+    pb = Gtk.Button('prev')
     pb.connect('clicked',lambda *args: prv())
     vb.pack_start(pb,False)
 
 
     w.show_all()
-    w.connect('delete-event',lambda *args: gtk.main_quit())
-    gtk.main()
-
+    w.connect('delete-event',lambda *args: Gtk.main_quit())
+    Gtk.main()

@@ -1,4 +1,4 @@
-import socket, gourmet.threadManager, urllib
+import socket, gourmet.threadManager, urllib.request, urllib.parse, urllib.error
 from gettext import gettext as _
 DEFAULT_SOCKET_TIMEOUT=45.0
 URLOPEN_SOCKET_TIMEOUT=15.0
@@ -20,7 +20,7 @@ class URLReader (gourmet.threadManager.SuspendableThread):
     def read (self):
         message = _('Retrieving %s'%self.url)
         socket.setdefaulttimeout(URLOPEN_SOCKET_TIMEOUT)
-        sock = urllib.urlopen(self.url)
+        sock = urllib.request.urlopen(self.url)
         socket.setdefaulttimeout(DEFAULT_SOCKET_TIMEOUT)
         bs = 1024 * 8 # bite size...
         # Get file size so we can update progress correctly...
@@ -28,7 +28,7 @@ class URLReader (gourmet.threadManager.SuspendableThread):
         if hasattr(sock,'headers'):
             fs = int(sock.headers.get('content-length',-1)) # file size..
             self.content_type = sock.headers.get('content-type')
-            print 'CONTENT TYPE = ',self.content_type
+            print('CONTENT TYPE = ',self.content_type)
         else:
             fs = -1
         block = sock.read(bs)
@@ -58,7 +58,7 @@ def read_socket_w_progress (sock, suspendableThread=None, message=None):
         block = sock.read(bs)
         data = block
         sofar = bs
-        print "FETCHING:",data
+        print("FETCHING:",data)
         while block:
             if fs>0:
                 suspendableThread.emit('progress',float(sofar)/fs, message)
@@ -67,18 +67,18 @@ def read_socket_w_progress (sock, suspendableThread=None, message=None):
             sofar += bs
             block = sock.read(bs)
             data += block
-            print "FETCHED:",block
+            print("FETCHED:",block)
     sock.close()
-    print "FETCHED ",data
-    print "DONE FETCHING"
+    print("FETCHED ",data)
+    print("DONE FETCHING")
     suspendableThread.emit('progress',1, message)
     return data
 
 def get_url (url, suspendableThread):
     """Return data from URL, possibly displaying progress."""
-    if type(url) in [str,unicode]:
+    if isinstance(url, str):
         socket.setdefaulttimeout(URLOPEN_SOCKET_TIMEOUT)
-        sock = urllib.urlopen(url)
+        sock = urllib.request.urlopen(url)
         socket.setdefaulttimeout(DEFAULT_SOCKET_TIMEOUT)
         return read_socket_w_progress(sock,suspendableThread,_('Retrieving %s'%url))
     else:

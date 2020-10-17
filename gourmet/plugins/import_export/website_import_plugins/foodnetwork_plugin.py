@@ -1,54 +1,57 @@
 from gourmet.plugin import PluginPlugin
 import re
 
-class FoodNetworkPlugin (PluginPlugin):
+from .state import WebsiteTestState
+
+
+class FoodNetworkPlugin(PluginPlugin):
 
     target_pluggable = 'webimport_plugin'
 
-    def test_url (self, url, data):
-        if 'foodnetwork.com' in url:
-            return 5
-        return 0
+    def test_url(self, url, data):
+        if 'foodnetwork.co.uk' in url:
+            return WebsiteTestState.SUCCESS
+        return WebsiteTestState.FAILED
 
-    def get_importer (self, webpage_importer):
+    def get_importer(self, webpage_importer):
 
-        class FoodNetworkParser (webpage_importer.MenuAndAdStrippingWebParser):
+        class FoodNetworkParser(webpage_importer.WebParser):
 
-            imageexcluders = [re.compile('foodnetworkstore|googlead|ft-|banner')]
+            recipe_head_mapping = {
+                "Preparation Time": "preptime",
+                "Cooking Time": "cooktime",
+                "Serves": "yields"
+            }
 
-            def preparse (self):
-                headm = re.compile('rcp-head.*')
-                textm = re.compile('body-text.*')
-                infom = re.compile('rcp-info.*')
+            def preparse(self):
                 self.preparsed_elements = []
-                for el in self.soup('div',{'class':textm}):
-                    self.preparsed_elements.append((el,'recipe'))
-                for el in self.soup('div',{'class':headm}):
-                    self.preparsed_elements.append((el,'recipe'))
-                    self.preparsed_elements.append((el('h1'),'title'))
-                for el in self.soup('ul',{'class':infom}):
-                    self.preparsed_elements.append((el,'recipe'))
-                preptime = self.soup('dt',text='Prep')
-                if preptime:
-                    self.preparsed_elements.append((preptime[0].next,'preptime'))
-                cooktime = self.soup('dt',text='Cook')
-                if cooktime:
-                    self.preparsed_elements.append((cooktime[0].next,'cooktime'))
-                servings = self.soup(text='Yield')
-                if servings:
-                    self.preparsed_elements.append((servings[0].next,'servings'))
-                ingredients = self.soup(text='Ingredients')
-                if ingredients:
-                    if ingredients[0].parent:
-                        if ingredients[0].parent.findNextSiblings('ul'):
-                            self.preparsed_elements.append((ingredients[0].parent.findNextSiblings('ul')[0],'ingredients'))
-                #import sys; sys.argv = []
-                #from IPython.Shell import IPShellEmbed
-                #ipshell = IPShellEmbed()
-                #Ipshell()
+
+                title = self.soup.title
+                self.preparsed_elements.append((title.text, "title"))
+
+                instructions = self.soup.find("div", class_="recipe-text")
+                for p in instructions.find_all("p"):
+                    self.preparsed_elements.append((p.text.strip(), "recipe"))
+
+                recipe_head = self.soup.find("ul", class_="recipe-head")
+                for entry in self.soup.find_all("li"):
+                    span = entry.find("span")
+                    if not span:
+                        continue
+                    key = span.text
+                    if key in self.recipe_head_mapping:
+                        value = entry.find("strong")
+                        if not value:
+                            continue
+                        self.preparsed_elements.append((value.text, self.recipe_head_mapping[key]))
+
+                ingredients = self.soup.find_all("div", class_="ingredient")
+                for ingredient in ingredients:
+                    self.preparsed_elements.append((ingredient.text, "ingredients"))
+
                 if self.preparsed_elements:
                     self.ignore_unparsed = True
                 else:
-                    webpage_importer.MenuAndAdStrippingWebParser.preparse(self)
+                    webpage_importer.WebParser.preparse(self)
 
         return FoodNetworkParser

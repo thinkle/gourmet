@@ -1,7 +1,7 @@
-import gtk
+from gi.repository import Gtk
 import gourmet.gtk_extras.dialog_extras as de
 from gourmet.plugin import RecDisplayModule, UIPlugin, MainPlugin, ToolPlugin
-from recipe_emailer import RecipeEmailer
+from .recipe_emailer import RecipeEmailer
 from gettext import gettext as _
 
 class EmailRecipePlugin (MainPlugin, UIPlugin):
@@ -17,7 +17,7 @@ class EmailRecipePlugin (MainPlugin, UIPlugin):
     '''
 
     def setup_action_groups (self):
-        self.actionGroup = gtk.ActionGroup('RecipeEmailerActionGroup')
+        self.actionGroup = Gtk.ActionGroup(name='RecipeEmailerActionGroup')
         self.actionGroup.add_actions([
                 ('EmailRecipes',None,_('Email recipes'),
                  None,_('Email all selected recipes (or all recipes if no recipes are selected'),self.email_selected),

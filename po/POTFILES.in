@@ -1,20 +1,18 @@
-[type: gettext/glade]ui/app.ui
-[type: gettext/glade]ui/batchEditor.ui
-[type: gettext/glade]ui/databaseChooser.ui
-[type: gettext/glade]ui/generic_importer.ui
-[type: gettext/glade]ui/preferenceDialog.ui
-[type: gettext/glade]ui/recCardDescriptionEditor.ui
-[type: gettext/glade]ui/recCardDisplay.ui
-[type: gettext/glade]ui/recCardIngredientsEditor.ui
-[type: gettext/glade]ui/recipe_index.ui
-[type: gettext/glade]ui/shopCatEditor.ui
-[type: gettext/glade]ui/timerDialog.ui
-[type: gettext/glade]ui/valueEditor.ui
+[type: gettext/glade]gourmet/ui/app.ui
+[type: gettext/glade]gourmet/ui/batchEditor.ui
+[type: gettext/glade]gourmet/ui/databaseChooser.ui
+[type: gettext/glade]gourmet/ui/generic_importer.ui
+[type: gettext/glade]gourmet/ui/preferenceDialog.ui
+[type: gettext/glade]gourmet/ui/recCardDescriptionEditor.ui
+[type: gettext/glade]gourmet/ui/recCardDisplay.ui
+[type: gettext/glade]gourmet/ui/recCardIngredientsEditor.ui
+[type: gettext/glade]gourmet/ui/recipe_index.ui
+[type: gettext/glade]gourmet/ui/shopCatEditor.ui
+[type: gettext/glade]gourmet/ui/timerDialog.ui
+[type: gettext/glade]gourmet/ui/valueEditor.ui
 gourmet.appdata.xml.in
 gourmet.desktop.in
 gourmet/GourmetRecipeManager.py
-gourmet/ImageExtras.py
-gourmet/OptionParser.py
 gourmet/Undo.py
 gourmet/__init__.py
 gourmet/backends/DatabaseChooser.py
@@ -22,7 +20,6 @@ gourmet/backends/__init__.py
 gourmet/backends/db.py
 gourmet/batchEditor.py
 gourmet/check_encodings.py
-gourmet/clockDB.py
 gourmet/convert.py
 gourmet/defaults/__init__.py
 gourmet/defaults/defaults.py
@@ -48,20 +45,16 @@ gourmet/exporters/xml_exporter.py
 gourmet/gdebug.py
 gourmet/gglobals.py
 gourmet/gtk_extras/LinkedTextView.py
-gourmet/gtk_extras/TextBufferMarkup.py
 gourmet/gtk_extras/WidgetSaver.py
 gourmet/gtk_extras/__init__.py
 gourmet/gtk_extras/cb_extras.py
 gourmet/gtk_extras/dialog_extras.py
 gourmet/gtk_extras/mnemonic_manager.py
-gourmet/gtk_extras/numberEntry.py
 gourmet/gtk_extras/optionTable.py
 gourmet/gtk_extras/pageable_store.py
 gourmet/gtk_extras/ratingWidget.py
-gourmet/gtk_extras/thumbnail.py
-gourmet/gtk_extras/timeEntry.py
 gourmet/gtk_extras/treeview_extras.py
-gourmet/gtk_extras/validatingEntry.py
+gourmet/gtk_extras/validation.py
 gourmet/importers/__init__.py
 gourmet/importers/generic_recipe_parser.py
 gourmet/importers/html_importer.py
@@ -169,7 +162,6 @@ gourmet/plugins/nutritional_information/data_plugin.py
 gourmet/plugins/nutritional_information/databaseGrabber.py
 gourmet/plugins/nutritional_information/enter_nutritional_defaults.py
 gourmet/plugins/nutritional_information/export_plugin.py
-gourmet/plugins/nutritional_information/images/Nutrition.png
 gourmet/plugins/nutritional_information/images/__init__.py
 gourmet/plugins/nutritional_information/main_plugin.py
 gourmet/plugins/nutritional_information/nutPrefsPlugin.py
@@ -213,7 +205,6 @@ gourmet/plugins/web_plugin/gourmetweb/settings.py
 gourmet/plugins/web_plugin/gourmetweb/urls.py
 gourmet/prefs.py
 gourmet/prefsGui.py
-gourmet/profileImport.py
 gourmet/reccard.py
 gourmet/recindex.py
 gourmet/recipeIdentifier.py
@@ -228,4 +219,3 @@ gourmet/threadManager.py
 gourmet/timeScanner.py
 gourmet/timer.py
 gourmet/version.py
-

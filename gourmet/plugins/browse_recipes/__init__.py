@@ -1,6 +1,5 @@
 from gourmet.plugin import MainPlugin
-import gtk
-import browser
+from . import browser
 from gourmet.plugin_loader import PRE, POST
 
 class BrowserPlugin (MainPlugin):

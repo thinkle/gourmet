@@ -1,6 +1,6 @@
 from gourmet.plugin import ToolPlugin, ImportManagerPlugin
-import gtk
-import recipeMerger
+from gi.repository import Gtk
+from . import recipeMerger
 from gettext import gettext as _
 #from gourmet.gglobals import gt # for threading protection on import
 #                                # hooks
@@ -12,9 +12,9 @@ class RecipeMergerImportManagerPlugin (ImportManagerPlugin):
         pluggable.add_hook(PRE,'follow_up',self.follow_up_pre_hook)
 
     def follow_up_pre_hook (self, importManager, threadmanager, importer):
-        print 'Running recipeMergerPlugin follow up post hook!'
+        print('Running recipeMergerPlugin follow up post hook!')
         if importer.added_recs:
-            print 'There are ',len(importer.added_recs),'added recs!'
+            print('There are ',len(importer.added_recs),'added recs!')
             rmd = recipeMerger.RecipeMergerDialog(
                 in_recipes=importer.added_recs,
                 )
@@ -60,7 +60,7 @@ class RecipeMergerPlugin (ToolPlugin):
         #gt.gtk_leave()
 
     def setup_action_groups (self):
-        self.action_group = gtk.ActionGroup('RecipeMergerPluginActionGroup')
+        self.action_group = Gtk.ActionGroup(name='RecipeMergerPluginActionGroup')  # noqa
         self.action_group.add_actions([
             ('DuplicateMerger',None,_('Find _duplicate recipes'),
              None,_('Find and remove duplicate recipes'),self.show_duplicate_merger)

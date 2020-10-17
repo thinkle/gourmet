@@ -1,0 +1,6 @@
+dogtail
+flake8
+mypy
+pytest
+setuptools
+wheel

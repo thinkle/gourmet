@@ -1,13 +1,17 @@
+import os.path
+
+from gettext import gettext as _
+from gi.repository.GLib import get_user_special_dir, UserDirectory
+from gi.repository import Gtk
+
 import gourmet.plugin_loader as plugin_loader
 from gourmet.plugin import ExporterPlugin
 import gourmet.gtk_extras.dialog_extras as de
 from gourmet.threadManager import get_thread_manager, get_thread_manager_gui
-from glib import get_user_special_dir, USER_DIRECTORY_DOCUMENTS
-from gettext import gettext as _
-import os.path
 
 EXTRA_PREFS_AUTOMATIC = -1
 EXTRA_PREFS_DEFAULT = 0
+
 
 class ExportManager (plugin_loader.Pluggable):
 
@@ -16,9 +20,14 @@ class ExportManager (plugin_loader.Pluggable):
 
     __single = None
 
+    @classmethod
+    def instance(cls):
+        if not ExportManager.__single:
+            ExportManager.__single = ExportManager()
+
+        return ExportManager.__single
+
     def __init__ (self):
-        if ExportManager.__single: raise ExportManager.__single
-        else: ExportManager.__single = self
         self.plugins_by_name = {}
         plugin_loader.Pluggable.__init__(self,
                                          [ExporterPlugin]
@@ -36,7 +45,7 @@ class ExportManager (plugin_loader.Pluggable):
         if default_extension and default_extension[0]=='.':
             default_extension = default_extension[1:]
         exp_directory = prefs.get('rec_exp_directory',
-                                  get_user_special_dir(USER_DIRECTORY_DOCUMENTS)
+                                  get_user_special_dir(UserDirectory.DIRECTORY_DOCUMENTS)
                                   )
         filename,exp_type = de.saveas_file(_('Save recipe as...'),
                                            filename='%s%s%s%s%s'%(exp_directory,
@@ -60,23 +69,21 @@ class ExportManager (plugin_loader.Pluggable):
         if hasattr(exporter_plugin,'mode'):
             export_file_mode = exporter_plugin.mode
             if export_file_mode not in ['w','a','wb']:
-                print 'IGNORING INVALID FILE MODE',export_file_mode
+                print('IGNORING INVALID FILE MODE',export_file_mode)
                 export_file_mode = 'w'
         else:
             export_file_mode = 'w'
-        outfi = file(filename,
-                     export_file_mode)
-        # this should write to our file...
-        exporter_plugin.do_single_export({
-            'rd':self.app.rd,
-            'rec':rec,
-            'out':outfi,
-            'conv':self.app.conv,
-            'change_units':self.app.prefs.get('readableUnits',True),
-            'mult':mult,
-            'extra_prefs':extra_prefs,
+        with open(filename, export_file_mode) as outfi:
+            # this should write to our file...
+            exporter_plugin.do_single_export({
+                'rd':self.app.rd,
+                'rec':rec,
+                'out':outfi,
+                'conv':self.app.conv,
+                'change_units':self.app.prefs.get('readableUnits',True),
+                'mult':mult,
+                'extra_prefs':extra_prefs,
             })
-        outfi.close()
         return filename
 
     def offer_multiple_export (self, recs, prefs, parent=None, prog=None,
@@ -95,7 +102,7 @@ class ExportManager (plugin_loader.Pluggable):
             self.app.rd.include_linked_recipes(recs)
         ext = prefs.get('save_recipes_as','%sxml'%os.path.extsep)
         exp_directory = prefs.get('rec_exp_directory',
-                                  get_user_special_dir(USER_DIRECTORY_DOCUMENTS)
+                                  get_user_special_dir(UserDirectory.DIRECTORY_DOCUMENTS)
                                   )
         fn,exp_type=de.saveas_file(_("Export recipes"),
                                      filename="%s%s%s%s"%(exp_directory,
@@ -110,11 +117,11 @@ class ExportManager (plugin_loader.Pluggable):
             instance = self.do_multiple_export(recs, fn, exp_type)
             if not instance:
                 de.show_message(
-                    okay=gtk.STOCK_CLOSE,
+                    okay=Gtk.STOCK_CLOSE,
                     cancel=False,
                     label=_('Unable to export: unknown filetype "%s"'%fn),
                     sublabel=_('Please make sure to select a filetype from the dropdown menu when saving.'),
-                    message_type=gtk.MESSAGE_ERROR,
+                    message_type=Gtk.MessageType.ERROR,
                     )
                 return
             return instance
@@ -145,7 +152,7 @@ class ExportManager (plugin_loader.Pluggable):
                                                          })
             return myexp, exporterInstance
         else:
-            print 'WARNING: CANNOT EXPORT TYPE',exp_type
+            print('WARNING: CANNOT EXPORT TYPE',exp_type)
 
     def do_multiple_export (self, recs, fn, exp_type=None,
                                            setup_gui=True, extra_prefs=EXTRA_PREFS_AUTOMATIC):
@@ -159,10 +166,10 @@ class ExportManager (plugin_loader.Pluggable):
                 exporterInstance.connect('completed', tmg.notification_thread_done,
                     _('Recipes successfully exported to <a href="file:///%s">%s</a>')%(fn,fn))
                 tmg.show()
-            print 'Return exporter instance'
+            print('Return exporter instance')
             return exporterInstance
 
-    def can_export_type (self, name): return self.plugins_by_name.has_key(name)
+    def can_export_type (self, name): return name in self.plugins_by_name
 
     def get_exporter (self, name):
         return self.plugins_by_name[name]
@@ -181,19 +188,13 @@ class ExportManager (plugin_loader.Pluggable):
 
     def register_plugin (self, plugin):
         name = plugin.saveas_filters[0]
-        if self.plugins_by_name.has_key(name):
-            print 'WARNING','replacing',self.plugins_by_name[name],'with',plugin
+        if name in self.plugins_by_name:
+            print('WARNING','replacing',self.plugins_by_name[name],'with',plugin)
         self.plugins_by_name[name] = plugin
 
     def unregister_plugin (self, plugin):
         name = plugin.saveas_filters[0]
-        if self.plugins_by_name.has_key(name):
+        if name in self.plugins_by_name:
             del self.plugins_by_name[name]
         else:
-            print 'WARNING: unregistering ',plugin,'but there seems to be no plugin for ',name
-
-def get_export_manager ():
-    try:
-        return ExportManager()
-    except ExportManager, em:
-        return em
+            print('WARNING: unregistering ',plugin,'but there seems to be no plugin for ',name)

@@ -1,8 +1,9 @@
-import BeautifulSoup
+from bs4 import (BeautifulSoup, BeautifulStoneSoup, CData, Comment, Declaration,
+                 ProcessingInstruction)
 from gourmet.importers.generic_recipe_parser import RecipeParser
 from gourmet.importers.interactive_importer import InteractiveImporter
 import gourmet.importers.importer
-import re, urllib
+import re, urllib.request, urllib.parse, urllib.error
 #import gourmet.plugin_loader
 
 class WebParser (InteractiveImporter):
@@ -19,23 +20,19 @@ class WebParser (InteractiveImporter):
     TAB = '  '
     JOINABLE = ['instructions','notes','recipe','ignore','ingredients','include',None]
     INVISIBLE_TYPES = [
-        BeautifulSoup.CData,
-        BeautifulSoup.Comment,
-        BeautifulSoup.Declaration,
-        BeautifulSoup.ProcessingInstruction]
+        CData, Comment, Declaration, ProcessingInstruction]
+        # BeautifulSoup.CData, BeautifulSoup.Comment, BeautifulSoup.Declaration, BeautifulSoup.ProcessingInstruction]
 
     do_postparse = True
     imageexcluders = None # This could be a list of compiled regexps which would
                          # be used to search image URL strings for
                          # potential ads, etc.
-    def __init__ (self, url, data, content_type):
+    def __init__(self, url: str, data: str, content_type: str):
         self.ignore_unparsed = False
         self.url = url
         #self.name = 'Web Parser'
-        self.soup = BeautifulSoup.BeautifulSoup(data,
-                                                convertEntities=BeautifulSoup.BeautifulStoneSoup.XHTML_ENTITIES,
-                                                )
-        InteractiveImporter.__init__(self)
+        self.soup = BeautifulSoup(data, "lxml")
+        super().__init__()
         #self.generic_parser = RecipeParser()
         self.preparse()
         self.get_images()
@@ -60,7 +57,7 @@ class WebParser (InteractiveImporter):
                 src = i['src']
             except KeyError:
                 continue
-            img_url = urllib.basejoin(self.url,src)
+            img_url = urllib.parse.urljoin(self.url, src)
             if self.imageexcluders:
                 exclude = False
                 for exc in  self.imageexcluders:
@@ -112,7 +109,7 @@ class WebParser (InteractiveImporter):
 
     def reduce_whitespace (self, s):
         if not hasattr(self,'__whitespace_regexp'):
-            self.__whitespace_regexp = re.compile('\s+')
+            self.__whitespace_regexp = re.compile(r'\s+')
         return self.__whitespace_regexp.sub(' ',s)
 
     def cut_extra_whitespace (self, s):
@@ -143,14 +140,6 @@ class WebParser (InteractiveImporter):
             pre_add = self.cut_extra_whitespace(pre_add)
             to_add = to_add[lws:]
             self.parsed.append((pre_add,None))
-        # Do extra substitution of MS Characters -- shouldn't be necessary...
-        for char,tup in BeautifulSoup.UnicodeDammit.MS_CHARS.items():
-            char = char.decode('iso-8859-1').encode('utf-8')
-            if to_add.find(char) >= 0:
-                try:
-                    to_add = to_add.replace(char,unichr(long(tup[1],16)))
-                except ValueError:
-                    print("ValueError caught in add_buffer_to_parsed")
         self.parsed.append((to_add,self.last_label))
 
     def format_tag_whitespace (self, tag):
@@ -183,7 +172,7 @@ class WebParser (InteractiveImporter):
         '''
         new_parse = []
         for p,attr in parsed:
-            p = re.sub('(\n\s*\n)+','\n\n',p) # Take out extra newlines
+            p = re.sub(r'(\n\s*\n)+','\n\n',p) # Take out extra newlines
             if attr == None or attr == 'recipe':
                 new_parse.extend(
                     self.text_parser.parse(p)
@@ -227,7 +216,7 @@ class MenuAndAdStrippingWebParser (WebParser):
                 continue
             self.preparsed_elements.append((menu,'ignore'))
         menu_text_regexp = re.compile(
-            '.*sitemap.*|^\s-*about\s-*',re.IGNORECASE
+            r'.*sitemap.*|^\s-*about\s-*',re.IGNORECASE
             )
         for menu in self.soup(text=menu_text_regexp):
             if hasattr(menu,'name') and menu.name == 'body': continue
@@ -259,13 +248,13 @@ def test_parser ():
     parser = WebParserTester('http://www.foo.bar',txt,None)
     parsed = parser.parse_webpage()
     for p,lab in parsed:
-        print 'LABEL:',lab
-        print 'TEXT:',p
+        print('LABEL:',lab)
+        print('TEXT:',p)
     return parser
 
 def test_webpage ():
-    ifi = file('/tmp/test_recipe.htm','r')
-    test = ifi.read(); ifi.close()
+    with open('/tmp/test_recipe.htm', 'r') as ifi:
+        test = ifi.read()
     from gourmet.plugins.import_export.website_import_plugins.about_dot_com_plugin import AboutDotComPlugin
     import sys
     aboutdotcom_plugin = AboutDotComPlugin()
@@ -274,8 +263,8 @@ def test_webpage ():
     parsed = parser.parse_webpage()
     for p,lab in parsed:
         if lab=='ignore': continue
-        print 'LABEL:',lab
-        print 'TEXT:',p
+        print('LABEL:',lab)
+        print('TEXT:',p)
     return parser
 
 if __name__ == '__main__':

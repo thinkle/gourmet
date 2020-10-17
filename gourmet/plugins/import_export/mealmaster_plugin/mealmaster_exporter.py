@@ -1,3 +1,4 @@
+from gettext import gettext as _
 import textwrap
 from itertools import islice
 from gourmet import gglobals,  convert
@@ -7,14 +8,14 @@ from gourmet.gdebug import debug
 
 class mealmaster_exporter (exporter_mult):
     def __init__ (self, rd, r, out, conv=None, change_units=True, mult=1):
-        import mealmaster_importer
+        from . import mealmaster_importer
         self.add_to_instructions=[]
         self.conv = conv
         mmf2mk = mealmaster_importer.mmf_constants()
         self.uc=mmf2mk.unit_convr
         recattrs_orig=mmf2mk.recattrs
         self.recattrs={}
-        for k,v in recattrs_orig.items():
+        for k,v in list(recattrs_orig.items()):
             self.recattrs[v]=k
         self.categories = ""
         exporter_mult.__init__(self, rd, r, out,
@@ -101,7 +102,7 @@ class mealmaster_exporter (exporter_mult):
         self.ings = self.master_ings # back to master level
 
     def write_ing (self, amount="1", unit=None, item=None, key=None, optional=False):
-        if type(amount)==type(1.0) or type(amount)==type(1):
+        if isinstance(amount, (float, int)):
             amount = convert.float_to_frac(amount)
             if not amount: amount = ""
         if not unit: unit = ""
@@ -109,12 +110,12 @@ class mealmaster_exporter (exporter_mult):
         if len(unit) > 2 or '.' in unit:
             unit_bad = True
             # Try to fix the unit
-            if self.conv.unit_dict.has_key(unit):
+            if unit in self.conv.unit_dict:
                 new_u = self.conv.unit_dict[unit]
                 if len(new_u) <= 2 and not '.' in new_u:
                     unit = new_u; unit_bad = False
                 else:
-                    if self.uc.has_key(new_u):
+                    if new_u in self.uc:
                         unit = self.uc[new_u]; unit_bad = False
         if unit_bad: # If we couldn't fix the unit...  we add it to
             # the item
@@ -135,7 +136,7 @@ class mealmaster_exporter (exporter_mult):
         ## where we actually write the ingredients...
         for i in self.master_ings:
             # if we're a tuple, this is a group...
-            if type(i)==type(()):
+            if isinstance(i, tuple):
                 # write the group title first...
                 group = i[0]
                 width = 70
@@ -146,7 +147,7 @@ class mealmaster_exporter (exporter_mult):
                                                   group.upper(),
                                                   right_side * "-")
                           )
-                map(self._write_ingredient,i[1])
+                list(map(self._write_ingredient,i[1]))
                 self.out.write("\r\n") # extra newline at end of groups
             else:
                 self._write_ingredient(i)

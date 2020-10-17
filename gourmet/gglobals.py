@@ -1,66 +1,32 @@
-import os, os.path, gobject, re, gtk
+import os
+import os.path
+from pathlib import Path
+
+from gi.repository import Gdk, GdkPixbuf, GObject, Gtk
+
 import tempfile
-from gdebug import debug
-from OptionParser import args
-from util import windows
+from .optionparser import args
 
 tmpdir = tempfile.gettempdir()
 
+gourmetdir: Path = Path(os.environ['HOME']).absolute() / '.gourmet'
+if os.name == 'nt':
+    gourmetdir = Path(os.environ['APPDATA']).absolute() / 'gourmet'
+
 if args.gourmetdir:
-    gourmetdir = args.gourmetdir
-    debug("User specified gourmetdir %s"%gourmetdir,0)
-else:
-    if os.name =='nt':
-        # Under Windows, we cannot unfortunately just use os.environ, see
-        # http://stackoverflow.com/questions/2608200/problems-with-umlauts-in-python-appdata-environvent-variable
-        # We might drop this workaround with Python 3 (all strings are unicode)
-        # and/or GTK+ 3 (use Glib.get_home_dir()).
-        APPDATA = windows.getenv(u'APPDATA').decode('utf-8')
-        gourmetdir = os.path.join(APPDATA,'gourmet')
-    else:
-        gourmetdir = os.path.join(os.path.expanduser('~'),'.gourmet')
-try:
-    if not os.path.exists(gourmetdir):
-        debug('Creating %s'%gourmetdir,0)
-        os.makedirs(gourmetdir)
-except OSError:
-    try:
-        debug("Unable to create standard config directory in home directory. Looking for .gourmet in working directory instead.",0)
-        gourmetdir = '.gourmet'
-        if not os.path.exists(gourmetdir):
-            debug("Creating .gourmet in working directory",0)
-            os.makedirs(gourmetdir)
-    except OSError:
-        print "Unable to create gourmet directory."
-        raise
-        import sys
-        sys.exit()
+    gourmetdir = Path(args.gourmetdir).absolute()
+    print(f'User specified gourmetdir {gourmetdir}')
 
-
-if not os.access(gourmetdir,os.W_OK):
-    debug('Cannot write to configuration directory, %s'%gourmetdir,-1)
-    import sys
-    sys.exit()
-
-debug('gourmetdir=%s'%gourmetdir,2)
+gourmetdir.mkdir(exist_ok=True)
 
 use_threads = args.threads
 # Uncomment the below to test FauxThreads
 #use_threads = False
 
 # note: this stuff must be kept in sync with changes in setup.py
-import settings
+from . import settings
 uibase = os.path.join(settings.ui_base)
 lib_dir = os.path.join(settings.lib_dir)
-
-# To have strings from .ui files (gtk.Builder) translated on all platforms,
-# we need the following module to enable localization on all platforms.
-try:
-    import elib.intl
-    elib.intl.install('gourmet', settings.locale_base)
-except ImportError:
-    print 'elib.intl failed to load.'
-    print 'IF YOU HAVE TROUBLE WITH TRANSLATIONS, MAKE SURE YOU HAVE THIS LIBRARY INSTALLED.'
 from gettext import gettext as _
 
 data_dir = settings.data_dir
@@ -135,44 +101,24 @@ DEFAULT_HIDDEN_COLUMNS = [REC_ATTR_DIC[attr] for attr in
                           ['link','yields','yield_unit','preptime','cooktime']
                           ]
 
-from gtk_extras import dialog_extras
-
-def launch_url (url, ext=""):
-    if os.name == 'nt':
-        os.startfile(url)
-    elif os.name == 'posix':
-        try:
-            gtk.show_uri(gtk.gdk.Screen(),url,0L)
-        except gobject.GError, err:
-            #print dir(err)
-            label = _('Unable to open URL')
-            for reg, msg in [('mailto:',_('Unable to launch mail reader.')),
-                             ('http:',_('Unable to open website.')),
-                             ('file:',_('Unable to open file.'))]:
-                if re.match(reg,url.lower()): label = msg
-            dialog_extras.show_message(
-                label=label,
-                sublabel=err.message,
-                expander=[_('_Details'),
-                          _("There was an error launching the url: %s"%url)]
-                )
-
 # Set up custom STOCK items and ICONS!
-icon_factory = gtk.IconFactory()
+icon_factory = Gtk.IconFactory()
 
 def add_icon (file_name, stock_id, label=None, modifier=0, keyval=0):
-    pb = gtk.gdk.pixbuf_new_from_file(file_name)
-    iconset = gtk.IconSet(pb)
+    pb = GdkPixbuf.Pixbuf.new_from_file(file_name)
+    iconset = Gtk.IconSet.new_from_pixbuf(pb)
     icon_factory.add(stock_id,iconset)
     icon_factory.add_default()
-    gtk.stock_add([(stock_id,
+    # TODO: fix adding icons
+    return
+    Gtk.stock_add([(stock_id,
                     label,
                     modifier,
                     keyval,
                     "")])
 
 for filename,stock_id,label,modifier,keyval in [
-    ('AddToShoppingList.png','add-to-shopping-list',_('Add to _Shopping List'),gtk.gdk.CONTROL_MASK,gtk.gdk.keyval_from_name('l')),
+    ('AddToShoppingList.png','add-to-shopping-list',_('Add to _Shopping List'),Gdk.ModifierType.CONTROL_MASK,Gdk.keyval_from_name('l')),
     ('reccard.png','recipe-card',None,0,0),
     ('reccard_edit.png','edit-recipe-card',None,0,0),
     ]:

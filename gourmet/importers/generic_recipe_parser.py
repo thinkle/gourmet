@@ -80,7 +80,7 @@ class RecipeParser:
     joinable_tags = ['instructions','ingredient','ingredients',None]
     change_on_join = {'ingredient':'ingredients'}
 
-    ing_matcher = re.compile(u"^\s*\u2022?\u2023?\u2043?\u204C?\u204D?\u2219?\u25C9?\u25D8?\u25E6?\u2619?\u2765?\u2767?\u29BE?\u29BF?\s*(%s\s+\w+.*)"%convert.NUMBER_REGEXP)
+    ing_matcher = re.compile(r"^\s*\u2022?\u2023?\u2043?\u204C?\u204D?\u2219?\u25C9?\u25D8?\u25E6?\u2619?\u2765?\u2767?\u29BE?\u29BF?\s*(%s\s+\w+.*)"%convert.NUMBER_REGEXP)
 
     def __init__ (self):
         self.title_parsed = False
@@ -97,23 +97,23 @@ class RecipeParser:
              self.ing_matcher,
              1],
             ['servings',
-             re.compile("serv(ing|e)s?:?\s*%(num)s|%(num)s\s*servings?"%{
+             re.compile(r"serv(ing|e)s?:?\s*%(num)s|%(num)s\s*servings?"%{
             'num':convert.NUMBER_REGEXP},re.IGNORECASE),
              lambda m,txt,attr: (parse_group(m,txt,2,attr)
                                  or
                                  parse_group(m,txt,3,attr))
              ],]
         for a in self.ATTRIBUTES:
-            self.rules.append([a,re.compile('\s*%s\s*:\s*(.*)'%a,
+            self.rules.append([a,re.compile(r'\s*%s\s*:\s*(.*)'%a,
                                             re.IGNORECASE),
                                1])
         for name,attr in self.ALIASES:
-            self.rules.append([attr,re.compile('\s*%s\s*:\s*(.*)'%name,
+            self.rules.append([attr,re.compile(r'\s*%s\s*:\s*(.*)'%name,
                                                re.IGNORECASE),
                                1])
         for ig in self.IGNORE_ON_OWN:
             self.rules.append([None,
-                               re.compile('^\W*%s\W*$'%ig,re.IGNORECASE),
+                               re.compile(r'^\W*%s\W*$'%ig,re.IGNORECASE),
                                None])
         self.rules.append([
             # instructions are our generic fallback
@@ -125,7 +125,7 @@ class RecipeParser:
             return [(amt.strip(),'yields'),(unit.strip(),'yield_unit')]
         self.rules = [[
                 'yield',
-                re.compile('%(yield)s(:|s|\s-)\s-*%(num)s\s-*(.*)'%{
+                re.compile(r'%(yield)s(:|s|\s-)\s-*%(num)s\s-*(.*)'%{
                     'yield':_('yield'),
                     'num':convert.NUMBER_REGEXP
                     },re.IGNORECASE),
@@ -177,7 +177,7 @@ class RecipeParser:
                     m = regexp.search(p)
                     if m:
                         if postproc:
-                            if type(postproc)==int:
+                            if isinstance(postproc, int):
                                 proced = parse_group(
                                     m, p, postproc, attr
                                     )
@@ -206,7 +206,7 @@ class RecipeParser:
             if tag not in self.joinable_tags or len(self.parsed)==0:
                 self.parsed.append([chunk,tag])
                 continue
-            if self.change_on_join.has_key(tag):
+            if tag in self.change_on_join:
                 look_for = [tag,self.change_on_join[tag]]
             else:
                 look_for = [tag]
@@ -217,7 +217,7 @@ class RecipeParser:
                 if oldtag in look_for:
                     self.parsed[-n][0] = oldchunk+add_on+chunk
                     added = True
-                    if self.change_on_join.has_key(oldtag):
+                    if oldtag in self.change_on_join:
                         self.parsed[-n][1] = self.change_on_join[oldtag]
                     # Strip off any added junk...
                     if n > 1:

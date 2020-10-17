@@ -1,20 +1,19 @@
-import gtk
 import os.path, tempfile
 from gourmet.GourmetRecipeManager import get_application
-from emailer import Emailer
-import StringIO
-import gourmet.exporters.exportManager as exportManager
+from .emailer import Emailer
+import io
+from gourmet.exporters.exportManager import ExportManager
 import gourmet.exporters.exporter as exporter
 
-class StringIOfaker (StringIO.StringIO):
+class StringIOfaker (io.StringIO):
     def __init__ (self, *args, **kwargs):
-        StringIO.StringIO.__init__(self, *args, **kwargs)
+        io.StringIO.__init__(self, *args, **kwargs)
 
     def close (self, *args):
         pass
 
     def close_really (self):
-        StringIO.StringIO.close(self)
+        io.StringIO.close(self)
 
 class RecipeEmailer (Emailer):
     def __init__ (self, recipes, attachment_types=["pdf"], do_text=True):
@@ -43,7 +42,7 @@ class RecipeEmailer (Emailer):
         s.close_really()
 
     def write_attachments (self):
-        em = exportManager.get_export_manager()
+        em = ExportManager.instance()
         for typ in self.attachment_types:
             name = _('Recipes')
             if len(self.recipes)==1:
@@ -52,12 +51,12 @@ class RecipeEmailer (Emailer):
             self.attachments.append(fn)
             instance = em.do_multiple_export(self.recipes, fn)
             instance.connect('completed',self.attachment_complete,typ)
-            print 'Start thread to create ',typ,'!','->',fn
+            print('Start thread to create ',typ,'!','->',fn)
 
     def attachment_complete (self, thread, typ):
         self.attachments_left.remove(typ)
         if not self.attachments_left:
-            print 'Attachments complete! Send email!'
+            print('Attachments complete! Send email!')
             self.send_email()
 
     def send_email_with_attachments (self, emailaddress=None):

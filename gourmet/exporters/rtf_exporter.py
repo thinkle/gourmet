@@ -1,7 +1,10 @@
-import exporter, PyRTF, types
+from gi.repository import Pango
+import xml.sax.saxutils
+import PyRTF, types
+from . import exporter
 from gourmet import convert
 from gourmet.gdebug import debug
-from gourmet.ImageExtras import write_image_tempfile
+from gourmet.image_utils import write_image_tempfile
 from gettext import gettext as _
 
 class rtf_exporter_multidoc (exporter.ExporterMultirec):
@@ -91,11 +94,10 @@ class rtf_exporter (exporter.exporter_mult):
             p = PyRTF.Paragraph(self.ss.ParagraphStyles.Normal)
             # this code is partly copied from handle_markup in
             # exporter.py (a bit dumb, I know...)
-            import pango, xml.sax.saxutils
             try:
-                al,txt,sep = pango.parse_markup(par,u'\x00')
+                al,txt,sep = Pango.parse_markup(par,'\x00')
             except:
-                al,txt,sep = pango.parse_markup(xml.sax.saxutils.escape(par),u'\x00')
+                al,txt,sep = Pango.parse_markup(xml.sax.saxutils.escape(par),'\x00')
             ai = al.get_iterator()
             more = True
             while more:
@@ -104,18 +106,17 @@ class rtf_exporter (exporter.exporter_mult):
                 fields=fd.get_set_fields()
                 style_args = {'font':self.ss.Fonts.TimesNewRoman}
                 if fields != 0:
-                    if 'style' in fields.value_nicks and fd.get_style()==pango.STYLE_ITALIC:
+                    if 'style' in fields.value_nicks and fd.get_style()==Pango.Style.ITALIC:
                         style_args['italic']=True
-                    if 'weight' in fields.value_nicks and fd.get_weight()==pango.WEIGHT_BOLD:
+                    if 'weight' in fields.value_nicks and fd.get_weight()==Pango.Weight.BOLD:
                         style_args['bold']=True
-                if filter(lambda att: att.type==pango.ATTR_UNDERLINE and att.value==pango.UNDERLINE_SINGLE,
-                          atts):
+                if [att for att in atts if att.type==Pango.ATTR_UNDERLINE and att.value==Pango.Underline.SINGLE]:
                     style_args['underline']=True
                 p.append(
                          PyRTF.Elements.TEXT(encode_text(chunk),
                                              **style_args)
                          )
-                more = ai.next()
+                more = next(ai)
             self.recsection.append(p)
 
     def write_inghead (self):
@@ -169,9 +170,9 @@ def encode_text (txt):
             return txt.encode('cp1252','replace')
 
 if __name__ == '__main__':
-    from __init__ import Tester,RTF
+    from .__init__ import Tester,RTF
     t = Tester()
-    print 'Exporting test to /tmp/test_recs.rtf'
+    print('Exporting test to /tmp/test_recs.rtf')
     import sys
     t.run_export(**{'format':RTF,
                     'rv':t.rm.recipe_table[4:9],
@@ -180,6 +181,6 @@ if __name__ == '__main__':
                     'mode':'mult_exporter',
                     'file':'/tmp/test_recs.rtf',
                     'prog':lambda *args,**kwargs: sys.stderr.write("%s%s"%(args,kwargs)),
-                    'out':file('/tmp/test_rec.rtf','wb'),
+                    'out':open('/tmp/test_rec.rtf', 'wb'),
                     })
 

@@ -1,6 +1,9 @@
-import locale, os
+import locale, os, sys
+from typing import Optional
+from .abstractLang import AbstractLanguage
+from collections import defaultdict
 deflang = 'en'
-lang = None
+lang: AbstractLanguage
 
 if os.name == 'posix':
     try:
@@ -12,21 +15,26 @@ if os.name == 'posix':
 
 # Windows locales are named differently, e.g. German_Austria instead of de_AT
 # Fortunately, we can find the POSIX-like type using a different method.
-elif os.name == 'nt':
+# sys.platform is the correct check per mypy convention (https://mypy.readthedocs.io/en/stable/common_issues.html?highlight=platform#python-version-and-system-platform-checks)
+elif sys.platform == "win32":
     from ctypes import windll
     locid = windll.kernel32.GetUserDefaultLangID()
     loc = locale.windows_locale[locid]
 
+importLang: Optional[AbstractLanguage] = None
 if loc:
     try:
-        lang = __import__('defaults_%s'%loc,globals(),locals())
+        importLang = __import__('defaults_%s'%loc,globals(),locals(), level=1).Language
     except ImportError:
         try:
-            lang = __import__('defaults_%s'%loc[0:2],globals(),locals())
+            importLang = __import__('defaults_%s'%loc[0:2],globals(),locals(), level=1).Language
         except ImportError:
-            lang = __import__('defaults_%s'%deflang,globals(),locals())
+            importLang = __import__('defaults_%s'%deflang,globals(),locals(), level=1).Language
 
-if not lang: lang = __import__('defaults_%s'%deflang,globals(),locals())
+if not importLang:
+    lang = __import__('defaults_%s'%deflang,globals(),locals()).Language
+else:
+    lang = importLang
 
 # The next item is used to allow us to know some things about handling the language
 try:
@@ -38,31 +46,19 @@ except:
     # 'capitalisedNouns' means that you don't want to use lower() anyway, cos it's
     #  ungramatical e.g. in the german Language, Nouns are written with Capital-Letters.
 
-# NOW WE DO AUTOMATED STUFF
-def add_itm (kd, k, v):
-    if kd.has_key(k):
-        kd[k].append(v)
-    else:
-        kd[k]=[v]
-
 ## now we set up our dictionaries
-lang.keydic = {}
-lang.shopdic = {}
-for lst in lang.SYNONYMS:
-    k = lst[0]
-    for i in lst:
-        add_itm(lang.keydic,k,i)
+lang.keydic = defaultdict(list)
+for variants in lang.SYNONYMS:
+    preferred = variants[0]
+    lang.keydic[preferred].extend(variants)
 
-for amb,lst in lang.AMBIGUOUS.items():
-    if lang.keydic.has_key(amb):
-        lang.keydic[amb] += lst
-    else:
-        lang.keydic[amb] = lst
+for preferred, alternatives in lang.AMBIGUOUS.items():
+    lang.keydic[preferred].extend(alternatives)
 
-for row in lang.INGREDIENT_DATA:
-    name,key,shop=row
-    add_itm(lang.keydic,key,name)
-    lang.shopdic[key]=shop
+for itemname, key, _ in lang.INGREDIENT_DATA:
+    lang.keydic[key].append(itemname)
+
+lang.shopdic = {key: shoppingCategory for (_, key, shoppingCategory) in lang.INGREDIENT_DATA}
 
 lang.unit_group_lookup = {}
 
@@ -76,17 +72,15 @@ unit_rounding_guide = {
     'c.':0.125,
     }
 
-if hasattr(lang,'unit_rounding_guide'):
+if hasattr(lang,'unit_rounding_guide') and lang.unit_rounding_guide:
     unit_rounding_guide.update(lang.unit_rounding_guide)
 
 lang.unit_rounding_guide = unit_rounding_guide
 
 
-for group,v in lang.UNIT_GROUPS.items():
-    n = 0
-    for u,rng in v:
-        lang.unit_group_lookup[u] = group,n
-        n += 1
+for groupname, magnitudes in lang.UNIT_GROUPS.items():
+    for no, (unit, _) in enumerate(magnitudes):
+        lang.unit_group_lookup[unit] = groupname, no
 
 WORD_TO_SING_PLUR_PAIR = {}
 if hasattr(lang,'PLURALS'):
@@ -99,7 +93,7 @@ def get_pluralized_form (word, n):
     if not word:
         return ''
     lword=word.lower()
-    if WORD_TO_SING_PLUR_PAIR.has_key(lword):
+    if lword in WORD_TO_SING_PLUR_PAIR:
         forms = list(WORD_TO_SING_PLUR_PAIR[lword])
         forms += [n]
         return ngettext(*forms)
@@ -112,4 +106,3 @@ def get_pluralized_form (word, n):
         return ngettext(*forms)
     else:
         return word
-

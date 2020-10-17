@@ -1,22 +1,25 @@
 from gourmet.plugin import PluginPlugin, ImportManagerPlugin
 from gourmet.gglobals import gourmetdir
-from gourmet.prefs import get_prefs
+from gourmet.prefs import Prefs
 from gourmet.gtk_extras import dialog_extras as de
-import BeautifulSoup
+from bs4 import BeautifulSoup
 import gourmet.threadManager
 from selenium import webdriver
 from gettext import gettext as _
 import keyring
 
+from .state import WebsiteTestState
+
+
 global driver
-if not globals().has_key('driver'):
+if 'driver' not in globals():
     driver = None
 
 class LogInWebReader (gourmet.threadManager.SuspendableThread):
-    
+
     def __init__ (self, url):
         self.url = url
-        self.prefs = get_prefs()
+        self.prefs = Prefs.instance()
         self.logged_in = True
         gourmet.threadManager.SuspendableThread.__init__(
             self,
@@ -27,9 +30,9 @@ class LogInWebReader (gourmet.threadManager.SuspendableThread):
         self.read()
 
     def get_username_and_pw (self):
-        print 'Let us get a password...'
+        print('Let us get a password...')
         username = self.prefs.get('cooksillustrated-username','')
-        print 'Username=',username
+        print('Username=',username)
         if username:
             pw = keyring.get_password(
                 'http://www.cooksillustrated.com',
@@ -37,8 +40,8 @@ class LogInWebReader (gourmet.threadManager.SuspendableThread):
                 )
         else:
             pw = ''
-        print 'Initial password: ',pw
-        print 'Launch dialog...'
+        print('Initial password: ',pw)
+        print('Launch dialog...')
         #
         username, pw = de.getUsernameAndPassword(
             username=username,
@@ -46,7 +49,7 @@ class LogInWebReader (gourmet.threadManager.SuspendableThread):
             )
         # broken :( - temporary workaround?
         #username,pw = 'USERNAME','PASSWORD'
-        print 'Done with dialog'
+        print('Done with dialog')
         self.prefs['cooksillustrated-username'] = username
         keyring.set_password(
             'http://www.cooksillustrated.com',username,pw
@@ -62,17 +65,17 @@ class LogInWebReader (gourmet.threadManager.SuspendableThread):
         else:
             #self.d = webdriver.Chrome()
             self.d = webdriver.Firefox()
-            print 'Logging in...'
+            print('Logging in...')
             driver = self.d
             self.d.get('https://www.cooksillustrated.com/sign_in/')
             username,pw = self.get_username_and_pw()
             #un=self.d.find_element_by_xpath('//*[@name="user[email]"]')
             un=self.d.find_element_by_xpath('//*[@id="email"]')
-            print 'Got email element',un
+            print('Got email element',un)
             un.send_keys(username)
             #pw_el = self.d.find_element_by_xpath('//*[@name="user[password]"]')
             pw_el = self.d.find_element_by_xpath('//*[@id="password"]')
-            print 'Got password element',pw_el
+            print('Got password element',pw_el)
             pw_el.send_keys(pw+'\n')
         # Now get URL
         # First log in...
@@ -84,13 +87,13 @@ class LogInWebReader (gourmet.threadManager.SuspendableThread):
         self.data = self.d.page_source
 
 class WebImporterPlugin (ImportManagerPlugin):
-    
+
     url_needs_login_patterns = {
         'cooksillustrated.com' : LogInWebReader,
         'cookscountry.com' : LogInWebReader,
         'americastestkitchen.com' : LogInWebReader,
     }
-    
+
 class CooksIllustratedPlugin (PluginPlugin):
     target_pluggable = 'webimport_plugin'
 
@@ -99,19 +102,19 @@ class CooksIllustratedPlugin (PluginPlugin):
 
     def test_url (self, url, data):
         if 'cooksillustrated.com' in url:
-            return 5
+            return WebsiteTestState.SUCCESS
         if 'cookscountry.com' in url:
-            return 5
+            return WebsiteTestState.SUCCESS
         if 'americastestkitchen.com' in url:
-            return 5
+            return WebsiteTestState.SUCCESS
         if 'cooksillustrated.com' in data:
-            return 4
+            return WebsiteTestState.SUCCESS_UNKNOWN
         if 'cookscountry.com' in data:
-            return 4
+            return WebsiteTestState.SUCCESS_UNKNOWN
         if 'americastestkitchen.com' in data:
-            return 4
-        
-        return 0
+            return WebsiteTestState.SUCCESS_UNKNOWN
+
+        return WebsiteTestState.FAILED
 
     def get_importer (self, webpage_importer):
 
@@ -122,16 +125,16 @@ class CooksIllustratedPlugin (PluginPlugin):
 
             def maybe_add (self, el, tag, ignoreSlug=False):
                 if el:
-                    if type(el) in [list,BeautifulSoup.ResultSet]:
+                    if isinstance(el, (list,BeautifulSoup.ResultSet)):
                         for e in el:
                             self.maybe_add(e,tag,ignoreSlug)
                     else:
-                        if not unicode(el).strip():
+                        if not str(el).strip():
                                 return # Don't add empty strings or we screw things up royally
                         self.preparsed_elements.append((el,tag))
                         if ignoreSlug:
                             self.maybe_add(el.findAll('h4',{'class':'section-slug'}),'ignore')
-                            
+
 
             def preparse (self):
                 self.preparsed_elements = []
@@ -140,7 +143,7 @@ class CooksIllustratedPlugin (PluginPlugin):
                 self.maybe_add(self.soup.find('h2',{'itemprop':'name'}),'title')
                 self.maybe_add(self.soup.find('h1'),'title')
                 self.maybe_add(self.soup.findAll('div',{'class':'ingredient'}), 'ingredients')
-                self.maybe_add(self.soup.findAll('section',{'class':'ingredients'}),'ingredients',ignoreSlug=True)                
+                self.maybe_add(self.soup.findAll('section',{'class':'ingredients'}),'ingredients',ignoreSlug=True)
                 for ingSection in self.soup.findAll('section',{'class':'ingredients'}):
                     self.maybe_add(ingSection.findAll('h5'),'inggroup')
                 contents = self.soup.findAll('div',{'class':'content'})
@@ -166,13 +169,13 @@ class CooksIllustratedPlugin (PluginPlugin):
                 self.maybe_add(self.soup.find('section',{'class':'serves'}), 'yields')
                 self.maybe_add(self.soup.find({'itemprop':'recipeYield'}), 'yields')
                 self.maybe_add(self.soup.find('span',{'class':'recipe__yield'}),'yields')
-                
+
                 # Do we use automatic settings or not...
                 if self.preparsed_elements:
                     self.ignore_unparsed = True
                 else:
                     self.ignore_unparsed = False
-                
+
         return CooksIllustratedParser
 
 if __name__ == '__main__':
@@ -188,7 +191,7 @@ if __name__ == '__main__':
     ciParser = cip.get_importer(webpage_importer)
     #ciParser = cip.get_importer(None)
     parser = ciParser(reader.url, reader.data, reader.content_type)
-    parser.do_run()    
+    parser.do_run()
     # parser.parse()
     # print 'Unmatched preparsed elements:'
     # for p in parser.preparsed_elements:
@@ -196,4 +199,4 @@ if __name__ == '__main__':
     #         print '<UNMATCHED>',p,'</UNMATCHED>'
     #     else:
     #         print '<MATCHED>',p,'</MATCHED>'
-    
+

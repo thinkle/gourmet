@@ -1,74 +1,107 @@
 """Scan text for time and show links that will pop up a timer if the
 user clicks on any time in the TextView."""
+import re
+from typing import Optional, Union
 
-import convert, re, gtk, gobject
-from gtk_extras import LinkedTextView
-import timer
-import xml.sax.saxutils
+from gi.repository import GObject, Gtk
 
-all_units = []
-for base,units in convert.Converter.time_units:
+from gourmet import timer
+from gourmet.convert import Converter, NUMBER_FINDER_REGEXP, RANGE_REGEXP
+from gourmet.gtk_extras.LinkedTextView import LinkedPangoBuffer, LinkedTextView
+
+all_units = set()
+for base, units in Converter.time_units:
     for u in units:
-        u = re.escape(unicode(u))
-        if u not in all_units: all_units.append(u)
+        u = re.escape(str(u))
+        all_units.add(u)
 
 time_matcher = re.compile(
-    u'(?P<firstnum>'+convert.NUMBER_FINDER_REGEXP + u')(' + \
-    convert.RANGE_REGEXP + convert.NUMBER_FINDER_REGEXP.replace(u'int',u'int2').replace(u'frac',u'frac2') + u')?' \
-    + u'\s*' + u'(?P<unit>' + u'|'.join(all_units) + u')(?=$|\W)',
+    '(?P<firstnum>'+NUMBER_FINDER_REGEXP + ')(' + RANGE_REGEXP +
+    NUMBER_FINDER_REGEXP.replace('int', 'int2').replace('frac', 'frac2') + ')?'
+    + r'\s*' + '(?P<unit>' + '|'.join(all_units) + r')(?=$|\W)',
     re.UNICODE
     )
 
 
+def make_time_links(s: str) -> str:
+    return time_matcher.sub(r'<a href="\g<firstnum> \g<unit>">\g<0></a>', s)
 
-def make_time_links (s):
-    return time_matcher.sub('<a href="\g<firstnum> \g<unit>">\g<0></a>',s)
+
+class TimeBuffer(LinkedPangoBuffer):
+    def set_text(self, txt: Union[bytes, str]) -> None:
+        if isinstance(txt, bytes):
+            txt = txt.decode("utf-8")
+        super().set_text(make_time_links(txt))
+
+    def get_text(self,
+                 start: Optional[Gtk.TextIter] = None,
+                 end: Optional[Gtk.TextIter] = None,
+                 include_hidden_chars: bool = False) -> str:
+        """Get the buffer content.
+
+        If `include_hidden_chars` is set, then the html markup content is
+        returned.
+        Time links are always stripped.
+        """
+        return super().get_text(start, end, include_hidden_chars,
+                                ignore_links=True)
 
 
-class TimeBuffer (LinkedTextView.LinkedPangoBuffer):
-
-    def set_text (self, txt):
-         LinkedTextView.LinkedPangoBuffer.set_text(
-             self,
-             make_time_links(txt)
-             )
-
-class LinkedTimeView (LinkedTextView.LinkedTextView):
+class LinkedTimeView(LinkedTextView):
     __gtype_name__ = 'LinkedTimeView'
 
     __gsignals__ = {
-        'time-link-activated':(gobject.SIGNAL_RUN_LAST,
-                          gobject.TYPE_STRING,
-                          [gobject.TYPE_STRING,gobject.TYPE_STRING]),
-        }
+        'time-link-activated': (GObject.SignalFlags.RUN_LAST,
+                                GObject.TYPE_STRING,
+                                [GObject.TYPE_STRING, GObject.TYPE_STRING]),
+    }
 
-    def make_buffer (self):
+    def make_buffer(self):
         return TimeBuffer()
 
-    def follow_if_link (self, text_view, iter):
-        tags = iter.get_tags()
-        for tag in tags:
-            href = tag.get_data('href')
-            if href:
-                start_sentence = iter.copy();
-                start_sentence.backward_sentence_start()
-                end_sentence = iter.copy()
-                if not end_sentence.ends_sentence(): end_sentence.forward_sentence_end()
-                self.emit('time-link-activated',href,self.get_buffer().get_slice(start_sentence,end_sentence))
-                return True
+    def follow_if_link(self,
+                       text_view: 'LinkedTimeView',
+                       itr: Gtk.TextIter) -> bool:
+        """Launch a timer if a link was clicked.
+
+        This is done by emitting the `time-link-activated` signal defined in
+        this class.
+        Whether or not the it was a link, the click won't be processed further.
+        """
+        # Get the displayed text sentence, to use as a label in the timer.
+        start_sentence = itr.copy()
+        start_sentence.backward_sentence_start()
+
+        end_sentence = itr.copy()
+        if not end_sentence.ends_sentence():
+            end_sentence.forward_sentence_end()
+
+        sentence = self.get_buffer().get_slice(start_sentence,
+                                               end_sentence,
+                                               False)
+
+        # Get the time duration (target of the link).
+        start_ts = itr.copy()
+        start_ts.backward_to_tag_toggle()
+        itr.forward_to_tag_toggle()
+        end_ts = itr.copy()
+        time_string = self.get_buffer().get_slice(start_ts, end_ts, False)
+
+        # Confirm that is is in the links dictionary.
+        if self.get_buffer().markup_dict.get(time_string) == time_string:
+            self.emit("time-link-activated", time_string, sentence)
+
+        return False  # Do not process the event further.
 
 
-def show_timer_cb (tv,l,note,c):
-    """Callback that expects a widget, a time string, and a converter instance"""
-    timer.show_timer(c.timestring_to_seconds(l),
-               note)
+def show_timer_cb(tv: LinkedTimeView, line: str, note: str) -> None:
+    """Callback that expects a widget, a time string, and a note to display"""
+    timer.show_timer(Converter.instance().timestring_to_seconds(line), note)
+
 
 if __name__ == '__main__':
-
-    import gtk
-    c = convert.get_converter()
     tv = LinkedTimeView()
-    tv.connect('time-link-activated',show_timer_cb,c)
+    tv.connect('time-link-activated', show_timer_cb)
     tv.get_buffer().set_text(
         """Cook potatoes for 1/2 hour.
 
@@ -82,9 +115,8 @@ if __name__ == '__main__':
         """
         )
 
-    w = gtk.Window()
+    w = Gtk.Window()
     w.add(tv)
-    w.connect('delete-event',lambda *args: gtk.main_quit())
+    w.connect('delete-event', lambda *args: Gtk.main_quit())
     w.show_all()
-    gtk.main()
-
+    Gtk.main()

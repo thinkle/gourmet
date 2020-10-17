@@ -1,4 +1,4 @@
-import gtk, pango, gobject
+from gi.repository import Gdk, GObject, Gtk, Pango
 from gettext import gettext as _
 import gourmet.defaults
 
@@ -31,31 +31,31 @@ MAIN_NUT_LAYOUT = [(_('Calories'),MAJOR,'kcal',
 
 DETAIL_NUT_LAYOUT = [
                (_('Alpha-carotene'),TINY,'alphac',
-                'alphac',DONT_SHOW_PERCENT,u'\u00B5g'),
+                'alphac',DONT_SHOW_PERCENT,'\u00B5g'),
                (_('Ash'),TINY,'ash',
                 'ash',DONT_SHOW_PERCENT,'g'),
                (_('Beta-carotene'),TINY,'betac',
-                'betac',DONT_SHOW_PERCENT,u'\u00B5g'),
+                'betac',DONT_SHOW_PERCENT,'\u00B5g'),
                (_('Beta Cryptoxanthin'),TINY,'betacrypt',
-                'betacrypt',DONT_SHOW_PERCENT,u'\u00B5g'),
+                'betacrypt',DONT_SHOW_PERCENT,'\u00B5g'),
                (_('Calcium'),TINY,'calcium',
                 'calcium',SHOW_PERCENT,'mg'),
                (_('Copper'),TINY,'copper',
                 'copper',SHOW_PERCENT,'mg'),
                (_('Folate Total'),TINY,'folatetotal',
-                'folatetotal',SHOW_PERCENT,u'\u00B5g'),
+                'folatetotal',SHOW_PERCENT,'\u00B5g'),
                (_('Folic acid'),TINY,'folateacid',
-                'folateacid',DONT_SHOW_PERCENT,u'\u00B5g'),
+                'folateacid',DONT_SHOW_PERCENT,'\u00B5g'),
                (_('Food Folate'),TINY,'foodfolate',
-                'foodfolate',DONT_SHOW_PERCENT,u'\u00B5g'),
+                'foodfolate',DONT_SHOW_PERCENT,'\u00B5g'),
                (_('Dietary folate equivalents'),TINY,'folatedfe',
-                'folatedfe',DONT_SHOW_PERCENT,u'\u00B5g'),
+                'folatedfe',DONT_SHOW_PERCENT,'\u00B5g'),
                (_('Iron'),TINY,'iron',
                 'iron',SHOW_PERCENT,'mg'),
                (_('Lycopene'),TINY,'lypocene',
-                'lypocene',DONT_SHOW_PERCENT,u'\u00B5g'),
+                'lypocene',DONT_SHOW_PERCENT,'\u00B5g'),
                (_('Lutein+Zeazanthin'),TINY,'lutzea',
-                'lutzea',DONT_SHOW_PERCENT,u'\u00B5g'),
+                'lutzea',DONT_SHOW_PERCENT,'\u00B5g'),
                (_('Magnesium'),TINY,'magnesium',
                 'magnesium',SHOW_PERCENT,'mg'),
                (_('Manganese'),TINY,'manganese',
@@ -69,23 +69,23 @@ DETAIL_NUT_LAYOUT = [
                (_('Potassium'),TINY,'potassium',
                 'potassium',SHOW_PERCENT,'mg'),
                (_('Vitamin A'),TINY,'vitarae',
-                'vitarae',SHOW_PERCENT,u'\u00B5g'),
+                'vitarae',SHOW_PERCENT,'\u00B5g'),
                (_('Retinol'),TINY,'retinol',
-                'retinol',SHOW_PERCENT,u'\u00B5g'),
+                'retinol',SHOW_PERCENT,'\u00B5g'),
                (_('Riboflavin'),TINY,'riboflavin',
                 'riboflavin',SHOW_PERCENT,'mg'),
                (_('Selenium'),TINY,'selenium',
-                'selenium',SHOW_PERCENT,u'\u00B5g'),
+                'selenium',SHOW_PERCENT,'\u00B5g'),
                (_('Thiamin'),TINY,'thiamin',
                 'thiamin',SHOW_PERCENT,'mg'),
                (_('Vitamin A (IU)'),TINY,'vitaiu',
                 'vitaiu',SHOW_PERCENT,'IU'),
                (_('Vitamin A (RAE)'),TINY,'vitarae',
-                'vitarae',DONT_SHOW_PERCENT,u'\u00B5g'),
+                'vitarae',DONT_SHOW_PERCENT,'\u00B5g'),
                (_('Vitamin B6'),TINY,'vitaminb6',
                 'vitaminb6',SHOW_PERCENT,'mg'),
                (_('Vitamin B12'),TINY,'vitb12',
-                'vitb12',SHOW_PERCENT,u'\u00B5g'),
+                'vitb12',SHOW_PERCENT,'\u00B5g'),
                (_('Vitamin C'),TINY,'vitaminc',
                 'vitaminc',SHOW_PERCENT,'mg'),
                (_('Vitamin E'),TINY,'vite',
@@ -134,25 +134,25 @@ RECOMMENDED_INTAKE = {
         }
 
 
-class NutritionLabel (gtk.VBox, gobject.GObject):
+class NutritionLabel (Gtk.VBox):
     """Provide a nutritional label that looks like standard FDA
     labels."""
 
     __gtype_name__ = 'NutritionLabel'
 
-    bold_font = pango.FontDescription()
-    bold_font.set_weight(pango.WEIGHT_BOLD)
-    tiny_font = pango.FontDescription()
-    tiny_font.set_size(pango.SCALE*9)
-    background = gtk.gdk.Color(255,0,0)
-    foreground = gtk.gdk.Color(255,255,255)
+    bold_font = Pango.FontDescription()
+    bold_font.set_weight(Pango.Weight.BOLD)
+    tiny_font = Pango.FontDescription()
+    tiny_font.set_size(Pango.SCALE*9)
+    background = Gdk.Color(255,0,0)
+    foreground = Gdk.Color(255,255,255)
 
     calories_per_day = 2000
 
     __gsignals__ = {
-        'calories-changed':(gobject.SIGNAL_RUN_LAST,gobject.TYPE_NONE,()),
-        'ingredients-changed':(gobject.SIGNAL_RUN_LAST,gobject.TYPE_NONE,()),
-        'label-changed':(gobject.SIGNAL_RUN_LAST,gobject.TYPE_NONE,()),
+        'calories-changed':(GObject.SignalFlags.RUN_LAST,None,()),
+        'ingredients-changed':(GObject.SignalFlags.RUN_LAST,None,()),
+        'label-changed':(GObject.SignalFlags.RUN_LAST,None,()),
         }
 
     def __init__ (self, prefs=None,
@@ -171,12 +171,11 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
         self.prefs = prefs
         self.rec = rec
         start_at = 4
-        gobject.GObject.__init__(self)
-        gtk.VBox.__init__(self)
+        Gtk.VBox.__init__(self)
         #,2,len(NUT_LAYOUT)+start_at)
         self.show()
-        self.tt = gtk.Tooltips()
-        self.yieldLabel = gtk.Label()
+        self.tt = Gtk.Tooltips()
+        self.yieldLabel = Gtk.Label()
         self.set_yields(0)
         self.nutrition_display_info = []
         #self.attach(self.yieldLabel,
@@ -191,35 +190,35 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
         # and to allow changing it via a nifty little button
         dvb,eb = self.make_dv_boxes()
         dvb.show()
-        self.cal_per_day_box = gtk.HBox();
+        self.cal_per_day_box = Gtk.HBox();
         self.cal_per_day_box.show()
-        vb = gtk.VBox(); vb.show()
+        vb = Gtk.VBox(); vb.show()
         vb.pack_start(dvb,fill=False,expand=False)
         vb.pack_start(eb,fill=False,expand=False)
-        self.cal_per_day_box.pack_end(vb)
-        self.pack_start(self.cal_per_day_box)
+        self.cal_per_day_box.pack_end(vb, True, True, 0)
+        self.pack_start(self.cal_per_day_box, True, True, 0)
         self.tt.enable()
-        self.main_table = gtk.Table(); self.main_table.show()
+        self.main_table = Gtk.Table(); self.main_table.show()
         self.main_table.set_col_spacings(18)
-        self.pack_start(self.main_table)
-        self.sub_table = gtk.Table(); self.sub_table.show()
+        self.pack_start(self.main_table, True, True, 0)
+        self.sub_table = Gtk.Table(); self.sub_table.show()
         self.sub_table.set_col_spacings(18)
-        self.nutexpander = gtk.Expander(_('Vitamins and minerals'))
+        self.nutexpander = Gtk.Expander(_('Vitamins and minerals'))
         self.nutexpander.show()
         self.nutexpander.add(self.sub_table)
-        self.pack_start(self.nutexpander)
+        self.pack_start(self.nutexpander, True, True, 0)
         for table,layout in [(self.main_table,MAIN_NUT_LAYOUT),
                              (self.sub_table,DETAIL_NUT_LAYOUT),
                              ]:
             for n,nutstuff in enumerate(layout):
                 if nutstuff == SEP:
-                    hs = gtk.HSeparator()
-                    table.attach(hs,0,2,n+start_at,n+start_at+1,xoptions=gtk.FILL)
+                    hs = Gtk.HSeparator()
+                    table.attach(hs,0,2,n+start_at,n+start_at+1,xoptions=Gtk.AttachOptions.FILL)
                     hs.show()
                     continue
                 label,typ,name,properties,show_percent,unit = nutstuff
-                hb = gtk.HBox()
-                permanentl = gtk.Label()
+                hb = Gtk.HBox()
+                permanentl = Gtk.Label()
                 permanentl.set_alignment(0,0.5)
                 if typ==MAJOR:
                     permanentl.set_markup('<b>'+label+'</b>')
@@ -228,31 +227,31 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
                 elif typ==TINY:
                     permanentl.set_markup('  <span size="smaller">'+label+'</span>')
                 if self.pressable:
-                    b = gtk.Button(); b.add(permanentl)
-                    b.set_relief(gtk.RELIEF_NONE)
+                    b = Gtk.Button(); b.add(permanentl)
+                    b.set_relief(Gtk.ReliefStyle.NONE)
                     b.connect('clicked',self.toggle_label,label,name,properties,unit)
                     hb.pack_start(b,expand=False)
                     self.toggles[name] = b
                 else:
-                    hb.pack_start(permanentl)
-                unit_label = gtk.Label()
+                    hb.pack_start(permanentl, True, True, 0)
+                unit_label = Gtk.Label()
                 unit_label.set_alignment(0,0.5)
                 if name != 'kcal':
-                    hb.pack_start(unit_label)
+                    hb.pack_start(unit_label, True, True, 0)
                 else:
                     #print 'pack end'
                     #hb.pack_end(unit_label,expand=True)
-                    table.attach(unit_label,1,2,n+start_at,n+start_at+1,xoptions=gtk.FILL)
+                    table.attach(unit_label,1,2,n+start_at,n+start_at+1,xoptions=Gtk.AttachOptions.FILL)
                     unit_label.set_alignment(1,0.5)
                     unit_label.show()
                 hb.show_all()
-                table.attach(hb,0,1,n+start_at,n+start_at+1,xoptions=gtk.FILL)
+                table.attach(hb,0,1,n+start_at,n+start_at+1,xoptions=Gtk.AttachOptions.FILL)
                 if show_percent==SHOW_PERCENT:
-                    percent_label = gtk.Label()
+                    percent_label = Gtk.Label()
                     percent_label.modify_font(self.bold_font)
                     percent_label.set_alignment(1,0.5)
                     percent_label.show()
-                    table.attach(percent_label,1,2,n+start_at,n+start_at+1,xoptions=gtk.FILL)
+                    table.attach(percent_label,1,2,n+start_at,n+start_at+1,xoptions=Gtk.AttachOptions.FILL)
                 self.nutrition_display_info.append({
                     'props':properties,
                     'percent_label':(show_percent==SHOW_PERCENT
@@ -260,7 +259,7 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
                                      percent_label),
                     'unit_label': unit_label,
                     'unit':unit,
-                    'usda_rec_per_cal':(RECOMMENDED_INTAKE.has_key(name) and
+                    'usda_rec_per_cal':(name in RECOMMENDED_INTAKE and
                                         RECOMMENDED_INTAKE[name]),
                     'box':hb,
                     'type':typ,
@@ -273,7 +272,7 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
         if self.__toggling__: return
         self.__toggling__ = True
         if name != self.active_name:
-            for b in self.toggles.values():
+            for b in list(self.toggles.values()):
                 lab = b.get_children()[0]
                 if b != button:
                     orig = lab.get_label()
@@ -297,13 +296,13 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
         self.__toggling__ = False
 
     def make_missing_label (self):
-        hb = gtk.HBox()
-        l=gtk.Label()
+        hb = Gtk.HBox()
+        l=Gtk.Label()
         self.missingLabelLabel = l
         l.set_alignment(0,0.5)
-        b = gtk.Button(stock=gtk.STOCK_EDIT)
-        hb.pack_start(l)
-        hb.pack_start(b)
+        b = Gtk.Button(stock=Gtk.STOCK_EDIT)
+        hb.pack_start(l, True, True, 0)
+        hb.pack_start(b, True, True, 0)
         b.connect('clicked',self.solidify_vapor_cb)
         b.show(),l.show(),hb.show()
         self.edit_missing_button = b
@@ -326,18 +325,18 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
         getattr(self.cal_per_day_box,method)()
 
     def make_dv_boxes (self):
-        dvLabel = gtk.Label()
+        dvLabel = Gtk.Label()
         dvLabel.set_markup('<span weight="bold" size="small">' + \
                            _('% _Daily Value') + \
                            '</span>')
         dvLabel.set_use_underline(True)
         dvLabel.set_alignment(1,0.5)
-        vb = gtk.VBox()
-        hb = gtk.HBox()
-        self.edit_button = gtk.ToggleButton()
+        vb = Gtk.VBox()
+        hb = Gtk.HBox()
+        self.edit_button = Gtk.ToggleButton()
         dvLabel.set_mnemonic_widget(self.edit_button)
-        i = gtk.Image()
-        i.set_from_stock(gtk.STOCK_EDIT,gtk.ICON_SIZE_MENU)
+        i = Gtk.Image()
+        i.set_from_stock(Gtk.STOCK_EDIT,Gtk.IconSize.MENU)
         self.edit_button.add(i)
         hb.pack_end(dvLabel,fill=False,expand=False)
         self.edit_button.set_alignment(1,0.5)
@@ -346,13 +345,13 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
         self.set_edit_tip()
         self.edit_button.connect('clicked',self.toggle_edit_calories_per_day)
         hb.show_all()
-        self.cpd_editor = gtk.HBox()
-        cpd_ed_label = gtk.Label('<i>_'+'Calories per day:' + '</i>')
+        self.cpd_editor = Gtk.HBox()
+        cpd_ed_label = Gtk.Label(label='<i>_'+'Calories per day:' + '</i>')
         cpd_ed_label.set_use_underline(True)
         cpd_ed_label.set_use_markup(True)
-        self.cpd_editor.pack_start(cpd_ed_label,padding=12)
+        self.cpd_editor.pack_start(cpd_ed_label,True, True,12)
         cpd_ed_label.set_alignment(1,0.5)
-        self.cpd_sb = gtk.SpinButton()
+        self.cpd_sb = Gtk.SpinButton()
         self.cpd_sb.set_numeric(True)
         self.cpd_sb.connect('activate',
                             lambda *args: self.edit_button.set_active(False))
@@ -361,10 +360,10 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
         adj = self.cpd_sb.get_adjustment()
         adj.lower,adj.upper=0,4000
         adj.step_increment,adj.page_increment = 50,500
-        self.cpd_editor.pack_start(self.cpd_sb)
-        cancelb = gtk.Button(stock=gtk.STOCK_CANCEL)
-        #okb = gtk.Button(stock=gtk.STOCK_OK)
-        #self.cpd_editor.pack_start(cancelb,padding=12)
+        self.cpd_editor.pack_start(self.cpd_sb, True, True, 0)
+        cancelb = Gtk.Button(stock=Gtk.STOCK_CANCEL)
+        #okb = Gtk.Button(stock=Gtk.STOCK_OK)
+        #self.cpd_editor.pack_start(cancelb,True, True,12)
         #self.cpd_editor.pack_start(okb,)
         #okb.connect('clicked',self.edit_calories_per_day)
         #cancelb.connect('clicked',lambda *args: self.cpd_editor.hide())
@@ -434,7 +433,7 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
         """
         for itm in self.nutrition_display_info:
             props = itm['props']
-            if type(props)==str:
+            if isinstance(props, str):
                 rawval = getattr(self.nutinfo,props) or 0
             else:
                 # sum a list of properties
@@ -481,7 +480,7 @@ class NutritionLabel (gtk.VBox, gobject.GObject):
             if vapor: nd=vapor[0].__nd__
             else:
                 raise Exception("No nutritional database handed to us!")
-        import nutritionDruid
+        from . import nutritionDruid
         self.ndruid = nutritionDruid.NutritionInfoDruid(nd,
                                                         prefs=self.prefs,rec=self.rec)
         self.ndruid.connect('key-changed',lambda w,tpl: self.emit('ingredients-changed'))
@@ -523,7 +522,7 @@ if __name__ == '__main__':
                 return self.has_vapor
             if n=='_get_vapor':
                 return self._get_vapor_
-            if self.__attdict__.has_key(n):
+            if n in self.__attdict__:
                 return self.__attdict__[n]
             elif n=='kcal':
                 self.__attdict__[n]=self.carb*4+self.sugar*4+self.protein*4+self.famono*9+self.fasat*9
@@ -544,15 +543,15 @@ if __name__ == '__main__':
 
 
     ni = fakenut()
-    w = gtk.Window()
+    w = Gtk.Window()
     nl = NutritionLabel({})
-    vb=gtk.VBox()
+    vb=Gtk.VBox()
     w.add(vb)
-    hb = gtk.HBox()
+    hb = Gtk.HBox()
     vb.pack_start(hb,expand=False,fill=False)
     hb.pack_start(nl,expand=False,fill=False)
     vb.show()
-    b = gtk.Button('Test me')
+    b = Gtk.Button('Test me')
     vb.add(b)
     nl.tt.set_tip(b,'What about this?')
     b.show()
@@ -560,11 +559,11 @@ if __name__ == '__main__':
     #nl.set_yields(2)
     nl.set_nutinfo(ni)
     def display_info (w):
-        print w.active_name,w.active_unit,w.active_label
+        print(w.active_name,w.active_unit,w.active_label)
     nl.connect('label-changed',display_info)
     nl.show()
     w.show()
-    w.connect('delete-event',lambda *args: gtk.main_quit())
-    gtk.main()
+    w.connect('delete-event',lambda *args: Gtk.main_quit())
+    Gtk.main()
 
 

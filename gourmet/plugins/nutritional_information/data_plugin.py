@@ -3,7 +3,7 @@ from sqlalchemy import Integer, Binary, String, Float, Boolean, Numeric, Table, 
 from sqlalchemy.sql import and_, or_
 import gourmet.backends.db
 from gourmet.plugin import DatabasePlugin
-import parser_data
+from . import parser_data
 
 class NutritionDataPlugin (DatabasePlugin):
 
@@ -65,7 +65,7 @@ class NutritionDataPlugin (DatabasePlugin):
         if ((gourmet_stored[0] == 0 and gourmet_stored[1] < 14)
             or
             (plugin_stored < 1)):
-            print 'RECREATE USDA WEIGHTS TABLE'
+            print('RECREATE USDA WEIGHTS TABLE')
             self.db.alter_table('usda_weights',self.setup_usda_weights_table,{},
                              [name for lname,name,typ in parser_data.WEIGHT_FIELDS])
             self.db.alter_table('nutritionconversions',self.setup_nutritionconversions_table,{},

@@ -7,7 +7,7 @@ from gettext import gettext as _
 
 class Mx2Cleaner:
     def __init__ (self):
-        self.regs_to_toss = ["<\?xml[^?]+\?>","<!DOCTYPE[^>]+>"]
+        self.regs_to_toss = [r"<\?xml[^?]+\?>","<!DOCTYPE[^>]+>"]
         self.toss_regexp = "("
         for r in self.regs_to_toss:
             self.toss_regexp = self.toss_regexp + r + "|"
@@ -18,12 +18,12 @@ class Mx2Cleaner:
         self.encodings = ['cp1252','iso8859','ascii','latin_1','cp850','utf-8']
 
     def cleanup (self, infile, outfile):
-        infile = open(infile,'r')
-        outfile = open(outfile,'w')
+        infile = open(infile, 'rb')
+        outfile = open(outfile,'w', encoding='utf-8')
         for l in infile.readlines():
+            l = self.decode(l)
             l = self.toss_regs(l)
             l = self.fix_attrs(l)
-            l = self.encode(l)
             outfile.write(l)
         infile.close()
         outfile.close()
@@ -51,14 +51,15 @@ class Mx2Cleaner:
         outstr = outstr + instr
         return outstr
 
-    def encode (self, l):
+    def decode (self, l: bytes) -> str:
+        """Try several encodings, return the line once it's succesfully decoded
+        """
         for e in self.encodings:
             try:
                 return l.decode(e)
-            except:
+            except UnicodeDecodeError:
                 debug('Could not decode as %s'%e,2)
                 pass
-        raise Exception("Could not encode %s" % l)
 
 class MastercookXMLHandler (xml_importer.RecHandler):
     """We handle MasterCook XML Files"""
@@ -95,7 +96,7 @@ class MastercookXMLHandler (xml_importer.RecHandler):
 
     def startElement (self, name, attrs):
         self.in_mixed=0
-        if not self.elements.has_key(name):
+        if name not in self.elements:
             debug('Unhandled element: %s'%name,0)
             return
         else:
@@ -104,7 +105,7 @@ class MastercookXMLHandler (xml_importer.RecHandler):
             handler(start=True,attrs=attrs)
 
     def endElement (self, name):
-        if not self.elements.has_key(name):
+        if name not in self.elements:
             return
         else:
             self.current_elements.remove(name)
@@ -123,7 +124,8 @@ class MastercookXMLHandler (xml_importer.RecHandler):
             pass
 
     def characters (self, ch):
-        debug('adding to %s bufs: %s'%(len(self.bufs),ch),0)
+        if self.bufs:
+            debug('adding to %s bufs: %s'%(len(self.bufs),ch),0)
         for buf in self.bufs:
             setattr(self,buf,getattr(self,buf)+ch)
 
@@ -141,7 +143,7 @@ class MastercookXMLHandler (xml_importer.RecHandler):
             if attrs:
                 self.rec['title']=self.grabattr(attrs,'name')
         if end:
-            if self.rec.has_key('yield'):
+            if 'yield' in self.rec:
                 self._add_to_instructions("\nYield: %s %s"%self.rec['yield'])
                 del self.rec['yield']
             self.commit_rec()
@@ -168,7 +170,7 @@ class MastercookXMLHandler (xml_importer.RecHandler):
         if end:
             self.bufs.remove('catbuf')
             self.catbuf = self.catbuf.strip()
-            if self.rec.has_key('category'):
+            if 'category' in self.rec:
                 self.rec['category']=self.rec['category']+" "+self.catbuf
             else:
                 self.rec['category']=xml.sax.saxutils.unescape(self.catbuf)
@@ -193,7 +195,7 @@ class MastercookXMLHandler (xml_importer.RecHandler):
 
     def _add_to_instructions (self, buf):
         debug('adding to instructions: %s'%buf,0)
-        if self.rec.has_key('instructions'):
+        if 'instructions' in self.rec:
             self.rec['instructions'] = self.rec['instructions'] + "\n%s"%xml.sax.saxutils.unescape(buf)
         else:
             self.rec['instructions'] = xml.sax.saxutils.unescape(buf)
@@ -216,7 +218,7 @@ class MastercookXMLHandler (xml_importer.RecHandler):
         if end:
             self.bufs.remove('dbuf')
             buf = xml.sax.saxutils.unescape(self.dbuf.strip())
-            if self.rec.has_key('modifications'):
+            if 'modifications' in self.rec:
                 self.rec['modifications'] = self.rec['modifications'] + "\n%s"%buf
             else:
                 self.rec['modifications'] = buf

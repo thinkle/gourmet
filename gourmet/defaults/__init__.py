@@ -1,1 +1,1 @@
-from defaults import lang
+from .defaults import lang

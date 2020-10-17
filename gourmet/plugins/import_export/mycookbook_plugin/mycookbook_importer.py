@@ -6,7 +6,7 @@ try:
     from PIL import Image
 except ImportError:
     import Image
-import gourmet.ImageExtras
+import gourmet.image_utils
 
 class RecHandler (xml_importer.RecHandler):
     ADD = 1
@@ -77,11 +77,10 @@ class RecHandler (xml_importer.RecHandler):
             if os.path.isfile(pic_fullpath):
                 try:
                     im = Image.open(pic_fullpath)
-                    obj['image'] = gourmet.ImageExtras.get_string_from_image(im)
-                    #obj['image'] = gourmet.ImageExtras.get_string_from_image(gourmet.ImageExtras.resize_image(im,60,60))
-                except Exception, e:
-                    print 'Issue loading: '+pic_fullpath
-                    print str(e)
+                    obj['image'] = gourmet.image_utils.image_to_bytes(im)
+                except Exception as e:
+                    print('Issue loading: '+pic_fullpath)
+                    print(str(e))
                     #dont stop if corrupted image file
                     pass
 
@@ -98,7 +97,7 @@ class RecHandler (xml_importer.RecHandler):
             self.current_section = ''
         elif name==self.COMMENT_TAG:
             self.current_section = ''
-        elif self.RECTAGS.has_key(name):
+        elif name in self.RECTAGS:
             obj = self.rec
             key,method = self.RECTAGS[name]
 
@@ -108,7 +107,7 @@ class RecHandler (xml_importer.RecHandler):
                 # ours is from 1 to 10, so we have to multiply by 2 when
                 # importing.
                 obj['rating']=int(self.elbuf.strip()) * 2
-            elif method == self.ADD and obj.has_key(key):
+            elif method == self.ADD and key in obj:
                 obj[key]=obj[key]+"\n "+self.elbuf
             else:
                 obj[key]=self.elbuf

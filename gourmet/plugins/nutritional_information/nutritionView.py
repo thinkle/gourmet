@@ -1,7 +1,7 @@
-import gtk, gobject
+from gi.repository import GObject, Gtk
 import re, string
-from nutritionModel import NutritionModel
-import parser_data
+from .nutritionModel import NutritionModel
+from . import parser_data
 import gourmet.cb_extras as cb
 import gourmet.dialog_extras as de
 import gourmet.gglobals as gglobals
@@ -30,7 +30,7 @@ class NutritionTable:
         # In our metakit-ish world, that means we really are going to
         # be getting a row of our nutrition database as an object, whose
         # attributes represent fields.
-        for attr,widgets in self.cells.items():
+        for attr,widgets in list(self.cells.items()):
             val=getattr(obj,attr)
             # if we're multiplying and this is an attribute that needs to be multiplied...
             if multiply_by and attr in parser_data.PER_100_GRAMS:
@@ -39,26 +39,26 @@ class NutritionTable:
 
     def set_editable (self, value):
         if value:
-            for widgets in self.cells.values():
+            for widgets in list(self.cells.values()):
                 widgets[0].show()
                 widgets[1].hide()
         else:
-            for widgets in self.cells.values():
+            for widgets in list(self.cells.values()):
                 widgets[1].show()
                 widgets[0].hide()
 
     def pack_table (self):
         for n,f in enumerate(self.fields):
             lname = parser_data.NUT_FIELDNAME_DICT[f]
-            label = gtk.Label()
+            label = Gtk.Label()
             # we somewhat hackishly attempt to create a mnemonic
             lab = self.create_mnemonic(lname)
             label.set_text_with_mnemonic(lab+":")
             # We might eventually want to make this into SpinButtons, since they
             # are numbers, but I find too many SpinButtons annoying :)
-            entr = gtk.Entry()
+            entr = Gtk.Entry()
             label.set_mnemonic_widget(entr)
-            lab2 = gtk.Label()
+            lab2 = Gtk.Label()
             self.cells[f]=(entr,lab2) # so we can get back at this widget
             self.table.attach(label,0,1,n,n+1)
             self.table.attach(entr,1,2,n,n+1)
@@ -153,16 +153,16 @@ class NutritionItemView:
 
     def setup_unit_boxes (self, ing=None, nutrow=None):
         self.densities,self.extra_units = self.nd.get_conversions(row=nutrow,key=ing)
-        self.setup_choices(self.densities.keys(),self.descChoiceWidget)
+        self.setup_choices(list(self.densities.keys()),self.descChoiceWidget)
         units = defaults.WEIGHTS[0:]
         if self.densities: units += defaults.VOLUMES[0:]
-        if self.extra_units: units = self.extra_units.keys() + units
+        if self.extra_units: units = list(self.extra_units.keys()) + units
         self.setup_choices(units,self.unitChoiceWidget)
-        for k in self.densities.keys():
+        for k in list(self.densities.keys()):
             if k:
                 # if we have a key that's not none, then we actually need a descChoiceWidget
-                self.setup_choices(self.densities.keys(),self.descChoiceWidget)
-                if self.densities.has_key(None):
+                self.setup_choices(list(self.densities.keys()),self.descChoiceWidget)
+                if None in self.densities:
                     self.set_choice(self.descChoiceWidget,None)
                 else:
                     self.set_choice(self.descChoiceWidget,k)
@@ -193,7 +193,7 @@ class NutritionItemView:
         d=None
         # Grab our density (either the default density for the food, or the density for the
         # user-selected description, such as chopped, sliced, etc).
-        if self.densities.has_key(None) or self.densities and self.get_choice(self.descChoiceWidget):
+        if None in self.densities or self.densities and self.get_choice(self.descChoiceWidget):
             d=self.densities[self.get_choice(self.descChoiceWidget) or None]
         multiplier=self.nut and self.nd.convert_amount(self.amount,
                                                        self.unit,
@@ -212,7 +212,7 @@ class NutritionItemView:
                 return
             else:
                 unit = self.get_choice(self.unitChoiceWidget)
-                if self.extra_units.has_key(unit):
+                if unit in self.extra_units:
                     return self.nd.convert_amount(amt*self.extra_units[unit],'g.')
                 else:
                     return self.nd.convert_amount(amt,unit,d)
@@ -277,7 +277,7 @@ class NutritionItemView:
 class NutritionCardView:
     def __init__ (self, recCard):
         self.rc = recCard
-        import nutritionGrabberGui
+        from . import nutritionGrabberGui
         nutritionGrabberGui.check_for_db(self.rc.rg.rd)
         self.nmodel = NutritionTreeModel(
             self.get_nd(),
@@ -295,7 +295,7 @@ class NutritionCardView:
     def get_nd (self):
         if hasattr(self.rc.rg,'nutritionData'): return self.rc.rg.nutritionData
         else:
-            import nutrition
+            from . import nutrition
             self.rc.rg.nutritionData = nutrition.NutritionData(self.rc.rg.rd,self.rc.rg.conv)
             return self.rc.rg.nutritionData
 
@@ -308,7 +308,7 @@ class NutritionCardViewOld:
     STR_COL = 2
 
     def __init__ (self, recCard):
-        import nutritionGrabberGui
+        from . import nutritionGrabberGui
         self.rc = recCard
         self.ings = self.rc.rg.rd.get_ings(self.rc.current_rec)
         nutritionGrabberGui.check_for_db(self.rc.rg.rd)
@@ -353,7 +353,7 @@ class NutritionCardViewOld:
         self.treeview.set_model(self.nmodel)
         # setup treeview callback for selection change
         self.treeviewsel = self.treeview.get_selection()
-        self.treeviewsel.set_mode(gtk.SELECTION_SINGLE)
+        self.treeviewsel.set_mode(Gtk.SelectionMode.SINGLE)
         self.treeviewsel.connect('changed',self.selectionChangedCB)
         self.multiplier = None
         self.nutcombo_set = None
@@ -362,8 +362,8 @@ class NutritionCardViewOld:
         # make sure we have an ingredient list
         if not hasattr(self.rc,'ings'):
             self.rc.create_ing_alist()
-        self.nmodel = gtk.ListStore(gobject.TYPE_PYOBJECT,
-                                    gobject.TYPE_PYOBJECT,
+        self.nmodel = Gtk.ListStore(GObject.TYPE_PYOBJECT,
+                                    GObject.TYPE_PYOBJECT,
                                     str)
         self.nmodel.append([None,None,"Recipe"])
         for i in self.rc.ings:
@@ -377,8 +377,8 @@ class NutritionCardViewOld:
 
     def setup_treeview_columns (self):
         for n in [self.STR_COL]:
-            rend = gtk.CellRendererText()
-            col = gtk.TreeViewColumn("",rend,text=n)
+            rend = Gtk.CellRendererText()
+            col = Gtk.TreeViewColumn("",rend,text=n)
             col.set_reorderable(True)
             col.set_resizable(True)
             self.treeview.append_column(col)
@@ -386,7 +386,7 @@ class NutritionCardViewOld:
     def get_nd (self):
         if hasattr(self.rc.rg,'nutritionData'): return self.rc.rg.nutritionData
         else:
-            import nutrition
+            from . import nutrition
             self.rc.rg.nutritionData = nutrition.NutritionData(self.rc.rg.rd,self.rc.rg.conv)
             return self.rc.rg.nutritionData
 
@@ -469,7 +469,7 @@ class NutritionCardViewOld:
         nmod.set_value(itr,self.NUT_COL,row)
         #nmod.set_value(itr,self.STR_COL,key)
 
-class NutritionTreeModel (gtk.TreeStore):
+class NutritionTreeModel (Gtk.TreeStore):
     """Display our nutritional information in a simple tree model.
 
     > Ingredient-Name | Ingredient-Key | USDA-NAME | AMT | UNIT | Grams |
@@ -495,32 +495,32 @@ class NutritionTreeModel (gtk.TreeStore):
     def build_store (self):
         n = self.ING_OBJECT_COLUMN
         self.ts_col_dic = {}
-        self.coltypes = [gobject.TYPE_PYOBJECT] # for our ingobject
+        self.coltypes = [GObject.TYPE_PYOBJECT] # for our ingobject
         for c in self.columns:
             n += 1
             if c in self.numerics: self.coltypes += [str] # everything's a string
             else: self.coltypes += [str]
             self.ts_col_dic[c]=n
-        self.ts = gtk.TreeStore.__init__(self,*self.coltypes)
+        self.ts = GObject.GObject.__init__(self,*self.coltypes)
 
     def attach_treeview (self, treeview):
         self.tv = treeview
         self.tv.set_model(self)
-        text_renderer = gtk.CellRendererText()
+        text_renderer = Gtk.CellRendererText()
         text_renderer.set_property('editable',True)
         for col in self.columns:
             # not yet i18n'd
             if col=='USDA':
-                rend = gtk.CellRendererCombo()
-                self.usda_model = gtk.ListStore(str,str)
+                rend = Gtk.CellRendererCombo()
+                self.usda_model = Gtk.ListStore(str,str)
                 rend.set_property('model',self.usda_model)
                 rend.set_property('text-column',0)
                 rend.set_property('editable',True)
                 rend.connect('editing-started',self.usda_editing_started_cb)
                 rend.connect('edited',self.usda_edited_cb)
-                col=gtk.TreeViewColumn(col,rend,text=self.ts_col_dic[col])
+                col=Gtk.TreeViewColumn(col,rend,text=self.ts_col_dic[col])
             else:
-                col=gtk.TreeViewColumn(col,text_renderer,text=self.ts_col_dic[col])
+                col=Gtk.TreeViewColumn(col,text_renderer,text=self.ts_col_dic[col])
             col.set_reorderable(True)
             col.set_resizable(True)
             self.tv.append_column(col)
@@ -548,7 +548,7 @@ class NutritionTreeModel (gtk.TreeStore):
             self.append(iter,append_vals)
 
     def grab_attr (self, ing, name):
-        if name in gglobals.ING_ATTRS.keys():
+        if name in list(gglobals.ING_ATTRS.keys()):
             attval =  getattr(ing,name)
             if name in self.numerics:
                 return convert.float_to_frac(attval)
@@ -575,7 +575,7 @@ class NutritionTreeModel (gtk.TreeStore):
         path = tuple( map(int, indices))
         itr = self.get_iter(path)
         ing = self.get_value(itr,self.ING_OBJECT_COLUMN)
-        if isinstance(editable,gtk.ComboBoxEntry):
+        if isinstance(editable,Gtk.ComboBoxEntry):
             while len(self.usda_model)>0: del self.usda_model[0] # empty our liststore...
             usda_list=self.nd.get_usda_list_for_string(ing.ingkey)
             self.usdaDict={}
@@ -594,14 +594,14 @@ class NutritionTreeModel (gtk.TreeStore):
 
 
 if __name__ == '__main__':
-    w = gtk.Window()
-    f = gtk.Entry()
-    b = gtk.Button(stock=gtk.STOCK_ADD)
-    hb = gtk.HBox()
+    w = Gtk.Window()
+    f = Gtk.Entry()
+    b = Gtk.Button(stock=Gtk.STOCK_ADD)
+    hb = Gtk.HBox()
     hb.add(f)
     hb.add(b)
-    vb = gtk.VBox()
+    vb = Gtk.VBox()
     vb.add(hb)
-    t = gtk.Table()
-    nt = gtk.NutritionTable(t, {}, True)
+    t = Gtk.Table()
+    nt = Gtk.NutritionTable(t, {}, True)
 

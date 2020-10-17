@@ -1,6 +1,9 @@
+from typing import Any, Union
+
 from gourmet.plugin import ImporterPlugin, PluginPlugin
 from gourmet.plugin_loader import Pluggable
-import webpage_importer
+from . import webpage_importer
+from gourmet.plugins.import_export.website_import_plugins.state import WebsiteTestState  # noqa
 from gettext import gettext as _
 
 class GenericWebImporter (ImporterPlugin, Pluggable):
@@ -14,7 +17,7 @@ class GenericWebImporter (ImporterPlugin, Pluggable):
         Pluggable.__init__(self, [PluginPlugin])
 
     def activate (self, pluggable):
-        print 'activate GenericWebImporter for pluggable',pluggable
+        print('activate GenericWebImporter for pluggable',pluggable)
         return ImporterPlugin.activate(self,pluggable)
 
     def test_file (self, filename):
@@ -35,20 +38,23 @@ class GenericWebImporter (ImporterPlugin, Pluggable):
             if 'html' in content_type:
                 return -1 # We are the fallback option
 
-    def get_web_importer (self, url, data, content_type):
+    def get_web_importer(self, url: str,
+                         data: Union[bytes, str], content_type: str) -> Any:
+        # Rank importers by most appropriate based on url
         highest = 0
         importer = webpage_importer.MenuAndAdStrippingWebParser
         for p in self.plugins:
             test_val = p.test_url(url, data)
-            if test_val and test_val > highest:
+            if test_val is not None and test_val.value > highest:
                 # pass the module as an arg... very awkward inheritance
                 importer = p.get_importer(webpage_importer)
-                highest = test_val
-        return importer(url,data,content_type)
+                highest = test_val.value
+        return importer(url, data, content_type)
 
     def get_importer (self, filename):
         url = 'file://'+filename
-        data = file(filename).read()
+        with open(filename, 'r') as f:
+            data = f.read()
         content_type = 'text/html'
         return self.get_web_importer(url,data,content_type)
 

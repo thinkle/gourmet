@@ -1,4 +1,5 @@
-import gtk, gobject
+from io import BytesIO
+from gi.repository import Gtk
 import reportlab
 from reportlab.pdfbase import pdfmetrics
 from reportlab.lib.units import inch,mm
@@ -16,14 +17,15 @@ from gourmet import gglobals
 from gourmet.gtk_extras import dialog_extras as de
 from gourmet.gtk_extras import optionTable
 from gourmet.gtk_extras import cb_extras
-from gourmet import ImageExtras
-from gourmet.prefs import get_prefs
+from gourmet import image_utils
+from gourmet.prefs import Prefs
 import xml.sax.saxutils
 import gourmet.exporters.exporter as exporter
 import types, re
 import tempfile, os.path
 import math
-from page_drawer import PageDrawer
+from .page_drawer import PageDrawer
+import webbrowser
 
 DEFAULT_PDF_ARGS = {'bottom_margin': 72, 'pagesize': 'letter', 'right_margin': 72, 'top_margin': 72, 'left_margin': 72, 'pagemode': 'portrait', 'base_font_size': 10, 'mode': ('column', 1)}
 
@@ -120,7 +122,7 @@ class Star (platypus.Flowable):
         inner = False # Start on top
         is_origin = True
         #print 'Drawing star with radius',outer_length,'(moving origin ',origin,')'
-        for theta in range(0,360,360/(points*2)):
+        for theta in range(0, 360, 360 // (points * 2)):
             if inner: r = inner_length
             else: r = outer_length
             x = (math.sin(math.radians(theta)) * r)
@@ -240,9 +242,9 @@ class PdfWriter:
                         top_margin=inch,
                         bottom_margin=inch,
                         base_font_size=10):
-        if type(mode)!=tuple:
+        if not isinstance(mode, tuple):
             raise Exception("What is this mode! %s" % str(mode))
-        if type(pagesize) in types.StringTypes:
+        if isinstance(pagesize, str):
             self.pagesize = getattr(pagesizes,pagemode)(getattr(pagesizes,pagesize))
         else:
             self.pagesize = getattr(pagesizes,pagemode)(pagesize)
@@ -256,7 +258,7 @@ class PdfWriter:
         return frames
 
     def scale_stylesheet (self, perc):
-        for name,sty in self.styleSheet.byName.items():
+        for name,sty in list(self.styleSheet.byName.items()):
             for attr in ['firstLineIndent',
                          'fontSize',
                          'leftIndent',
@@ -332,18 +334,18 @@ class PdfWriter:
             xmltxt = '<para>%s</para>'%txt
         if not style: style = self.styleSheet['Normal']
         try:
-            return platypus.Paragraph(unicode(xmltxt),style)
+            return platypus.Paragraph(str(xmltxt),style)
         except UnicodeDecodeError:
             try:
                 #print 'WORK AROUND UNICODE ERROR WITH ',txt[:20]
                 # This seems to be the standard on windows.
                 platypus.Paragraph(xmltxt,style)
             except:
-                print 'Trouble with ',xmltxt
+                print('Trouble with ',xmltxt)
                 raise
         except:
             # Try escaping text...
-            print 'TROUBLE WITH',txt[:20],'TRYING IT ESCAPED...'
+            print('TROUBLE WITH',txt[:20],'TRYING IT ESCAPED...')
             return self.make_paragraph(xml.sax.saxutils.escape(txt),
                                 style,
                                 attributes,
@@ -387,7 +389,7 @@ class PdfWriter:
         t = self.txt[:]
         try: self.doc.build(self.txt)
         except:
-            print 'Trouble building',t[:20]
+            print('Trouble building',t[:20])
             raise
 
 class PdfExporter (exporter.exporter_mult, PdfWriter):
@@ -401,8 +403,8 @@ class PdfExporter (exporter.exporter_mult, PdfWriter):
                   **kwargs):
         self.all_recipes = all_recipes
         PdfWriter.__init__(self)
-        if type(out) in types.StringTypes:
-            self.out = file(out,'wb')
+        if isinstance(out, str):
+            self.out = open(out, 'wb')
         else:
             self.out = out
         if not doc:
@@ -458,9 +460,9 @@ class PdfExporter (exporter.exporter_mult, PdfWriter):
         image.drawHeight = image.drawHeight*proportion
         image.drawWidth = image.drawWidth*proportion
 
-    def write_image (self, data):
-        fn = ImageExtras.write_image_tempfile(data)
-        i = platypus.Image(fn)
+    def write_image(self, data: bytes):
+        buf = BytesIO(data)
+        i = platypus.Image(buf)
         self.scale_image(i)
         factor = 1
         MAX_WIDTH = self.doc.frame_width * 0.35
@@ -508,7 +510,7 @@ class PdfExporter (exporter.exporter_mult, PdfWriter):
                 ]
         else:
             nattributes = len(self.attributes)
-            first_col_size = nattributes/2 + nattributes % 2
+            first_col_size = nattributes//2 + nattributes % 2
             first = self.attributes[:first_col_size]
             second = self.attributes[first_col_size:]
             table_data = []
@@ -532,9 +534,7 @@ class PdfExporter (exporter.exporter_mult, PdfWriter):
     def make_rating (self, label, val):
         """Make a pretty representation of our rating.
         """
-        try:
-            assert(type(val)==int)
-        except:
+        if not isinstance(val, int):
             raise TypeError("Rating %s is not an integer"%val)
         i = FiveStars(10, filled=(val/2.0)) # 12 point
         lwidth = len(label+': ')*4 # A very cheap approximation of width
@@ -657,8 +657,8 @@ class PdfExporterMultiDoc (exporter.ExporterMultirec, PdfWriter):
     def __init__ (self, rd, recipes, out, conv=None, pdf_args=DEFAULT_PDF_ARGS,
                   **kwargs):
         PdfWriter.__init__(self)
-        if type(out) in types.StringTypes:
-            out = file(out,'wb')
+        if isinstance(out, str):
+            out = open(out, 'wb')
         self.setup_document(out,**pdf_args)
         self.output_file = out
         kwargs['doc'] = self.doc
@@ -737,19 +737,18 @@ class CustomUnitOption (optionTable.CustomOption):
         }
 
     def __init__ (self, default_value = inch):
-        gobject.GObject.__init__(self)
-        gtk.HBox.__init__(self)
+        Gtk.HBox.__init__(self) # do we really inherit from HBox?
         self.__quiet__ = False
-        self.unit_combo = gtk.combo_box_new_text()
+        self.unit_combo = Gtk.ComboBoxText()
         for key in self.units:
             self.unit_combo.append_text(key)
-        unit = get_prefs().get('default_margin_unit',_('cm'))
+        unit = Prefs.instance().get('default_margin_unit', _('cm'))
         if unit not in self.units: unit = _('cm')
         self.last_unit = self.units[unit]
         cb_extras.setup_typeahead(self.unit_combo)
         cb_extras.cb_set_active_text(self.unit_combo,unit)
         self.unit_combo.connect('changed',self.unit_changed_cb)
-        self.value_adjustment = gtk.Adjustment(
+        self.value_adjustment = Gtk.Adjustment(
             value=self.adjust_to_unit(default_value),
             lower= self.min_val / self.last_unit,
             upper = self.max_val / self.last_unit,
@@ -758,19 +757,22 @@ class CustomUnitOption (optionTable.CustomOption):
             )
         def emit_changed (*args):
             self.emit('changed')
-        self.value_adjustment.connect('changed',emit_changed)
-        self.value_widget = gtk.SpinButton(self.value_adjustment,digits=2)
-        self.value_widget.connect('changed',emit_changed)
-        self.value_widget.show(); self.unit_combo.show()
-        self.pack_start(self.value_widget)
-        self.pack_start(self.unit_combo)
+        self.value_adjustment.connect('changed', emit_changed)
+        self.value_widget = Gtk.SpinButton()
+        self.value_widget.set_adjustment(self.value_adjustment)
+        self.value_widget.set_digits(2)
+        self.value_widget.connect('changed', emit_changed)
+        self.value_widget.show()
+        self.unit_combo.show()
+        self.pack_start(self.value_widget, True, True, 0)
+        self.pack_start(self.unit_combo, True, True, 0)
 
     def set_unit (self, unit):
         cb_extras.cb_set_active_text(self.unit_combo,unit)
 
     def unit_changed_cb (self, widget):
         new_unit = self.units[self.unit_combo.get_active_text()]
-        get_prefs()['default_margin_unit'] = self.unit_combo.get_active_text()
+        Prefs.instance()['default_margin_unit'] = self.unit_combo.get_active_text()
         old_val = self.value_adjustment.get_value() * self.last_unit
         self.last_unit = self.units[self.unit_combo.get_active_text()]
         new_val = self.adjust_to_unit(old_val)
@@ -842,17 +844,17 @@ class PdfPrefGetter:
         _('Landscape'):'landscape',
         }
 
-    OPT_PS,OPT_PO,OPT_FS,OPT_PL,OPT_LM,OPT_RM,OPT_TM,OPT_BM = range(8)
+    OPT_PS,OPT_PO,OPT_FS,OPT_PL,OPT_LM,OPT_RM,OPT_TM,OPT_BM = list(range(8))
 
-    def __init__ (self,):
-        self.prefs = get_prefs()
-        defaults = self.prefs.get('PDF_EXP',PDF_PREF_DEFAULT)
-        self.size_strings = self.page_sizes.keys()
+    def __init__(self):
+        self.prefs = Prefs.instance()
+        defaults = self.prefs.get('PDF_EXP', PDF_PREF_DEFAULT)
+        self.size_strings = list(self.page_sizes.keys())
         self.size_strings.sort()
         for n in range(2,5):
             self.layouts[ngettext('%s Column','%s Columns',n)%n]=('column',n)
         self.make_reverse_dicts()
-        self.layout_strings = self.layouts.keys()
+        self.layout_strings = list(self.layouts.keys())
         self.layout_strings.sort()
         margin_widgets = [
             CustomUnitOption(defaults.get(pref,PDF_PREF_DEFAULT[pref]))
@@ -868,7 +870,7 @@ class PdfPrefGetter:
             [_('Paper _Size')+':',(defaults.get('page_size',PDF_PREF_DEFAULT['page_size']),
                                   self.size_strings)],
             [_('_Orientation')+':',(defaults.get('orientation',PDF_PREF_DEFAULT['orientation']),
-                                    self.page_modes.keys())],
+                                    list(self.page_modes.keys()))],
             [_('_Font Size')+':',int(defaults.get('font_size',PDF_PREF_DEFAULT['font_size']))],
             [_('Page _Layout'),(defaults.get('page_layout',PDF_PREF_DEFAULT['page_layout']),
                                 self.layout_strings)],
@@ -892,13 +894,14 @@ class PdfPrefGetter:
             (self.page_sizes,self.page_sizes_r),
             (self.layouts,self.layouts_r),
             (self.page_modes,self.page_modes_r)]:
-            for k,v in dict.items(): dict_r[v]=k
+            for k,v in list(dict.items()): dict_r[v]=k
 
     def setup_widgets (self):
         self.pd = de.PreferencesDialog(self.opts,option_label=None,value_label=None,
                                   label=_('PDF Options'),
                                   )
-        self.pd.hbox.pack_start(self.page_drawer,fill=True,expand=True)
+        self.pd.hbox.pack_start(self.page_drawer, fill=True, expand=True,
+                                padding=0)
         self.table = self.pd.table
 
     def run (self):
@@ -907,9 +910,7 @@ class PdfPrefGetter:
 
     def get_args_from_opts (self, opts):
         args = {}
-        if not get_prefs().has_key('PDF_EXP'):
-            get_prefs()['PDF_EXP'] = {}
-        prefs = get_prefs()['PDF_EXP']
+        prefs = self.prefs.get('PDF_EXP', {})
         args['pagesize'] = self.page_sizes[opts[self.OPT_PS][1]] # PAGE SIZE
         prefs['page_size'] = self.page_sizes_r[args['pagesize']]
         args['pagemode'] = self.page_modes[opts[self.OPT_PO][1]] # PAGE MODE
@@ -1010,36 +1011,36 @@ class PdfPrefTable (PdfPrefGetter):
     # in a print preferences widget.
 
     def setup_widgets (self):
-        self.widg = gtk.HBox()
+        self.widg = Gtk.HBox()
         self.table = optionTable.OptionTable(options=self.opts,
                                              option_label=None,
                                              value_label=None,
                                              changedcb=None)
-        self.widg.pack_start(self.table)
-        self.widg.pack_start(self.page_drawer,fill=True,expand=True)
+        self.widg.pack_start(self.table, True, True, 0)
+        self.widg.pack_start(self.page_drawer, True, True, 0)
         self.widg.show_all()
 
 def get_pdf_prefs (defaults=None):
-    if defaults: print 'WARNING: ignoring provided defaults and using prefs system instead'
+    if defaults: print('WARNING: ignoring provided defaults and using prefs system instead')
     pdf_pref_getter = PdfPrefGetter()
     return pdf_pref_getter.run()
 
 if __name__ == '__main__':
-    w = gtk.Window()
+    w = Gtk.Window()
     cuo = CustomUnitOption(44)
     cuo2 = CustomUnitOption(98)
     cuo.sync_to_other_cuo(cuo2)
     cuo2.sync_to_other_cuo(cuo)
-    vb = gtk.VBox()
-    l = gtk.Label('Hello World')
+    vb = Gtk.VBox()
+    l = Gtk.Label(label='Hello World')
     vb.add(l)
-    vb.pack_start(cuo)
-    vb.pack_start(cuo2)
+    vb.pack_start(cuo, True, True, 0)
+    vb.pack_start(cuo2, True, True, 0)
     w.add(vb)
     vb.show(); cuo.show(); cuo2.show()
     w.show()
-    w.connect('delete_event',gtk.main_quit)
-    gtk.main()
+    w.connect('delete_event',Gtk.main_quit)
+    Gtk.main()
     raise Exception("Hell")
 
     from tempfile import tempdir
@@ -1047,7 +1048,7 @@ if __name__ == '__main__':
     #opts = get_pdf_prefs(); print opts
     test_3_x_5()
 
-    #star_file = file(os.path.join(tempdir,'star.pdf'),'wb')
+    #star_file = open(os.path.join(tempdir,'star.pdf'),'wb')
     #sw = PdfWriter()
     #sw.setup_document(star_file,mode='two_column')
     #for n in range(6,72,2):
@@ -1058,7 +1059,6 @@ if __name__ == '__main__':
     #star_file.close()
     #import gnome
     #gnome.program_init('1.0','Gourmet PDF Exporter Test')
-    #gglobals.launch_url('file:/os.path.join(tempdir,/star.pdf')
     #raise Exception("I don')t want to go any further")
 
     if os.name == 'nt':
@@ -1069,7 +1069,7 @@ if __name__ == '__main__':
     #import gourmet.recipeManager as rm
     #rd = rm.RecipeManager(file=os.path.join(base,'src','tests','reference_setup','recipes.db'))
     #rd = rm.RecipeManager()
-    #ofi = file(os.path.join(tempdir,'test_rec.pdf'),'w')
+    #ofi = open(os.path.join(tempdir,'test_rec.pdf'),'w')
     #rr = []
     #for n,rec in enumerate(rd.fetch_all(rd.recipe_table,deleted=False)):
     #    if rec.image:
@@ -1081,47 +1081,45 @@ if __name__ == '__main__':
 
     def test_formatting ():
         sw = PdfWriter()
-        f = file(os.path.join(tempdir,'format.pdf'),'wb')
-        sw.setup_document(f)
-        sw.write_header('This is a header & isn\'t it nifty')
-        sw.write_paragraph('<i>This</i> is a <b>paragraph</b> with <u>formatting</u>!')
-        sw.write_header('<u>This is a formatted header &amp; it is also nifty &amp; cool</u>')
-        sw.write_paragraph('<i>This is another formatted paragraph</i>')
-        sw.write_paragraph('<span fg="\#f00">This is color</span>')
-        sw.close()
-        f.close()
+        with open(os.path.join(tempdir,'format.pdf'),'wb') as f:
+            sw.setup_document(f)
+            sw.write_header('This is a header & isn\'t it nifty')
+            sw.write_paragraph('<i>This</i> is a <b>paragraph</b> with <u>formatting</u>!')
+            sw.write_header('<u>This is a formatted header &amp; it is also nifty &amp; cool</u>')
+            sw.write_paragraph('<i>This is another formatted paragraph</i>')
+            sw.write_paragraph('<span fg="\#f00">This is color</span>')
+            sw.close()
         return os.path.join(tempdir,'format.pdf')
 
     def test_3_x_5 ():
-        print 'Test 3x5 layout'
+        print('Test 3x5 layout')
         sw = PdfWriter()
-        f = file(os.path.join(tempdir,'foo.pdf'),'wb')
-        sw.setup_document(f,
-                          mode=('index_cards',(5*inch,3.5*inch)),
-                          #pagesize=(5*inch,3.5*inch),
-                          pagesize='letter',
-                          pagemode='landscape',
-                          left_margin=0.25*inch,right_margin=0.25*inch,
-                          top_margin=0.25*inch,bottom_margin=0.25*inch,
-                          base_font_size=8,
-                          )
-        #sw.write_header('Heading')
-        #sw.write_subheader('This is a subheading')
-        for n in range(5):
-            sw.write_header(
-                u"This is a header"
-                )
-            #sw.write_subheader(
-            #    u"This is a subheader"
-            #    )
-            sw.write_paragraph(
-                u"%s: These are some sentences.  Hopefully some of these will be quite long sentences.  Some of this text includes unicode -- 45\u00b0F, for example... \u00bfHow's that?"%n*10
-                )
-        #sw.write_paragraph('This is a <i>paragraph</i> with <b>some</b> <u>markup</u>.')
-        #sw.write_paragraph(u"This is some text with unicode - 45\u00b0, \u00bfHow's that?".encode('iso-8859-1'))
-        #sw.write_paragraph(u"This is some text with a unicode object - 45\u00b0, \u00bfHow's that?")
-        sw.close()
-        f.close()
+        with open(os.path.join(tempdir,'foo.pdf'), 'wb') as f:
+            sw.setup_document(f,
+                              mode=('index_cards',(5*inch,3.5*inch)),
+                              #pagesize=(5*inch,3.5*inch),
+                              pagesize='letter',
+                              pagemode='landscape',
+                              left_margin=0.25*inch,right_margin=0.25*inch,
+                              top_margin=0.25*inch,bottom_margin=0.25*inch,
+                              base_font_size=8,
+                              )
+            #sw.write_header('Heading')
+            #sw.write_subheader('This is a subheading')
+            for n in range(5):
+                sw.write_header(
+                    "This is a header"
+                    )
+                #sw.write_subheader(
+                #    u"This is a subheader"
+                #    )
+                sw.write_paragraph(
+                    "%s: These are some sentences.  Hopefully some of these will be quite long sentences.  Some of this text includes unicode -- 45\u00b0F, for example... \u00bfHow's that?"%n*10
+                    )
+            #sw.write_paragraph('This is a <i>paragraph</i> with <b>some</b> <u>markup</u>.')
+            #sw.write_paragraph(u"This is some text with unicode - 45\u00b0, \u00bfHow's that?".encode('iso-8859-1'))
+            #sw.write_paragraph(u"This is some text with a unicode object - 45\u00b0, \u00bfHow's that?")
+            sw.close()
         return os.path.join(tempdir,'foo.pdf')
 
     def test_grm_export (pdf_args=DEFAULT_PDF_ARGS):
@@ -1141,7 +1139,6 @@ if __name__ == '__main__':
         pe.run()
         return fname
 
-    import gourmet.gglobals as gglobals
     #try:
     #    import gnome
     #    gnome.program_init('1.0','Gourmet PDF Exporter Test')
@@ -1149,13 +1146,12 @@ if __name__ == '__main__':
     #    print 'We must be on windows...'
 
     #print 'TEST 3x5'
-    gglobals.launch_url('file://'+test_3_x_5())
-    gglobals.launch_url('file://'+test_formatting())
+    webbrowser.open('file://'+test_3_x_5())
+    webbrowser.open('file://'+test_formatting())
     #print 'END TEST'
     #print 'TEST GRM'
-    gglobals.launch_url('file://'+test_grm_export())
+    webbrowser.open('file://'+test_grm_export())
     #print 'TEST CUSTOM GRM'
-    #gglobals.launch_url('file://'+test_grm_export(get_pdf_prefs({'page_size':_('A4'),'page_layout':'2 Columns'})))
     #ppg = PdfPrefGetter()
     #print ppg.run()
     #print 'END TEST'

@@ -1,5 +1,5 @@
-import gtk
-import databaseGrabber
+from gi.repository import Gtk
+from . import databaseGrabber
 import os, os.path, time
 import gourmet.gtk_extras.dialog_extras as de
 from gourmet.gglobals import data_dir
@@ -37,7 +37,7 @@ class DatabaseGrabberGui (databaseGrabber.DatabaseGrabber):
         self.progdialog.show()
         self.grab_data(data_dir)
         self.show_progress(1,_('Nutritonal database import complete!'))
-        self.progdialog.set_response_sensitive(gtk.RESPONSE_OK,True)
+        self.progdialog.set_response_sensitive(Gtk.ResponseType.OK,True)
         self.progdialog.hide()
 
     def show_progress (self,fract,msg):
@@ -51,8 +51,8 @@ class DatabaseGrabberGui (databaseGrabber.DatabaseGrabber):
     def gui_update (self):
         if self.terminated:
             raise Exception("Terminated!")
-        while gtk.events_pending():
-            gtk.main_iteration()
+        while Gtk.events_pending():
+            Gtk.main_iteration()
 
     def get_zip_file (self):
         self.show_progress(0.01,_('Fetching nutritional database from zip archive %s')%self.USDA_ZIP_URL)
@@ -64,7 +64,7 @@ class DatabaseGrabberGui (databaseGrabber.DatabaseGrabber):
 
 def check_for_db (db):
     if db.fetch_len(db.nutrition_table) < 10:
-        print 'Grabbing nutrition database!'
+        print('Grabbing nutrition database!')
         dgg = DatabaseGrabberGui(db)
         dgg.load_db()
     # Check if we have choline in our DB... butter (1123) has choline...
@@ -74,7 +74,7 @@ def check_for_db (db):
 
 if __name__=='__main__':
     import gourmet.recipeManager
-    print 'loading db'
+    print('loading db')
     db = gourmet.recipeManager.RecipeManager(**gourmet.recipeManager.dbargs)
-    print 'checking for nutrition_table'
+    print('checking for nutrition_table')
     check_for_db(db)

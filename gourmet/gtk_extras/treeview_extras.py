@@ -1,11 +1,12 @@
+from typing import Optional
 from gourmet.gdebug import debug
-import gtk, gobject
+from gi.repository import Gtk
 
 def print_tree (mod):
     for row in mod:
-        print [col for col in row]
+        print([col for col in row])
         for child in row.iterchildren():
-            print '-> ',[col for col in child]
+            print('-> ',[col for col in child])
 
 def path_next (path, inc=1):
     """Return the path NEXT rows after PATH. Next can be negative, in
@@ -25,7 +26,22 @@ def get_unique_iter_from_value (mod, col, val):
         for rc in r.iterchildren():
             if rc[col]==val: return rc.iter
 
-def move_iter (mod, iter, sibling=None, parent=None, direction="before"):
+
+def get_last(model: Gtk.TreeStore) -> Optional[Gtk.TreeIter]:
+    """Return an TreeIter pointing to the last element in the model"""
+    current = model.get_iter_first()
+    iter = None
+    while current is not None:
+        iter = current
+        current = model.iter_next(current)
+    return iter
+
+
+def move_iter(mod: Gtk.TreeStore,
+              iter: Gtk.TreeIter,
+              sibling: Gtk.TreeIter = None,
+              parent: Gtk.TreeIter = None,
+              direction: str = 'before'):
     """move_iter will move iter relative to sibling or
     parent. Direction (before or after) tells us whether to
     insert_before or insert_after (with a sib) or to prepend or append
@@ -212,7 +228,7 @@ class selectionSaver:
             v = self.model.get_value(itr,self.uc)
             if self.selected.__contains__(v):
                 self.selection.select_iter(itr)
-                if isinstance(v,unicode) and self.expanded.get(v):
+                if isinstance(v,str) and self.expanded.get(v):
                     self.tv.expand_row(self.model.get_path(itr),True)
                 new_paths.append(self.model.get_path(itr))
             child = self.model.iter_children(itr)
@@ -261,7 +277,7 @@ class TreeViewConf:
                 debug("I don't know about column titled %s"%c.get_title(),3)
         prevcol=None
         for n in range(len(self.tv.get_columns())):
-            if coldic.has_key(n):
+            if n in coldic:
                 c=coldic[n]
                 self.tv.move_column_after(c,prevcol)
                 prevcol=c
@@ -276,7 +292,7 @@ class TreeViewConf:
             self.order[titl]=n
             n += 1
 
-class QuickTree (gtk.ScrolledWindow):
+class QuickTree (Gtk.ScrolledWindow):
     def __init__ (self, rows, titles=None):
 
         """Handed a list of data, we create a simple treeview.  The
@@ -286,19 +302,19 @@ class QuickTree (gtk.ScrolledWindow):
         which case there is only one column. All items must produce a
         string with str(item)."""
         debug('QuickTree got rows: %s'%rows,0)
-        gtk.ScrolledWindow.__init__(self)
-        self.tv=gtk.TreeView()
+        Gtk.ScrolledWindow.__init__(self)
+        self.tv=Gtk.TreeView()
         self.rows = rows
         self.titles=titles
         if self.rows:
             first = self.rows[0]
-            if type(first) != type(()) and type(first) != type([]):
+            if not isinstance(first, (tuple, list)):
                 debug('Mappifying!',0)
-                self.rows=map(lambda x: [x],self.rows)
+                self.rows=[[x] for x in self.rows]
             self.setup_columns()
             self.setup_model()
         self.add(self.tv)
-        self.set_policy(gtk.POLICY_AUTOMATIC,gtk.POLICY_AUTOMATIC)
+        self.set_policy(Gtk.PolicyType.AUTOMATIC,Gtk.PolicyType.AUTOMATIC)
         self.show_all()
 
 
@@ -306,29 +322,29 @@ class QuickTree (gtk.ScrolledWindow):
         self.cols=len(self.rows[0])
         if not self.titles:
             self.titles = [None] * self.cols
-        rend=gtk.CellRendererText()
+        rend=Gtk.CellRendererText()
         for n in range(self.cols):
             debug('Adding column: %s'%self.titles[n],0)
-            col = gtk.TreeViewColumn(self.titles[n],rend,text=n)
+            col = Gtk.TreeViewColumn(self.titles[n],rend,text=n)
             col.set_resizable(True)
             col.set_reorderable(n)
             col.set_sort_column_id(n)
             self.tv.append_column(col)
 
     def setup_model (self):
-        self.model = apply(gtk.ListStore,[str]*self.cols)
+        self.model = Gtk.ListStore(*[str]*self.cols)
         for row in self.rows:
             itr = self.model.append()
             while len(row) > self.cols:
                 row.pop()
             while len(row) < self.cols:
                 row.append("")
-            self.model[itr]=map(lambda i: str(i),row)
+            self.model[itr]=[str(i) for i in row]
         self.tv.set_model(self.model)
 
 
 if __name__ == '__main__':
-    vb = gtk.VBox()
+    vb = Gtk.VBox()
     sw = QuickTree(
         [['Foo','Bar'],
         ['Bar','Foo'],
@@ -343,7 +359,7 @@ if __name__ == '__main__':
         sw.tv.ss.restore_selections()
     sw.tv.connect('drag-begin',ss_save)
     sw.tv.connect('drag-end',ss_get)
-    w = gtk.Window()
+    w = Gtk.Window()
     w.add(sw)
     w.show_all()
-    gtk.main()
+    Gtk.main()

@@ -1,20 +1,21 @@
 #!/usr/bin/env python
-import urllib, StringIO, os.path
+import urllib.request, urllib.parse, urllib.error, io, os.path
+import webbrowser
 import exporter, html_exporter, pdf_exporter
 from gourmet import gglobals
 from gettext import gettext as _
 import gourmet.gtk_extras.dialog_extras as de
 from gourmet.gdebug import debug
 
-class StringIOfaker (StringIO.StringIO):
+class StringIOfaker (io.StringIO):
     def __init__ (self, *args, **kwargs):
-        StringIO.StringIO.__init__(self, *args, **kwargs)
+        io.StringIO.__init__(self, *args, **kwargs)
 
     def close (self, *args):
         pass
 
     def close_really (self):
-        StringIO.StringIO.close(self)
+        io.StringIO.close(self)
 
 class Emailer:
     def __init__ (self, emailaddress=None, subject=None, body=None, attachments=[]):
@@ -34,10 +35,10 @@ class Emailer:
         for a in self.attachments:
             self.url_append('attachment',a)
         debug('launching URL %s'%self.url,0)
-        gglobals.launch_url(self.url)
+        webbrowser.open(self.url)
 
     def url_append (self, attr, value):
-        self.url += "%s%s=%s"%(self.connector(),attr,urllib.quote(value.encode('utf-8','replace')))
+        self.url += "%s%s=%s"%(self.connector(),attr,urllib.parse.quote(value.encode('utf-8','replace')))
 
     def connector (self):
         retval = self.connector_string
@@ -122,8 +123,8 @@ class EmailerDialog (RecipeEmailer):
             }
         self.option_list = []
         self.email_options = {}
-        for k,v in self.options.items():
-            self.email_options[v[0]]=apply(self.prefs.get,v)
+        for k,v in list(self.options.items()):
+            self.email_options[v[0]]=self.prefs.get(*v)
             self.option_list.append([k,self.email_options[v[0]]])
 
     def dont_ask_cb (self, widget, *args):

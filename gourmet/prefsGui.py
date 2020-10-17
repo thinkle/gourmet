@@ -1,7 +1,8 @@
-import gtk, os.path
-import gglobals
-from gtk_extras import optionTable
-import plugin_loader, plugin
+from gi.repository import Gtk
+import os.path
+from . import gglobals
+from .gtk_extras import optionTable
+from . import plugin_loader, plugin
 
 class PreferencesGui (plugin_loader.Pluggable):
     """The glue between our preferences dialog UI and our prefs modules.
@@ -56,7 +57,7 @@ class PreferencesGui (plugin_loader.Pluggable):
         """
 
         self.prefs = prefs
-        self.ui = gtk.Builder()
+        self.ui = Gtk.Builder()
         self.ui.add_from_file(uifile)
         self.notebook = self.ui.get_object('notebook')
         # pref name: {'buttonName':VALUE,...}
@@ -96,25 +97,27 @@ class PreferencesGui (plugin_loader.Pluggable):
         changing preferences.
         """
         self.pref_dic = {}
-        for pref,widget in self.toggle_options.items():
+        for pref,widget in list(self.toggle_options.items()):
             self.pref_dic[pref]=('TOGGLE',widget)
-        for pref,widgdic in self.radio_options.items():
+        for pref,widgdic in list(self.radio_options.items()):
             self.pref_dic[pref]={}
             # create a dictionary by value (reversed dictionary)...
-            for widg,val in widgdic.items(): self.pref_dic[pref][val]=widg
+            for widg,val in list(widgdic.items()): self.pref_dic[pref][val]=widg
         self.d=self.ui.get_object('dialog')
         self.d.connect('delete-event',self.hide_dialog)
 
 
     def set_widgets_from_prefs (self):
-        for k in self.pref_dic.keys():
-            if self.prefs.has_key(k): self.update_pref(k,self.prefs[k])
+        for k in list(self.pref_dic.keys()):
+            # print("---", k, self.prefs, self.prefs[k])
+            if k in self.prefs:
+                self.update_pref(k,self.prefs[k])
 
     def update_pref (self, pref, value):
         """Update GUI to reflect value 'value' of preference 'pref'."""
-        if self.pref_dic.has_key(pref):
+        if pref in self.pref_dic:
             action=self.pref_dic[pref]
-            if type(action)== dict :
+            if isinstance(action, dict):
                 # we fail if action is no
                 widg=action[value]
                 act,act_args=('set_active',True)
@@ -122,7 +125,7 @@ class PreferencesGui (plugin_loader.Pluggable):
                 act,act_args=('set_active',value)
                 widg=action[1]
             # in the future, we can handle Entries, etc...
-            if type(widg) in [str,unicode]:
+            if isinstance(widg, str):
                 widg=self.ui.get_object(widg)
             getattr(widg,act)(act_args)
             self.update_sensitivity_for_pref(pref,value)
@@ -138,12 +141,12 @@ class PreferencesGui (plugin_loader.Pluggable):
         return True
 
     def connect_buttons (self):
-        for b,cb in self.buttons.items():
+        for b,cb in list(self.buttons.items()):
             self.ui.get_object(b).connect('clicked',cb)
 
     def connect_toggle_buttons (self):
         """Connect signals for toggle buttons in self.toggle_options."""
-        for pref,widget in self.toggle_options.items():
+        for pref,widget in list(self.toggle_options.items()):
             self.ui.get_object(widget).connect('toggled',self.toggle_callback,pref)
 
     def toggle_callback (self, button, pref_name):
@@ -152,8 +155,8 @@ class PreferencesGui (plugin_loader.Pluggable):
 
     def connect_radio_buttons (self):
         """Connect radio button signals to properly set preferences on toggle."""
-        for pref_name,pref_dic in self.radio_options.items():
-            for button,val in pref_dic.items():
+        for pref_name,pref_dic in list(self.radio_options.items()):
+            for button,val in list(pref_dic.items()):
                 self.ui.get_object(button).connect(
                     'toggled',
                     self.radio_callback,
@@ -166,25 +169,31 @@ class PreferencesGui (plugin_loader.Pluggable):
             self.set_pref(pref_name,true_val)
 
     def connect_number_options (self):
-        for pref_name,widgetname in self.number_options.items():
+        for pref_name,widgetname in list(self.number_options.items()):
             widget = self.ui.get_object(widgetname)
             if hasattr(widget,'get_value'):
                 get_method='get_value'
             elif hasattr(widget,'get_text'):
                 get_method=lambda *args: float(widget.get_text())
             else:
-                print 'widget',widgetname,widget,'is not very numberlike!'
+                print('widget',widgetname,widget,'is not very numberlike!')
                 return
-            curval = self.prefs.get(pref_name,None)
+            curval = self.prefs.get(pref_name, None)
             if curval:
                 try:
                     widget.set_value(curval)
-                except:
+                except AttributeError:
                     widget.set_text(str(curval))
-            if isinstance(widget,gtk.SpinButton):
-                widget.get_adjustment().connect('value-changed',self.number_callback,pref_name,get_method)
+            if isinstance(widget,Gtk.SpinButton):
+                widget.get_adjustment().connect('value-changed',
+                                                self.number_callback,
+                                                pref_name,
+                                                get_method)
             else:
-                widget.connect('changed',self.number_callback,pref_name,get_method)
+                widget.connect('changed',
+                               self.number_callback,
+                               pref_name,
+                               get_method)
 
     def number_callback (self, widget, pref_name, get_method='get_value'):
         self.set_pref(pref_name,getattr(widget,get_method)())
@@ -197,20 +206,22 @@ class PreferencesGui (plugin_loader.Pluggable):
         arguments.
         """
         self.prefs[name]=value
-        if self.apply_prefs_dic.has_key(name):
+        if name in self.apply_prefs_dic:
             self.apply_prefs_dic[name](name,value)
 
     def update_sensitivity_for_pref (self, name, value):
         try:
-            for k,v in self.widget_sensitivity_dic[name][value].items():
+            for k,v in list(self.widget_sensitivity_dic[name][value].items()):
                 self.ui.get_object(k).set_sensitive(v)
         except KeyError: pass
 
 
     def add_widget (self, target_widget, child_widget):
         """Add child_widget to target_widget"""
-        if type(target_widget) in [str,unicode]: target_widget=self.ui.get_object(target_widget)
-        if type(child_widget) in [str,unicode]: child_widget=self.ui.get_object(child_widget)
+        if isinstance(target_widget, str):
+            target_widget = self.ui.get_object(target_widget)
+        if isinstance(child_widget, str):
+            child_widget = self.ui.get_object(child_widget)
         target_widget.add(child_widget)
         target_widget.show_all()
 
@@ -228,13 +239,13 @@ class PreferencesGui (plugin_loader.Pluggable):
         self.add_widget(target_widget,table)
 
     def preftable_callback (self, widget):
-        for table,cb in self.pref_tables.items():
+        for table,cb in list(self.pref_tables.items()):
             if widget in table.get_children():
                 # then we know who's preferences we care about...
                 table.apply()
                 if cb: cb(table.options)
                 return
-        print "Oops: we couldn't handle widget %s"%widget
+        print("Oops: we couldn't handle widget %s"%widget)
 
 if __name__ == '__main__':
     class FauxPrefs (dict):
@@ -243,17 +254,17 @@ if __name__ == '__main__':
             dict.__init__(self,*args,**kwargs)
 
         def __setitem__ (self,k,v):
-            print 'k:',k
-            print 'v:',v
+            print('k:',k)
+            print('v:',v)
             dict.__setitem__(self,k,v)
             for h in self.set_hooks:
-                print 'runnnig hook'
+                print('runnnig hook')
                 h(k,v)
 
     gf='/home/tom/Projects/grm-db-experiments/glade/preferenceDialog.ui'
     import sys
     p=PreferencesGui(FauxPrefs(),gf)
-    def printstuff (*args): print args
+    def printstuff (*args): print(args)
     p.add_pref_table([["Toggle Option",True],
                       ["String Option","Hello"],
                       ["Integer Option",1],
@@ -262,4 +273,4 @@ if __name__ == '__main__':
                      printstuff
                      )
     p.show_dialog()
-    gtk.main()
+    Gtk.main()

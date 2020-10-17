@@ -28,9 +28,10 @@
 # RecEditorPlugin - given an instance of the recipe editor.
 # DatabasePlugin - given an instance of the base database class.
 
-import Undo, gtk, gobject, types
-import plugin_loader
-from gtk_extras import fix_action_group_importance
+from gi.repository import GObject, Gtk
+from gourmet import Undo
+from . import plugin_loader
+from .gtk_extras import fix_action_group_importance
 import sqlalchemy
 
 class Plugin:
@@ -68,7 +69,7 @@ class ImportManagerPlugin (StandardPlugin):
         # '.*nytimes.com.*' : read_nytimes_url
         # where do_nytimes_login is a function that takes the URL
         # and does the login necessarily to grab it...
-    } 
+    }
 
 
     pass
@@ -237,10 +238,10 @@ class DatabasePlugin (StandardPlugin):
 
     def activate (self, db):
         if self.active:
-            print 'Strange -- activate called twice'
-            print 'Activate plugin',self,db,'from:'
+            print('Strange -- activate called twice')
+            print('Activate plugin',self,db,'from:')
             import traceback; traceback.print_stack()
-            print 'ignoring'
+            print('ignoring')
             return
         self.db = db
         if db._created:
@@ -248,7 +249,7 @@ class DatabasePlugin (StandardPlugin):
             try:
                 self.create_tables()
             except sqlalchemy.exc.InvalidRequestError as error:
-                print("An InvalidRequestError was caught: {0}".format(error.args, error.message))
+                print(("An InvalidRequestError was caught: {0}".format(error.args, error.message)))
             self.db.metadata.create_all()
             db.update_plugin_version(self)
         else:
@@ -392,7 +393,7 @@ class MainPlugin (StandardPlugin):
 
     def add_tab (self, widget, label):
         self.added_tabs.append(self.main.main_notebook.append_page(widget,
-                                                              gtk.Label(label))
+                                                              Gtk.Label(label=label))
                           )
         widget.show()
         self.main.main_notebook.set_show_tabs(True)
@@ -424,15 +425,15 @@ class RecDisplayModule (UIModule):
         self.rd = recDisplay; self.rg = self.rd.rg
         UIModule.__init__(self)
 
-class RecEditorModule (UIModule, gobject.GObject, object):
+class RecEditorModule (UIModule, GObject.GObject, object):
 
     __gsignals__ = {
-        'saved':(gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,[]),
-        'toggle-edited':(gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,[gobject.TYPE_BOOLEAN]),
+        'saved':(GObject.SignalFlags.RUN_LAST, None,[]),
+        'toggle-edited':(GObject.SignalFlags.RUN_LAST, None,[GObject.TYPE_BOOLEAN]),
         }
 
     def __init__ (self, recEditor):
-        gobject.GObject.__init__(self)
+        GObject.GObject.__init__(self)
         self.action_groups = [] # a list of ActionGroups to be inserted into the uimanager.
         self.re = recEditor
         self.rg = self.re.rg
@@ -442,21 +443,21 @@ class RecEditorModule (UIModule, gobject.GObject, object):
         self.setup_main_interface()
 
     __edited = False
-    def get_edited (self):
+
+    @property
+    def edited(self):
         return self.__edited
 
-    def set_edited (self, val):
+    @edited.setter
+    def edited(self, val):
         self.__edited = val
-        self.emit('toggle-edited',val)
-        return val
-
-    edited = property(get_edited,set_edited)
+        self.emit('toggle-edited', val)
 
     def setup_undo (self):
-        self.undoActionGroup = gtk.ActionGroup(self.name+'UndoActions')
+        self.undoActionGroup = Gtk.ActionGroup(name=f'{self.name}UndoActions')
         self.undoActionGroup.add_actions([
-            ('Undo',gtk.STOCK_UNDO,None,'<Control>Z'),
-            ('Redo',gtk.STOCK_REDO,None,'<Control><Shift>Z'),
+            ('Undo',Gtk.STOCK_UNDO,None,'<Control>Z'),
+            ('Redo',Gtk.STOCK_REDO,None,'<Control><Shift>Z'),
             ('Reapply',None,'Reapply','<Control>Y'),
             ])
         self.action_groups.append(self.undoActionGroup)
@@ -471,7 +472,7 @@ class RecEditorModule (UIModule, gobject.GObject, object):
         pass
 
     def setup_main_interface (self):
-        self.main = gtk.Label('%s Interface not yet implemented'%self.label)
+        self.main = Gtk.Label(label='%s Interface not yet implemented'%self.label)
 
     def save (self, recdict):
         """Modify recipe dictionary with properties to be saved.
@@ -496,19 +497,21 @@ class RecEditorModule (UIModule, gobject.GObject, object):
             elif hasattr(widget,'get_text'): val = widget.get_text()
             elif hasattr(widget,'entry'): val = widget.entry.get_text()
             elif hasattr(widget,'get_buffer'): val = widget.get_buffer().get_text()
+            elif isinstance(widget, Gtk.ComboBoxText):
+                val = widget.get_active_text()
             else: raise TypeError("I don't know how to get the value from action %s widget %s"%(action,widget))
             # HAVE TO HANDLE CATEGORIES
             if prop=='category':
                 orig_value = ', '.join(self.rg.rd.get_cats(self.current_rec))
             else:
                 orig_value = getattr(self.current_rec,prop)
-            if type(orig_value) in types.StringTypes:
+            if isinstance(orig_value, str):
                 val = val.strip(); orig_value=orig_value.strip()
             else:
                 if not val: val = 0
                 if not orig_value: orig_value = 0
             if orig_value==val:
-                if self.re.widgets_changed_since_save.has_key(prop):
+                if prop in self.re.widgets_changed_since_save:
                     del self.re.widgets_changed_since_save[prop]
             else:
                 self.re.widgets_changed_since_save[prop]=val
@@ -521,7 +524,7 @@ class RecEditorModule (UIModule, gobject.GObject, object):
                 # We store each change in our dictionary... if the
                 # change has disappeared from the history list, then
                 # we can surmise it has been "undone"
-                if self.re.widgets_changed_since_save.has_key(widget):
+                if widget in self.re.widgets_changed_since_save:
                     old_change = self.re.widgets_changed_since_save[widget][-1]
                     if (old_change.is_undo != action.is_undo
                         and
@@ -597,7 +600,7 @@ class PrefsPlugin (StandardPlugin):
         self.prefsGui = pluggable
         self.notebook = pluggable.notebook
         if self.label and self.widget:
-            self.page_no = self.notebook.append_page(self.widget,tab_label=gtk.Label(self.label))
+            self.page_no = self.notebook.append_page(self.widget,tab_label=Gtk.Label(label=self.label))
             self.widget.show()
 
     def deactivate (self, pluggable):
@@ -610,4 +613,3 @@ class PrefsPlugin (StandardPlugin):
 
     def set_pref (self, name, value):
         self.prefsGui.set_pref(name,value)
-

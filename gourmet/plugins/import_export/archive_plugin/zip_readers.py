@@ -1,4 +1,4 @@
-import zipfile, StringIO, tempfile, os, os.path
+import zipfile, io, tempfile, os, os.path
 import tarfile, gzip
 from gourmet.importers.webextras import read_socket_w_progress
 from gourmet.importers.importer import add_to_fn
@@ -36,12 +36,13 @@ def zipfile_to_filelist (fi, progress=None, name="zipfile"):
     manipulation to work (i.e. a urllib.urlopen() object).
     """
     # handle filename
-    if type(fi)==str: fi = open(fi,'rb')
+    if isinstance(fi, str):
+        fi = open(fi, 'rb')
     # handle unseekable
     elif not hasattr(fi,'seek'):
         # slurp up the file into a StringIO so we can seek within it
         debug('Slurping up file into StringIO',1)
-        tmpfi=StringIO.StringIO(read_socket_w_progress(fi,progress,_('Loading zip archive')))
+        tmpfi=io.StringIO(read_socket_w_progress(fi,progress,_('Loading zip archive')))
         fi.close()
         fi = tmpfi
     # and now we actually do our work...
@@ -68,12 +69,12 @@ def zipfile_to_filelist (fi, progress=None, name="zipfile"):
 
 def tarball_to_filelist (fi, progress=None, name="zipfile"):
     tb = tarfile.TarFile.open(fi,mode='r')
-    fi_info = tb.next()
+    fi_info = next(tb)
     filist = []
     while fi_info:
         fi = tb.extractfile(fi_info)
         if fi: filist.append(fi)
-        fi_info = tb.next()
+        fi_info = next(tb)
     debug('tarball_to_filelist returning %s'%filist,0)
     return filist
 

@@ -1,5 +1,5 @@
 from gourmet.plugin import ExporterPlugin
-import epub_exporter
+from . import epub_exporter
 from gettext import gettext as _
 
 EPUBFILE = _('Epub File')
@@ -11,6 +11,7 @@ class EpubExporterPlugin (ExporterPlugin):
     filetype_desc = EPUBFILE
     saveas_filters = [EPUBFILE,['application/epub+zip'],['*.epub']]
     saveas_single_filters = [EPUBFILE,['application/epub+zip'],['*.epub']]
+    mode = 'wb'  # Epub is a zip file, so we need a binary output file
 
     def get_multiple_exporter (self, args):
         return epub_exporter.website_exporter(

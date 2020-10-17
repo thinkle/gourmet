@@ -1,4 +1,5 @@
-import gtk, os.path
+from gi.repository import Gtk
+import os.path
 from gourmet import gglobals
 from gourmet import cb_extras as cb
 from gourmet import dialog_extras as de
@@ -17,7 +18,7 @@ class DatabaseChooser:
         self.default_files = {'sqlite':'recipes.db'
                               }
         uifile = os.path.join(gglobals.uibase,'databaseChooser.ui')
-        self.ui = gtk.Builder()
+        self.ui = Gtk.Builder()
         self.ui.add_from_file(uifile)
         self.connection_widgets = ['hostEntry','userEntry','pwEntry','dbEntry',
                                    'hostLabel','userLabel','pwLabel','dbLabel',
@@ -40,11 +41,11 @@ class DatabaseChooser:
         self.change_db_cb()
         self.window.show()
         if self.modal:
-            self.window.set_modal(gtk.TRUE)
+            self.window.set_modal(True)
 
     def run (self):
         if self.modal:
-            gtk.mainloop()
+            Gtk.mainloop()
             return self.retdic
 
     def ok_cb (self, *args):
@@ -67,13 +68,13 @@ class DatabaseChooser:
             self.window.destroy()
             if self._okcb: self._okcb(self.retdic)
             if self.modal:
-                gtk.mainquit()
+                Gtk.mainquit()
             return self.retdic
 
     def cancel_cb (self, *args):
         self.window.hide()
         self.window.destroy()
-        if self.modal: gtk.mainquit()
+        if self.modal: Gtk.mainquit()
 
 
     def change_db_cb (self, *args):
@@ -97,17 +98,17 @@ class DatabaseChooser:
                 getattr(self,w).show()
             else:
                 getattr(self,w).hide()
-        if self.default_files.has_key(self.current_db):
+        if self.current_db in self.default_files:
             self.fileEntry.set_text(self.default_files[self.current_db])
 
     def browse_cb (self,*args):
         fi = de.select_file(_("Choose Database File"),
                             filename=self.default_file_directory,
-                            action=gtk.FILE_CHOOSER_ACTION_OPEN)
+                            action=Gtk.FileChooserAction.OPEN)
         if fi:
             self.fileEntry.set_text(fi)
 
 
 if __name__ == '__main__':
     d = DatabaseChooser(None,modal=True)
-    print d.run()
+    print(d.run())

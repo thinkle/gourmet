@@ -1,14 +1,15 @@
-import gtk, re
-import parser_data
+from gi.repository import Gtk
+import re
+from . import parser_data
 import gourmet.cb_extras as cb
 import gourmet.dialog_extras as de
 from gettext import gettext as _
 
-class NutritionModel (gtk.TreeStore):
+class NutritionModel (Gtk.TreeStore):
     TITLE_FIELD = 'desc'
     def __init__ (self, nvw):
         self.nvw = nvw
-        gtk.TreeStore.__init__(self,str,str)
+        Gtk.TreeStore.__init__(self,str,str)
         self.populate_model()
 
     def connect_treeview_signals (self,tv):
@@ -41,15 +42,15 @@ class NutritionModel (gtk.TreeStore):
 
 class SimpleNutritionalDisplay:
     def __init__ (self,nutrition_data):
-        self.w = gtk.Window()
+        self.w = Gtk.Window()
         self.nd = nutrition_data
         self.nm = NutritionModel(ndObj.db.nutrition_table)
-        self.sw = gtk.ScrolledWindow()
-        self.tv = gtk.TreeView()
-        rend = gtk.CellRendererText()
+        self.sw = Gtk.ScrolledWindow()
+        self.tv = Gtk.TreeView()
+        rend = Gtk.CellRendererText()
         # setup treeview columns
         for n,cname in enumerate(['Item','Value']):
-            col = gtk.TreeViewColumn(cname,rend,text=n)
+            col = Gtk.TreeViewColumn(cname,rend,text=n)
             self.tv.append_column(col)
         self.tv.set_model(self.nm)
         self.nm.connect_treeview_signals(self.tv)
@@ -79,34 +80,34 @@ class SimpleIngredientCalculator (de.mDialog):
         self.setup_boxes()
 
     def setup_boxes (self):
-        self.hbb = gtk.HBox()
+        self.hbb = Gtk.HBox()
         self.vbox.add(self.hbb)
-        self.amtBox = gtk.SpinButton()
+        self.amtBox = Gtk.SpinButton()
         self.amtBox.set_range(0.075,5000)
         self.amtBox.set_increments(0.5,5)
         self.amtBox.set_sensitive(True)
         self.amtBox.set_value(1)
         self.amtBox.connect('changed',self.nutBoxCB)
-        self.unitBox = gtk.ComboBox()
+        self.unitBox = Gtk.ComboBox()
         self.unitBox.set_model(self.umodel)
-        cell = gtk.CellRendererText()
+        cell = Gtk.CellRendererText()
         self.unitBox.pack_start(cell, True)
         self.unitBox.add_attribute(cell, 'text', 1)
         cb.setup_typeahead(self.unitBox)
-        self.itmBox = gtk.Entry()
-        self.nutBox = gtk.ComboBox()
+        self.itmBox = Gtk.Entry()
+        self.nutBox = Gtk.ComboBox()
         self.nutBox.pack_start(cell, True)
         self.nutBox.add_attribute(cell,'text',0)
         self.nutBox.connect('changed',self.nutBoxCB)
         self.unitBox.connect('changed',self.nutBoxCB)
-        self.refreshButton = gtk.Button('Update Nutritional Items')
+        self.refreshButton = Gtk.Button('Update Nutritional Items')
         self.refreshButton.connect('clicked',self.updateCombo)
         self.hbb.add(self.amtBox)
         self.hbb.add(self.unitBox)
         self.hbb.add(self.itmBox)
         self.hbb.add(self.refreshButton)
         self.vbox.add(self.nutBox)
-        self.nutLabel=gtk.Label()
+        self.nutLabel=Gtk.Label()
         self.vbox.add(self.nutLabel)
         self.vbox.show_all()
 
@@ -118,7 +119,7 @@ class SimpleIngredientCalculator (de.mDialog):
             cb.cb_get_active_text(self.unitBox),
             self.itmBox.get_text(),
             row)
-        myfields = filter(lambda x: x[1] in self.fields, parser_data.NUTRITION_FIELDS)
+        myfields = [x for x in parser_data.NUTRITION_FIELDS if x[1] in self.fields]
         lab = ""
         for ln,f,typ in myfields:
             amt = getattr(row,f)
@@ -134,14 +135,14 @@ class SimpleIngredientCalculator (de.mDialog):
         self.txt = self.itmBox.get_text()
         indexvw = self.db.nutrition_table.filter(self.search_func)
         nvw = self.db.nutrition_table.remapwith(indexvw)
-        mod = gtk.ListStore(str)
-        map(lambda r: mod.append([r.desc]), nvw)
+        mod = Gtk.ListStore(str)
+        list(map(lambda r: mod.append([r.desc]), nvw))
         self.nutBox.set_model(mod)
 
     def search_func (self, row):
         desc = row.desc.lower()
         txt=self.txt.lower()
-        words = re.split('\W',txt)
+        words = re.split(r'\W',txt)
         ret = True
         while ret and words:
             word=words.pop()
@@ -158,18 +159,18 @@ if __name__ == '__main__':
     #inginfo = gourmet.reccard.IngInfo(db)
     conv=gourmet.convert.converter()
     umod = UnitModel(conv)
-    import nutritionGrabberGui
+    from . import nutritionGrabberGui
     try:
         nutritionGrabberGui.check_for_db(db)
     except nutritionGrabberGui.Terminated:
-        print 'Nutrition import was cut short a bit'
+        print('Nutrition import was cut short a bit')
     def quit (*args):
         db.save()
-        gtk.mainquit()
+        Gtk.mainquit()
     #snd=SimpleNutritionalDisplay(db.nutrition_table)
     #snd.w.connect('delete-event',quit)
-    import nutrition.nutrition
-    nd=nutrition.nutrition.NutritionData(db,conv)
+    from . import nutrition
+    nd=nutrition.NutritionData(db,conv)
     sic = SimpleIngredientCalculator(nd,umod)
     sic.run()
-    gtk.main()
+    Gtk.main()

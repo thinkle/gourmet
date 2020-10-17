@@ -1,18 +1,19 @@
 #!/usr/bin/env python
-import gtk, gobject, pango, sys, os.path, time, os, string
-import recipeManager, convert, reccard, prefs
-from gtk_extras import WidgetSaver, mnemonic_manager
-from gtk_extras import dialog_extras as de
-from gtk_extras import treeview_extras as te
-from gtk_extras import fix_action_group_importance
-from exporters.printer import get_print_manager
-from gdebug import debug
+from gi.repository import Gdk, GObject, Gtk
+import sys, os.path, time, os, string
+from . import recipeManager, convert, reccard, prefs
+from .gtk_extras import WidgetSaver, mnemonic_manager
+from .gtk_extras import dialog_extras as de
+from .gtk_extras import treeview_extras as te
+from .gtk_extras import fix_action_group_importance
+from .exporters.printer import PrintManager
+from .gdebug import debug
 from gettext import gettext as _
-from gglobals import doc_base
+from .gglobals import doc_base
 # from nutrition.nutritionLabel import NutritionLabel
 # from nutrition.nutrition import NutritionInfoList
-import plugin_loader, plugin
-from shopping import ShoppingList
+from . import plugin_loader, plugin
+from .shopping import ShoppingList
 
 ui_string = '''
 <ui>
@@ -75,17 +76,17 @@ ui_string = '''
 # Convenience functions
 def setup_frame_w_accel_label (txt, target_widget=None):
     '''Return a frame with a mnemonic label'''
-    l =  gtk.Label(txt)
+    l =  Gtk.Label(label=txt)
     l.set_use_underline(True)
-    f = gtk.Frame()
+    f = Gtk.Frame()
     f.set_label_widget(l); l.show()
     if target_widget:
         l.set_mnemonic_widget(target_widget)
     return f
 
 def setup_sw (child):
-    sw = gtk.ScrolledWindow()
-    sw.set_policy(gtk.POLICY_NEVER,gtk.POLICY_AUTOMATIC)
+    sw = Gtk.ScrolledWindow()
+    sw.set_policy(Gtk.PolicyType.NEVER,Gtk.PolicyType.AUTOMATIC)
     sw.add(child)
     child.show(); sw.show()
     return sw
@@ -110,13 +111,13 @@ class IngredientAndPantryList:
         self.setup_actions()
 
     def setup_ui_manager (self):
-        self.ui_manager = gtk.UIManager()
+        self.ui_manager = Gtk.UIManager()
         self.ui_manager.add_ui_from_string(ui_string)
 
     def setup_actions (self):
-        self.pantryActions = gtk.ActionGroup('PantryActions')
-        self.shoppingActions = gtk.ActionGroup('ShoppingActions')
-        self.pantryOrShoppingActions = gtk.ActionGroup('PantryOrShoppingActions')
+        self.pantryActions = Gtk.ActionGroup(name='PantryActions')
+        self.shoppingActions = Gtk.ActionGroup(name='ShoppingActions')
+        self.pantryOrShoppingActions = Gtk.ActionGroup(name='PantryOrShoppingActions')  # noqa
         self.pantryOrShoppingActions.add_actions([
             ('ChangeCategoryPop',None,_('Change _Category')),
             ('newCategory',None,_('Create new category'),None,None,
@@ -145,7 +146,7 @@ class IngredientAndPantryList:
         self.shoppingActions.add_actions([
             ('ShopPopup',None,_('Shopping List')),
             ('ItemToPantry',                  # name
-             gtk.STOCK_UNDO,                  # stock
+             Gtk.STOCK_UNDO,                  # stock
              _('Move to _pantry'),            # text
              _('<Ctrl>D'),                    # key-command
              _('Remove from shopping list'),  # tooltip
@@ -205,7 +206,8 @@ class IngredientAndPantryList:
     def setup_paned_view (self):
         self.create_pTree()
         self.create_slTree()
-        hp =  gtk.HPaned(); hp.set_position(400)
+        hp =  Gtk.HPaned()
+        hp.set_position(400)
         f1 = setup_frame_w_accel_label(_('_Shopping List'),self.slTree)
         f2 = setup_frame_w_accel_label(_('Already Have (_Pantry Items)'),self.pTree)
         f1.add(setup_sw(self.slTree)); f1.show_all()
@@ -218,7 +220,7 @@ class IngredientAndPantryList:
     def create_pTree (self):
         debug("create_pTree (self, data):",5)
         self.pMod = self.createIngModel(self.pantry)
-        self.pTree = self.create_ingTree(gtk.TreeView(),
+        self.pTree = self.create_ingTree(Gtk.TreeView(),
                                          self.pMod)
         # self.pTree.connect('popup-menu',self.popup_pan_menu)
         self.pTree.get_selection().connect('changed',self.pTree_sel_changed_cb)
@@ -226,7 +228,7 @@ class IngredientAndPantryList:
         self.pTree_sel_changed_cb(self.pTree.get_selection())
         def pTree_popup_cb (tv, event):
             debug("pTree_popup_cb (tv, event):",5)
-            if event.button==3 or event.type == gtk.gdk._2BUTTON_PRESS:
+            if event.button==3 or event.type == Gdk.EventType._2BUTTON_PRESS:
                 self.popup_pan_menu(tv,event)
                 return True
 
@@ -235,13 +237,13 @@ class IngredientAndPantryList:
     def create_slTree (self):
         debug("create_slTree (self, data):",5)
         self.slMod = self.createIngModel(self.data)
-        self.slTree = self.create_ingTree(gtk.TreeView(),
+        self.slTree = self.create_ingTree(Gtk.TreeView(),
                                           self.slMod)
         self.slTree.show()
         self.slTree.connect('popup-menu',self.popup_ing_menu)
         def slTree_popup_cb (tv, event):
             debug("slTree_popup_cb (tv, event):",5)
-            if event.button==3 or event.type == gtk.gdk._2BUTTON_PRESS:
+            if event.button==3 or event.type == Gdk.EventType._2BUTTON_PRESS:
                 self.popup_ing_menu(tv,event)
                 return True
         self.slTree.connect('button-press-event',slTree_popup_cb)
@@ -251,31 +253,32 @@ class IngredientAndPantryList:
 
     def create_ingTree (self, widget, model):
         debug("create_ingTree (self, widget, model):",5)
-        # self.slTree = gtk.TreeView(self.slMod)
+        # self.slTree = Gtk.TreeView(self.slMod)
         tree=widget
         tree.set_model(model)
         ## add multiple selections
-        tree.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
+        tree.get_selection().set_mode(Gtk.SelectionMode.MULTIPLE)
         ## adding drag and drop functionality
-        targets = [('GOURMET_SHOPPER_SW', gtk.TARGET_SAME_WIDGET, 0),
-                   ('GOURMET_SHOPPER', gtk.TARGET_SAME_APP, 1),
+        targets = [('GOURMET_SHOPPER_SW', Gtk.TargetFlags.SAME_WIDGET, 0),
+                   ('GOURMET_SHOPPER', Gtk.TargetFlags.SAME_APP, 1),
                    ('text/plain',0,2),
                    ('STRING',0,3),
                    ('STRING',0,4),
                    ('COMPOUND_TEXT',0,5),
                    ('text/unicode',0,6),]
-        tree.drag_source_set(gtk.gdk.BUTTON1_MASK, targets,
-                             gtk.gdk.ACTION_COPY | gtk.gdk.ACTION_MOVE)
+        tree.drag_source_set(Gdk.ModifierType.BUTTON1_MASK,
+                             list(Gtk.TargetEntry.new(*t) for t in targets),
+                             Gdk.DragAction.COPY | Gdk.DragAction.MOVE)
         tree.enable_model_drag_dest(targets,
-                                    gtk.gdk.ACTION_COPY | gtk.gdk.ACTION_MOVE)
+                                    Gdk.DragAction.COPY | Gdk.DragAction.MOVE)
         tree.connect('drag_begin', self.on_drag_begin)
         tree.connect('drag_data_get', self.on_drag_data_get)
         tree.connect('drag_data_received', self.on_drag_data_received)
         tree.connect('drag_motion', self.on_drag_motion)
         tree.connect('drag_drop', self.on_drag_drop)
-        renderer = gtk.CellRendererText()
+        renderer = Gtk.CellRendererText()
         for n,t in [[0,'Item'],[1,'Amount']]:
-            col = gtk.TreeViewColumn(t,renderer,text=n)
+            col = Gtk.TreeViewColumn(t,renderer,text=n)
             col.set_resizable(True)
             tree.append_column(col)
         tree.expand_all()
@@ -285,7 +288,7 @@ class IngredientAndPantryList:
     def createIngModel (self, data):
         debug("createIngModel (self, data):",5)
         """Data is a list of lists, where each item is [ing amt]"""
-        mod = gtk.TreeStore(gobject.TYPE_STRING, gobject.TYPE_STRING)
+        mod = Gtk.TreeStore(GObject.TYPE_STRING, GObject.TYPE_STRING)
         for c,lst in data:
             catiter = mod.append(None)
             mod.set_value(catiter, 0, c)
@@ -358,7 +361,7 @@ class IngredientAndPantryList:
                         debug("Saving new category orders",0)
                         self.commit_category_orders(tv)
                         # and now we need to move our new category into place...
-                        if drop_where==gtk.TREE_VIEW_DROP_AFTER or drop_where==gtk.TREE_VIEW_DROP_INTO_OR_AFTER:
+                        if drop_where==Gtk.TreeViewDropPosition.AFTER or drop_where==Gtk.TreeViewDropPosition.INTO_OR_AFTER:
                             new_pos=self.sh.catorder_dic[cat]+0.5
                         else:
                             new_pos=self.sh.catorder_dic[cat]-0.5
@@ -396,7 +399,7 @@ class IngredientAndPantryList:
                 for sel in oselection:
                     self.sh.orgdic[sel]=cat
                 self.resetSL()
-            except TypeError, e:
+            except TypeError as e:
                 self.message("Out of range! %s")
         return False
     # end drag-n-drop methods
@@ -489,7 +492,7 @@ class IngredientAndPantryList:
         debug("popup_ing_menu (self, tv, *args):",5)
         self.tv = tv
         if not event:
-            event = gtk.get_current_event()
+            event = Gtk.get_current_event()
         t = (event and hasattr(event,'time') and getattr(event,'time')
                 or 0)
         btn = (event and hasattr(event,'button') and getattr(event,'button')
@@ -501,7 +504,7 @@ class IngredientAndPantryList:
         debug("popup_pan_menu (self, tv, *args):",5)
         self.tv = tv
         if not event:
-            event = gtk.get_current_event()
+            event = Gtk.get_current_event()
         t = (event and hasattr(event,'time') and getattr(event,'time')
                 or 0)
         btn = (event and hasattr(event,'button') and getattr(event,'button')
@@ -537,13 +540,13 @@ class ShopGui (ShoppingList, plugin_loader.Pluggable, IngredientAndPantryList):
     def __init__ (self):
         IngredientAndPantryList.__init__(self)
         ShoppingList.__init__(self)
-        self.prefs = prefs.get_prefs()
+        self.prefs = prefs.Prefs.instance()
         self.conf = []
-        self.w = gtk.Window(); self.main = gtk.VBox()
+        self.w = Gtk.Window(); self.main = Gtk.VBox()
         self.w.set_title(_('Shopping List'))
         self.w.set_default_size(800,600)
         self.w.connect('delete-event',self.hide)
-        from GourmetRecipeManager import get_application
+        from .GourmetRecipeManager import get_application
         self.setup_ui_manager()
         self.setup_actions()
         self.setup_main()
@@ -573,30 +576,33 @@ class ShopGui (ShoppingList, plugin_loader.Pluggable, IngredientAndPantryList):
     # Create interface...
 
     def setup_ui_manager (self):
-        self.ui_manager = gtk.UIManager()
+        self.ui_manager = Gtk.UIManager()
         self.ui_manager.add_ui_from_string(ui_string)
 
     def setup_main (self):
         mb = self.ui_manager.get_widget('/ShoppingListMenuBar')
-        self.main.pack_start(mb,fill=False,expand=False)
+        # help(self.main)
+        # pack_start(self, child:Gtk.Widget, expand:bool, fill:bool, padding:int)
+        self.main.pack_start(mb,False,False,0)
         ttb = self.ui_manager.get_widget('/ShoppingListTopToolBar')
-        self.main.pack_start(ttb,fill=False,expand=False)
-        self.vp = gtk.VPaned(); self.vp.show(); self.vp.set_position(150)
+        self.main.pack_start(ttb,False,False,0)
+        self.vp = Gtk.VPaned(); self.vp.show(); self.vp.set_position(150)
         self.create_rtree()
         self.top_frame = setup_frame_w_accel_label(_('_Recipes'),self.rectree)
         self.top_frame.add(setup_sw(self.rectree)); self.top_frame.show()
         self.vp.add1(self.top_frame)
-        vb = gtk.VBox(); vb.show()
+        vb = Gtk.VBox(); vb.show()
         self.vp.add2(vb)
         slatb = self.ui_manager.get_widget('/ShoppingListActionToolBar'); slatb.show()
-        vb.pack_start(slatb,expand=False,fill=False)
+        vb.pack_start(slatb,False,False,0)
         self.setup_add_box()
-        vb.pack_start(self.add_box,expand=False,fill=False)
+        vb.pack_start(self.add_box,False,False,0)
         self.setup_cat_box()
-        vb.pack_start(self.cat_box,expand=False,fill=False)
-        self.hp = self.setup_paned_view(); self.hp.show()
-        vb.pack_start(self.hp)
-        self.main.pack_start(self.vp); self.vp.show()
+        vb.pack_start(self.cat_box,False,False,0)
+        self.hp = self.setup_paned_view()
+        self.hp.show()
+        vb.pack_start(self.hp, True, True, 0)
+        self.main.pack_start(self.vp, True, True, 0); self.vp.show()
         vb.show()
         self.w.add(self.main)
         self.main.show()
@@ -604,81 +610,81 @@ class ShopGui (ShoppingList, plugin_loader.Pluggable, IngredientAndPantryList):
 
     def setup_add_box (self):
         # Setup add-ingredient widget
-        self.add_box = gtk.HBox()
-        self.add_entry = gtk.Entry()
-        add_label = gtk.Label(_('_Add items:')); add_label.set_use_underline(True)
+        self.add_box = Gtk.HBox()
+        self.add_entry = Gtk.Entry()
+        add_label = Gtk.Label(label=_('_Add items:')); add_label.set_use_underline(True)
         add_label.set_mnemonic_widget(self.add_entry)
-        self.add_box.pack_start(add_label,expand=False,fill=False); add_label.show()
-        self.add_box.pack_start(self.add_entry); self.add_entry.show()
-        self.add_button = gtk.Button(stock=gtk.STOCK_ADD)
-        self.add_box.pack_start(self.add_button,expand=False,fill=False); self.add_button.show()
+        self.add_box.pack_start(add_label,False,False,0); add_label.show()
+        self.add_box.pack_start(self.add_entry, True, True, 0); self.add_entry.show()
+        self.add_button = Gtk.Button(stock=Gtk.STOCK_ADD)
+        self.add_box.pack_start(self.add_button,False,False,0); self.add_button.show()
         self.add_entry.connect('activate',self.item_added)
         self.add_button.connect('clicked',self.item_added)
 
     def get_catmodel (self):
         if hasattr(self,'catmodel'): return self.catmodel
         else:
-            self.catmodel = gtk.ListStore(str)
+            self.catmodel = Gtk.ListStore(str)
             return self.catmodel
 
     def setup_cat_box (self):
         # Setup change-category widget
-        self.cat_box = gtk.HBox()  # ; self.cat_box.set_spacing(6)
-        self.cat_cbe = gtk.ComboBoxEntry()
+        self.cat_box = Gtk.HBox()  # ; self.cat_box.set_spacing(6)
+        self.cat_cbe = Gtk.ComboBox.new_with_entry()
         self.cat_cbe.set_model(self.get_catmodel())
-        self.cat_cbe.set_text_column(0)
-        self.cat_entry = self.cat_cbe.child
-        self.cat_button = gtk.Button(stock=gtk.STOCK_APPLY)
-        self.cat_label = gtk.Label('_Category: '); self.cat_label.set_use_underline(True)
+        self.cat_cbe.set_entry_text_column(0)
+        self.cat_entry = self.cat_cbe.get_child()
+        self.cat_button = Gtk.Button(stock=Gtk.STOCK_APPLY)
+        self.cat_label = Gtk.Label(label='_Category: '); self.cat_label.set_use_underline(True)
         self.cat_label.set_mnemonic_widget(self.cat_entry)
-        comp = gtk.EntryCompletion()
+        comp = Gtk.EntryCompletion()
         comp.set_model(self.get_catmodel()); comp.set_text_column(0)
         self.cat_entry.set_completion(comp)
-        self.cat_box.pack_start(self.cat_label,expand=False,fill=False); self.cat_label.show()
-        self.cat_box.pack_start(self.cat_cbe); self.cat_cbe.show()
-        self.cat_box.pack_start(self.cat_button,expand=False,fill=False); self.cat_button.show()
+        self.cat_box.pack_start(self.cat_label,False,False,0); self.cat_label.show()
+        self.cat_box.pack_start(self.cat_cbe, True, True, 0); self.cat_cbe.show()
+        self.cat_box.pack_start(self.cat_button,False,False,0); self.cat_button.show()
         self.cat_entry.connect('activate',self.category_changed)
         self.cat_button.connect('clicked',self.category_changed)
 
     def setup_actions (self):
-        self.mainActionGroup = gtk.ActionGroup('MainActions')
-        self.recipeListActions = gtk.ActionGroup('RecipeListActions')
+        self.mainActionGroup = Gtk.ActionGroup(name='MainActions')
+        self.recipeListActions = Gtk.ActionGroup(name='RecipeListActions')
         self.recipeListActions.add_actions([
-            ('RemoveRecipes',gtk.STOCK_REMOVE,_('Remove Recipes'),
+            ('RemoveRecipes',Gtk.STOCK_REMOVE,_('Remove Recipes'),
              '<Control>Delete',_('Remove recipes from shopping list'),
              self.clear_recipes,
              )])
         self.mainActionGroup.add_actions([
             ('Edit',None,_('_Edit')),
             ('Save',           # name
-             gtk.STOCK_SAVE,   # stock
+             Gtk.STOCK_SAVE,   # stock
              None,             # text
              None,             # key-command
              None,             # tooltip
              self.save         # callback
              ),
             ('Print',          # name
-             gtk.STOCK_PRINT,  # stock
+             Gtk.STOCK_PRINT,  # stock
              None,             # text
              '<Ctrl>P',        # key-command
              None,             # tooltip
              self.printList    # callback
              ),
             ('Close',          # name
-             gtk.STOCK_CLOSE,  # stock
+             Gtk.STOCK_CLOSE,  # stock
              None,             # text
              None,             # key-command
              None,             # tooltip
              self.hide         # callback
              ),
             ('File',None,_('_File')),
-            ('Help',gtk.STOCK_HELP,_('_Help'),None,None,
+            ('Help',Gtk.STOCK_HELP,_('_Help'),None,None,
              lambda *args: de.show_faq(os.path.join(doc_base,'FAQ'),jump_to='Shopping')),
             ('HelpMenu',None,_('_Help')),
         ])
         self.mainActionGroup.add_toggle_actions([
             ('AddNewItems',
-             gtk.STOCK_ADD,
+             Gtk.STOCK_ADD,
              _('Add items'),
              '<Ctrl>plus',
              _('Add arbitrary items to shopping list'),
@@ -710,7 +716,7 @@ class ShopGui (ShoppingList, plugin_loader.Pluggable, IngredientAndPantryList):
         we don't ask our user."""
         debug("getOptionalIngDic (ivw):",5)
         # vw = ivw.select(optional=True)
-        vw = filter(lambda r: r.optional==True, ivw)
+        vw = [r for r in ivw if r.optional==True]
         # optional_mode: 0==ask, 1==add, -1==dont add
         optional_mode=prefs.get('shop_handle_optional',0)
         if optional_mode:
@@ -739,15 +745,15 @@ class ShopGui (ShoppingList, plugin_loader.Pluggable, IngredientAndPantryList):
     def create_rtree (self):
         debug("create_rtree (self):",5)
         self.rmodel = self.create_rmodel()
-        self.rectree = gtk.TreeView(self.rmodel)
+        self.rectree = Gtk.TreeView(self.rmodel)
         # self.glade.signal_connect('ingmen_pantry',self.add_selection_to_pantry)
         # self.glade.signal_connect('panmen_remove',self.rem_selection_from_pantry)
         self.rectree.set_model(self.rmodel)
-        renderer = gtk.CellRendererText()
+        renderer = Gtk.CellRendererText()
         # renderer.set_property('editable',True)
         # renderer.connect('edited',tst)
-        titl = gtk.TreeViewColumn(_("Title"),renderer,text=1)
-        mult = gtk.TreeViewColumn(_("x"),renderer,text=2)
+        titl = Gtk.TreeViewColumn(_("Title"),renderer,text=1)
+        mult = Gtk.TreeViewColumn(_("x"),renderer,text=2)
         self.rectree.append_column(titl)
         self.rectree.append_column(mult)
         titl.set_resizable(True)
@@ -756,14 +762,14 @@ class ShopGui (ShoppingList, plugin_loader.Pluggable, IngredientAndPantryList):
         mult.set_resizable(True)
         mult.set_clickable(True)
         mult.set_reorderable(True)
-        self.rectree.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
+        self.rectree.get_selection().set_mode(Gtk.SelectionMode.MULTIPLE)
         self.rectree.connect('row-activated',self.rectree_activated_cb)
         self.rectree.show()
 
     def create_rmodel (self):
         debug("create_rmodel (self):",5)
-        mod = gtk.TreeStore(gobject.TYPE_PYOBJECT, gobject.TYPE_STRING, gobject.TYPE_STRING)
-        for r,mult in self.recs.values():
+        mod = Gtk.TreeStore(GObject.TYPE_PYOBJECT, GObject.TYPE_STRING, GObject.TYPE_STRING)
+        for r,mult in list(self.recs.values()):
             iter = mod.append(None)
             mod.set_value(iter,0,r)
             mod.set_value(iter,1,r.title)
@@ -772,7 +778,7 @@ class ShopGui (ShoppingList, plugin_loader.Pluggable, IngredientAndPantryList):
 
     def rectree_activated_cb (self, tv, path, vc):
         rec = tv.get_model()[path][0]
-        from GourmetRecipeManager import get_application
+        from .GourmetRecipeManager import get_application
         get_application().open_rec_card(rec)
 
     # End UI Set-up
@@ -801,7 +807,7 @@ class ShopGui (ShoppingList, plugin_loader.Pluggable, IngredientAndPantryList):
         last_val = -100
         while iter:
             cat = mod.get_value(iter,0)
-            if self.sh.catorder_dic.has_key(cat):
+            if cat in self.sh.catorder_dic:
                 val = self.sh.catorder_dic[cat]
             else:
                 val = 0
@@ -812,7 +818,7 @@ class ShopGui (ShoppingList, plugin_loader.Pluggable, IngredientAndPantryList):
             iter = mod.iter_next(iter)
 
     def reset (self):
-        self.grabIngsFromRecs(self.recs.values(),self.extras)
+        self.grabIngsFromRecs(list(self.recs.values()),self.extras)
         self.resetSL()
         self.rectree.set_model(self.create_rmodel())
 
@@ -847,12 +853,13 @@ class ShopGui (ShoppingList, plugin_loader.Pluggable, IngredientAndPantryList):
                                                          "%s %s"%(_('Shopping List'),
                                                                   time.strftime("%x").replace("/","-"),
                                                                   )),
-                                   action=gtk.FILE_CHOOSER_ACTION_SAVE,
+                                   action=Gtk.FileChooserAction.SAVE,
                                    ))
 
     def printList (self, *args):
         debug("printList (self, *args):",0)
-        self._printList(get_print_manager().get_simple_writer(),dialog_parent=self.w)
+        self._printList(PrintManager.instance().get_simple_writer(),
+                        dialog_parent=self.w)
 
     def add_item (self, toggleWidget):
         if toggleWidget.get_active():
@@ -879,7 +886,7 @@ class ShopGui (ShoppingList, plugin_loader.Pluggable, IngredientAndPantryList):
         self.extras.append([dct.get('amount'),dct.get('unit'),dct.get('item')])
         # Make sure it doesn't end up in the pantry...
         self.sh.remove_from_pantry(dct.get('item'))
-        self.grabIngsFromRecs(self.recs.values(),self.extras)
+        self.grabIngsFromRecs(list(self.recs.values()),self.extras)
         self.resetSL()
         self.add_entry.set_text('')
 
@@ -901,9 +908,9 @@ class OptionalIngDialog (de.ModalDialog):
         self.vw=vw
         self.ret = {}
         self.create_tree()
-        self.cb = gtk.CheckButton("Always use these settings")
+        self.cb = Gtk.CheckButton("Always use these settings")
         self.cb.set_active(prefs.get('remember_optionals_by_default',False))
-        alignment = gtk.Alignment()
+        alignment = Gtk.Alignment.new()
         alignment.set_property('xalign',1.0)
         alignment.add(self.cb)
         self.vbox.add(alignment)
@@ -914,11 +921,11 @@ class OptionalIngDialog (de.ModalDialog):
     def create_model (self):
         """Create the TreeModel to show optional ingredients."""
         debug("create_model (self):",5)
-        self.mod = gtk.TreeStore(gobject.TYPE_PYOBJECT,  #the ingredient obj
-                                 gobject.TYPE_STRING,    #amount
-                                 gobject.TYPE_STRING,    #unit
-                                 gobject.TYPE_STRING,    #item
-                                 gobject.TYPE_BOOLEAN)   #include
+        self.mod = Gtk.TreeStore(GObject.TYPE_PYOBJECT,  #the ingredient obj
+                                 GObject.TYPE_STRING,    #amount
+                                 GObject.TYPE_STRING,    #unit
+                                 GObject.TYPE_STRING,    #item
+                                 GObject.TYPE_BOOLEAN)   #include
         for i in self.vw:
             iter=self.mod.append(None)
             self.mod.set_value(iter,0,i)
@@ -939,17 +946,17 @@ class OptionalIngDialog (de.ModalDialog):
         """Create our TreeView and populate it with columns."""
         debug("create_tree (self):",5)
         self.create_model()
-        self.tree = gtk.TreeView(self.mod)
-        txtr = gtk.CellRendererText()
-        togr = gtk.CellRendererToggle()
+        self.tree = Gtk.TreeView(self.mod)
+        txtr = Gtk.CellRendererText()
+        togr = Gtk.CellRendererToggle()
         togr.set_property('activatable',True)
         togr.connect('toggled',self.toggle_ing_cb)
         # togr.start_editing()
         for n,t in [[1,'Amount'],[2,'Unit'],[3,'Item']]:
-            col = gtk.TreeViewColumn(t,txtr,text=n)
+            col = Gtk.TreeViewColumn(t,txtr,text=n)
             col.set_resizable(True)
             self.tree.append_column(col)
-        bcol = gtk.TreeViewColumn('Add to Shopping List',
+        bcol = Gtk.TreeViewColumn('Add to Shopping List',
                                   togr, active=4)
         self.tree.append_column(bcol)
         self.vbox.add(self.tree)
@@ -966,7 +973,7 @@ class OptionalIngDialog (de.ModalDialog):
 
     def run (self):
         self.show()
-        if self.modal: gtk.main()
+        if self.modal: Gtk.main()
         if self.cb.get_active() and self.ret:
             # if we are saving our settings permanently...
             # we add ourselves to the shopoptional attribute
@@ -993,21 +1000,21 @@ if __name__ == '__main__':
             rm = recipeManager.get_recipe_manager()
             recs = [(r,1) for r in rm.fetch_all(rm.recipe_table)[:2]]
             self.data,self.pantry = self.grabIngsFromRecs(recs)
-            self.w = gtk.Window(); self.w.set_title(_('Shopping List'))
+            self.w = Gtk.Window(); self.w.set_title(_('Shopping List'))
             self.w.add(self.setup_paned_view())
             self.w.show_all()
-            self.w.connect('delete-event',gtk.main_quit)
+            self.w.connect('delete-event',Gtk.main_quit)
     # tst = TestIngredientAndPantryList()
     sg = ShopGui()
     rm = recipeManager.get_recipe_manager()
     recs = [(r,1) for r in rm.fetch_all(rm.recipe_table)[:2]]
     for r,mult in recs:
         sg.addRec(r,mult)
-    gtk.main()
+    Gtk.main()
 
 
 
     # sg = ShopGui()
     # sg.show()
-    sg.w.connect('delete-event',gtk.main_quit)
-    gtk.main()
+    sg.w.connect('delete-event',Gtk.main_quit)
+    Gtk.main()

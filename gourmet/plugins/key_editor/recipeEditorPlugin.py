@@ -1,8 +1,8 @@
+from gi.repository import GObject, Gtk, Pango
 from gourmet.plugin import RecEditorModule, RecEditorPlugin, IngredientControllerPlugin
 from gourmet.plugin_loader import PRE,POST
-import gtk, gobject, pango
 from gourmet.reccard import IngredientEditorModule, RecRef
-import keyEditorPluggable
+from . import keyEditorPluggable
 from gettext import gettext as _
 
 ING = 0
@@ -32,21 +32,21 @@ class IngredientKeyEditor (RecEditorModule):
         pass
 
     def setup_main_interface (self):
-        self.main = gtk.VBox()
-        l = gtk.Label()
+        self.main = Gtk.VBox()
+        l = Gtk.Label()
         l.set_markup('''<b>%s</b>\n<i>%s</i>'''%(
             _('Ingredient Keys'),
             _('Ingredient Keys are normalized ingredient names used for shopping lists and for calculations.')
             )
                      )
         self.main.pack_start(l,expand=False,fill=False)
-        sw = gtk.ScrolledWindow(); sw.set_policy(gtk.POLICY_AUTOMATIC,gtk.POLICY_AUTOMATIC)
-        self.main.pack_start(sw)
-        self.extra_widget_table = gtk.Table()
+        sw = Gtk.ScrolledWindow(); sw.set_policy(Gtk.PolicyType.AUTOMATIC,Gtk.PolicyType.AUTOMATIC)
+        self.main.pack_start(sw, True, True, 0)
+        self.extra_widget_table = Gtk.Table()
         ew_index = 1
         self.main.pack_start(self.extra_widget_table,expand=False,fill=False)
-        self.tv = gtk.TreeView()
-        self.tv.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
+        self.tv = Gtk.TreeView()
+        self.tv.get_selection().set_mode(Gtk.SelectionMode.MULTIPLE)
         self.tv.get_selection().connect('changed',
                                         self.treeselection_changed_cb)
         self.setup_model()
@@ -55,16 +55,16 @@ class IngredientKeyEditor (RecEditorModule):
         sw.add(self.tv)
         self.main.show_all()
         self.update_from_database()
-        ingredientEditorModule = filter(lambda m: isinstance(m,IngredientEditorModule), self.re.modules)[0]
+        ingredientEditorModule = [m for m in self.re.modules if isinstance(m,IngredientEditorModule)][0]
         ingredientEditorModule.connect('saved',lambda *args: self.update_from_database())
         ingredientEditorModule.connect('toggle-edited', self.update_from_ingredient_editor_cb)
         self.setup_action_groups()
         # Set up extra widgets
         plugin_manager = keyEditorPluggable.get_key_editor_plugin_manager()
-        apply_button = gtk.Button(stock=gtk.STOCK_APPLY)
+        apply_button = Gtk.Button(stock=Gtk.STOCK_APPLY)
         for plugin in plugin_manager.plugins:
             if plugin.offers_edit_widget():
-                title_label = gtk.Label(plugin.title)
+                title_label = Gtk.Label(label=plugin.title)
                 widget = plugin.setup_edit_widget()
                 self.extra_widget_table.attach(title_label,0,1,ew_index,ew_index+1)
                 self.extra_widget_table.attach(widget,1,2,ew_index,ew_index+1)
@@ -80,7 +80,7 @@ class IngredientKeyEditor (RecEditorModule):
                                  lambda *args: self.tv.queue_draw())
 
     def setup_action_groups(self):
-        self.keyEditorActionGroup = gtk.ActionGroup('RecKeyEditorActionGroup')
+        self.keyEditorActionGroup = Gtk.ActionGroup(name='RecKeyEditorActionGroup')  # noqa
         self.keyEditorActionGroup.add_actions([
             ('GuessKeys',None,_('Guess keys'),
              None,_('Guess best values for all ingredient keys based on values already in your database'),
@@ -96,23 +96,23 @@ class IngredientKeyEditor (RecEditorModule):
         self.action_groups.append(self.keyEditorActionGroup)
 
     def setup_tree (self):
-        item_renderer = gtk.CellRendererText();
+        item_renderer = Gtk.CellRendererText();
         item_renderer.set_property('editable',True)
-        item_col = gtk.TreeViewColumn(_('Item'),item_renderer,text=1)
+        item_col = Gtk.TreeViewColumn(_('Item'),item_renderer,text=1)
         item_col.set_expand(True)
-        key_renderer = gtk.CellRendererCombo()
+        key_renderer = Gtk.CellRendererCombo()
         key_renderer.set_property('editable',True)
         key_renderer.connect('editing-started',self.start_keyedit_cb)
         key_renderer.connect('edited',self.key_edited_cb)
-        key_renderer.set_property('mode',gtk.CELL_RENDERER_MODE_EDITABLE)
+        key_renderer.set_property('mode',Gtk.CellRendererMode.EDITABLE)
         key_renderer.set_property('sensitive',True)
-        key_col = gtk.TreeViewColumn(_('Key'),key_renderer,text=2)
+        key_col = Gtk.TreeViewColumn(_('Key'),key_renderer,text=2)
         key_col.set_expand(True)
         self.renderers = [key_renderer,item_renderer]
         self.tv.append_column(item_col)
         self.tv.append_column(key_col)
         for r in  key_renderer,item_renderer:
-            r.set_property('wrap-mode',pango.WRAP_WORD)
+            r.set_property('wrap-mode',Pango.WrapMode.WORD)
             r.set_property('wrap-width',200)
         self.tv.connect('check-resize',self.resize_event_cb)
         self.tv.connect('size-allocate',self.tv_size_allocate_cb)
@@ -127,8 +127,8 @@ class IngredientKeyEditor (RecEditorModule):
         for col in self.tv.get_columns():
             renderers = col.get_cell_renderers()
             for r in renderers:
-                if isinstance(r,gtk.CellRendererText):
-                    r.set_property('wrap-mode',pango.WRAP_WORD)
+                if isinstance(r,Gtk.CellRendererText):
+                    r.set_property('wrap-mode',Pango.WrapMode.WORD)
                     r.set_property('wrap-width',col.get_width())
 
     def resize_event_cb (self, widget, event):
@@ -141,14 +141,14 @@ class IngredientKeyEditor (RecEditorModule):
         indices = path_string.split(':')
         path = tuple( map(int, indices))
         item = self.model[path][ITM]
-        mod = gtk.ListStore(str)
+        mod = Gtk.ListStore(str)
         for key in self.rg.rd.key_search(item):
             mod.append((key,))
         renderer.set_property('model',mod)
         renderer.set_property('text-column',0)
-        if isinstance(cbe,gtk.ComboBoxEntry):
-            entry = cbe.child
-            completion = gtk.EntryCompletion()
+        if isinstance(cbe,Gtk.ComboBoxEntry):
+            entry = cbe.get_child()
+            completion = Gtk.EntryCompletion()
             completion.set_model(mod); completion.set_text_column(0)
             entry.set_completion(completion)
         #mod = renderer.get_property
@@ -175,7 +175,7 @@ class IngredientKeyEditor (RecEditorModule):
             p.selection_changed(keys)
 
     def setup_model (self):
-        self.model = gtk.ListStore(gobject.TYPE_PYOBJECT,str,str)
+        self.model = Gtk.ListStore(GObject.TYPE_PYOBJECT,str,str)
 
     def update_from_database (self):
         ings = self.rg.rd.get_ings(self.current_rec)
@@ -252,7 +252,7 @@ class KeyEditorIngredientControllerPlugin (IngredientControllerPlugin):
 
     def get_extra_ingattributes_post_hook (self, retval, ic, ing_obj, ingdict):
         recipe_editor = ic.ingredient_editor_module.re
-        key_editor = filter(lambda m: isinstance(m,IngredientKeyEditor), recipe_editor.modules)[0]
+        key_editor = [m for m in recipe_editor.modules if isinstance(m,IngredientKeyEditor)][0]
         ingkey = key_editor.get_key_for_object(ing_obj)
         if ingkey:
             ingdict['ingkey'] = ingkey

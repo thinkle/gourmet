@@ -1,5 +1,5 @@
 import xml.sax, xml.sax.saxutils, re, sys
-import importer
+from . import importer
 from gourmet.gdebug import TimeAction
 from gourmet.recipeManager import get_recipe_manager # for getting out database...
 from gourmet.threadManager import SuspendableThread
@@ -56,8 +56,11 @@ class Converter (importer.Importer):
     def do_run (self):
         # count the recipes in the file
         t = TimeAction("rxml_to_metakit.run counting lines",0)
-        if isinstance(self.fn, basestring):
-            f=file(self.fn,'rb')
+        if isinstance(self.fn, str):
+            # Latin-1 can decode any bytes, letting us open ASCII-compatible
+            # text files and sniff their contents - e.g. for XML tags -
+            # without worrying about their real text encoding.
+            f = open(self.fn, 'r', encoding='latin1')
         else:
             f=self.fn
         recs = 0
