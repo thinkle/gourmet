@@ -11,7 +11,7 @@ Before you start development, you should first build localized *.mo and
 *.gourmet-plugin files within a build/ subdirectory of the source tree by
 running
 
-    python3 setup.py build_i18n -m
+    python3 setup.py build_i18n
 
 You can then install Gourmet in edit mode so:
 
