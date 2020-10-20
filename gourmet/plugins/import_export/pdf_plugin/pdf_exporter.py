@@ -95,7 +95,7 @@ class Star (platypus.Flowable):
         inner = False # Start on top
         is_origin = True
         #print 'Drawing star with radius',outer_length,'(moving origin ',origin,')'
-        for theta in range(0,360,360/(points*2)):
+        for theta in range(0, 360, 360 // (points * 2)):
             if 0 < theta < 180: continue
             if inner: r = inner_length
             else: r = outer_length
