@@ -607,7 +607,7 @@ class PdfExporter (exporter.exporter_mult, PdfWriter):
         # condbreak and a head...
         ings = self.txt[2:]
         if len(ings) > 4:
-            half = (len(ings) / 2)
+            half = len(ings) // 2
             first_half = ings[:-half]
             second_half = ings[-half:]
             t = platypus.Table(
