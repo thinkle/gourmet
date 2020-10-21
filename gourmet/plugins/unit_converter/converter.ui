@@ -303,7 +303,7 @@
                                           </packing>
                                         </child>
                                         <child>
-                                          <object class="GtkComboBox" id="itemComboBox">
+                                          <object class="GtkComboBoxText" id="itemComboBox">
                                             <property name="visible">True</property>
                                             <signal handler="itemChanged" last_modification_time="Thu, 16 Sep 2004 23:44:39 GMT" name="changed"/>
                                             <property name="model">model1</property>
