@@ -131,3 +131,16 @@ for filename, stock_id, label, modifier, keyval in [
      ]:
     add_icon(os.path.join(imagedir, filename), stock_id,
              label, modifier, keyval)
+
+
+# Color scheme preference
+LINK_COLOR = 'blue'
+STARS = 'blue'
+
+style = Gtk.StyleContext.new()
+_, bg_color = style.lookup_color('bg_color')
+_, fg_color = style.lookup_color('fg_color')
+
+if sum(fg_color) > sum(bg_color):  # background is darker
+    LINK_COLOR = 'deeppink'
+    STARS = 'gold'
