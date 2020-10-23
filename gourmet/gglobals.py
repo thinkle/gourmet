@@ -135,7 +135,7 @@ for filename, stock_id, label, modifier, keyval in [
 
 # Color scheme preference
 LINK_COLOR = 'blue'
-STARS = 'blue'
+star_color = 'blue'
 
 style = Gtk.StyleContext.new()
 _, bg_color = style.lookup_color('bg_color')
@@ -143,4 +143,8 @@ _, fg_color = style.lookup_color('fg_color')
 
 if sum(fg_color) > sum(bg_color):  # background is darker
     LINK_COLOR = 'deeppink'
-    STARS = 'gold'
+    star_color = 'gold'
+
+NO_STAR = Path(__file__).parent / 'data' / 'images' / 'no_star.png'
+HALF_STAR = Path(__file__).parent / 'data' / 'images' / f'half_{star_color}_star.png'  # noqa
+FULL_STAR = Path(__file__).parent / 'data' / 'images' / f'{star_color}_star.png'  # noqa
