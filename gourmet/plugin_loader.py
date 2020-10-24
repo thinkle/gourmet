@@ -1,31 +1,33 @@
-PRE = 0
-POST = 1
+import glob
+import os.path
+import sys
+from typing import List
+
 from gourmet import gglobals
-import os.path, glob, sys
+from gourmet.prefs import Prefs
 from . import plugin
 from .gdebug import debug
 from .defaults.defaults import loc
 
+PRE = 0
+POST = 1
+
 try:
-    current_path = os.path.split(os.path.join(os.getcwd(),__file__))[0]
-except:
+    current_path = os.path.split(os.path.join(os.getcwd(), __file__))[0]
+except IndexError:
     current_path = ''
 
-# This module provides a base class for loading plugins. Everything
-# that is plug-in-able in Gourmet should subclass the plugin loader.
-
-# Everything that is a plugin needs to provide a python module with a
-# plugins attribute containing the plugin classes that make up the
-# plugin. In addition, we need a .gourmet-plugin configuration file
-# pointing to the module (with the module parameter) and giving the
-# name and comment for the plugin.
 
 class MasterLoader:
+    """This module provides a base class for loading plugins. Everything
+    that is plug-in-able in Gourmet should subclass the plugin loader.
 
-    # Singleton design pattern lifted from:
-    # http://www.python.org/workshops/1997-10/proceedings/savikko.html
-    # to get an instance, use the convenience function
-    # MasterLoader.instance()
+    Everything that is a plugin needs to provide a python module with a plugins
+    attribute containing the plugin classes that make up the plugin.
+    In addition, we need a .gourmet-plugin configuration file pointing to the
+    module (with the module parameter) and giving the name and comment for the
+    plugin.
+    """
     __single = None
     default_active_plugin_sets = [
         # tools
@@ -46,7 +48,6 @@ class MasterLoader:
         'mycookbook_plugin',
         'epub_plugin',
         ]
-    active_plugin_filename = os.path.join(gglobals.gourmetdir,'active_plugins')
 
     @classmethod
     def instance(cls):
@@ -55,7 +56,7 @@ class MasterLoader:
 
         return MasterLoader.__single
 
-    def __init__ (self):
+    def __init__(self):
         self.plugin_directories = [os.path.join(gglobals.gourmetdir,'plugins'), # user plug-ins
                                    os.path.join(current_path,'plugins'), # pre-installed plugins
                                    os.path.join(current_path,'plugins','import_export'), # pre-installed exporter plugins
@@ -65,6 +66,7 @@ class MasterLoader:
         self.errors = {}
         self.pluggables_by_class = {}
         self.load_plugin_directories()
+        self.active_plugin_sets: List[str] = []
         self.load_active_plugins()
 
     def load_plugin_directories (self):
@@ -82,16 +84,14 @@ class MasterLoader:
                 else:
                     self.available_plugin_sets[plugin_set.module] = plugin_set
 
-    def load_active_plugins (self):
-        """Activate plugins that have been activated on startup
-        """
-        if os.path.exists(self.active_plugin_filename):
-            infi = open(self.active_plugin_filename,'r')
-            self.active_plugin_sets = [l.strip() for l in infi.readlines()]
-        else:
-            self.active_plugin_sets = self.default_active_plugin_sets[:]
+    def load_active_plugins(self):
+        """Enable plugins that were previously saved to the preferences"""
+        prefs = Prefs.instance()
+        self.active_plugin_sets = prefs.get('plugins',
+                                           self.default_active_plugin_sets[:])
         self.active_plugins = []
         self.instantiated_plugins = {}
+
         for p in self.active_plugin_sets:
             if p in self.available_plugin_sets:
                 try:
@@ -105,25 +105,12 @@ class MasterLoader:
             else:
                 print('Plugin ',p,'not found')
 
+    def save_active_plugins(self):
+        prefs = Prefs.instance()
+        prefs['plugins'] = self.active_plugin_sets
+        prefs.save()
 
-    def save_active_plugins (self):
-        # If we have not changed from the defaults and no
-        # configuration file exists, don't bother saving one.
-        if ((self.active_plugin_sets != self.default_active_plugin_sets)
-            or
-            os.path.exists(self.active_plugin_filename)):
-            ofi = open(self.active_plugin_filename,'w')
-            saved = [] # keep track of what we've written to avoid
-                       # saving a plugin twice
-            for plugin_set in self.active_plugin_sets:
-                if not plugin_set in saved:
-                    ofi.write(plugin_set+'\n')
-                saved.append(plugin_set)
-            ofi.close()
-        #elif self.active_plugin_sets == self.default_active_plugin_sets:
-        #    print 'No change to plugins, nothing to save.'
-
-    def check_dependencies (self, plugin_set):
+    def check_dependencies(self, plugin_set):
         if plugin_set.dependencies:
             missing = []
             depends = plugin_set.dependencies or []
@@ -219,8 +206,6 @@ class MasterLoader:
     def unregister_pluggable (self, pluggable, klass):
         self.pluggables_by_class[klass].remove(pluggable)
 
-def get_master_loader ():
-    return MasterLoader.instance()
 
 class PluginSet:
     """A lazy-loading set of plugins.

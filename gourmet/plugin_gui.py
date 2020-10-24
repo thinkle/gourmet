@@ -1,18 +1,20 @@
-from . import plugin_loader
-from gi.repository import GObject, Gtk
-from .gtk_extras import dialog_extras as de
+from typing import Any, List, Tuple
 from xml.sax.saxutils import escape
+
 from gettext import gettext as _
-from typing import Any, Optional
+from gi.repository import GObject, Gtk
+
+from .plugin_loader import DependencyError, MasterLoader
+from .gtk_extras import dialog_extras as de
+
 
 class PluginChooser:
 
     def __init__ (self):
-        self.loader = plugin_loader.get_master_loader()
+        self.loader = MasterLoader.instance()
         self.window = Gtk.Dialog()
         self.notebook = Gtk.Notebook()
         for cat,plugins in list(self.categorize_plugins().items()):
-            #self.make_treeview(self.loader.active_plugin_sets)
             plugin_view = self.make_treeview(plugins)
             lab = Gtk.Label(label=cat); lab.show()
             self.notebook.append_page(plugin_view,lab)
@@ -50,20 +52,19 @@ class PluginChooser:
             categorized[cat].append((module_name,plugin_set))
         return categorized
 
-    def make_list_store (self, plugin_list):
-        ls = Gtk.ListStore(bool, # activated
-                           GObject.TYPE_PYOBJECT, # the plugin-set object with all other info
-                           )
-        for module_name,plugin_set in plugin_list: #self.loader.available_plugin_sets.items():
-            ls.append(
-                (module_name in self.loader.active_plugin_sets,
-                 plugin_set)
-                )
+    def make_list_store(self, plugin_list: List[Tuple[str, 'PluginSet']]) -> Gtk.ListStore:
+        ls = Gtk.ListStore(bool,  # plugin activated
+                           GObject.TYPE_PYOBJECT)  # plugin and its info
+        for module_name, plugin_set in plugin_list:
+            ls.append((module_name in self.loader.active_plugin_sets, plugin_set))
         return ls
 
     @staticmethod
-    def plugin_description_formatter(col: Gtk.TreeViewColumn, renderer: Gtk.CellRendererText,
-                                     mod: Gtk.ListStore, itr: Gtk.TreeIter, data: Any) -> None:
+    def plugin_description_formatter(col: Gtk.TreeViewColumn,
+                                     renderer: Gtk.CellRendererText,
+                                     mod: Gtk.ListStore,
+                                     itr: Gtk.TreeIter,
+                                     data: Any):
         """ Format plugin name and description in the plugin window
         """
         plugin_set = mod[itr][1]
@@ -107,7 +108,7 @@ class PluginChooser:
             if state:
                 try:
                     self.loader.check_dependencies(plugin_set)
-                except plugin_loader.DependencyError as dep_error:
+                except DependencyError as dep_error:
                     print('Missing dependencies:',dep_error.dependencies)
                     for row in ls:
                         ps = row[1]

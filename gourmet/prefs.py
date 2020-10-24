@@ -21,7 +21,7 @@ class Prefs(dict):
 
         return Prefs.__single
 
-    def __init__(self, filename='guiprefs.toml'):
+    def __init__(self, filename='preferences.toml'):
         super().__init__()
         self.filename = Path(gourmetdir) / filename
         self.set_hooks = []

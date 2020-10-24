@@ -1,12 +1,13 @@
 import tempfile, unittest
+
 from gourmet.backends import db
+from gourmet.plugin_loader import MasterLoader
 
 class DBTest (unittest.TestCase):
     def setUp (self):
         print('Calling setUp')
         # Remove all plugins for testing purposes
-        from gourmet.plugin_loader import get_master_loader
-        ml = get_master_loader()
+        ml = MasterLoader.instance()
         ml.save_active_plugins = lambda *args: True; # Don't save anything we do to plugins
         ml.active_plugins = []
         ml.active_plugin_sets = []
