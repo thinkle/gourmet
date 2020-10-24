@@ -66,15 +66,16 @@ class rec_to_mcb (XmlExporter):
                 self.attrlist_el.appendChild(attr_el)
 
 
-    def write_image (self, image):
+    def write_image(self, image: bytes):
         # write image file to the temp directory
-        imageFilename = unicodedata.normalize('NFKD', str(self.current_title + '.png')).encode('ascii', 'ignore')
-        pic_fullpath = os.path.join(tempfile.gettempdir(),'images',imageFilename)
+        img_fname = f'{self.current_title}.png'
+        pic_fullpath = os.path.join(tempfile.gettempdir(),'images', img_fname)
         result = gourmet.image_utils.bytes_to_image(image)
         result.save(pic_fullpath)
 
         # write imagepath in the xml
-        self.rec_el.appendChild(self.create_text_element('imagepath','images/' + imageFilename))
+        self.rec_el.appendChild(self.create_text_element('imagepath',
+                                                         f'images/{img_fname}'))
 
     def handle_italic (self, chunk): return chunk
     def handle_bold (self, chunk): return chunk
