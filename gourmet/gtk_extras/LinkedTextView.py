@@ -22,6 +22,7 @@
 import re
 from typing import Optional
 from gi.repository import Gdk, GObject, Gtk, Pango
+from gourmet.gglobals import LINK_COLOR
 from gourmet.gtk_extras.pango_buffer import PangoBuffer
 from gourmet.gtk_extras.pango_html import PangoToHtml
 
@@ -29,9 +30,9 @@ from gourmet.gtk_extras.pango_html import PangoToHtml
 class LinkedPangoBuffer(PangoBuffer):
 
     href_regexp = re.compile(r"<a href=['\"]([^'\"]+)['\"][^>]*>(.*?)</a>")
-    url_markup = 'underline="single" color="blue"'
+    url_markup = f'underline="single" color="{LINK_COLOR}"'
     url_props = [('underline', Pango.Underline.SINGLE),
-                 ('foreground-gdk', Gdk.color_parse('blue'))]
+                 ('foreground-gdk', LINK_COLOR)]
     markup_dict = {}
 
     def set_text(self, txt: str) -> None:

@@ -1,13 +1,12 @@
-from gi.repository import Gdk, GdkPixbuf, GObject, Gtk
-import gourmet.gglobals as gglobals
 import os.path
-from gettext import gettext as _
 import tempfile
 
-try:
-    from PIL import Image
-except ImportError:
-    import Image
+from gettext import gettext as _
+from gi.repository import Gdk, GdkPixbuf, GObject, Gtk
+from PIL import Image
+
+import gourmet.gglobals as gglobals
+
 
 PLUS_ONE_KEYS = ['plus',
                  'greater',
@@ -37,24 +36,24 @@ class StarGenerator:
 
     set_image and unset_image must have the same width!"""
 
-    def __init__ (self,
-                    set_image=os.path.join(gglobals.imagedir,'gold_star.png'),
-                    unset_image=os.path.join(gglobals.imagedir,'no_star.png'),
-                    half_image=os.path.join(gglobals.imagedir,'half_gold_star.png'),
-                    #background=(0,0,0,0),
-                    background=0,
-                    size=None,
-                    ):
-        self.set_img   = Image.open(set_image)
-        if size:
-            self.set_img = self.set_img.resize(size)
-        self.unset_img = Image.open(unset_image).resize(self.set_img.size)
-        self.halfset_img = Image.open(half_image).resize(self.set_img.size)
-        #convert to RGBA self.set_img = self.set_img.convert('RGBA')
-        self.set_img = self.set_img.convert('RGBA')
-        self.unset_img = self.unset_img.convert('RGBA')
-        self.halfset_img = self.halfset_img.convert('RGBA')
-        self.width,self.height = self.set_img.size
+    def __init__(self,
+                 set_image=gglobals.FULL_STAR,
+                 unset_image=gglobals.NO_STAR,
+                 half_image=gglobals.HALF_STAR,
+                 background=0,
+                 size=None):
+        set_img = Image.open(set_image)
+
+        if size is not None:
+            set_img = self.set_img.resize(size)
+
+        unset_img = Image.open(unset_image).resize(set_img.size)
+        halfset_img = Image.open(half_image).resize(set_img.size)
+
+        self.set_img = set_img.convert('RGBA')
+        self.unset_img = unset_img.convert('RGBA')
+        self.halfset_img = halfset_img.convert('RGBA')
+        self.width, self.height = self.set_img.size
         self.set_region = self.set_img.crop((0,0,
                                              self.width,
                                              self.height))
