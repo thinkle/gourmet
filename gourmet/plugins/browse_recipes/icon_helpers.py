@@ -7,7 +7,7 @@ from gourmet.image_utils import bytes_to_pixbuf, image_to_pixbuf
 from gourmet.gtk_extras.ratingWidget import star_generator
 
 curdir = os.path.split(__file__)[0]
-ICON_SIZE = 125
+ICON_SIZE = 126
 PREP = 1
 COOK = 2
 

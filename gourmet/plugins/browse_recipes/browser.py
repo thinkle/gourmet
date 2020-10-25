@@ -10,24 +10,25 @@ from gourmet.gtk_extras.ratingWidget import star_generator
 from gourmet.image_utils import bytes_to_pixbuf
 
 from .icon_helpers import (attr_to_icon, get_recipe_image, get_time_slice,
-                           scale_pb)
+                           ICON_SIZE, scale_pb)
 
 curdir = os.path.split(__file__)[0]
 
 
-class RecipeBrowserView (Gtk.IconView):
+class RecipeBrowserView(Gtk.IconView):
 
     __gsignals__ = {
-        'recipe-selected':(GObject.SignalFlags.RUN_LAST,
-                           GObject.TYPE_INT,[GObject.TYPE_INT]),
-        'path-selected':(GObject.SignalFlags.RUN_LAST,
-                         GObject.TYPE_STRING,[GObject.TYPE_STRING])
-        }
+        'recipe-selected': (GObject.SignalFlags.RUN_LAST,
+                            GObject.TYPE_INT, [GObject.TYPE_INT]),
+        'path-selected': (GObject.SignalFlags.RUN_LAST,
+                          GObject.TYPE_STRING, [GObject.TYPE_STRING])
+    }
 
     def __init__(self, rd):
         self.rd = rd
-        Gtk.IconView.__init__(self)
-        self.set_selection_mode(Gtk.SelectionMode.MULTIPLE)
+        super().__init__()
+        self.set_selection_mode(Gtk.SelectionMode.SINGLE)
+        self.set_item_width(ICON_SIZE)
         self.models = {}
         self.set_model()
         self.set_text_column(1)
@@ -64,8 +65,8 @@ class RecipeBrowserView (Gtk.IconView):
             pb = self.get_base_icon(item)
             m.append((item, (REC_ATTR_DIC[item]), pb, None))
 
-    def get_base_icon (self, itm):
-        return attr_to_icon.get(itm, attr_to_icon['category'])
+    def get_base_icon(self, item):
+        return attr_to_icon.get(item, attr_to_icon['category'])
 
     def get_pixbuf (self, attr,val):
         if attr=='category':
