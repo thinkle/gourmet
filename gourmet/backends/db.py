@@ -17,9 +17,9 @@ from sqlalchemy import event, func
 
 from gourmet.gdebug import debug, TimeAction
 import gourmet.gglobals as gglobals
-from gourmet import Undo, keymanager, convert
+from gourmet import Undo, convert, image_utils
 from gourmet.defaults import lang as defaults
-from gourmet import image_utils
+from gourmet.keymanager import KeyManager
 import gourmet.version
 import gourmet.recipeIdentifier as recipeIdentifier
 from gourmet.plugin_loader import Pluggable, pluggable_method
@@ -1877,7 +1877,7 @@ class RecipeManager:
     def __init__ (self, *args, **kwargs):
         debug('recipeManager.__init__()',3)
         self.rd = get_database(*args, **kwargs)
-        self.km = keymanager.get_keymanager(rm=self)
+        self.km = KeyManager.instance(recipe_manager=self)
 
     def __getattr__(self, name):
         # RecipeManager was previously a subclass of RecData.
