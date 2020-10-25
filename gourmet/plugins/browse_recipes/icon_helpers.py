@@ -8,6 +8,8 @@ from gourmet.gtk_extras.ratingWidget import star_generator
 
 curdir = os.path.split(__file__)[0]
 ICON_SIZE = 125
+PREP = 1
+COOK = 2
 
 
 def scale_pb (pb, do_grow=True):
@@ -101,9 +103,9 @@ def get_recipe_image (rec):
             )
     return pb
 
-class PiePixbufGenerator:
 
-    '''Generate Pie-chart style pixbufs representing circles'''
+class PiePixbufGenerator:
+    """Generate Pie-chart style pixbufs representing circles"""
 
     def __init__ (self):
         self.slices = {}
@@ -134,17 +136,6 @@ class PiePixbufGenerator:
 pie_generator = PiePixbufGenerator()
 make_pie_slice = pie_generator.get_image
 get_time_slice = pie_generator.get_time_image
-
-def make_time_icon (text):
-    img = Image.new('RGBA',
-                    (ICON_SIZE,ICON_SIZE),
-                    255 # background
-                    )
-    d = ImageDraw.Draw(img)
-    #Thosed.text(
-
-PREP = 1
-COOK = 2
 
 def make_preptime_icon (preptime):
     return make_time_icon(preptime,mode=PREP)
