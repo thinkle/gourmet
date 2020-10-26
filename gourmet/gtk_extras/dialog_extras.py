@@ -9,7 +9,7 @@ import xml.sax.saxutils
 
 from . import optionTable
 from gourmet.gdebug import debug
-from gourmet.image_utils import make_thumbnail
+from gourmet.image_utils import image_to_pixbuf, make_thumbnail
 
 H_PADDING=12
 Y_PADDING=12
@@ -1126,7 +1126,7 @@ class ImageSelectorDialog (FileSelectorDialog):
             thumbnail = make_thumbnail(uri)
 
         if thumbnail is not None:
-            self.preview.set_from_pixbuf(thumbnail)
+            self.preview.set_from_pixbuf(image_to_pixbuf(thumbnail))
             self.preview.show()
         else:
             self.preview.hide()
