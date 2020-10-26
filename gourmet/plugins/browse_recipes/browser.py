@@ -68,28 +68,30 @@ class RecipeBrowserView(Gtk.IconView):
     def get_base_icon(self, item):
         return attr_to_icon.get(item, attr_to_icon['category'])
 
-    def get_pixbuf (self, attr,val):
+    def get_pixbuf(self, attr: str, val: str) -> GdkPixbuf.Pixbuf:
         if attr=='category':
             tbl = self.rd.recipe_table.join(self.rd.categories_table)
             col = self.rd.categories_table.c.category
-            if hasattr(self,'category_images'):
-                stment = and_(col == val.encode(), self.rd.recipe_table.c.image != None,
+            if hasattr(self, 'category_images'):
+                stment = and_(col == val, self.rd.recipe_table.c.image != None,
                               self.rd.recipe_table.c.image != bytes(),
                               not_(self.rd.recipe_table.c.title.in_(self.category_images)))
             else:
-                stment = and_(col == val.encode(), self.rd.recipe_table.c.image != None,
+                stment = and_(col == val, self.rd.recipe_table.c.image != None,
                               self.rd.recipe_table.c.image != bytes())
             result = tbl.select(stment,limit=1).execute().fetchone()
-            if not hasattr(self,'category_images'): self.category_images = []
-            if result: self.category_images.append(result.title)
-        elif attr=='rating':
+            if not hasattr(self, 'category_images'):
+                self.category_images = []
+            if result:
+                self.category_images.append(result.title)
+        elif attr == 'rating':
             return star_generator.get_pixbuf(val)
-        elif attr in ['preptime','cooktime']:
+        elif attr in ['preptime', 'cooktime']:
             return get_time_slice(val)
         else:
             tbl = self.rd.recipe_table
-            col = getattr(self.rd.recipe_table.c,attr)
-            stment = and_(col == val.encode(), self.rd.recipe_table.c.image != None,
+            col = getattr(self.rd.recipe_table.c, attr)
+            stment = and_(col == val, self.rd.recipe_table.c.image != None,
                           self.rd.recipe_table.c.image != bytes())
             result = tbl.select(stment,limit=1).execute().fetchone()
         if result and result.thumb:
