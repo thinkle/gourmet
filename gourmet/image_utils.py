@@ -99,6 +99,19 @@ def pixbuf_to_image(pixbuf: Pixbuf) -> Image.Image:
     return image
 
 
+def image_to_pixbuf(image: Image.Image) -> Pixbuf:
+    is_rgba = image.mode == 'RGBA'
+    rowstride = 4 if is_rgba else 3
+
+    return GdkPixbuf.Pixbuf.new_from_data(image.tobytes(),
+                                          GdkPixbuf.Colorspace.RGB,
+                                          is_rgba,
+                                          8,
+                                          image.size[0],
+                                          image.size[1],
+                                          rowstride * image.size[0])
+
+
 class ImageBrowser(Gtk.Dialog):
     def __init__(self, parent: Gtk.Window, uris: List[str]):
         Gtk.Dialog.__init__(self, title="Choose an image",
