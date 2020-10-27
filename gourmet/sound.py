@@ -1,19 +1,11 @@
-try:
-    from .sound_pyglet import Player
-except ImportError:
-    print('No pyglet player')
-    try:
-        from .sound_gst import Player
-    except ImportError:
-        print('No gst player')
-        try:
-            from .sound_windows import Player
-        except ImportError:
-            print('No windows player')
-            import sys
-            class Player:
-                """Fallback player"""
-                def play_file (self,path):
-                    print('No player installed -- beeping instead')
-                    for n in range(5): sys.stdout.write('\a'); sys.stdout.flush()
+from gi.repository import Gst
 
+class Player:
+    def __init__(self):
+        Gst.init()
+        self.player = Gst.ElementFactory.make('playbin', 'player')
+
+    def play_file(self, path: str):
+        self.player.set_state(Gst.State.NULL)
+        self.player.set_property('uri', 'file://' + path)
+        self.player.set_state(Gst.State.PLAYING)
