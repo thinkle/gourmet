@@ -746,7 +746,8 @@ class StuffThatShouldBePlugins:
                                     parent=self.app.get_toplevel(),
                                     digits=2)
                 if not mult:
-                    mult = float(1)
+                    debug('getNumber cancelled', 2)
+                    return
             d=self.sl.getOptionalIngDic(self.rd.get_ings(r),mult,self.prefs)
             self.sl.addRec(r,mult,d)
             self.sl.show()
@@ -1029,7 +1030,8 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
             #None,None,self.email_recs),
             ('BatchEdit',None,_('Batch _edit recipes'),
              '<Control><Shift>E',None,self.batch_edit_recs),
-            ('ShopRec','add-to-shopping-list',None,None,None,self.shop_recs)
+            ('ShopRec', 'add-to-shopping-list', _('Add to Shopping List'),
+             '<Control>B', None, self.shop_recs)
             ])
 
         self.mainActionGroup = Gtk.ActionGroup(name='MainActions')
