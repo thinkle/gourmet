@@ -1,9 +1,9 @@
 # Installation
-Gourmet is currently available in the form of Flatpak and Python wheel.  
-We recommend that you install it from the Flatpak.  
+Gourmet is currently available in the form of Flatpak and Python wheel.
+We recommend that you install it from the Flatpak.
 In both cases, you will need an internet connection.
 
-**We strongly recommend that you make a backup of your recipe database.**  
+**We strongly recommend that you make a backup of your recipe database.**
 As Gourmet is still in early stage of (re)development, make a backup of your
 recipe database, typically found under `$HOME/.gourmet/recipe.db`:
 ```sh
@@ -22,7 +22,7 @@ sudo apt-get install flatpak
 As Gourmet is still under active development, the flatpak is not available from
 Flathub, and instead must be [downloaded and installed manually](https://github.com/kirienko/gourmet/releases/tag/v1-alpha2).
 
-In a terminal, execute the following: 
+In a terminal, execute the following:
 ```sh
 flatpak remote-add --if-not-exists --user flathub https://flathub.org/repo/flathub.flatpakrepo
 sudo flatpak install gourmet-2db9db8f.flatpak
@@ -62,7 +62,7 @@ Install the following packages from `apt`:
 ```sh
 sudo apt-get update
 
-sudo apt-get install --no-install-recommends python3-argcomplete python3-gi python3-gi-cairo gir1.2-gtk-3.0 libgirepository1.0-dev libcairo2-dev enchant python3-bs4 python3-ebooklib python3-keyring python3-lxml python3-pil python3-cairo python3-enchant python3-gi python3-gtkspellcheck python3-requests python3-reportlab python3-selenium python3-setuptools python3-sqlalchemy python3-pip python3-toml gir1.2-poppler-0.18 ```
+sudo apt-get install --no-install-recommends python3-argcomplete python3-gi python3-gi-cairo gir1.2-gtk-3.0 libgirepository1.0-dev libcairo2-dev enchant python3-bs4 python3-ebooklib python3-keyring python3-lxml python3-pil python3-cairo python3-enchant python3-gi python3-gst-1.0 python3-gtkspellcheck python3-requests python3-reportlab python3-selenium python3-setuptools python3-sqlalchemy python3-pip python3-toml gir1.2-poppler-0.18 ```
 
 Then, install dependencies from the Python repository:
 ```sh
