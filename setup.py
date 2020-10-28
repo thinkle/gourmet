@@ -98,13 +98,8 @@ plugins = crawl_plugins(os.path.join('gourmet', 'plugins'), 'gourmet.plugins')
 
 package_data = [
     'backends/default.db',
-    'plugins/*/*.ui',
-    'plugins/*/images/*.png',
-    'plugins/*/*/images/*.png',
     'plugins/*.gourmet-plugin',
     'plugins/*/*.gourmet-plugin',
-    'ui/*.ui',
-    'ui/catalog/*',
     'data/recipe.dtd',
     'data/WEIGHT.txt',
     'data/FOOD_DES.txt',
@@ -114,7 +109,9 @@ package_data = [
     'data/images/reccard_edit.png',
     'data/images/AddToShoppingList.png',
     'data/images/half_gold_star.png',
+    'data/images/half_blue_star.png',
     'data/images/gold_star.png',
+    'data/images/blue_star.png',
     'data/images/reccard.png',
     'data/sound/phone.wav',
     'data/sound/warning.wav',

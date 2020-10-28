@@ -19,7 +19,8 @@ class FocusFixer:
             parent = widget.get_parent()
             while parent and not isinstance(parent,Gtk.Window) :
                 parent = parent.get_parent()
-            for n in range(2): parent.emit('move-focus',Gtk.DIRECTION_LEFT)
+            for n in range(2):
+                parent.emit('move-focus',Gtk.DirectionType.RIGHT)
             #parent.emit('move-focus',Gtk.DIRECTION_LEFT)
 
     def keypress_event_cb (self, w, event):

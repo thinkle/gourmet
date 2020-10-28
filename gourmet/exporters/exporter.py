@@ -540,8 +540,7 @@ class ExporterMultirec (SuspendableThread, Pluggable):
                 )
             for ref in reffed:
                 rec = self.rd.get_rec(ref.refid)
-                if not rec in self.recipes:
-                    print('Appending recipe ',rec.title,'referenced in ',r.title)
+                if rec is not None and not rec in self.recipes:
                     self.recipes.append(rec)
 
     @pluggable_method

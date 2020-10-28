@@ -55,7 +55,7 @@ class RecHandler (xml_importer.RecHandler):
             if not hasattr(self,'db'):
                 import gourmet.backends.db as db
                 self.db = db.get_database()
-            ingdic = self.db.parse_ingredient(self.elbuf.strip())
+            ingdic = self.rd.parse_ingredient(self.elbuf.strip())
             self.start_ing(**ingdic)
             self.commit_ing()
         if name=='li' and self.current_section=='instruction':

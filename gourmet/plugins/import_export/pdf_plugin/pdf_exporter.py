@@ -95,7 +95,7 @@ class Star (platypus.Flowable):
         inner = False # Start on top
         is_origin = True
         #print 'Drawing star with radius',outer_length,'(moving origin ',origin,')'
-        for theta in range(0,360,360/(points*2)):
+        for theta in range(0, 360, 360 // (points * 2)):
             if 0 < theta < 180: continue
             if inner: r = inner_length
             else: r = outer_length
@@ -607,7 +607,7 @@ class PdfExporter (exporter.exporter_mult, PdfWriter):
         # condbreak and a head...
         ings = self.txt[2:]
         if len(ings) > 4:
-            half = (len(ings) / 2)
+            half = len(ings) // 2
             first_half = ings[:-half]
             second_half = ings[-half:]
             t = platypus.Table(

@@ -838,7 +838,8 @@ class ShopGui (ShoppingList, plugin_loader.Pluggable, IngredientAndPantryList):
                 self.recs.__delitem__(t.id)
                 debug("clear removed %s"%t,3)
             self.reset()
-        elif de.getBoolean(label=_("No recipes selected. Do you want to clear the entire list?")):
+        elif de.getBoolean(label=_("No recipes selected. Do you want to clear the entire list?"),
+                           cancel=False):
             self.recs = {}
             self.extras = []
             self.reset()
