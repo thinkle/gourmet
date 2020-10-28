@@ -243,7 +243,7 @@ class exporter (SuspendableThread, Pluggable):
     @pluggable_method
     def write_inghead(self):
         """Write any necessary markup before ingredients."""
-        self.out.write("\n---\n%s\n---\n"%_("Ingredients"))
+        self.out.write("\n-----------\n%s\n-----------\n"%_("Ingredients"))
 
     @pluggable_method
     def write_ingfoot(self):
@@ -284,7 +284,7 @@ class exporter (SuspendableThread, Pluggable):
         handle_markup methods (handle_italic, handle_bold,
         handle_underline).
         """
-        self.out.write("\n---\n%s\n---\n"%label)
+        self.out.write("\n"+"-"*len(label)+"\n%s\n"%label+"-"*len(label)+"\n")
         ll=text.split("\n")
         for l in ll:
             for wrapped_line in textwrap.wrap(l):
