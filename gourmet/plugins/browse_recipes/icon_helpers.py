@@ -1,16 +1,16 @@
-from gi.repository import GdkPixbuf, Gtk
 import os.path
-# mentioning PIL explicitly helps py2exe
-try:
-    from PIL import Image, ImageDraw
-except ImportError:
-    import Image, ImageDraw
-from gourmet.image_utils import bytes_to_pixbuf
+
+from gi.repository import GdkPixbuf, Gtk
+from PIL import Image, ImageDraw
+
+from gourmet.image_utils import bytes_to_pixbuf, image_to_pixbuf
 from gourmet.gtk_extras.ratingWidget import star_generator
 
 curdir = os.path.split(__file__)[0]
+ICON_SIZE = 126
+PREP = 1
+COOK = 2
 
-ICON_SIZE=125
 
 def scale_pb (pb, do_grow=True):
     w = pb.get_width()
@@ -27,29 +27,6 @@ def scale_pb (pb, do_grow=True):
         target_h = target
         target_w = int(target * (float(w)/h))
     return pb.scale_simple(target_w,target_h,GdkPixbuf.InterpType.BILINEAR)
-
-def get_pixbuf_from_image (image):
-
-    """Get a pixbuf from a PIL Image.
-
-    By default, turn all white pixels transparent.
-    """
-
-    # TODO: This function should be moved to gourmet.image_extra.pixbuf_to_image
-
-    is_rgba = image.mode=='RGBA'
-    if is_rgba: rowstride = 4
-    else: rowstride = 3
-    pb=GdkPixbuf.Pixbuf.new_from_data(
-        image.tobytes(),
-        GdkPixbuf.Colorspace.RGB,
-        is_rgba,
-        8,
-        image.size[0],
-        image.size[1],
-        (is_rgba and 4 or 3) * image.size[0] #rowstride
-        )
-    return pb
 
 
 generic_recipe_image = scale_pb(GdkPixbuf.Pixbuf.new_from_file(os.path.join(curdir,'images','generic_recipe.png')))
@@ -126,9 +103,9 @@ def get_recipe_image (rec):
             )
     return pb
 
-class PiePixbufGenerator:
 
-    '''Generate Pie-chart style pixbufs representing circles'''
+class PiePixbufGenerator:
+    """Generate Pie-chart style pixbufs representing circles"""
 
     def __init__ (self):
         self.slices = {}
@@ -142,7 +119,7 @@ class PiePixbufGenerator:
                         )
         d = ImageDraw.Draw(img)
         d.pieslice((10,10,ICON_SIZE-10,ICON_SIZE-10),-90,-90 + angle, color)
-        self.slices[(angle,color)] = get_pixbuf_from_image(img)
+        self.slices[(angle,color)] = image_to_pixbuf(img)
         return self.slices[(angle,color)]
 
     def get_time_image (self, time_in_seconds):
@@ -159,17 +136,6 @@ class PiePixbufGenerator:
 pie_generator = PiePixbufGenerator()
 make_pie_slice = pie_generator.get_image
 get_time_slice = pie_generator.get_time_image
-
-def make_time_icon (text):
-    img = Image.new('RGBA',
-                    (ICON_SIZE,ICON_SIZE),
-                    255 # background
-                    )
-    d = ImageDraw.Draw(img)
-    #Thosed.text(
-
-PREP = 1
-COOK = 2
 
 def make_preptime_icon (preptime):
     return make_time_icon(preptime,mode=PREP)

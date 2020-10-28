@@ -43,9 +43,9 @@ class MCBPlugin (ImporterPlugin):
                 parser = etree.XMLParser(recover=True)
                 tree = etree.parse(xmlfilename, parser)
                 fixedxmlfilename = xmlfilename+'fixed'
-                outFile = open(fixedxmlfilename, 'w')
-                tree.write(outFile, xml_declaration=True, encoding='utf-8', pretty_print=True)
-                outFile.close()
+                with open(fixedxmlfilename, 'wb') as fout:
+                    tree.write(fout, xml_declaration=True,
+                               encoding='utf-8', pretty_print=True)
 
         zf.close()
 

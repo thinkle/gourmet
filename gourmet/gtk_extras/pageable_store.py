@@ -110,14 +110,14 @@ class PageableListStore (Gtk.ListStore):
         """Return the number of our last page."""
         nrecs = int(self._get_length_())
         self.per_page = int(self.per_page)#just in case
-        pages = (nrecs / self.per_page) - 1
+        pages = (nrecs // self.per_page) - 1
         if nrecs % self.per_page: pages+=1
         return pages
 
     def change_items_per_page (self, n):
         current_indx = self.per_page * self.page
         self.per_page = n
-        new_page = current_indx / self.per_page
+        new_page = current_indx // self.per_page
         self.page = new_page
         self.update_tree()
         self.emit('page-changed')
@@ -137,7 +137,8 @@ class PageableListStore (Gtk.ListStore):
         indx = path[0] + (self.page * self.per_page)
         # set takes column number, column value, column number, column value, etc.
         args = []
-        for num_and_col in enumerate(self._get_item_(indx)): args.extend(num_and_col)
+        for num_and_col in enumerate(self._get_item_(indx)):
+            args.extend(num_and_col)
         self.set(itr,*args)
 
 

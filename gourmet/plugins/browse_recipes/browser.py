@@ -1,41 +1,47 @@
-from gi.repository import GdkPixbuf, GObject, Gtk
 import os.path
-from gourmet.gglobals import DEFAULT_ATTR_ORDER, REC_ATTR_DIC
-from gourmet.image_utils import bytes_to_pixbuf
-import gourmet.convert as convert
-from gourmet.gtk_extras.ratingWidget import star_generator
-from sqlalchemy.sql import and_, or_, not_
+
 from gettext import gettext as _
-from .icon_helpers import attr_to_icon, get_recipe_image, get_time_slice, scale_pb
+from gi.repository import GdkPixbuf, GObject, Gtk
+from sqlalchemy.sql import and_, not_
+
+import gourmet.convert as convert
+from gourmet.gglobals import DEFAULT_ATTR_ORDER, REC_ATTR_DIC
+from gourmet.gtk_extras.ratingWidget import star_generator
+from gourmet.image_utils import bytes_to_pixbuf
+
+from .icon_helpers import (attr_to_icon, get_recipe_image, get_time_slice,
+                           ICON_SIZE, scale_pb)
 
 curdir = os.path.split(__file__)[0]
 
-class RecipeBrowserView (Gtk.IconView):
+
+class RecipeBrowserView(Gtk.IconView):
 
     __gsignals__ = {
-        'recipe-selected':(GObject.SignalFlags.RUN_LAST,
-                           GObject.TYPE_INT,[GObject.TYPE_INT]),
-        'path-selected':(GObject.SignalFlags.RUN_LAST,
-                         GObject.TYPE_STRING,[GObject.TYPE_STRING])
-        }
+        'recipe-selected': (GObject.SignalFlags.RUN_LAST,
+                            GObject.TYPE_INT, [GObject.TYPE_INT]),
+        'path-selected': (GObject.SignalFlags.RUN_LAST,
+                          GObject.TYPE_STRING, [GObject.TYPE_STRING])
+    }
 
-    def __init__ (self, rd):
+    def __init__(self, rd):
         self.rd = rd
-        Gtk.IconView.__init__(self)
-        self.set_selection_mode(Gtk.SelectionMode.MULTIPLE)
+        super().__init__()
+        self.set_selection_mode(Gtk.SelectionMode.SINGLE)
+        self.set_item_width(ICON_SIZE)
         self.models = {}
         self.set_model()
         self.set_text_column(1)
         self.set_pixbuf_column(2)
-        self.connect('item-activated',self.item_activated_cb)
+        self.connect('item-activated', self.item_activated_cb)
         self.switch_model('base')
         self.path = ['base']
 
-    def new_model (self): return Gtk.ListStore(str, # path
-                                               str, # text
-                                               GdkPixbuf.Pixbuf, # image
-                                               GObject.TYPE_PYOBJECT,
-                                               )
+    def new_model(self):
+        return Gtk.ListStore(str,  # path
+                             str,  # text
+                             GdkPixbuf.Pixbuf,  # image
+                             GObject.TYPE_PYOBJECT)
 
     def switch_model (self, path, val=None):
         if path not in self.models:
@@ -50,39 +56,42 @@ class RecipeBrowserView (Gtk.IconView):
         else:
             self.build_recipe_model(path,val)
 
-    def build_base_model (self):
+    def build_base_model(self):
         m = self.models['base'] = self.new_model()
         self.set_model(m)
-        for itm in DEFAULT_ATTR_ORDER:
-            if itm in ['title','link','yields']: continue
-            pb = self.get_base_icon(itm)
-            m.append((itm,(REC_ATTR_DIC[itm]),pb,None))
+        for item in DEFAULT_ATTR_ORDER:
+            if item in ['title', 'link', 'yields']:
+                continue
+            pb = self.get_base_icon(item)
+            m.append((item, (REC_ATTR_DIC[item]), pb, None))
 
-    def get_base_icon (self, itm):
-        return attr_to_icon.get(itm,attr_to_icon['category'])
+    def get_base_icon(self, item):
+        return attr_to_icon.get(item, attr_to_icon['category'])
 
-    def get_pixbuf (self, attr,val):
+    def get_pixbuf(self, attr: str, val: str) -> GdkPixbuf.Pixbuf:
         if attr=='category':
             tbl = self.rd.recipe_table.join(self.rd.categories_table)
             col = self.rd.categories_table.c.category
-            if hasattr(self,'category_images'):
-                stment = and_(col == val.encode(), self.rd.recipe_table.c.image != None,
+            if hasattr(self, 'category_images'):
+                stment = and_(col == val, self.rd.recipe_table.c.image != None,
                               self.rd.recipe_table.c.image != bytes(),
                               not_(self.rd.recipe_table.c.title.in_(self.category_images)))
             else:
-                stment = and_(col == val.encode(), self.rd.recipe_table.c.image != None,
+                stment = and_(col == val, self.rd.recipe_table.c.image != None,
                               self.rd.recipe_table.c.image != bytes())
             result = tbl.select(stment,limit=1).execute().fetchone()
-            if not hasattr(self,'category_images'): self.category_images = []
-            if result: self.category_images.append(result.title)
-        elif attr=='rating':
+            if not hasattr(self, 'category_images'):
+                self.category_images = []
+            if result:
+                self.category_images.append(result.title)
+        elif attr == 'rating':
             return star_generator.get_pixbuf(val)
-        elif attr in ['preptime','cooktime']:
+        elif attr in ['preptime', 'cooktime']:
             return get_time_slice(val)
         else:
             tbl = self.rd.recipe_table
-            col = getattr(self.rd.recipe_table.c,attr)
-            stment = and_(col == val.encode(), self.rd.recipe_table.c.image != None,
+            col = getattr(self.rd.recipe_table.c, attr)
+            stment = and_(col == val, self.rd.recipe_table.c.image != None,
                           self.rd.recipe_table.c.image != bytes())
             result = tbl.select(stment,limit=1).execute().fetchone()
         if result and result.thumb:
@@ -90,18 +99,8 @@ class RecipeBrowserView (Gtk.IconView):
         else:
             return self.get_base_icon(attr) or self.get_base_icon('category')
 
-    def get_default_icon (self):
-        if hasattr(self,'default_icon'):
-            return self.default_icon
-        else:
-            #from gourmet.gglobals import imagedir
-            path = os.path.join(curdir,'images','generic_category.png')
-            self.default_icon = scale_pb(GdkPixbuf.Pixbuf.new_from_file(path),do_grow=True)
-            return self.default_icon
-
-
-    def convert_val (self, attr, val):
-        if attr in ['preptime','cooktime']:
+    def convert_val(self, attr, val) -> str:
+        if attr in ['preptime', 'cooktime']:
             if val:
                 return convert.seconds_to_timestring(val)
             else:
@@ -138,10 +137,9 @@ class RecipeBrowserView (Gtk.IconView):
         searches = [{'column':'deleted','operator':'=','search':False}]
         path = path.split('>')
         while path:
-            textval = path.pop()
+            _ = path.pop()
             attr = path.pop()
             if val is None:
-                val = None
                 searches.append({'column':attr,'search':val,'operator':'='})
             else:
                 searches.append({'column':attr,'search':val})
@@ -190,25 +188,27 @@ class RecipeBrowserView (Gtk.IconView):
             self.ahead = self.path.pop()
             self.switch_model(self.path[-1])
 
-class RecipeBrowser (Gtk.VBox):
 
-    def __init__ (self, rd):
+class RecipeBrowser(Gtk.VBox):
+
+    def __init__(self, rd):
         Gtk.VBox.__init__(self)
         self.view = RecipeBrowserView(rd)
         self.buttons = []
         self.button_bar = Gtk.HBox()
         self.button_bar.set_spacing(6)
-        # self.pack_start(self.button_bar,expand=False)
         self.pack_start(self.button_bar, False, False, 0)
         sw = Gtk.ScrolledWindow()
-        sw.set_policy(Gtk.PolicyType.AUTOMATIC,Gtk.PolicyType.AUTOMATIC)
+        sw.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
         sw.add(self.view)
         self.pack_start(sw, True, True, 0)
         home_button = Gtk.Button(stock=Gtk.STOCK_HOME)
         self.button_bar.pack_start(home_button, False, False, 0)
-        home_button.connect('clicked',self.home); home_button.show()
-        self.view.connect('path-selected',self.path_selected_cb)
-        self.view.show(); sw.show()
+        home_button.connect('clicked', self.home)
+        home_button.show()
+        self.view.connect('path-selected', self.path_selected_cb)
+        self.view.show()
+        sw.show()
 
     def home (self, *args):
         self.view.set_path('base')
@@ -225,7 +225,9 @@ class RecipeBrowser (Gtk.VBox):
 
     def append_button (self, path):
         if '>' in path:
-            txt = self.view.convert_val(*path.split('>'))
+            attribute, value = path.split('>')
+            value = int(value)
+            txt = self.view.convert_val(attribute, value)
         else:
             txt = path
         self.buttons.append(Gtk.Button(REC_ATTR_DIC.get(txt,txt)))

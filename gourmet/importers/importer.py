@@ -6,10 +6,11 @@ import gettext
 from gettext import gettext as _
 import xml.sax.saxutils
 
-from gourmet import keymanager, convert, image_utils
+from gourmet import convert, image_utils
 from gourmet.gdebug import debug, TimeAction, print_timer_info
 import gourmet.gglobals
 import gourmet.gtk_extras.dialog_extras as de
+from gourmet.keymanager import KeyManager
 from gourmet.recipeManager import get_recipe_manager  # Get hold of database
 from gourmet.threadManager import SuspendableThread, Terminated
 
@@ -90,7 +91,7 @@ class Importer (SuspendableThread):
         else:
             self.rating_converter = RatingConverter()
             self.do_conversion = True
-        self.km = keymanager.get_keymanager()
+        self.km = KeyManager.instance()
         timeaction.end()
         SuspendableThread.__init__(self,
                                    name=name)

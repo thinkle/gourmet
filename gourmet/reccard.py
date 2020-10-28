@@ -246,7 +246,8 @@ class RecCardDisplay (plugin_loader.Pluggable):
             # None,None,self.email_cb),
             ('Print',Gtk.STOCK_PRINT,_('Print recipe'),
              '<Control>P',None,self.print_cb),
-            ('ShopRec','add-to-shopping-list',None,None,None,self.shop_for_recipe_cb),
+            ('ShopRec', 'add-to-shopping-list', _('Add to Shopping List'),
+             '<Control>B', None, self.shop_for_recipe_cb),
             ('ForgetRememberedOptionals',None,_('Forget remembered optional ingredients'),
              None,_('Before adding to shopping list, ask about all optional ingredients, even ones you previously wanted remembered'),self.forget_remembered_optional_ingredients),
             ])
@@ -3122,4 +3123,3 @@ def getYieldSelection (rec, parent=None):
         return yd.run()
     except:
         return 1
-
