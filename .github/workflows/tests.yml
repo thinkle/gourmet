@@ -36,7 +36,7 @@ jobs:
             pip install .
 
       - name: Test with pytest
-        run: xvfb-run -a pytest -vv gourmet/tests/test_*
+        run: xvfb-run -a pytest -vv tests/test_*
 
         # - name: Test with mypy
         #   run: mypy gourmet/
