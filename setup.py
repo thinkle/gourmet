@@ -2,7 +2,8 @@ import os
 from pathlib import Path
 
 from distutils.core import Command
-import setuptools
+from setuptools import find_packages
+from setuptools import setup
 
 from gourmet import version
 
@@ -83,19 +84,6 @@ class build_i18n(Command):
         merge_i18n()
 
 
-def crawl_plugins(base, basename):
-    plugins = []
-    subdirs = filter(lambda x: os.path.isdir(os.path.join(base, x)),
-                     os.listdir(base))
-    for subd in subdirs:
-        name = basename + '.' + subd
-        plugins.append(name)
-        plugins.extend(crawl_plugins(os.path.join(base, subd), name))
-    return plugins
-
-
-plugins = crawl_plugins(os.path.join('gourmet', 'plugins'), 'gourmet.plugins')
-
 package_data = [
     'backends/default.db',
     'plugins/*.gourmet-plugin',
@@ -131,7 +119,7 @@ package_data = [
 ]
 
 
-setuptools.setup(
+setup(
     name=version.name,
     version=version.version,
     description=version.description,
@@ -139,14 +127,7 @@ setuptools.setup(
     author_email=version.author_email,
     url=version.website,
     license=version.license,
-    packages=['gourmet',
-              'gourmet.backends',
-              'gourmet.defaults',
-              'gourmet.gtk_extras',
-              'gourmet.importers',
-              'gourmet.exporters',
-              'gourmet.plugins',
-              ] + plugins,
+    packages=find_packages(),
     package_data={'gourmet': package_data},
     cmdclass={'build_i18n': build_i18n},
     entry_points={
