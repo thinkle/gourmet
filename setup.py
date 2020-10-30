@@ -82,41 +82,6 @@ class build_i18n(Command):
         merge_i18n()
 
 
-package_data = [
-    'backends/default.db',
-    'plugins/*.gourmet-plugin',
-    'plugins/*/*.gourmet-plugin',
-    'data/recipe.dtd',
-    'data/WEIGHT.txt',
-    'data/FOOD_DES.txt',
-    'data/ABBREV.txt',
-    'data/nutritional_data_sr_version',
-    'data/images/no_star.png',
-    'data/images/reccard_edit.png',
-    'data/images/AddToShoppingList.png',
-    'data/images/half_gold_star.png',
-    'data/images/half_blue_star.png',
-    'data/images/gold_star.png',
-    'data/images/blue_star.png',
-    'data/images/reccard.png',
-    'data/sound/phone.wav',
-    'data/sound/warning.wav',
-    'data/sound/error.wav',
-    'data/icons/gourmet.ico',
-    'data/icons/scalable/apps/gourmet.svg',
-    'data/icons/48x48/apps/gourmet.png',
-    'data/style/epubdefault.css',
-    'data/style/default.css',
-    'plugins/*/*.ui',
-    'plugins/*/images/*.png',
-    'plugins/*/*/images/*.png',
-    'ui/*.ui',
-    'ui/catalog/*',
-    '../LICENSE',
-    '../FAQ',
-]
-
-
 # TODO: Single-source this metadata with version.py?
 # https://packaging.python.org/guides/single-sourcing-package-version/ provides
 # some recommendations, however as noted under item 6, we do not want to import
@@ -131,7 +96,7 @@ setup(
     license='GPL',
     package_dir={'': 'src'},
     packages=find_packages('src'),
-    package_data={'gourmet': package_data},
+    include_package_data=True,
     cmdclass={'build_i18n': build_i18n},
     entry_points={
         "console_scripts": [
