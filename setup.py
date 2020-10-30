@@ -5,8 +5,6 @@ from distutils.core import Command
 from setuptools import find_packages
 from setuptools import setup
 
-from gourmet import version
-
 
 package = 'gourmet'
 podir = Path('po')
@@ -119,14 +117,18 @@ package_data = [
 ]
 
 
+# TODO: Single-source this metadata with version.py?
+# https://packaging.python.org/guides/single-sourcing-package-version/ provides
+# some recommendations, however as noted under item 6, we do not want to import
+# our own package from setup.py as it may cause installation to fail
 setup(
-    name=version.name,
-    version=version.version,
-    description=version.description,
-    author=version.author,
-    author_email=version.author_email,
-    url=version.website,
-    license=version.license,
+    name='gourmet',
+    version='0.17.5',
+    description='Recipe Organizer and Shopping List Generator',
+    author='Thomas Mills Hinkle',
+    author_email='Thomas_Hinkle@alumni.brown.edu',
+    url='http://thinkle.github.io/gourmet/',
+    license='GPL',
     packages=find_packages(),
     package_data={'gourmet': package_data},
     cmdclass={'build_i18n': build_i18n},
