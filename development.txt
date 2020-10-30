@@ -1,5 +1,0 @@
-dogtail
-flake8
-mypy
-pytest
-wheel
