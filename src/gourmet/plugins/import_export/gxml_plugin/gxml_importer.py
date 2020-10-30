@@ -2,7 +2,6 @@ import xml.sax, re, sys, xml.sax.saxutils
 from gourmet.importers import xml_importer
 from gourmet.gdebug import debug
 import base64
-from gettext import gettext as _
 
 unquoteattr = xml_importer.unquoteattr
 

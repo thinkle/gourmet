@@ -129,7 +129,8 @@ setup(
     author_email='Thomas_Hinkle@alumni.brown.edu',
     url='http://thinkle.github.io/gourmet/',
     license='GPL',
-    packages=find_packages(),
+    package_dir={'': 'src'},
+    packages=find_packages('src'),
     package_data={'gourmet': package_data},
     cmdclass={'build_i18n': build_i18n},
     entry_points={
