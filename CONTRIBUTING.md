@@ -33,7 +33,7 @@ You'll want to clone Gourmet to your computer and probably
 
 Ensure your system has the necessary prerequisites installed:
 - [Python](https://www.python.org/), which is what Gourmet is written in. Only
-  currently-supported versions of Python 3 are supported.
+  Python 3 is supported.
 - [PyGObject](https://pygobject.readthedocs.io/en/latest/) for GTK+ 3 and other
   GNOME libraries. You may either install your system's `pygobject` package(s),
   or (perhaps recommended) only install the necessary system requirements so
