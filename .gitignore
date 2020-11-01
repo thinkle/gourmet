@@ -11,9 +11,12 @@ gourmet.pot
 gourmet.appdata.xml
 gourmet.desktop
 po/.intltool-merge-cache
+/development.txt
+
 
 # Virtual environments
 /env/
+
 
 # Editors
 *.swp

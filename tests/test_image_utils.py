@@ -11,8 +11,9 @@ IMAGE = b'\xff\xd8\xff\xe0\x00\x10JFIF\x00\x01\x01\x00\x00\x01\x00\x01\x00\x00\x
 
 
 def test_make_thumbnail():
+    # TODO: Switch to using resources instead of hard-coded paths
     path = Path(__file__)
-    logo = path.parent.parent / 'data' / 'images' / 'splash.png'
+    logo = path.parent.parent / 'src' / 'gourmet'/ 'data' / 'images' / 'splash.png'
 
     thumbnail = make_thumbnail(str(logo))
     x, y = thumbnail.size

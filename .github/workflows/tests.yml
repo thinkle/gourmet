@@ -8,6 +8,7 @@ on:
     branches: [master]
   pull_request:
     branches: [master]
+  workflow_dispatch:
 
 jobs:
   test:
@@ -23,24 +24,22 @@ jobs:
         run: >
           sudo apt-get update -q && sudo apt-get install
           --no-install-recommends -y xvfb python3-dev python3-gi
-          python3-gi-cairo gir1.2-gtk-3.0 libgirepository1.0-dev
-          gir1.2-poppler-0.18 libcairo2-dev enchant python3-enchant intltool
-          python3-gst-1.0
+          python3-gi-cairo gir1.2-gtk-3.0 libgirepository1.0-dev libcairo2-dev
+          intltool enchant python3-enchant gir1.2-poppler-0.18 python3-gst-1.0
 
       - name: Install dependencies
         run: |
-          sudo python3 -m pip install --upgrade pip
-          if [ -f development.txt ]; then sudo pip3 install -r development.txt; fi
+          sudo python3 -m pip install --upgrade pip setuptools wheel
           sudo pip3 install --upgrade keyrings.alt
-          if [ -f requirements.txt ]; then sudo pip3 install -r requirements.txt; fi
 
-      - name: Prepare plugins
-        run: |
-            python3 setup.py build_i18n
-            pip install .
+      - name: Create Internationalization
+        run: python3 setup.py build_i18n
+
+      - name: Install
+        run: sudo pip3 install -r development.in
 
       - name: Test with pytest
-        run: xvfb-run -a pytest -vv gourmet/tests/test_*
+        run: xvfb-run -a pytest -vv tests/test_*
 
         # - name: Test with mypy
         #   run: mypy gourmet/

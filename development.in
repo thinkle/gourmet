@@ -1,0 +1,5 @@
+--editable .[epub-export,mycookbook,pdf-export,spellcheck,web-import]
+dogtail
+flake8
+mypy
+pytest
