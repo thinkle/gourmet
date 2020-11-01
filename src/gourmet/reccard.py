@@ -187,7 +187,13 @@ class RecCardDisplay (plugin_loader.Pluggable):
         self.setup_ui()
         self.setup_uimanager()
         self.setup_main_window()
-        self.setup_notebook()
+
+        self._last_module = None
+        self.left_notebook.connect('switch-page',
+                                   lambda *args: GLib.idle_add(self.left_notebook_change_cb))
+        self.left_notebook_pages = {}
+        self.left_notebook_pages[0] = self
+
         self.ingredientDisplay = IngredientDisplay(self)
         self.modules = [self.ingredientDisplay]
         self.update_from_database()
@@ -377,19 +383,8 @@ class RecCardDisplay (plugin_loader.Pluggable):
         self.window.add_accel_group(self.ui_manager.get_accel_group())
         self.window.show()
 
-    def setup_notebook (self):
-        def hackish_notebook_switcher_handler (*args):
-            # because the switch page signal happens before switching...
-            # we'll need to look for the switch with an idle call
-            GObject.idle_add(self.left_notebook_change_cb)
-        self._last_module = None
-        self.left_notebook.connect('switch-page',hackish_notebook_switcher_handler)
-        self.left_notebook_pages = {}
-        self.left_notebook_pages[0] = self
-
     def shop_for_recipe_cb (self, *args):
         print(self,'shop_for_recipe_cb')
-        from . import shopgui
         try:
             d = self.rg.sl.getOptionalIngDic(self.rg.rd.get_ings(self.current_rec),
                                              self.mult,
@@ -495,7 +490,7 @@ class RecCardDisplay (plugin_loader.Pluggable):
                     widg.hide()
                     widgLab.hide()
 
-    def update_image (self):
+    def update_image(self):
         imagestring = self.current_rec.image
         if imagestring is None:
             self.orig_pixbuf = None
@@ -833,7 +828,10 @@ class RecEditor(WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
         #self.setup_undo()
         self.setup_main_interface()
         self.setup_modules()
-        self.setup_notebook()
+
+        self.notebook.connect('switch-page',
+                              lambda *args: GLib.idle_add(self.notebook_change_cb))
+
         self.page_specific_handlers = []
         #self.setEdited(False)
         # parameters for tracking what has changed
@@ -971,13 +969,6 @@ class RecEditor(WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
 
     def show (self):
         self.window.present()
-
-    def setup_notebook (self):
-        def hackish_notebook_switcher_handler (*args):
-            # because the switch page signal happens before switching...
-            # we'll need to look for the switch with an idle call
-            GLib.idle_add(self.notebook_change_cb)
-        self.notebook.connect('switch-page',hackish_notebook_switcher_handler)
 
         self.notebook.set_tab_pos(Gtk.PositionType.LEFT)
         self._last_module = None
@@ -1435,7 +1426,7 @@ class DescriptionEditorModule (TextEditor, RecEditorModule):
     def grab_focus (self):
         self.ui.get_object('titleBox').grab_focus()
 
-    def save (self, recdic):
+    def save(self, recdic):
         for c in self.reccom:
             recdic[c]=str(self.rw[c].get_active_text())
         for e in self.recent:
@@ -1443,9 +1434,15 @@ class DescriptionEditorModule (TextEditor, RecEditorModule):
                 recdic[e]=self.rw[e].get_value()
             else:
                 recdic[e]=str(self.rw[e].get_text())
+
         if self.imageBox.edited:
-            recdic['image'],recdic['thumb']=self.imageBox.commit()
-            self.imageBox.edited=False
+            image, thumbnail = self.imageBox.commit()
+            if not image or not thumbnail:
+                image = thumbnail = None
+            recdic['image'] = image
+            recdic['thumb'] = thumbnail
+            self.imageBox.edited = False
+
         self.emit('saved')
         return recdic
 

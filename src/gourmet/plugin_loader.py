@@ -70,12 +70,11 @@ class MasterLoader:
         self.load_active_plugins()
 
     def load_plugin_directories (self):
-        """Look through plugin directories for plugins.
-        """
+        """Look through plugin directories for plugins."""
         self.available_plugin_sets = {}
         for d in self.plugin_directories:
             debug('Loading plugins from %s'%os.path.realpath(d),1)
-            plugins = glob.glob(os.path.join(d,'*.gourmet-plugin'))
+            plugins = glob.glob(os.path.join(d, '*.gourmet-plugin'))
             for ppath in plugins:
                 debug('Found %s'%ppath,1)
                 plugin_set = PluginSet(ppath)
