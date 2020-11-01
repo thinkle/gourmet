@@ -10,7 +10,7 @@ class IcaSePlugin (PluginPlugin):
 
     target_pluggable = 'webimport_plugin'
 
-    def test_url (self, url, data):
+    def test_url(self, url, data):
         "Is this url from ica.se"
         if 'ica.se' in url:
             return WebsiteTestState.SUCCESS
@@ -33,7 +33,7 @@ class IcaSePlugin (PluginPlugin):
                         text = modifications.next_sibling
                         if text:
                             self.preparsed_elements.append((text.strip(), "modifications"))
-                
+
                 if not self.recipe:
                     return
 
