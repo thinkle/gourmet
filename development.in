@@ -1,4 +1,4 @@
--e .[epub-export,mycookbook,pdf-export,spellcheck,web-import]
+--editable .[epub-export,mycookbook,pdf-export,spellcheck,web-import]
 dogtail
 flake8
 mypy
