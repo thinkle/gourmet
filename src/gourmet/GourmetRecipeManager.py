@@ -16,8 +16,7 @@ from gourmet.defaults.defaults import lang as defaults
 from gourmet.exporters.exportManager import ExportManager
 from gourmet.exporters.printer import PrintManager
 from gourmet.gdebug import debug
-from gourmet.gglobals import (DEFAULT_HIDDEN_COLUMNS, REC_ATTRS,
-                              icondir, uibase)
+from gourmet.gglobals import (DEFAULT_HIDDEN_COLUMNS, REC_ATTRS, uibase)
 from gourmet.gtk_extras import WidgetSaver
 from gourmet.gtk_extras import dialog_extras as de
 from gourmet.gtk_extras import (fix_action_group_importance, mnemonic_manager,
@@ -28,6 +27,9 @@ from gourmet.recindex import RecIndex
 from gourmet.threadManager import (SuspendableThread, get_thread_manager,
                                    get_thread_manager_gui)
 from gourmet.timer import show_timer
+
+from .image_utils import load_pixbuf_from_resource as _load_pixbuf_from_resource
+
 
 UNDO = 1
 SHOW_TRASH = 2
@@ -348,7 +350,7 @@ class GourmetApplication:
             else:
                 translator = defaults.CREDITS
 
-        logo=GdkPixbuf.Pixbuf.new_from_file(os.path.join(icondir,"gourmet.png"))
+        logo = _load_pixbuf_from_resource('gourmet.svg')
 
         # load LICENSE text file
         license_text = _get_data('gourmet', 'data/LICENSE').decode()
@@ -952,7 +954,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
 
     def setup_main_window(self):
         self.window = self.app = Gtk.Window()
-        self.window.set_icon_from_file(os.path.join(icondir, 'gourmet.png'))
+        self.window.set_icon(_load_pixbuf_from_resource('gourmet.svg'))
         saver = WidgetSaver.WindowSaver(
             self.window,
             self.prefs.get('app_window', {'window_size': (800, 600)})

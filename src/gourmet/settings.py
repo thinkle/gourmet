@@ -19,5 +19,3 @@ plugin_base = op.join(base_dir, 'build', 'share', 'gourmet')
 # getting rid of indentations in this file which throws a syntax error
 # on install
 if getattr(sys, 'frozen', False): base_dir = op.dirname(sys.executable); data_dir = base_dir; ui_base = op.join(base_dir, 'ui'); doc_base = op.join(base_dir, 'doc'); locale_base = op.join(base_dir, 'locale'); plugin_base = op.join(base_dir)
-
-icon_base = op.join(data_dir, 'icons')
