@@ -89,9 +89,6 @@ class ExportManager (plugin_loader.Pluggable):
     def offer_multiple_export (self, recs, prefs, parent=None, prog=None,
                                export_all=False):
         """Offer user a chance to export multiple recipes at once.
-
-        Return the exporter class capable of doing this and a
-        dictionary of arguments for the progress dialog.
         """
         if (not export_all) or (len(recs) < 950):
             # inelegantly avoid bug that happens when this code runs
@@ -124,7 +121,6 @@ class ExportManager (plugin_loader.Pluggable):
                     message_type=Gtk.MessageType.ERROR,
                     )
                 return
-            return instance
 
     def get_extra_prefs (self, myexp, extra_prefs):
         if extra_prefs == EXTRA_PREFS_AUTOMATIC:

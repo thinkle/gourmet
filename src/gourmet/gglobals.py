@@ -28,7 +28,6 @@ use_threads = args.threads
 # note: this stuff must be kept in sync with changes in setup.py
 data_dir = settings.data_dir
 imagedir = os.path.join(settings.data_dir, 'images')
-style_dir = os.path.join(settings.data_dir, 'style')
 
 plugin_base = settings.plugin_base
 
