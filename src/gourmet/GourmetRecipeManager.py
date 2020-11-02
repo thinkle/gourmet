@@ -1,5 +1,6 @@
 import os
 import os.path
+from pkgutil import get_data as _get_data
 import re
 import threading
 from gettext import gettext as _
@@ -15,7 +16,7 @@ from gourmet.defaults.defaults import lang as defaults
 from gourmet.exporters.exportManager import ExportManager
 from gourmet.exporters.printer import PrintManager
 from gourmet.gdebug import debug
-from gourmet.gglobals import (DEFAULT_HIDDEN_COLUMNS, REC_ATTRS, doc_base,
+from gourmet.gglobals import (DEFAULT_HIDDEN_COLUMNS, REC_ATTRS,
                               icondir, uibase)
 from gourmet.gtk_extras import WidgetSaver
 from gourmet.gtk_extras import dialog_extras as de
@@ -350,12 +351,8 @@ class GourmetApplication:
         logo=GdkPixbuf.Pixbuf.new_from_file(os.path.join(icondir,"gourmet.png"))
 
         # load LICENSE text file
-        try:
-            license_text = open(os.path.join(doc_base,'LICENSE'),'r').read()
-        except IOError as err:
-            print("IO Error %s" % err)
-        except:
-            print("Unexpexted error")
+        license_text = _get_data('gourmet', 'data/LICENSE').decode()
+        assert license_text
 
         paypal_link = """https://www.paypal.com/cgi-bin/webscr?cmd=_donations
 &business=Thomas_Hinkle%40alumni%2ebrown%2eedu
@@ -364,7 +361,7 @@ class GourmetApplication:
         gratipay_link = "https://gratipay.com/on/github/thinkle/"
         flattr_link = "http://flattr.com/profile/Thomas_Hinkle/things"
 
-        about = Gtk.AboutDialog()
+        about = Gtk.AboutDialog(parent=self.window)
         about.set_artists(version.artists)
         about.set_authors(version.authors)
         about.set_comments(version.description)
@@ -404,7 +401,7 @@ class GourmetApplication:
         about.destroy()
 
     def show_help (self, *args):
-        de.show_faq(os.path.join(doc_base,'FAQ'))
+        de.show_faq(parent=self.window)
 
     def save (self, file=None, db=None, xml=None):
         debug("save (self, file=None, db=None, xml=None):",5)

@@ -5,6 +5,7 @@ import traceback
 import xml.sax.saxutils
 from gettext import gettext as _
 from pathlib import Path
+from pkgutil import get_data as _get_data
 from typing import List, Optional
 
 from gi.repository import GObject, Gtk, Pango
@@ -14,6 +15,7 @@ from gourmet.gdebug import debug
 from gourmet.image_utils import image_to_pixbuf, make_thumbnail
 
 from . import optionTable
+
 
 H_PADDING=12
 Y_PADDING=12
@@ -615,7 +617,6 @@ class SimpleFaqDialog (ModalDialog):
     NESTED_MATCHER = re.compile("^[0-9]+[.][A-Za-z0-9.]+ .*")
 
     def __init__ (self,
-                  faq_file='/home/tom/Projects/grm-0.8/FAQ',
                   title="Frequently Asked Questions",
                   jump_to = None,
                   parent=None,
@@ -639,7 +640,7 @@ class SimpleFaqDialog (ModalDialog):
         self.index_dic = {}
         self.text = ""
 
-        self.parse_faq(faq_file)
+        self.parse_faq()
         if self.index_lines:
             self.paned = Gtk.Paned()
             self.indexView = Gtk.TreeView()
@@ -673,34 +674,31 @@ class SimpleFaqDialog (ModalDialog):
                 self.indexView.expand_row(mod.get_path(itr),True)
                 return
 
-    def parse_faq(self, filename: str) -> None:
-        """Parse file infile as our FAQ to display.
-
-        infile can be a filename or a file-like object.
-        We parse index lines according to self.INDEX_MATCHER
-        """
+    def parse_faq(self) -> None:
+        """Parse the FAQ for display."""
 
         # Clear data
         self.index_lines = []
         self.index_dic = {}
         self.text = ""
 
-        with open(filename, 'r') as fin:
-            for l in fin.readlines():
-                line = l.strip()
-                if self.INDEX_MATCHER.match(line):  # it is a heading
-                    self.index_lines.append(line)
-                    curiter = self.textbuf.get_iter_at_mark(self.textbuf.get_insert())
-                    self.index_dic[line] = self.textbuf.create_mark(None,
-                                                                    curiter,
-                                                                    left_gravity=True)
-                    self.textbuf.insert_with_tags(curiter,
-                                                  line + " ",
-                                                  self.boldtag)
-                elif line:  # it is body content
-                    self.textbuf.insert_at_cursor(line + " ")
-                else:  # an empty line is a paragraph break
-                    self.textbuf.insert_at_cursor("\n\n")
+        faq = _get_data('gourmet', 'data/FAQ').decode()
+        assert faq
+        for l in faq.split('\n'):
+            line = l.strip()
+            if self.INDEX_MATCHER.match(line):  # it is a heading
+                self.index_lines.append(line)
+                curiter = self.textbuf.get_iter_at_mark(self.textbuf.get_insert())
+                self.index_dic[line] = self.textbuf.create_mark(None,
+                                                                curiter,
+                                                                left_gravity=True)
+                self.textbuf.insert_with_tags(curiter,
+                                              line + " ",
+                                              self.boldtag)
+            elif line:  # it is body content
+                self.textbuf.insert_at_cursor(line + " ")
+            else:  # an empty line is a paragraph break
+                self.textbuf.insert_at_cursor("\n\n")
 
     def setup_index (self):
         """Set up a clickable index view"""
@@ -1161,8 +1159,8 @@ def getRadio (*args,**kwargs):
     d=RadioDialog(*args,**kwargs)
     return d.run()
 
-def show_faq (*args,**kwargs):
-    d=SimpleFaqDialog(*args,**kwargs)
+def show_faq(*args, **kwargs):
+    d = SimpleFaqDialog(*args, **kwargs)
     return d.run()
 
 def get_ratings_conversion (*args,**kwargs):
@@ -1228,7 +1226,7 @@ if __name__ == '__main__':
                                                                     StarGenerator(),
                                                                     )],
         ['show dialog (not modal)',lambda *args: PreferencesDialog(options=opts,apply_func=show_options).show()],
-        ['show FAQ',lambda *args: show_faq(jump_to='shopping')],
+        ['show FAQ',lambda *args: show_faq(parent=w, jump_to='shopping')],
         ['show message',lambda *args: show_message('howdy',label='Hello there. This is a very long label for the top of a dialog.', sublabel='And this is a sub message.',message_type=Gtk.MessageType.WARNING)],
         ['get entry', lambda *args: getEntry(label='Main label',sublabel='sublabel',entryLabel='Entry Label: ')],
         ['get number', lambda *args: getNumber(label='Main label',sublabel='sublabel')],

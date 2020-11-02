@@ -16,7 +16,7 @@ from gourmet.exporters.exportManager import ExportManager
 from gourmet.exporters.printer import PrintManager
 from gourmet.gdebug import debug
 from gourmet.gglobals import (FLOAT_REC_ATTRS, INT_REC_ATTRS, REC_ATTR_DIC,
-                              REC_ATTRS, doc_base, imagedir, uibase)
+                              REC_ATTRS, uibase, imagedir)
 from gourmet.gtk_extras import WidgetSaver  # noqa: imports needed for glade
 from gourmet.gtk_extras import cb_extras as cb
 from gourmet.gtk_extras import dialog_extras as de
@@ -236,7 +236,10 @@ class RecCardDisplay (plugin_loader.Pluggable):
             ('Preferences',Gtk.STOCK_PREFERENCES,None,
              None,None,self.preferences_cb),
             ('Help',Gtk.STOCK_HELP,_('_Help'),
-             None,None,lambda *args: de.show_faq(os.path.join(doc_base,'FAQ'),jump_to='Entering and Editing recipes')),
+             None,None,
+             lambda *args: de.show_faq(parent=self.window,
+                                       jump_to='Entering and Editing recipes')
+            ),
             ]
                                                 )
         self.recipeDisplayActionGroup.add_toggle_actions([

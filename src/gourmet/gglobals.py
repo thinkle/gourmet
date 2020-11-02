@@ -31,7 +31,6 @@ imagedir = os.path.join(settings.data_dir, 'images')
 style_dir = os.path.join(settings.data_dir, 'style')
 
 icondir = os.path.join(settings.icon_base, '48x48', 'apps')
-doc_base = settings.doc_base
 plugin_base = settings.plugin_base
 
 # GRAB PLUGIN DIR FOR HTML IMPORT

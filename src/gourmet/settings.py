@@ -12,7 +12,6 @@ flatpak_ui = "/app/share/gourmet/ui"
 ui_base = op.join(op.dirname(__file__), 'ui')
 ui_base = flatpak_ui if op.exists(flatpak_ui) else ui_base
 
-doc_base = op.join(base_dir)
 locale_base = op.join(base_dir, 'build', 'mo')
 plugin_base = op.join(base_dir, 'build', 'share', 'gourmet')
 
