@@ -6,7 +6,9 @@ from pathlib import Path
 from gi.repository import Gdk, GdkPixbuf, Gtk
 
 from . import settings
+from .image_utils import load_pixbuf_from_resource as _load_pixbuf_from_resource
 from .optionparser import args
+
 
 uibase = os.path.join(settings.ui_base)
 lib_dir = os.path.join(settings.lib_dir)
@@ -27,7 +29,6 @@ use_threads = args.threads
 
 # note: this stuff must be kept in sync with changes in setup.py
 data_dir = settings.data_dir
-imagedir = os.path.join(settings.data_dir, 'images')
 
 plugin_base = settings.plugin_base
 
@@ -87,18 +88,18 @@ DEFAULT_HIDDEN_COLUMNS = [REC_ATTR_DIC[attr] for attr in
 icon_factory = Gtk.IconFactory()
 
 
+# TODO: Move this into GTK-specific code?
+# TODO: Update/remove potentially-deprecated code?
+# GTK 3 has deprecated the use of stock icons, so this may need to be rewritten
+# (or removed altogether) to ensure this works in the future
 def add_icon(file_name, stock_id, label=None, modifier=0, keyval=0):
-    pb = GdkPixbuf.Pixbuf.new_from_file(file_name)
+    pb = _load_pixbuf_from_resource(file_name)
     iconset = Gtk.IconSet.new_from_pixbuf(pb)
     icon_factory.add(stock_id, iconset)
     icon_factory.add_default()
     # TODO: fix adding icons
     return
-    Gtk.stock_add([(stock_id,
-                    label,
-                    modifier,
-                    keyval,
-                    "")])
+    Gtk.stock_add([(stock_id, label, modifier, keyval, "")])
 
 
 for filename, stock_id, label, modifier, keyval in [
@@ -112,8 +113,7 @@ for filename, stock_id, label, modifier, keyval in [
 
     ('reccard_edit.png', 'edit-recipe-card', None, 0, 0),
      ]:
-    add_icon(os.path.join(imagedir, filename), stock_id,
-             label, modifier, keyval)
+    add_icon(filename, stock_id, label, modifier, keyval)
 
 
 # Color scheme preference

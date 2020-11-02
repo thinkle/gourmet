@@ -16,7 +16,7 @@ from gourmet.exporters.exportManager import ExportManager
 from gourmet.exporters.printer import PrintManager
 from gourmet.gdebug import debug
 from gourmet.gglobals import (FLOAT_REC_ATTRS, INT_REC_ATTRS, REC_ATTR_DIC,
-                              REC_ATTRS, uibase, imagedir)
+                              REC_ATTRS, uibase)
 from gourmet.gtk_extras import WidgetSaver  # noqa: imports needed for glade
 from gourmet.gtk_extras import cb_extras as cb
 from gourmet.gtk_extras import dialog_extras as de
@@ -31,6 +31,8 @@ from gourmet.importers.importer import parse_range
 from gourmet.plugin import (IngredientControllerPlugin, RecDisplayPlugin,
                             RecEditorModule, RecEditorPlugin, ToolPlugin)
 from gourmet.recindex import RecIndex
+
+from .image_utils import load_pixbuf_from_resource as _load_pixbuf_from_resource
 
 
 def find_entry(w) -> Optional[Gtk.Entry]:
@@ -362,7 +364,7 @@ class RecCardDisplay (plugin_loader.Pluggable):
     # Main GUI setup
     def setup_main_window (self):
         self.window = Gtk.Window()
-        self.window.set_icon_from_file(os.path.join(imagedir,'reccard.png'))
+        self.window.set_icon(_load_pixbuf_from_resource('reccard.png'))
         self.window.connect('delete-event',self.hide)
         self.conf.append(WidgetSaver.WindowSaver(self.window,
                                                  self.prefs.get('reccard_window_%s'%self.current_rec.id,
@@ -949,7 +951,7 @@ class RecEditor(WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
 
     def setup_main_interface (self):
         self.window = Gtk.Window()
-        self.window.set_icon_from_file(os.path.join(imagedir,'reccard_edit.png'))
+        self.window.set_icon(_load_pixbuf_from_resource('reccard_edit.png'))
         title = ((self.current_rec and self.current_rec.title) or _('New Recipe')) + ' (%s)'%_('Edit')
         self.window.set_title(title)
         self.window.connect('delete-event',
