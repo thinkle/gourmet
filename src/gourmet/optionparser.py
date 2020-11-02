@@ -14,11 +14,6 @@ parser.add_argument('--database-url',
                     dest='db_url',
                     help='Database uri formatted like driver://path/to/db',
                     default='')
-parser.add_argument('--plugin-directory',
-                    action='store',
-                    dest='html_plugin_dir',
-                    help='Directory for webpage import filter plugins.',
-                    default='')
 parser.add_argument('--use-threads',
                     action='store_const',
                     const=True,

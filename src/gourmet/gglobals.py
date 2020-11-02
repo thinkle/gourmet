@@ -32,20 +32,6 @@ style_dir = os.path.join(settings.data_dir, 'style')
 
 plugin_base = settings.plugin_base
 
-# GRAB PLUGIN DIR FOR HTML IMPORT
-if args.html_plugin_dir:
-    html_plugin_dir = args.html_plugin_dir
-else:
-    html_plugin_dir = os.path.join(gourmetdir, 'html_plugins')
-    if not os.path.exists(html_plugin_dir):
-        os.makedirs(html_plugin_dir)
-        template_file = os.path.join(settings.data_dir, 'RULES_TEMPLATE')
-        if os.path.exists(template_file):
-            import shutil
-            shutil.copy(template_file,
-                        os.path.join(html_plugin_dir, 'RULES_TEMPLATE')
-                        )
-
 REC_ATTRS = [('title', _('Title'), 'Entry'),
              ('category', _('Category'), 'Combo'),
              ('cuisine', _('Cuisine'), 'Combo'),
