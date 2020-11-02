@@ -1,8 +1,11 @@
-from typing import List, Optional
-import os.path, fnmatch,  re
-from pathlib import Path
-
+import fnmatch
 from gettext import gettext as _
+import os.path
+from pathlib import Path
+import re
+import traceback
+from typing import List, Optional
+
 from gi.repository import GObject, Gtk, Pango
 from gi.repository.GLib import get_user_special_dir, UserDirectory
 import xml.sax.saxutils
@@ -53,10 +56,7 @@ class ModalDialog (Gtk.Dialog):
         if sublabel:
             self.setup_sublabel(sublabel)
         if expander:
-            # if we have an expander, our window
-            # should be resizable (just in case
-            # the user wants to do more resizing)
-            self.set_resizable(True)
+            self.set_resizable(True)  # should users want to resize the dialog
             self.setup_expander(expander)
         self.setup_buttons(cancel, okay)
         self.vbox.set_vexpand(True)
@@ -65,9 +65,8 @@ class ModalDialog (Gtk.Dialog):
     def setup_dialog (self, *args, **kwargs):
         Gtk.Dialog.__init__(self, *args, **kwargs)
 
-    def setup_label (self, label):
-        # we're going to add pango markup to our
-        # label to make it bigger as per GNOME HIG
+    def setup_label(self, label: str):
+        """Add Pango markup to label"""
         self.set_title(label)
         label = '<span weight="bold" size="larger">%s</span>'%label
         self.label = Gtk.Label(label=label)
@@ -106,30 +105,32 @@ class ModalDialog (Gtk.Dialog):
         else:
             print('WARNING, no response for ',response)
 
-    def setup_expander (self, expander):
-            label=expander[0]
-            body = expander[1]
-            # self.expander = Gtk.Expander(label)
-            self.expander = Gtk.Expander()
-            self.expander.set_use_underline(True)
-            self.expander_vbox = Gtk.VBox()
-            sw = Gtk.ScrolledWindow()
-            sw.add_with_viewport(self.expander_vbox)
-            sw.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
-            self.expander.add(sw)
-            self._add_expander_item(body)
-            self.expander.show()
-            self.expander_vbox.show_all()
-            self.vbox.add(self.expander)
+    def setup_expander(self, content: List[str]):
+        _, body = content
 
-    def _add_expander_item (self, item):
+        self.expander = Gtk.Expander()
+        self.expander.set_use_underline(True)
+        self.expander_vbox = Gtk.VBox()
+
+        sw = Gtk.ScrolledWindow()
+        sw.add_with_viewport(self.expander_vbox)
+        sw.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
+        sw.set_min_content_height(150)
+        self.expander.add(sw)
+
+        self._add_expander_item(body)
+        self.expander.show()
+        self.expander_vbox.show_all()
+        self.vbox.add(self.expander)
+
+    def _add_expander_item(self, item):
         if isinstance(item, str):
             l=Gtk.Label(label=item)
             l.set_selectable(True)
             l.set_line_wrap_mode(Pango.WrapMode.WORD)
-            self.expander_vbox.pack_start(l,False, False, 0)
+            self.expander_vbox.pack_start(l, False, False, 0)
         elif isinstance(item, (list, tuple)):
-            list(map(self._add_expander_item,item))
+            list(map(self._add_expander_item, item))
         else:
             self.expander_vbox.pack_start(item, True, True, 0)
 
@@ -818,10 +819,8 @@ class RatingsConversionDialog (ModalDialog):
         model.set_value(treeiter,colnum,value)
 
 
-def show_traceback(label: str = "Error", sublabel: str = None):
+def show_traceback(label: str = "Error", sublabel: Optional[str] = None):
     """Show an error dialog with a traceback viewable."""
-    from io import StringIO
-    import traceback
     error_mess = traceback.format_exc()
     show_message(label=label,
                  sublabel=sublabel,

@@ -23,17 +23,17 @@
 #
 # A SuspendableThread base class for creating and running threaded
 # processes.
-#
-#
+from gettext import gettext as _
+from gettext import ngettext
 import threading
 import time
+import traceback
 from typing import Any
 import webbrowser
 
-from gettext import gettext as _
-from gettext import ngettext
-
 from gi.repository import GObject, Gtk, Pango
+
+from gourmet.gtk_extras.dialog_extras import show_message
 
 
 # _IdleObject etc. based on example John Stowers
@@ -105,9 +105,7 @@ class SuspendableThread (threading.Thread, _IdleObject):
         except Terminated:
             self.emit('stopped')
         except:
-            import traceback
-            self.emit('error',1,
-                      'Error during %s'%self.name,
+            self.emit('error', 1, f'Error during {self.name}',
                       traceback.format_exc())
         else:
             self.emit('completed')
@@ -132,7 +130,6 @@ class SuspendableThread (threading.Thread, _IdleObject):
     def check_for_sleep (self):
         """Check whether we have been suspended or terminated.
         """
-        paused_emitted = False
         emit_resume = False
         if self.terminated:
             raise Terminated('%s terminated'%self.name)
@@ -279,11 +276,11 @@ class ThreadManagerGui:
         infobox.show_all()
         self.messagebox.pack_start(infobox, True, True, 0)
 
-        l = Gtk.Label()
-        l.set_markup(message)
-        l.connect('activate-link',lambda lbl, uri: webbrowser.open(uri))
-        l.show()
-        infobox.get_content_area().add(l)
+        label = Gtk.Label()
+        label.set_markup(message)
+        label.connect('activate-link', lambda lbl, uri: webbrowser.open(uri))
+        label.show()
+        infobox.get_content_area().add(label)
         self.messagebox.show()
 
     def register_thread_with_dialog (self, description, thread):
@@ -346,25 +343,26 @@ class ThreadManagerGui:
             pb.pulse()
         pb.set_text(txt)
 
-    def thread_error (self, thread, errno, errname, trace, threadbox):
-        threadbox.get_action_area().get_children()[1].hide() # Pause button
+    def thread_error(self, thread: Any, errno: int,
+                     errname: str, trace: str, threadbox: Gtk.InfoBar):
+        threadbox.get_action_area().get_children()[1].hide()  # Pause button
         pb = threadbox.get_content_area().get_children()[0].get_children()[1]
-        pb.set_text(_('Error: %s')%errname)
+        pb.set_text(_('Error: %s') % errname)
         b = threadbox.add_button(_('Details'), 11)
-        b.connect('clicked',self.show_traceback,errno,errname,trace)
+        b.connect('clicked', self.show_traceback, errno, errname, trace)
         b.show()
         self.to_remove.append(threadbox)
 
     def thread_stopped(self, thread: Any, threadbox: Gtk.InfoBar):
         threadbox.hide()
 
-    def thread_pause (self, thread, threadbox):
+    def thread_pause (self, thread: Any, threadbox: Gtk.InfoBar):
         pb = threadbox.get_content_area().get_children()[0].get_children()[1]
         txt = pb.get_text()
         txt += self.paused_text
         pb.set_text(txt)
 
-    def thread_resume (self, thread, threadbox):
+    def thread_resume (self, thread: Any, threadbox: Gtk.InfoBar):
         pb = threadbox.get_content_area().get_children()[0].get_children()[1]
         txt = pb.get_text()
         if txt.find(self.paused_text):
@@ -386,12 +384,11 @@ class ThreadManagerGui:
                 self.pbtable.remove(w)
         self.messagebox.hide()
 
-    def show_traceback (self, button, errno, errname, traceback):
-        import gourmet.gtk_extras.dialog_extras as de
-        de.show_message(label=_('Error'),
-                        sublabel=_('Error %s: %s')%(errno,errname),
-                        expander=(_('Traceback'),traceback),
-                        )
+    def show_traceback (self, button: Gtk.Button, errno: int,
+                        errname: str, traceback: str):
+        show_message(label=_('Error'),
+                     sublabel=_('Error %s: %s') % (errno,errname),
+                     expander=(_('Traceback'), traceback))
 
 def get_thread_manager_gui ():
     return ThreadManagerGui.instance()
