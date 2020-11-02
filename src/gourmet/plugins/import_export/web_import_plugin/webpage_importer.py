@@ -27,11 +27,12 @@ class WebParser (InteractiveImporter):
     imageexcluders = None # This could be a list of compiled regexps which would
                          # be used to search image URL strings for
                          # potential ads, etc.
-    def __init__(self, url: str, data: str, content_type: str):
+    def __init__(self, url: str, data: str):
         self.ignore_unparsed = False
         self.url = url
         #self.name = 'Web Parser'
         self.soup = BeautifulSoup(data, "lxml")
+        self.text = data
         super().__init__()
         #self.generic_parser = RecipeParser()
         self.preparse()

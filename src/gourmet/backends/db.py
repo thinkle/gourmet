@@ -1180,7 +1180,7 @@ class RecData (Pluggable):
                 """)
                 import traceback
                 traceback.print_stack()
-        for k,v in list(recdic.items()):
+        for k, v in recdic.items():
             if isinstance(v, str):
                 recdic[k] = v.strip()
 
@@ -1365,7 +1365,6 @@ class RecData (Pluggable):
 
     def do_add (self, table, dic):
         insert_statement = table.insert()
-        self._force_unicode(dic)
         try:
             result_proxy = insert_statement.execute(**dic)
         except ValueError:
@@ -1406,18 +1405,11 @@ class RecData (Pluggable):
         select = self.recipe_table.select(self.recipe_table.c.id==insert_statement.execute(**rdict).inserted_primary_key[0])
         return select.execute().fetchone()
 
-    def validate_ingdic (self,dic):
+    def validate_ingdic(self, dic):
         """Do any necessary validation and modification of ingredient dictionaries."""
-        if 'deleted' not in dic: dic['deleted']=False
-        self._force_unicode(dic)
-
-    def _force_unicode (self, dic):
-       for k,v in list(dic.items()):
-           # FIXME: The translation to Python 3 has made this a no-op.
-           #  Is it still needed?
-           if isinstance(v, str) and k not in ['image','thumb']:
-               # force unicode...
-               dic[k]=str(v)
+        # FIXME: this function can be refactored out
+        if 'deleted' not in dic:
+            dic['deleted'] = False
 
     def do_modify_rec (self, rec, dic):
         """This is what other DBs should subclass."""
@@ -1427,19 +1419,25 @@ class RecData (Pluggable):
         """modify ing based on dictionary of properties and new values."""
         return self.do_modify(self.ingredients_table,ing,ingdict)
 
-    def do_modify (self, table, row, d, id_col='id'):
+    def do_modify (self,
+                   table,  # sqlalchemy.sql.schema.Table
+                   row,  #  sqlalchemy.engine.result.RowProxy
+                   d, # Dict[str, Any]
+                   id_col='id'):  # Optional[str]
         if id_col:
             try:
-                self._force_unicode(d)
-                qr = table.update(getattr(table.c,id_col)==getattr(row,id_col)).execute(**d)
-            except:
+                table_val = getattr(table.c, id_col)
+                row_val = getattr(row, id_col)
+                qr: 'ResultProxy'= table.update(table_val == row_val).execute(**d)
+            except Exception as e:
                 print('do_modify failed with args')
                 print('table=',table,'row=',row)
                 print('d=',d,'id_col=',id_col)
+                print(e)
                 raise
             select = table.select(getattr(table.c,id_col)==getattr(row,id_col))
         else:
-            qr = table.update().execute(**d)
+            qr: 'ResultProxy' = table.update().execute(**d)
             select = table.select()
         return select.execute().fetchone()
 
@@ -1453,9 +1451,9 @@ class RecData (Pluggable):
             id=rec
         return self.fetch_all(self.ingredients_table,recipe_id=id,deleted=False)
 
-    def get_cats (self, rec):
+    def get_cats(self, rec):
         svw = self.fetch_all(self.categories_table,recipe_id=rec.id)
-        cats =  [c.category or '' for c in svw]
+        cats = [c.category or '' for c in svw]
         # hackery...
         while '' in cats:
             cats.remove('')

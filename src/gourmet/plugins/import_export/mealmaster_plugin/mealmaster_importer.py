@@ -3,7 +3,6 @@ import re, os.path, string, array
 from gourmet import convert, check_encodings
 from gourmet.gdebug import debug,TimeAction
 #from gourmet.gglobals import gt
-from gettext import gettext as _
 
 class mmf_constants:
     def __init__ (self):
@@ -570,5 +569,3 @@ if __name__ == '__main__':
         import pstats
         p = pstats.Stats(profi)
         p.strip_dirs().sort_stats('cumulative').print_stats()
-
-

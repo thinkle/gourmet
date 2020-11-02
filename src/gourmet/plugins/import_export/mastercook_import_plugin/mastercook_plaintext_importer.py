@@ -2,7 +2,6 @@ from gourmet.importers import importer, plaintext_importer
 import re
 from gourmet import check_encodings
 from gourmet.gdebug import debug
-from gettext import gettext as _
 
 MASTERCOOK_START_REGEXP=r'\s*\*\s*Exported\s*from\s*MasterCook.*\*\s*'
 

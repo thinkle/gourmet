@@ -1,4 +1,3 @@
-from gettext import gettext as _
 import os.path
 from gourmet import convert
 from gourmet import shopping

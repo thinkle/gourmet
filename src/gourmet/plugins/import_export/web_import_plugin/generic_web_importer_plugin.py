@@ -49,7 +49,7 @@ class GenericWebImporter (ImporterPlugin, Pluggable):
                 # pass the module as an arg... very awkward inheritance
                 importer = p.get_importer(webpage_importer)
                 highest = test_val.value
-        return importer(url, data, content_type)
+        return importer(url, data)
 
     def get_importer (self, filename):
         url = 'file://'+filename
