@@ -6,7 +6,6 @@ import sys
 
 base_dir = op.abspath(op.join(op.dirname(__file__), '..'))
 lib_dir = op.join(base_dir, 'gourmet')
-data_dir = op.join(lib_dir, 'data')
 
 flatpak_ui = "/app/share/gourmet/ui"
 ui_base = op.join(op.dirname(__file__), 'ui')

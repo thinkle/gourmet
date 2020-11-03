@@ -1,7 +1,10 @@
-import os
+import os as _os
+import os.path
 import time
 import xml.sax.saxutils
 from gettext import gettext as _
+from pkgutil import get_data as _get_data
+from tempfile import mkstemp as _mkstemp
 from typing import Callable, List, Optional
 
 from gi.repository import GLib, Gtk
@@ -188,10 +191,17 @@ class TimerDialog:
     def init_player (self):
         self.player = Player()
 
-    def play_tune (self):
-        sound_file = self.sounds_and_files[cb.cb_get_active_text(self.soundComboBox)]
-        sound_file = os.path.join(gglobals.data_dir,'sound',sound_file)
-        self.player.play_file(sound_file)
+    def play_tune (self) -> None:
+        sound = self.sounds_and_files[cb.cb_get_active_text(self.soundComboBox)]
+        data = _get_data('gourmet', f'data/sound/{sound}')
+        assert data
+
+        # TODO!!! Delete the tempfile when we're done
+        # TODO: Figure out how to make GStreamer play raw bytes
+        fd, fname = _mkstemp('.ogg')
+        _os.write(fd, data)
+        _os.close(fd)
+        self.player.play_file(fname)
 
     def annoy_user (self):
         if self.keep_annoying:
@@ -203,6 +213,7 @@ class TimerDialog:
         self.play_tune()
         if self.repeatCheckButton.get_active():
             self.keep_annoying = True
+            # TODO: Timeout on when the audio file actually stops playing
             GLib.timeout_add(3000, self.annoy_user)
         self.timerBox.hide()
         self.expander1.hide()
