@@ -1,6 +1,7 @@
-from gourmet.plugin import ExporterPlugin
-import gourmet.exporters.exporter as exporter
 from gettext import gettext as _
+
+import gourmet.exporters.exporter as exporter
+from gourmet.plugin import ExporterPlugin
 
 TXT = _('Plain Text file')
 

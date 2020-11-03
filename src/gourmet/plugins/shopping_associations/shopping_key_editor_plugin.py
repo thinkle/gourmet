@@ -1,7 +1,10 @@
+from gettext import gettext as _
+
+from gi.repository import Gtk
+
 from gourmet.plugin import PluginPlugin
 from gourmet.recipeManager import get_recipe_manager
-from gi.repository import Gtk
-from gettext import gettext as _
+
 
 class KeyEditorPlugin (PluginPlugin):
 

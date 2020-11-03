@@ -3,6 +3,7 @@ from gtkspellcheck import SpellChecker
 
 from gourmet.plugin import RecEditorPlugin, UIPlugin
 
+
 class SpellPlugin (RecEditorPlugin, UIPlugin):
 
     main = None

@@ -10,6 +10,7 @@ from .gtk_extras import WidgetSaver
 from .gtk_extras import cb_extras as cb
 from .gtk_extras import dialog_extras as de
 
+
 class ShopEditor:
 
     """ShopEditor sets up a GUI to allow editing which shopping

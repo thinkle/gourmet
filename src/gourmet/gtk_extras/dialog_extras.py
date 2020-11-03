@@ -1,18 +1,19 @@
 import fnmatch
-from gettext import gettext as _
 import os.path
-from pathlib import Path
 import re
 import traceback
+import xml.sax.saxutils
+from gettext import gettext as _
+from pathlib import Path
 from typing import List, Optional
 
 from gi.repository import GObject, Gtk, Pango
-from gi.repository.GLib import get_user_special_dir, UserDirectory
-import xml.sax.saxutils
+from gi.repository.GLib import UserDirectory, get_user_special_dir
 
-from . import optionTable
 from gourmet.gdebug import debug
 from gourmet.image_utils import image_to_pixbuf, make_thumbnail
+
+from . import optionTable
 
 H_PADDING=12
 Y_PADDING=12

@@ -1,10 +1,13 @@
-import gourmet.convert as convert
-from gi.repository import Gtk
-from gourmet.gdebug import debug
-from gourmet.gtk_extras.cb_extras import cb_get_active_text, cb_set_active_text, setup_typeahead
-import gourmet.GourmetRecipeManager
-from gettext import gettext as _
 import os
+from gettext import gettext as _
+
+from gi.repository import Gtk
+
+import gourmet.convert as convert
+import gourmet.GourmetRecipeManager
+from gourmet.gdebug import debug
+from gourmet.gtk_extras.cb_extras import (cb_get_active_text,
+                                          cb_set_active_text, setup_typeahead)
 
 try:
     current_path = os.path.split(os.path.join(os.getcwd(),__file__))[0]
@@ -180,4 +183,3 @@ if __name__ == '__main__':
     uibase="/home/tom/Projects/gourmet/glade/"
     cg=ConvGui()
     Gtk.main()
-

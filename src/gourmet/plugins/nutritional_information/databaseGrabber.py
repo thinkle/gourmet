@@ -1,8 +1,18 @@
+import os.path
+import re
 import sys
-import urllib.request, urllib.parse, urllib.error, zipfile, tempfile, os.path, re
+import tempfile
+import urllib.error
+import urllib.parse
+import urllib.request
+import zipfile
 from gettext import gettext as _
-from .parser_data import ABBREVS, ABBREVS_STRT, FOOD_GROUPS, NUTRITION_FIELDS, WEIGHT_FIELDS
+
 from gourmet.gdebug import TimeAction
+
+from .parser_data import (ABBREVS, ABBREVS_STRT, FOOD_GROUPS, NUTRITION_FIELDS,
+                          WEIGHT_FIELDS)
+
 expander_regexp = None
 
 def compile_expander_regexp ():
@@ -218,4 +228,3 @@ if __name__ == '__main__':
     grabber.grab_data('/home/tom/Projects/grm/data/')
     #grabber.parse_weightfile(open('/home/tom/Projects/grm/data/WEIGHT.txt','r'))
     #grabber.get_weight('/home/tom/Projects/nutritional_data/WEIGHT.txt')
-

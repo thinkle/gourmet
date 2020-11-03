@@ -1,15 +1,16 @@
-from gourmet.plugin import PluginPlugin, ImportManagerPlugin
-from gourmet.gglobals import gourmetdir
-from gourmet.prefs import Prefs
-from gourmet.gtk_extras import dialog_extras as de
-from bs4 import BeautifulSoup
-import gourmet.threadManager
-from selenium import webdriver
 from gettext import gettext as _
+
 import keyring
+from bs4 import BeautifulSoup
+from selenium import webdriver
+
+import gourmet.threadManager
+from gourmet.gglobals import gourmetdir
+from gourmet.gtk_extras import dialog_extras as de
+from gourmet.plugin import ImportManagerPlugin, PluginPlugin
+from gourmet.prefs import Prefs
 
 from .state import WebsiteTestState
-
 
 global driver
 if 'driver' not in globals():
@@ -199,4 +200,3 @@ if __name__ == '__main__':
     #         print '<UNMATCHED>',p,'</UNMATCHED>'
     #     else:
     #         print '<MATCHED>',p,'</MATCHED>'
-

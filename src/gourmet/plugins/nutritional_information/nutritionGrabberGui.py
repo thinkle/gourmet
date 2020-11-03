@@ -1,9 +1,15 @@
+import os
+import os.path
+import time
+from gettext import gettext as _
+
 from gi.repository import Gtk
-from . import databaseGrabber
-import os, os.path, time
+
 import gourmet.gtk_extras.dialog_extras as de
 from gourmet.gglobals import data_dir
-from gettext import gettext as _
+
+from . import databaseGrabber
+
 
 class DatabaseGrabberGui (databaseGrabber.DatabaseGrabber):
     def __init__ (self, db):

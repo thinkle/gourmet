@@ -1,11 +1,13 @@
-import os, re
+import os
+import re
 import xml.sax.saxutils
 from gettext import gettext as _
-from gourmet import convert,gglobals
-from gourmet.exporters.exporter import ExporterMultirec, exporter_mult
+from string import Template
 
 from ebooklib import epub
-from string import Template
+
+from gourmet import convert, gglobals
+from gourmet.exporters.exporter import ExporterMultirec, exporter_mult
 
 RECIPE_HEADER = Template('''<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
@@ -299,4 +301,3 @@ class website_exporter (ExporterMultirec):
 
     def write_footer (self):
         self.doc.finish()
-

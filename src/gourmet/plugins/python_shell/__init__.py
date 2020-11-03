@@ -1,7 +1,11 @@
-from gourmet.plugin import ToolPlugin
-from gi.repository import Gtk
-from . import ipython_view
 from gettext import gettext as _
+
+from gi.repository import Gtk
+
+from gourmet.plugin import ToolPlugin
+
+from . import ipython_view
+
 
 class ConsolePlugin (ToolPlugin):
 

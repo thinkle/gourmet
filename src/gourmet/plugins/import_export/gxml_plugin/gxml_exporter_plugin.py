@@ -1,9 +1,10 @@
 import re
-
-from gourmet.plugin import ExporterPlugin
-from gourmet.convert import seconds_to_timestring, float_to_frac
-from . import gxml2_exporter
 from gettext import gettext as _
+
+from gourmet.convert import float_to_frac, seconds_to_timestring
+from gourmet.plugin import ExporterPlugin
+
+from . import gxml2_exporter
 
 GXML = _('Gourmet XML File')
 

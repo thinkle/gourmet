@@ -1,10 +1,8 @@
 import os
+from distutils.core import Command
 from pathlib import Path
 
-from distutils.core import Command
-from setuptools import find_packages
-from setuptools import setup
-
+from setuptools import find_packages, setup
 
 package = 'gourmet'
 podir = Path('po')

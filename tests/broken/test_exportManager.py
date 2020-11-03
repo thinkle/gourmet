@@ -1,11 +1,16 @@
-import unittest, tempfile, os
+import os
+import sys
+import tempfile
+import unittest
+
+import gourmet.backends.db
 import gourmet.gglobals
+import gourmet.GourmetRecipeManager
+from gourmet.exporters.exportManager import EXTRA_PREFS_DEFAULT, ExportManager
+
 tmpdir = tempfile.mktemp()
 os.makedirs(tmpdir)
 gourmet.gglobals.gourmetdir = tmpdir
-import gourmet.GourmetRecipeManager
-import gourmet.backends.db
-from gourmet.exporters.exportManager import ExportManager, EXTRA_PREFS_DEFAULT
 
 
 class SampleRecipeSetterUpper:
@@ -103,7 +108,6 @@ class TestSetterUpper (unittest.TestCase):
         from gi.repository import Gtk
         Gtk.main()
 
-import sys
 
 class TestExports (unittest.TestCase):
     def setUp (self):

@@ -1,32 +1,32 @@
 import gc
-from typing import Any, Callable, Dict, List, Optional, Tuple
 import os.path
-from pathlib import Path
 import webbrowser
-
+import xml.sax.saxutils
 from gettext import gettext as _
+from pathlib import Path
+from typing import Any, Callable, Dict, List, Optional, Tuple
+
 from gi.repository import Gdk, GdkPixbuf, GLib, GObject, Gtk, Pango
 from PIL import Image
-import xml.sax.saxutils
 
-from gourmet import convert, defaults, prefs, plugin_loader, timeScanner, Undo
+from gourmet import Undo, convert, defaults
+from gourmet import image_utils as iu
+from gourmet import plugin_loader, prefs, timeScanner
 from gourmet.exporters.exportManager import ExportManager
 from gourmet.exporters.printer import PrintManager
-
 from gourmet.gdebug import debug
 from gourmet.gglobals import (FLOAT_REC_ATTRS, INT_REC_ATTRS, REC_ATTR_DIC,
-                              REC_ATTRS, doc_base, uibase, imagedir)
-from gourmet.gtk_extras import (  # noqa: imports needed for glade
-    fix_action_group_importance, mnemonic_manager, ratingWidget,
-    validation, WidgetSaver)
+                              REC_ATTRS, doc_base, imagedir, uibase)
+from gourmet.gtk_extras import WidgetSaver  # noqa: imports needed for glade
 from gourmet.gtk_extras import cb_extras as cb
 from gourmet.gtk_extras import dialog_extras as de
+from gourmet.gtk_extras import (fix_action_group_importance, mnemonic_manager,
+                                ratingWidget)
+from gourmet.gtk_extras import treeview_extras as te
+from gourmet.gtk_extras import validation
 from gourmet.gtk_extras.dialog_extras import (UserCancelledError,
                                               show_amount_error)
 from gourmet.gtk_extras.pango_buffer import PangoBuffer
-from gourmet.gtk_extras import treeview_extras as te
-
-from gourmet import image_utils as iu
 from gourmet.importers.importer import parse_range
 from gourmet.plugin import (IngredientControllerPlugin, RecDisplayPlugin,
                             RecEditorModule, RecEditorPlugin, ToolPlugin)

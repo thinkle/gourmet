@@ -1,14 +1,16 @@
 from tempfile import TemporaryDirectory
 
 import gi
-gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk  # noqa: import not a top of file
 
 from gourmet import convert, gglobals  # noqa: import not at top
 from gourmet.backends.db import RecData  # noqa: import not at top
 from gourmet.GourmetRecipeManager import get_application  # noqa
-from gourmet.reccard import (add_with_undo, RecCard, RecCardDisplay,  # noqa
-                            RecEditor)
+from gourmet.reccard import (RecCard, RecCardDisplay, RecEditor,  # noqa
+                             add_with_undo)
+
+gi.require_version("Gtk", "3.0")
+
 
 VERBOSE = True
 
@@ -308,4 +310,3 @@ def test_reccard():
         print('Undo properly sensitizes save widget.')
         do_ingredients_group_editing(rec_card)
         print('Ing Group Editing works.')
-

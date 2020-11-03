@@ -1,7 +1,10 @@
+import os
+import os.path
+import re
 import time
-import os,os.path,re
 import unittest
-from ..importers.importManager import ImportManager, ImportFileList
+
+from ..importers.importManager import ImportFileList, ImportManager
 from ..recipeManager import get_recipe_manager
 
 TEST_FILE_DIRECTORY = os.path.join(os.path.dirname(__file__), 'recipe_files')
@@ -246,4 +249,3 @@ class ImportTestCase (unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-

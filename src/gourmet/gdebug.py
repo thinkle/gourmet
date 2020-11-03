@@ -1,5 +1,7 @@
+import time
+import traceback
+
 from .optionparser import args
-import time,traceback
 
 debug_level=args.debug or 0
 debug_file=args.debug_file

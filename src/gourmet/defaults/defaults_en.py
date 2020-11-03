@@ -29,8 +29,10 @@
 # Feel free to change the number or content of categories to be consistent
 # with what users in your locale are likely to be familiar with.
 
+from typing import Any, List, Mapping
+
 from .abstractLang import AbstractLanguage
-from typing import Any, Mapping, List
+
 
 class Language(AbstractLanguage):
 

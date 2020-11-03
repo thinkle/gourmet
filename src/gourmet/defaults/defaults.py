@@ -1,7 +1,11 @@
-import locale, os, sys
-from typing import Optional
-from .abstractLang import AbstractLanguage
+import locale
+import os
+import sys
 from collections import defaultdict
+from typing import Optional
+
+from .abstractLang import AbstractLanguage
+
 deflang = 'en'
 lang: AbstractLanguage
 

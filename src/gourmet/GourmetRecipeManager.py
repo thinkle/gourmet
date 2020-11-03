@@ -2,41 +2,31 @@ import os
 import os.path
 import re
 import threading
-from typing import Set
-
 from gettext import gettext as _
 from gettext import ngettext
+from typing import Set
+
 from gi.repository import Gdk, GdkPixbuf, GLib, GObject, Gtk
 
-from gourmet import (
-    batchEditor, convert, plugin, plugin_gui, plugin_loader, prefs, prefsGui,
-    reccard, recipeManager, shopgui, version
-)
-
-from gourmet.defaults.defaults import lang as defaults
+from gourmet import (batchEditor, convert, plugin, plugin_gui, plugin_loader,
+                     prefs, prefsGui, reccard, recipeManager, shopgui, version)
 from gourmet.defaults.defaults import get_pluralized_form
-
+from gourmet.defaults.defaults import lang as defaults
 from gourmet.exporters.exportManager import ExportManager
 from gourmet.exporters.printer import PrintManager
-
 from gourmet.gdebug import debug
 from gourmet.gglobals import (DEFAULT_HIDDEN_COLUMNS, REC_ATTRS, doc_base,
                               icondir, uibase)
-from gourmet.importers.importManager import ImportManager
-
-
-from gourmet.gtk_extras import (
-    fix_action_group_importance, mnemonic_manager, ratingWidget, WidgetSaver
-)
-
+from gourmet.gtk_extras import WidgetSaver
 from gourmet.gtk_extras import dialog_extras as de
+from gourmet.gtk_extras import (fix_action_group_importance, mnemonic_manager,
+                                ratingWidget)
 from gourmet.gtk_extras import treeview_extras as te
-
+from gourmet.importers.importManager import ImportManager
 from gourmet.recindex import RecIndex
-from gourmet.threadManager import (get_thread_manager, get_thread_manager_gui,
-                                   SuspendableThread)
+from gourmet.threadManager import (SuspendableThread, get_thread_manager,
+                                   get_thread_manager_gui)
 from gourmet.timer import show_timer
-
 
 UNDO = 1
 SHOW_TRASH = 2

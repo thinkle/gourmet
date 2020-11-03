@@ -28,11 +28,14 @@
 # RecEditorPlugin - given an instance of the recipe editor.
 # DatabasePlugin - given an instance of the base database class.
 
+import sqlalchemy
 from gi.repository import GObject, Gtk
+
 from gourmet import Undo
+
 from . import plugin_loader
 from .gtk_extras import fix_action_group_importance
-import sqlalchemy
+
 
 class Plugin:
     pass

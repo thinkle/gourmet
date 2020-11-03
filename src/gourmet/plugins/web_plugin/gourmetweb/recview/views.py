@@ -1,16 +1,17 @@
-from gettext import gettext as _
-from django.http import HttpResponse, HttpResponseRedirect
-from django import forms
-from django.shortcuts import render_to_response
-import sys
-sys.path.append('../../../')
-import re
-import gourmet.backends.db
-import gourmet.shopping
-import gourmet.recipeManager
 import json
+import re
+import sys
+from gettext import gettext as _
 
-from django.shortcuts import render
+import gourmet.backends.db
+import gourmet.recipeManager
+import gourmet.shopping
+from django import forms
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, render_to_response
+
+sys.path.append('../../../')
+
 
 
 class MultiplierForm (forms.Form):

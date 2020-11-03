@@ -1,5 +1,6 @@
 from gi.repository import Gst
 
+
 class Player:
     def __init__(self):
         Gst.init()

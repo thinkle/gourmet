@@ -1,8 +1,12 @@
-from gi.repository import Gtk
-import gourmet.plugin
-import gourmet.GourmetRecipeManager
-from . import keyEditor
 from gettext import gettext as _
+
+from gi.repository import Gtk
+
+import gourmet.GourmetRecipeManager
+import gourmet.plugin
+
+from . import keyEditor
+
 
 class KeyEditorPlugin (gourmet.plugin.ToolPlugin):
     menu_items = '''

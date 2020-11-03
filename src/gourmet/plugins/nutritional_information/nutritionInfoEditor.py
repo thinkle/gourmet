@@ -1,12 +1,16 @@
-from gi.repository import GObject, Gtk, Pango
-import gourmet.gtk_extras.pageable_store as pageable_store
-import gourmet.gglobals as gglobals
-import os, re
-import gourmet.gtk_extras.cb_extras as cb
+import os
+import re
 from gettext import gettext as _
 from gettext import ngettext
+
 import sqlalchemy
+from gi.repository import GObject, Gtk, Pango
+
 import gourmet.backends.db
+import gourmet.gglobals as gglobals
+import gourmet.gtk_extras.cb_extras as cb
+import gourmet.gtk_extras.pageable_store as pageable_store
+
 
 class NutritionInfoIndex:
 

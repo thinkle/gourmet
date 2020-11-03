@@ -1,12 +1,20 @@
-from gi.repository import Gdk, GObject, Gtk
-import re, os, os.path, time
-from gourmet import gglobals, convert
-from gourmet.gtk_extras import WidgetSaver, mnemonic_manager, pageable_store
-from gourmet.gtk_extras import cb_extras as cb
-from gourmet.gtk_extras import dialog_extras as de
+import os
+import os.path
+import re
+import time
 from gettext import gettext as _
 from gettext import ngettext
+
+from gi.repository import Gdk, GObject, Gtk
+
+from gourmet import convert, gglobals
+from gourmet.gtk_extras import WidgetSaver
+from gourmet.gtk_extras import cb_extras as cb
+from gourmet.gtk_extras import dialog_extras as de
+from gourmet.gtk_extras import mnemonic_manager, pageable_store
+
 from . import keyEditorPluggable
+
 #import nutrition.nutritionDruid as nutritionDruid
 
 try:

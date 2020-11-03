@@ -1,10 +1,14 @@
-from gourmet.plugin import BaseExporterPlugin
-from gourmet.recipeManager import default_rec_manager
-import gourmet.defaults
-from gourmet.prefs import Prefs
-from .nutritionLabel import MAIN_NUT_LAYOUT, MAJOR, MINOR, TINY, SEP, SHOW_PERCENT, DONT_SHOW_PERCENT, SEP
 from gettext import gettext as _
 from xml.sax.saxutils import escape
+
+import gourmet.defaults
+from gourmet.plugin import BaseExporterPlugin
+from gourmet.prefs import Prefs
+from gourmet.recipeManager import default_rec_manager
+
+from .nutritionLabel import (DONT_SHOW_PERCENT, MAIN_NUT_LAYOUT, MAJOR, MINOR,
+                             SEP, SHOW_PERCENT, TINY)
+
 
 class NutritionBaseExporterPlugin (BaseExporterPlugin):
 

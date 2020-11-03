@@ -1,13 +1,15 @@
-import gourmet.exporters.exporter as exporter
-import xml.sax.saxutils
-from gourmet.exporters.xml_exporter import XmlExporter
 import os
-import tempfile
-import zipfile
-from gourmet import convert
-import gourmet.image_utils
 import shutil
+import tempfile
 import unicodedata
+import xml.sax.saxutils
+import zipfile
+
+import gourmet.exporters.exporter as exporter
+import gourmet.image_utils
+from gourmet import convert
+from gourmet.exporters.xml_exporter import XmlExporter
+
 
 class rec_to_mcb (XmlExporter):
 

@@ -1,4 +1,5 @@
-import difflib, re
+import difflib
+import re
 from enum import Enum
 from typing import Optional
 
@@ -614,5 +615,3 @@ if __name__ == '__main__':
     sc.connect('clicked',show_changes)
     rb.connect('clicked',lambda *args: debug('Redo clicked!',0))
     Gtk.main()
-
-

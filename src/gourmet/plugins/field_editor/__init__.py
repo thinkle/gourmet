@@ -1,7 +1,11 @@
-from gourmet.plugin import ToolPlugin
-from . import fieldEditor
-from gi.repository import Gtk
 from gettext import gettext as _
+
+from gi.repository import Gtk
+
+from gourmet.plugin import ToolPlugin
+
+from . import fieldEditor
+
 
 class FieldEditorPlugin (ToolPlugin):
 

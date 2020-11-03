@@ -1,8 +1,10 @@
-from gi.repository import Gtk
 import os.path
-from . import gglobals
+
+from gi.repository import Gtk
+
+from . import gglobals, plugin, plugin_loader
 from .gtk_extras import optionTable
-from . import plugin_loader, plugin
+
 
 class PreferencesGui (plugin_loader.Pluggable):
     """The glue between our preferences dialog UI and our prefs modules.

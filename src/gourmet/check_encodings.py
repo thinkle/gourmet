@@ -1,8 +1,10 @@
+from gettext import gettext as _
 from typing import Dict
+
 from gi.repository import Gtk
+
 from .gdebug import debug
 from .gtk_extras import dialog_extras as de
-from gettext import gettext as _
 from .prefs import Prefs
 
 

@@ -1,8 +1,14 @@
-import zipfile, io, tempfile, os, os.path
-import tarfile, gzip
-from gourmet.importers.webextras import read_socket_w_progress
-from gourmet.importers.importer import add_to_fn
+import gzip
+import io
+import os
+import os.path
+import tarfile
+import tempfile
+import zipfile
+
 from gourmet.gdebug import debug
+from gourmet.importers.importer import add_to_fn
+from gourmet.importers.webextras import read_socket_w_progress
 
 # This is simply a convenience. We read a zipfile, and then hand out a
 # list of files which we can use to import from using our other
@@ -77,4 +83,3 @@ def tarball_to_filelist (fi, progress=None, name="zipfile"):
         fi_info = next(tb)
     debug('tarball_to_filelist returning %s'%filist,0)
     return filist
-

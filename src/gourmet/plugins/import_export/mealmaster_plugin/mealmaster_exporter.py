@@ -1,10 +1,12 @@
-from gettext import gettext as _
 import textwrap
+from gettext import gettext as _
 from itertools import islice
-from gourmet import gglobals,  convert
+
+from gourmet import convert, gglobals
 from gourmet.exporters.exporter import exporter_mult
-from gourmet.plugin_loader import pluggable_method
 from gourmet.gdebug import debug
+from gourmet.plugin_loader import pluggable_method
+
 
 class mealmaster_exporter (exporter_mult):
     def __init__ (self, rd, r, out, conv=None, change_units=True, mult=1):

@@ -16,8 +16,10 @@
 # Translator: Alexandre Prokoudine <alexandre.prokoudine[NOSPAM]gmail.com
 # Last-updated: July 12, 2009
 
+from typing import Any, List, Mapping
+
 from .abstractLang import AbstractLanguage
-from typing import Mapping, Any, List
+
 
 class Language(AbstractLanguage):
 

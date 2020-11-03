@@ -1,4 +1,5 @@
-from typing import Any, Mapping, List, Collection, Sequence, Optional, Tuple
+from typing import Any, Collection, List, Mapping, Optional, Sequence, Tuple
+
 
 class AbstractLanguage:
 

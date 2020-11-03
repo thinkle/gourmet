@@ -1,7 +1,8 @@
 import argparse
-import argcomplete
-from . import version
 
+import argcomplete
+
+from . import version
 
 parser = argparse.ArgumentParser(prog='gourmet',
                                  description=version.description)

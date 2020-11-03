@@ -1,6 +1,6 @@
 import os.path
-
 from gettext import gettext as _
+
 from gi.repository import GdkPixbuf, GObject, Gtk
 from sqlalchemy.sql import and_, not_
 
@@ -9,8 +9,8 @@ from gourmet.gglobals import DEFAULT_ATTR_ORDER, REC_ATTR_DIC
 from gourmet.gtk_extras.ratingWidget import star_generator
 from gourmet.image_utils import bytes_to_pixbuf
 
-from .icon_helpers import (attr_to_icon, get_recipe_image, get_time_slice,
-                           ICON_SIZE, scale_pb)
+from .icon_helpers import (ICON_SIZE, attr_to_icon, get_recipe_image,
+                           get_time_slice, scale_pb)
 
 curdir = os.path.split(__file__)[0]
 

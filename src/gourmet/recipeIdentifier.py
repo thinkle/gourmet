@@ -11,12 +11,18 @@ functions.
 
 """
 
-from gi.repository import Gtk
+import difflib
+import hashlib
+import re
+import types
 import xml.sax.saxutils
-from gourmet import convert
-import hashlib, difflib, types, re
 from gettext import gettext as _
-from .gglobals import REC_ATTRS,TEXT_ATTR_DIC,INT_REC_ATTRS
+
+from gi.repository import Gtk
+
+from gourmet import convert
+
+from .gglobals import INT_REC_ATTRS, REC_ATTRS, TEXT_ATTR_DIC
 
 IMAGE_ATTRS = ['image','thumb']
 ALL_ATTRS = [r[0] for r in REC_ATTRS] + list(TEXT_ATTR_DIC.keys()) + IMAGE_ATTRS

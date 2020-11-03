@@ -1,7 +1,9 @@
-import tempfile, unittest
+import tempfile
+import unittest
 
 from gourmet.backends import db
 from gourmet.plugin_loader import MasterLoader
+
 
 class DBTest (unittest.TestCase):
     def setUp (self):

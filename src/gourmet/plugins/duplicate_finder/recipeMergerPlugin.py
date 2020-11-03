@@ -1,10 +1,14 @@
-from gourmet.plugin import ToolPlugin, ImportManagerPlugin
-from gi.repository import Gtk
-from . import recipeMerger
 from gettext import gettext as _
+
+from gi.repository import Gtk
+
+from gourmet.plugin import ImportManagerPlugin, ToolPlugin
 #from gourmet.gglobals import gt # for threading protection on import
 #                                # hooks
-from gourmet.plugin_loader import PRE,POST
+from gourmet.plugin_loader import POST, PRE
+
+from . import recipeMerger
+
 
 class RecipeMergerImportManagerPlugin (ImportManagerPlugin):
 
@@ -75,4 +79,3 @@ class RecipeMergerPlugin (ToolPlugin):
             )
         rmd.populate_tree_if_possible()
         rmd.show()
-

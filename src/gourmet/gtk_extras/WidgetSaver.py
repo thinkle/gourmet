@@ -1,4 +1,5 @@
 import os
+
 from gi.repository import Gdk, Gtk
 
 from gourmet.gdebug import debug

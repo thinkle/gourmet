@@ -1,5 +1,6 @@
 import xml.sax
 
+
 class simpleHandler (xml.sax.ContentHandler):
     """A simple handler that provides us with indices of marked up content."""
     def __init__ (self):

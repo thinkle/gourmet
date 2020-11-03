@@ -3,11 +3,22 @@
 # You may use and distribute this software under the terms of the
 # GNU General Public License, version 2 or later
 
+import glob
+import os
+import os.path
 #import sys
 #import signal
 #signal.signal(signal.SIGINT, signal.SIG_DFL)
-import sys, os, os.path, glob
+import sys
+import unittest
 from stat import ST_MTIME
+
+import gourmet.tests.test_convert
+import gourmet.tests.test_db
+import gourmet.tests.test_exportManager
+import gourmet.tests.test_importManager
+import gourmet.tests.test_interactive_importer
+
 
 def maybe_intltool (fname):
     '''Check whether the file at fname has been updated since
@@ -34,13 +45,7 @@ sys.argv.append('--gourmet-directory=%s'%os.tempnam())
 #sys.argv.append('--image-directory=%s'%os.path.abspath('../images/'))
 # End no longer necessary stuff
 sys.argv = sys.argv[:-1]
-import gourmet.tests.test_db
 
-import gourmet.tests.test_interactive_importer
-import gourmet.tests.test_importManager
-import gourmet.tests.test_convert
-import gourmet.tests.test_exportManager
-import unittest
 testsuite = unittest.TestSuite()
 for module in [
 

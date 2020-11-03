@@ -20,13 +20,17 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
 # USA.
 
-from gourmet.exporters import exporter
+import base64
+import sys
+import unittest
 import xml.dom
-import sys, xml.sax.saxutils, base64
+import xml.sax.saxutils
+
+import gourmet.convert as convert
+from gourmet.exporters import exporter
 from gourmet.gdebug import debug
 from gourmet.gglobals import NAME_TO_ATTR
-import gourmet.convert as convert
-import unittest
+
 
 def string_to_number_type (n):
     if n.find('/')>-1:

@@ -6,7 +6,7 @@ from typing import Optional, Union
 from gi.repository import GObject, Gtk
 
 from gourmet import timer
-from gourmet.convert import Converter, NUMBER_FINDER_REGEXP, RANGE_REGEXP
+from gourmet.convert import NUMBER_FINDER_REGEXP, RANGE_REGEXP, Converter
 from gourmet.gtk_extras.LinkedTextView import LinkedPangoBuffer, LinkedTextView
 
 all_units = set()

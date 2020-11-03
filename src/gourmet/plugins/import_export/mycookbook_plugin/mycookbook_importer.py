@@ -1,12 +1,14 @@
 import re
-from gourmet.importers import xml_importer
+
+import gourmet.image_utils
 from gourmet.gdebug import *
 from gourmet.gglobals import *
+from gourmet.importers import xml_importer
+
 try:
     from PIL import Image
 except ImportError:
     import Image
-import gourmet.image_utils
 
 class RecHandler (xml_importer.RecHandler):
     ADD = 1
@@ -118,4 +120,3 @@ class Converter (xml_importer.Converter):
                                         recMarker="</recipe>",
                                         conv=conv,
                                         name='MCB Importer')
-

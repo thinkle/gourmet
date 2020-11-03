@@ -1,6 +1,9 @@
 from typing import Optional
-from gourmet.gdebug import debug
+
 from gi.repository import Gtk
+
+from gourmet.gdebug import debug
+
 
 def print_tree (mod):
     for row in mod:

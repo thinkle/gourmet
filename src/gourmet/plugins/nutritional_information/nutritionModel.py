@@ -1,5 +1,7 @@
-from gi.repository import GObject, Gtk
 from gettext import gettext as _
+
+from gi.repository import GObject, Gtk
+
 
 class NutritionModel (Gtk.TreeStore):
     """Handed ingredients and a nutritional database, display

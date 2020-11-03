@@ -1,9 +1,13 @@
-import os.path, tempfile
-from gourmet.GourmetRecipeManager import get_application
-from .emailer import Emailer
 import io
-from gourmet.exporters.exportManager import ExportManager
+import os.path
+import tempfile
+
 import gourmet.exporters.exporter as exporter
+from gourmet.exporters.exportManager import ExportManager
+from gourmet.GourmetRecipeManager import get_application
+
+from .emailer import Emailer
+
 
 class StringIOfaker (io.StringIO):
     def __init__ (self, *args, **kwargs):
@@ -75,4 +79,3 @@ class RecipeEmailer (Emailer):
         if emailaddress: self.emailaddress=emailaddress
         self.write_email_text()
         self.send_email()
-

@@ -1,5 +1,7 @@
-from gi.repository import Gdk, GObject, Gtk, Pango
 from gettext import gettext as _
+
+from gi.repository import Gdk, GObject, Gtk, Pango
+
 import gourmet.defaults
 
 MAJOR = 0
@@ -565,5 +567,3 @@ if __name__ == '__main__':
     w.show()
     w.connect('delete-event',lambda *args: Gtk.main_quit())
     Gtk.main()
-
-

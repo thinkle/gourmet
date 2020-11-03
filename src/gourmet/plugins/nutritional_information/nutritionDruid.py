@@ -1,18 +1,22 @@
+import os
+import os.path
+import re
+from gettext import gettext as _
+
 from gi.repository import GObject, Gtk
+
 import gourmet.convert as convert
 import gourmet.gglobals as gglobals
-from gourmet.gtk_extras.mnemonic_manager import MnemonicManager
-from gourmet.defaults import lang as defaults
-from gourmet.gtk_extras.pageable_store import PageableViewStore
-from .nutritionLabel import NUT_LAYOUT, SEP, RECOMMENDED_INTAKE
-from .nutritionInfoEditor import NutritionInfoIndex,MockObject
-from gourmet.gtk_extras.validation import NumberEntry
 import gourmet.gtk_extras.cb_extras as cb
 import gourmet.gtk_extras.dialog_extras as de
 import gourmet.gtk_extras.WidgetSaver as WidgetSaver
-import re
-import os,os.path
-from gettext import gettext as _
+from gourmet.defaults import lang as defaults
+from gourmet.gtk_extras.mnemonic_manager import MnemonicManager
+from gourmet.gtk_extras.pageable_store import PageableViewStore
+from gourmet.gtk_extras.validation import NumberEntry
+
+from .nutritionInfoEditor import MockObject, NutritionInfoIndex
+from .nutritionLabel import NUT_LAYOUT, RECOMMENDED_INTAKE, SEP
 
 try:
     current_path = os.path.split(os.path.join(os.getcwd(),__file__))[0]

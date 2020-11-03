@@ -1,17 +1,20 @@
-from gettext import gettext as _
 import os.path
 import sys
 import tempfile
+from gettext import gettext as _
 
+import reportlab.lib.pagesizes as pagesizes
 from gi.repository import Gtk
+
+from gourmet.plugin import PrinterPlugin
+
+from . import pdf_exporter
+
 if sys.platform not in ["win32",'darwin']:
     from gi import require_version
     require_version('Poppler', '0.18')
     from gi.repository import Poppler
-import reportlab.lib.pagesizes as pagesizes
 
-from gourmet.plugin import PrinterPlugin
-from . import pdf_exporter
 
 rl2gtk_papersizes = {
     tuple([int(round(s)) for s in pagesizes.letter]) : Gtk.PAPER_NAME_LETTER,

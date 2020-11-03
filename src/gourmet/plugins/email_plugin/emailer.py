@@ -1,6 +1,10 @@
-import urllib.request, urllib.parse, urllib.error
+import urllib.error
+import urllib.parse
+import urllib.request
 import webbrowser
+
 from gourmet.gdebug import debug
+
 
 class Emailer:
     def __init__ (self, emailaddress=None, subject=None, body=None, attachments=[]):

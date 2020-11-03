@@ -1,4 +1,5 @@
 from gourmet.plugin import PluginPlugin
+
 from .state import WebsiteTestState
 
 

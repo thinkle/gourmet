@@ -1,5 +1,6 @@
 from gi.repository import Gdk, Gtk
 
+
 def collect_descendants (parent, descendants=None):
     """Return all descendants of parent widget.
 

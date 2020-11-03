@@ -1,15 +1,15 @@
 import os
 import time
+import xml.sax.saxutils
+from gettext import gettext as _
 from typing import Callable, List, Optional
 
-from gettext import gettext as _
 from gi.repository import GLib, Gtk
-import xml.sax.saxutils
 
 from gourmet import gglobals
-from gourmet.sound import Player
 from gourmet.gtk_extras import cb_extras as cb
-from gourmet.gtk_extras.dialog_extras import getBoolean, UserCancelledError
+from gourmet.gtk_extras.dialog_extras import UserCancelledError, getBoolean
+from gourmet.sound import Player
 
 
 class TimeSpinnerUI:

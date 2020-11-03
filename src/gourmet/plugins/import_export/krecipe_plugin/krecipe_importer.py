@@ -1,6 +1,11 @@
-import xml.sax, re, sys, xml.sax.saxutils
 import base64
+import re
+import sys
+import xml.sax
+import xml.sax.saxutils
+
 from gourmet.importers import xml_importer
+
 
 class KrecHandler (xml_importer.RecHandler):
     ADD = 1
@@ -72,4 +77,3 @@ class Converter (xml_importer.Converter):
         xml_importer.Converter.__init__(self,filename,KrecHandler,
                               recMarker="</krecipe-recipe>"
                               )
-

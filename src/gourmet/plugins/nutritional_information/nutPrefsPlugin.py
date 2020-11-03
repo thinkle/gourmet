@@ -1,7 +1,9 @@
+from gettext import gettext as _
+
+from gi.repository import Gtk
+
 from gourmet.plugin import PrefsPlugin
 from gourmet.prefs import Prefs
-from gi.repository import Gtk
-from gettext import gettext as _
 
 partialp = 'include_partial_nutritional_info'
 includep = 'include_nutritional_info_in_export'

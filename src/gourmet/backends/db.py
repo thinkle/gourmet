@@ -1,30 +1,27 @@
 import os.path
-from pathlib import Path
 import re
-import time
 import shutil
-from typing import Mapping, Optional, List, Any, Tuple
-
+import time
 from gettext import gettext as _
-from gi.repository import Gtk
+from pathlib import Path
+from typing import Any, List, Mapping, Optional, Tuple
 
 import sqlalchemy
 import sqlalchemy.orm
-from sqlalchemy import (Integer, LargeBinary, String, Float, Boolean, Numeric,
-                        Table, Column, ForeignKey, Text)
-from sqlalchemy.sql import and_, or_, case
-from sqlalchemy import event, func
+from gi.repository import Gtk
+from sqlalchemy import (Boolean, Column, Float, ForeignKey, Integer,
+                        LargeBinary, Numeric, String, Table, Text, event, func)
+from sqlalchemy.sql import and_, case, or_
 
-from gourmet.gdebug import debug, TimeAction
 import gourmet.gglobals as gglobals
+import gourmet.recipeIdentifier as recipeIdentifier
+import gourmet.version
 from gourmet import Undo, convert, image_utils
 from gourmet.defaults import lang as defaults
+from gourmet.gdebug import TimeAction, debug
 from gourmet.keymanager import KeyManager
-import gourmet.version
-import gourmet.recipeIdentifier as recipeIdentifier
-from gourmet.plugin_loader import Pluggable, pluggable_method
 from gourmet.plugin import DatabasePlugin
-
+from gourmet.plugin_loader import Pluggable, pluggable_method
 
 Session = sqlalchemy.orm.sessionmaker()
 

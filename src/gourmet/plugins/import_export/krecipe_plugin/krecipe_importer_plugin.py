@@ -1,8 +1,11 @@
-from gourmet.plugin import ImporterPlugin
-from gourmet.importers.importer import Tester
-from gourmet.threadManager import get_thread_manager
-from . import krecipe_importer
 from gettext import gettext as _
+
+from gourmet.importers.importer import Tester
+from gourmet.plugin import ImporterPlugin
+from gourmet.threadManager import get_thread_manager
+
+from . import krecipe_importer
+
 
 class KrecipeImporterPlugin (ImporterPlugin):
 

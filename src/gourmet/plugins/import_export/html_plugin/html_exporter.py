@@ -1,6 +1,16 @@
-import re, os.path, os, xml.sax.saxutils, time, shutil, urllib.request, urllib.parse, urllib.error, textwrap
+import os
+import os.path
+import re
+import shutil
+import textwrap
+import time
+import urllib.error
+import urllib.parse
+import urllib.request
+import xml.sax.saxutils
 from gettext import gettext as _
-from gourmet import convert,gglobals
+
+from gourmet import convert, gglobals
 from gourmet.exporters.exporter import ExporterMultirec, exporter_mult
 
 HTML_HEADER_START = """<!DOCTYPE html>
@@ -300,4 +310,3 @@ def linkify (filename):
     ret = filename.replace('\\','/')
     ret = filename.replace(' ','%20')
     return xml.sax.saxutils.escape(filename)
-

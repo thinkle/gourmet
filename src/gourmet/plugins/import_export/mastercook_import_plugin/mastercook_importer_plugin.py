@@ -1,8 +1,10 @@
-from gourmet.plugin import ImporterPlugin
-from . import mastercook_plaintext_importer
-from . import mastercook_importer
-import gourmet.importers.importer as importer
 from gettext import gettext as _
+
+import gourmet.importers.importer as importer
+from gourmet.plugin import ImporterPlugin
+
+from . import mastercook_importer, mastercook_plaintext_importer
+
 
 class MastercookImporterPlugin (ImporterPlugin):
 

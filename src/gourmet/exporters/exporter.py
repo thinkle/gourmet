@@ -1,18 +1,20 @@
-from gettext import gettext as _
 import os
 import re
 import textwrap
 import time
 import xml.sax.saxutils
+from gettext import gettext as _
 
 from gi.repository import GLib, Pango
 
 from gourmet import convert
-from gourmet.gglobals import REC_ATTR_DIC, DEFAULT_ATTR_ORDER, DEFAULT_TEXT_ATTR_ORDER, TEXT_ATTR_DIC, use_threads
 from gourmet.gdebug import TimeAction, debug, print_timer_info
+from gourmet.gglobals import (DEFAULT_ATTR_ORDER, DEFAULT_TEXT_ATTR_ORDER,
+                              REC_ATTR_DIC, TEXT_ATTR_DIC, use_threads)
+from gourmet.plugin import BaseExporterMultiRecPlugin, BaseExporterPlugin
 from gourmet.plugin_loader import Pluggable, pluggable_method
-from gourmet.plugin import BaseExporterPlugin, BaseExporterMultiRecPlugin
 from gourmet.threadManager import SuspendableThread
+
 
 class exporter (SuspendableThread, Pluggable):
     """A base exporter class.

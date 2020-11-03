@@ -1,5 +1,7 @@
-import re, string
+import re
+import string
 import sys
+
 from .parser_data import SUMMABLE_FIELDS
 
 # Our basic module for interaction with our nutritional information DB

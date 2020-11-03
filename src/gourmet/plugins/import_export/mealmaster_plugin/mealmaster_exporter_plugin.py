@@ -1,7 +1,9 @@
-from gourmet.plugin import ExporterPlugin
-import gourmet.exporters.exporter as exporter
-from . import mealmaster_exporter
 from gettext import gettext as _
+
+import gourmet.exporters.exporter as exporter
+from gourmet.plugin import ExporterPlugin
+
+from . import mealmaster_exporter
 
 MMF = _('MealMaster file')
 

@@ -1,5 +1,4 @@
-from dogtail import procedural
-from dogtail import tree
+from dogtail import procedural, tree
 from dogtail.utils import run
 
 

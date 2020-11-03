@@ -1,19 +1,22 @@
-import tempfile, os, os.path, time
-
+import os
+import os.path
+import tempfile
+import time
 import unittest
+
+import gourmet.backends.db
 import gourmet.gglobals
+import gourmet.GourmetRecipeManager
+from gourmet.importers import importManager
 
 tmpdir = tempfile.mktemp()
 os.makedirs(tmpdir)
 gourmet.gglobals.gourmetdir = tmpdir
 
-import gourmet.GourmetRecipeManager
-import gourmet.backends.db
 
 gourmet.backends.db.RecData.__single = None
 gourmet.GourmetRecipeManager.GourmetApplication.__single = None
 
-from gourmet.importers import importManager
 
 class TestImports (unittest.TestCase):
     def setUp (self):

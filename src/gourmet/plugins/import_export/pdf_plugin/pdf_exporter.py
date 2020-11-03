@@ -1,31 +1,35 @@
-from io import BytesIO
-from gi.repository import Gtk
-import reportlab
-from reportlab.pdfbase import pdfmetrics
-from reportlab.lib.units import inch,mm
-from reportlab.pdfgen import canvas
-import reportlab.platypus as platypus
-from reportlab.platypus.flowables import ParagraphAndImage
-import reportlab.lib.pagesizes as pagesizes
-import reportlab.lib.fonts as fonts
-import reportlab.lib.units as units
-import reportlab.lib.styles as styles
+import math
+import os.path
+import re
+import tempfile
+import types
+import webbrowser
+import xml.sax.saxutils
 from gettext import gettext as _
 from gettext import ngettext
-from gourmet import convert
-from gourmet import gglobals
+from io import BytesIO
+
+import reportlab
+import reportlab.lib.colors as colors
+import reportlab.lib.fonts as fonts
+import reportlab.lib.pagesizes as pagesizes
+import reportlab.lib.styles as styles
+import reportlab.lib.units as units
+import reportlab.platypus as platypus
+from gi.repository import Gtk
+from reportlab.lib.units import inch, mm
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfgen import canvas
+from reportlab.platypus.flowables import ParagraphAndImage
+
+import gourmet.exporters.exporter as exporter
+from gourmet import convert, gglobals, image_utils
+from gourmet.gtk_extras import cb_extras
 from gourmet.gtk_extras import dialog_extras as de
 from gourmet.gtk_extras import optionTable
-from gourmet.gtk_extras import cb_extras
-from gourmet import image_utils
 from gourmet.prefs import Prefs
-import xml.sax.saxutils
-import gourmet.exporters.exporter as exporter
-import types, re
-import tempfile, os.path
-import math
+
 from .page_drawer import PageDrawer
-import webbrowser
 
 DEFAULT_PDF_ARGS = {'bottom_margin': 72, 'pagesize': 'letter', 'right_margin': 72, 'top_margin': 72, 'left_margin': 72, 'pagemode': 'portrait', 'base_font_size': 10, 'mode': ('column', 1)}
 
@@ -44,7 +48,6 @@ class MCLine(platypus.Flowable):
     def draw(self):
         self.canv.line(0,0,self.width,0)
 
-import reportlab.lib.colors as colors
 class Star (platypus.Flowable):
     '''A hand flowable.'''
     def __init__(self, size=None, fillcolor=colors.tan, strokecolor=colors.green):
@@ -1155,4 +1158,3 @@ if __name__ == '__main__':
     #ppg = PdfPrefGetter()
     #print ppg.run()
     #print 'END TEST'
-

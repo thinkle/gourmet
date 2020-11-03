@@ -1,5 +1,7 @@
 from gi.repository import Gdk, GObject, Gtk
+
 from gourmet.gdebug import debug
+
 
 class FocusFixer:
     key = None

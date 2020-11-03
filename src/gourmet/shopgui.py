@@ -1,18 +1,23 @@
 #!/usr/bin/env python
-from gi.repository import Gdk, GObject, Gtk
-import sys, os.path, time, os, string
-from . import recipeManager, convert, reccard, prefs
-from .gtk_extras import WidgetSaver, mnemonic_manager
-from .gtk_extras import dialog_extras as de
-from .gtk_extras import treeview_extras as te
-from .gtk_extras import fix_action_group_importance
-from .exporters.printer import PrintManager
-from .gdebug import debug
+import os
+import os.path
+import string
+import sys
+import time
 from gettext import gettext as _
-from .gglobals import doc_base
+
+from gi.repository import Gdk, GObject, Gtk
+
 # from nutrition.nutritionLabel import NutritionLabel
 # from nutrition.nutrition import NutritionInfoList
-from . import plugin_loader, plugin
+from . import convert, plugin, plugin_loader, prefs, reccard, recipeManager
+from .exporters.printer import PrintManager
+from .gdebug import debug
+from .gglobals import doc_base
+from .gtk_extras import WidgetSaver
+from .gtk_extras import dialog_extras as de
+from .gtk_extras import fix_action_group_importance, mnemonic_manager
+from .gtk_extras import treeview_extras as te
 from .shopping import ShoppingList
 
 ui_string = '''

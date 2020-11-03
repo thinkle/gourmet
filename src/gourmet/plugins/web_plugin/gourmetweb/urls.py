@@ -1,7 +1,8 @@
-from django.conf.urls import url
 import django.views.static
-from .recview import views as rv_views
 from django.conf import settings
+from django.conf.urls import url
+
+from .recview import views as rv_views
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin

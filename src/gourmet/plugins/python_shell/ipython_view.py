@@ -12,21 +12,18 @@ available under the terms of the BSD which accompanies this distribution, and
 is available at U{http://www.opensource.org/licenses/bsd-license.php}
 '''
 
-import gi
-
-from gi.repository import Gtk as gtk
-from gi.repository import Gdk as gdk
-from gi.repository import GLib
-from gi.repository import Pango
-
-from pkg_resources import parse_version
-
+import os
 import re
 import sys
-import os
-
-from io import StringIO
 from functools import reduce
+from io import StringIO
+
+import gi
+from gi.repository import Gdk as gdk
+from gi.repository import GLib
+from gi.repository import Gtk as gtk
+from gi.repository import Pango
+from pkg_resources import parse_version
 
 try:
     import IPython
@@ -670,4 +667,3 @@ if __name__ == "__main__":
     window.add(IPythonView())
     window.show_all()
     gtk.main()
-

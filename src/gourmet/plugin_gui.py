@@ -1,11 +1,11 @@
+from gettext import gettext as _
 from typing import Any, List, Tuple
 from xml.sax.saxutils import escape
 
-from gettext import gettext as _
 from gi.repository import GObject, Gtk
 
-from .plugin_loader import DependencyError, MasterLoader
 from .gtk_extras import dialog_extras as de
+from .plugin_loader import DependencyError, MasterLoader
 
 
 class PluginChooser:

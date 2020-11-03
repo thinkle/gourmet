@@ -1,12 +1,17 @@
+import re
+import string
+
 from gi.repository import GObject, Gtk
-import re, string
-from .nutritionModel import NutritionModel
-from . import parser_data
+
 import gourmet.cb_extras as cb
+import gourmet.convert as convert
 import gourmet.dialog_extras as de
 import gourmet.gglobals as gglobals
-import gourmet.convert as convert
 from gourmet.defaults import lang as defaults
+
+from . import parser_data
+from .nutritionModel import NutritionModel
+
 
 class NutritionTable:
     """Handed a table (so we can steal it from glade), we pack it full
@@ -604,4 +609,3 @@ if __name__ == '__main__':
     vb.add(hb)
     t = Gtk.Table()
     nt = Gtk.NutritionTable(t, {}, True)
-

@@ -1,6 +1,10 @@
+import base64
+import sys
+import xml.sax.saxutils
+
 import gourmet.exporters.exporter as exporter
-import sys, xml.sax.saxutils, base64
 from gourmet.exporters.xml_exporter import XmlExporter
+
 
 class rec_to_xml (XmlExporter):
     """A vastly simplified recipe XML exporter.

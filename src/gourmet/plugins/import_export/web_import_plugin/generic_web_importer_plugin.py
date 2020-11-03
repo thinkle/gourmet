@@ -1,10 +1,13 @@
+from gettext import gettext as _
 from typing import Any, Union
 
 from gourmet.plugin import ImporterPlugin, PluginPlugin
 from gourmet.plugin_loader import Pluggable
+from gourmet.plugins.import_export.website_import_plugins.state import \
+    WebsiteTestState  # noqa
+
 from . import webpage_importer
-from gourmet.plugins.import_export.website_import_plugins.state import WebsiteTestState  # noqa
-from gettext import gettext as _
+
 
 class GenericWebImporter (ImporterPlugin, Pluggable):
 
@@ -57,4 +60,3 @@ class GenericWebImporter (ImporterPlugin, Pluggable):
             data = f.read()
         content_type = 'text/html'
         return self.get_web_importer(url,data,content_type)
-

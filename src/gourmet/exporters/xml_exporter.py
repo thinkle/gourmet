@@ -1,6 +1,8 @@
-from .exporter import exporter_mult
-import xml.dom
 import types
+import xml.dom
+
+from .exporter import exporter_mult
+
 # Base XML exporter class
 
 class XmlExporter (exporter_mult):
@@ -68,4 +70,3 @@ class XmlExporter (exporter_mult):
         for k,v in list(attdic.items()):
             self.set_attribute(element,k,str(v))
         return element
-

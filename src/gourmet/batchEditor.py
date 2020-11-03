@@ -1,7 +1,10 @@
 import os
+
 from gi.repository import Gtk
+
 from . import gglobals
 from .gtk_extras import cb_extras
+
 
 class BatchEditor:
 

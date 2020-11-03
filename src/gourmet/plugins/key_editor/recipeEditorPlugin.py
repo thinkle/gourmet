@@ -1,9 +1,13 @@
-from gi.repository import GObject, Gtk, Pango
-from gourmet.plugin import RecEditorModule, RecEditorPlugin, IngredientControllerPlugin
-from gourmet.plugin_loader import PRE,POST
-from gourmet.reccard import IngredientEditorModule, RecRef
-from . import keyEditorPluggable
 from gettext import gettext as _
+
+from gi.repository import GObject, Gtk, Pango
+
+from gourmet.plugin import (IngredientControllerPlugin, RecEditorModule,
+                            RecEditorPlugin)
+from gourmet.plugin_loader import POST, PRE
+from gourmet.reccard import IngredientEditorModule, RecRef
+
+from . import keyEditorPluggable
 
 ING = 0
 ITM = 1

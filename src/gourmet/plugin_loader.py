@@ -5,9 +5,10 @@ from typing import List
 
 from gourmet import gglobals
 from gourmet.prefs import Prefs
+
 from . import plugin
-from .gdebug import debug
 from .defaults.defaults import loc
+from .gdebug import debug
 
 PRE = 0
 POST = 1

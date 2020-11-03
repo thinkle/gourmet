@@ -1,11 +1,19 @@
 #!/usr/bin/env python
-import urllib.request, urllib.parse, urllib.error, io, os.path
+import io
+import os.path
+import urllib.error
+import urllib.parse
+import urllib.request
 import webbrowser
-import exporter, html_exporter, pdf_exporter
-from gourmet import gglobals
 from gettext import gettext as _
+
+import exporter
 import gourmet.gtk_extras.dialog_extras as de
+import html_exporter
+import pdf_exporter
+from gourmet import gglobals
 from gourmet.gdebug import debug
+
 
 class StringIOfaker (io.StringIO):
     def __init__ (self, *args, **kwargs):
@@ -177,4 +185,3 @@ if __name__ == '__main__':
     #e.write_email_pdf()
     #e.write_email_html()
     #e.send_email()
-

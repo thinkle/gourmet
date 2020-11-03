@@ -1,6 +1,8 @@
-from gourmet.prefs import Prefs
-from gourmet.gtk_extras import dialog_extras as de
 from gettext import gettext as _
+
+from gourmet.gtk_extras import dialog_extras as de
+from gourmet.prefs import Prefs
+
 
 class UnitPrefsDialog:
 

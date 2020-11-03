@@ -1,12 +1,12 @@
 import os
 import os.path
+from gettext import gettext as _
 from pathlib import Path
 
-from gettext import gettext as _
 from gi.repository import Gdk, GdkPixbuf, Gtk
 
-from .optionparser import args
 from . import settings
+from .optionparser import args
 
 uibase = os.path.join(settings.ui_base)
 lib_dir = os.path.join(settings.lib_dir)

@@ -1,12 +1,14 @@
-from gi.repository import Gtk
-from gourmet.plugin import ImporterPlugin
-from gourmet.importers.importer import Tester
-from gourmet.threadManager import get_thread_manager
-from gourmet.importers.interactive_importer import InteractiveImporter
-from gourmet import check_encodings
-import os.path
 import fnmatch
+import os.path
 from gettext import gettext as _
+
+from gi.repository import Gtk
+
+from gourmet import check_encodings
+from gourmet.importers.importer import Tester
+from gourmet.importers.interactive_importer import InteractiveImporter
+from gourmet.plugin import ImporterPlugin
+from gourmet.threadManager import get_thread_manager
 
 MAX_PLAINTEXT_LENGTH = 100000
 
@@ -49,7 +51,3 @@ class PlainTextImporterPlugin (ImporterPlugin):
 
     def get_importer (self, filename):
         return PlainTextImporter(filename=filename)
-
-
-
-

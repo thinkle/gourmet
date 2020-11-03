@@ -1,10 +1,17 @@
-import urllib.request, urllib.parse, urllib.error, re, tempfile, os.path
-from . import importer
-import BeautifulSoup
+import os.path
+import re
 import socket
-from gourmet.gdebug import debug
-from gettext import gettext as _
+import tempfile
 import traceback
+import urllib.error
+import urllib.parse
+import urllib.request
+from gettext import gettext as _
+
+import BeautifulSoup
+from gourmet.gdebug import debug
+
+from . import importer
 
 DEFAULT_SOCKET_TIMEOUT=45.0
 URLOPEN_SOCKET_TIMEOUT=15.0
