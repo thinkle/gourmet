@@ -5,12 +5,12 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 
 import gourmet.threadManager
-from gourmet.gglobals import gourmetdir
 from gourmet.gtk_extras import dialog_extras as de
 from gourmet.plugin import ImportManagerPlugin, PluginPlugin
 from gourmet.prefs import Prefs
 
 from .state import WebsiteTestState
+
 
 global driver
 if 'driver' not in globals():

@@ -12,14 +12,19 @@ from .optionparser import args
 
 lib_dir = os.path.join(settings.lib_dir)
 
-gourmetdir: Path = Path(os.environ['HOME']).absolute() / '.gourmet'
-if os.name == 'nt':
-    gourmetdir = Path(os.environ['APPDATA']).absolute() / 'gourmet'
-
+# TODO: remove the gourmetdir global variable
+# Instead of making this a global, it should be passed as an argument to
+# interested parties.
+# TODO: use standard platform directories to store user-specific data
+# On linux, the "~/.gourmet" directory should go into the appropriate XDG user
+# directory (or directories). This should also be audited on other platforms.
 if args.gourmetdir:
     gourmetdir = Path(args.gourmetdir).absolute()
     print(f'User specified gourmetdir {gourmetdir}')
-
+elif os.name == 'nt':
+    gourmetdir = Path(os.environ['APPDATA']).absolute() / 'gourmet'
+else:
+    gourmetdir = Path(os.environ['HOME']).absolute() / '.gourmet'
 gourmetdir.mkdir(exist_ok=True)
 
 use_threads = args.threads
