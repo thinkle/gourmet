@@ -5,12 +5,9 @@ from pathlib import Path
 
 from gi.repository import Gdk, GdkPixbuf, Gtk
 
-from . import settings
 from .image_utils import load_pixbuf_from_resource as _load_pixbuf_from_resource
 from .optionparser import args
 
-
-lib_dir = os.path.join(settings.lib_dir)
 
 # TODO: remove the gourmetdir global variable
 # Instead of making this a global, it should be passed as an argument to

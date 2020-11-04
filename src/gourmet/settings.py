@@ -5,8 +5,6 @@ import sys
 # point to the actual data files installation paths.
 
 base_dir = op.abspath(op.join(op.dirname(__file__), '..'))
-lib_dir = op.join(base_dir, 'gourmet')
-
 locale_base = op.join(base_dir, 'build', 'mo')
 
 # Apologies for the formatting -- something in the build process is
