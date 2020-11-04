@@ -26,8 +26,6 @@ use_threads = args.threads
 # Uncomment the below to test FauxThreads
 # use_threads = False
 
-# note: this stuff must be kept in sync with changes in setup.py
-plugin_base = settings.plugin_base
 
 REC_ATTRS = [('title', _('Title'), 'Entry'),
              ('category', _('Category'), 'Combo'),

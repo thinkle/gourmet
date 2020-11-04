@@ -58,12 +58,13 @@ class MasterLoader:
         return MasterLoader.__single
 
     def __init__(self):
-        self.plugin_directories = [os.path.join(gglobals.gourmetdir,'plugins'), # user plug-ins
-                                   os.path.join(current_path,'plugins'), # pre-installed plugins
-                                   os.path.join(current_path,'plugins','import_export'), # pre-installed exporter plugins
-                                   os.path.join(gglobals.plugin_base,'plugins'), # system-wide plug-ins (required for running from source)
-                                   os.path.join(gglobals.plugin_base,'plugins','import_export'), # exporter plug-ins (required for running from source)
-                                   ]
+        self.plugin_directories = [
+            # user plug-ins
+            os.path.join(gglobals.gourmetdir,'plugins'),
+            # bundled plugins
+            os.path.join(current_path,'plugins'),
+            os.path.join(current_path,'plugins','import_export'),
+        ]
         self.errors = {}
         self.pluggables_by_class = {}
         self.load_plugin_directories()

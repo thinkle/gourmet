@@ -8,7 +8,6 @@ base_dir = op.abspath(op.join(op.dirname(__file__), '..'))
 lib_dir = op.join(base_dir, 'gourmet')
 
 locale_base = op.join(base_dir, 'build', 'mo')
-plugin_base = op.join(base_dir, 'build', 'share', 'gourmet')
 
 # Apologies for the formatting -- something in the build process is
 # getting rid of indentations in this file which throws a syntax error
