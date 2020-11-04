@@ -10,7 +10,6 @@ from .image_utils import load_pixbuf_from_resource as _load_pixbuf_from_resource
 from .optionparser import args
 
 
-uibase = os.path.join(settings.ui_base)
 lib_dir = os.path.join(settings.lib_dir)
 
 gourmetdir: Path = Path(os.environ['HOME']).absolute() / '.gourmet'

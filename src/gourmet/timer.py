@@ -1,5 +1,4 @@
 import os as _os
-import os.path
 import time
 import xml.sax.saxutils
 from gettext import gettext as _
@@ -9,7 +8,6 @@ from typing import Callable, List, Optional
 
 from gi.repository import GLib, Gtk
 
-from gourmet import gglobals
 from gourmet.gtk_extras import cb_extras as cb
 from gourmet.gtk_extras.dialog_extras import UserCancelledError, getBoolean
 from gourmet.sound import Player
@@ -150,7 +148,7 @@ class TimerDialog:
     def __init__ (self):
         self.init_player()
         self.ui = Gtk.Builder()
-        self.ui.add_from_file(os.path.join(gglobals.uibase,'timerDialog.ui'))
+        self.ui.add_from_string(_get_data('gourmet', 'ui/timerDialog.ui').decode())
         self.timer = TimeSpinnerUI(
             self.ui.get_object('hoursSpinButton'),
             self.ui.get_object('minutesSpinButton'),

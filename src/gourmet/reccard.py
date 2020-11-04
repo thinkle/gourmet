@@ -4,6 +4,7 @@ import webbrowser
 import xml.sax.saxutils
 from gettext import gettext as _
 from pathlib import Path
+from pkgutil import get_data as _get_data
 from typing import Any, Callable, Dict, List, Optional, Tuple
 
 from gi.repository import Gdk, GdkPixbuf, GLib, GObject, Gtk, Pango
@@ -16,7 +17,7 @@ from gourmet.exporters.exportManager import ExportManager
 from gourmet.exporters.printer import PrintManager
 from gourmet.gdebug import debug
 from gourmet.gglobals import (FLOAT_REC_ATTRS, INT_REC_ATTRS, REC_ATTR_DIC,
-                              REC_ATTRS, uibase)
+                              REC_ATTRS)
 from gourmet.gtk_extras import WidgetSaver  # noqa: imports needed for glade
 from gourmet.gtk_extras import cb_extras as cb
 from gourmet.gtk_extras import dialog_extras as de
@@ -267,7 +268,7 @@ class RecCardDisplay (plugin_loader.Pluggable):
 
     def setup_ui (self):
         self.ui = Gtk.Builder()
-        self.ui.add_from_file(os.path.join(uibase,'recCardDisplay.ui'))
+        self.ui.add_from_string(_get_data('gourmet', 'ui/recCardDisplay.ui').decode())
 
         self.ui.connect_signals({
             'shop_for_recipe':self.shop_for_recipe_cb,
@@ -1113,7 +1114,7 @@ class IngredientEditorModule (RecEditorModule):
 
     def setup_main_interface (self):
         self.ui = Gtk.Builder()
-        self.ui.add_from_file(os.path.join(uibase,'recCardIngredientsEditor.ui'))
+        self.ui.add_from_string(_get_data('gourmet', 'ui/recCardIngredientsEditor.ui').decode())
         self.main = self.ui.get_object('ingredientsNotebook')
         self.main.unparent()
         self.ingtree_ui = IngredientTreeUI(self, self.ui.get_object('ingTree'))
@@ -1346,8 +1347,7 @@ class DescriptionEditorModule (TextEditor, RecEditorModule):
 
     def setup_main_interface (self):
         self.ui = Gtk.Builder()
-        self.ui.add_from_file(os.path.join(uibase,
-                                           'recCardDescriptionEditor.ui'))
+        self.ui.add_from_string(_get_data('gourmet', 'ui/recCardDescriptionEditor.ui').decode())
         self.imageBox = ImageBox(self)
         self.init_recipe_widgets()
         self.ui.connect_signals({
@@ -2975,7 +2975,7 @@ class RecSelector (RecIndex):
     def __init__(self, recGui, ingEditor):
         self.prefs = prefs.Prefs.instance()
         self.ui=Gtk.Builder()
-        self.ui.add_from_file(os.path.join(uibase,'recipe_index.ui'))
+        self.ui.add_from_string(_get_data('gourmet', 'ui/recipe_index.ui').decode())
         self.rg=recGui
         self.ingEditor = ingEditor
         self.re = self.ingEditor.re

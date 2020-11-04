@@ -1,13 +1,12 @@
-import os
 import re
 from gettext import gettext as _
 from gettext import ngettext
+from pkgutil import get_data as _get_data
 
 import sqlalchemy
 from gi.repository import GObject, Gtk, Pango
 
 import gourmet.backends.db
-import gourmet.gglobals as gglobals
 import gourmet.gtk_extras.cb_extras as cb
 import gourmet.gtk_extras.pageable_store as pageable_store
 
@@ -22,7 +21,8 @@ class NutritionInfoIndex:
             self.ui = ui
         else:
             self.ui = Gtk.Builder()
-            self.ui.add_from_file(os.path.join(gglobals.uibase,'nutritionDruid.ui'))
+            self.ui.add_from_string(_get_data('gourmet', 'ui/nutritionDruid.ui').decode())
+
         self.rd = rd
         self.prefs = prefs
         # Initialize variables used for search

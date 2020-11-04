@@ -1,5 +1,3 @@
-import os
-import os.path
 from pkgutil import get_data as _get_data
 import re
 import threading
@@ -16,7 +14,7 @@ from gourmet.defaults.defaults import lang as defaults
 from gourmet.exporters.exportManager import ExportManager
 from gourmet.exporters.printer import PrintManager
 from gourmet.gdebug import debug
-from gourmet.gglobals import (DEFAULT_HIDDEN_COLUMNS, REC_ATTRS, uibase)
+from gourmet.gglobals import DEFAULT_HIDDEN_COLUMNS, REC_ATTRS
 from gourmet.gtk_extras import WidgetSaver
 from gourmet.gtk_extras import dialog_extras as de
 from gourmet.gtk_extras import (fix_action_group_importance, mnemonic_manager,
@@ -503,7 +501,7 @@ class RecTrash (RecIndex):
         self.rg = rg
         self.rmodel = self.rg.rmodel
         self.ui=Gtk.Builder()
-        self.ui.add_from_file(os.path.join(uibase,'recipe_index.ui'))
+        self.ui.add_from_string(_get_data('gourmet', 'ui/recipe_index.ui').decode())
         RecIndex.__init__(self, self.ui, self.rg.rd, self.rg)
         self.setup_main_window()
 
@@ -870,7 +868,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
         self.setup_index_columns()
         self.setup_hacks()
         self.ui=Gtk.Builder()
-        self.ui.add_from_file(os.path.join(uibase,'recipe_index.ui'))
+        self.ui.add_from_string(_get_data('gourmet', 'ui/recipe_index.ui').decode())
         self.setup_actions()
         RecIndex.__init__(self,
                           ui=self.ui,
