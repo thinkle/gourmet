@@ -140,11 +140,9 @@ class TimerDialog:
 
     keep_annoying = False
 
-    sounds_and_files = {
-        _('Ringing Sound'):'phone.wav',
-        _('Warning Sound'):'warning.wav',
-        _('Error Sound'):'error.wav',
-        }
+    sounds_and_files = {_('Ringing Sound'): 'phone.opus',
+                        _('Warning Sound'): 'warning.opus',
+                        _('Error Sound'): 'error.opus'}
 
     def __init__ (self):
         self.init_player()
