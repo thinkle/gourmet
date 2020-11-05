@@ -9,7 +9,7 @@ import urllib.parse
 import urllib.request
 import xml.sax.saxutils
 from gettext import gettext as _
-from pkgutil import get_data as _get_data
+from pkgutil import get_data
 from typing import Optional
 
 from gourmet import convert, gglobals
@@ -29,7 +29,7 @@ def _read_css(filename: Optional[str] = None) -> str:
         with open(filename, 'r') as fh:
             style = fh.read()
     else:
-        style = _get_data('gourmet', 'data/style/default.css').decode()
+        style = get_data('gourmet', 'data/style/default.css').decode()
     assert style
     return style
 

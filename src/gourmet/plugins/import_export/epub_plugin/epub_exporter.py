@@ -1,7 +1,7 @@
 import re
 import xml.sax.saxutils
 from gettext import gettext as _
-from pkgutil import get_data as _get_data
+from pkgutil import get_data
 from string import Template
 from typing import Optional
 
@@ -73,7 +73,7 @@ class EpubWriter():
             with open(filename, 'rb') as fh:
                 style = fh.read()
         else:
-            style = _get_data('gourmet', f'data/style/{self._default_style}')
+            style = get_data('gourmet', f'data/style/{self._default_style}')
         assert style
         recipe_css = epub.EpubItem(  uid="style"
                                 , file_name=cssFileName

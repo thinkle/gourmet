@@ -4,7 +4,7 @@ import webbrowser
 import xml.sax.saxutils
 from gettext import gettext as _
 from pathlib import Path
-from pkgutil import get_data as _get_data
+from pkgutil import get_data
 from typing import Any, Callable, Dict, List, Optional, Tuple
 
 from gi.repository import Gdk, GdkPixbuf, GLib, GObject, Gtk, Pango
@@ -33,7 +33,7 @@ from gourmet.plugin import (IngredientControllerPlugin, RecDisplayPlugin,
                             RecEditorModule, RecEditorPlugin, ToolPlugin)
 from gourmet.recindex import RecIndex
 
-from .image_utils import load_pixbuf_from_resource as _load_pixbuf_from_resource
+from .image_utils import load_pixbuf_from_resource
 
 
 def find_entry(w) -> Optional[Gtk.Entry]:
@@ -268,7 +268,7 @@ class RecCardDisplay (plugin_loader.Pluggable):
 
     def setup_ui (self):
         self.ui = Gtk.Builder()
-        self.ui.add_from_string(_get_data('gourmet', 'ui/recCardDisplay.ui').decode())
+        self.ui.add_from_string(get_data('gourmet', 'ui/recCardDisplay.ui').decode())
 
         self.ui.connect_signals({
             'shop_for_recipe':self.shop_for_recipe_cb,
@@ -365,7 +365,7 @@ class RecCardDisplay (plugin_loader.Pluggable):
     # Main GUI setup
     def setup_main_window (self):
         self.window = Gtk.Window()
-        self.window.set_icon(_load_pixbuf_from_resource('reccard.png'))
+        self.window.set_icon(load_pixbuf_from_resource('reccard.png'))
         self.window.connect('delete-event',self.hide)
         self.conf.append(WidgetSaver.WindowSaver(self.window,
                                                  self.prefs.get('reccard_window_%s'%self.current_rec.id,
@@ -952,7 +952,7 @@ class RecEditor(WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
 
     def setup_main_interface (self):
         self.window = Gtk.Window()
-        self.window.set_icon(_load_pixbuf_from_resource('reccard_edit.png'))
+        self.window.set_icon(load_pixbuf_from_resource('reccard_edit.png'))
         title = ((self.current_rec and self.current_rec.title) or _('New Recipe')) + ' (%s)'%_('Edit')
         self.window.set_title(title)
         self.window.connect('delete-event',
@@ -1114,7 +1114,7 @@ class IngredientEditorModule (RecEditorModule):
 
     def setup_main_interface (self):
         self.ui = Gtk.Builder()
-        self.ui.add_from_string(_get_data('gourmet', 'ui/recCardIngredientsEditor.ui').decode())
+        self.ui.add_from_string(get_data('gourmet', 'ui/recCardIngredientsEditor.ui').decode())
         self.main = self.ui.get_object('ingredientsNotebook')
         self.main.unparent()
         self.ingtree_ui = IngredientTreeUI(self, self.ui.get_object('ingTree'))
@@ -1347,7 +1347,7 @@ class DescriptionEditorModule (TextEditor, RecEditorModule):
 
     def setup_main_interface (self):
         self.ui = Gtk.Builder()
-        self.ui.add_from_string(_get_data('gourmet', 'ui/recCardDescriptionEditor.ui').decode())
+        self.ui.add_from_string(get_data('gourmet', 'ui/recCardDescriptionEditor.ui').decode())
         self.imageBox = ImageBox(self)
         self.init_recipe_widgets()
         self.ui.connect_signals({
@@ -2975,7 +2975,7 @@ class RecSelector (RecIndex):
     def __init__(self, recGui, ingEditor):
         self.prefs = prefs.Prefs.instance()
         self.ui=Gtk.Builder()
-        self.ui.add_from_string(_get_data('gourmet', 'ui/recipe_index.ui').decode())
+        self.ui.add_from_string(get_data('gourmet', 'ui/recipe_index.ui').decode())
         self.rg=recGui
         self.ingEditor = ingEditor
         self.re = self.ingEditor.re

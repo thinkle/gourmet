@@ -1,5 +1,5 @@
 import pickle
-from pkgutil import get_data as _get_data
+from pkgutil import get_data
 import re
 
 from gi.repository import GObject, Gtk
@@ -19,7 +19,7 @@ class ShopEditor:
 
     def __init__ (self, rd=db.recipeManager(), rg=None):
         self.ui = Gtk.Builder()
-        self.ui.add_from_string(_get_data('gourmet', 'ui/shopCatEditor.ui').decode())
+        self.ui.add_from_string(get_data('gourmet', 'ui/shopCatEditor.ui').decode())
         self.rd = rd
         self.rg = rg
         self.prefs = self.rg.prefs

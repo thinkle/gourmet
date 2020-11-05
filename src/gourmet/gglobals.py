@@ -5,7 +5,7 @@ from pathlib import Path
 
 from gi.repository import Gdk, GdkPixbuf, Gtk
 
-from .image_utils import load_pixbuf_from_resource as _load_pixbuf_from_resource
+from .image_utils import load_pixbuf_from_resource
 from .optionparser import args
 
 
@@ -114,7 +114,7 @@ for filename, stock_id, label, modifier, keyval in [
 
     ('reccard_edit.png', 'edit-recipe-card', None, 0, 0),
      ]:
-    add_icon(_load_pixbuf_from_resource(filename), stock_id, label, modifier, keyval)
+    add_icon(load_pixbuf_from_resource(filename), stock_id, label, modifier, keyval)
 
 
 # Color scheme preference

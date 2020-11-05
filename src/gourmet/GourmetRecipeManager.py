@@ -1,4 +1,4 @@
-from pkgutil import get_data as _get_data
+from pkgutil import get_data
 import re
 import threading
 from gettext import gettext as _
@@ -26,7 +26,7 @@ from gourmet.threadManager import (SuspendableThread, get_thread_manager,
                                    get_thread_manager_gui)
 from gourmet.timer import show_timer
 
-from .image_utils import load_pixbuf_from_resource as _load_pixbuf_from_resource
+from .image_utils import load_pixbuf_from_resource
 
 
 UNDO = 1
@@ -348,10 +348,10 @@ class GourmetApplication:
             else:
                 translator = defaults.CREDITS
 
-        logo = _load_pixbuf_from_resource('gourmet.svg')
+        logo = load_pixbuf_from_resource('gourmet.svg')
 
         # load LICENSE text file
-        license_text = _get_data('gourmet', 'data/LICENSE').decode()
+        license_text = get_data('gourmet', 'data/LICENSE').decode()
         assert license_text
 
         paypal_link = """https://www.paypal.com/cgi-bin/webscr?cmd=_donations
@@ -501,7 +501,7 @@ class RecTrash (RecIndex):
         self.rg = rg
         self.rmodel = self.rg.rmodel
         self.ui=Gtk.Builder()
-        self.ui.add_from_string(_get_data('gourmet', 'ui/recipe_index.ui').decode())
+        self.ui.add_from_string(get_data('gourmet', 'ui/recipe_index.ui').decode())
         RecIndex.__init__(self, self.ui, self.rg.rd, self.rg)
         self.setup_main_window()
 
@@ -868,7 +868,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
         self.setup_index_columns()
         self.setup_hacks()
         self.ui=Gtk.Builder()
-        self.ui.add_from_string(_get_data('gourmet', 'ui/recipe_index.ui').decode())
+        self.ui.add_from_string(get_data('gourmet', 'ui/recipe_index.ui').decode())
         self.setup_actions()
         RecIndex.__init__(self,
                           ui=self.ui,
@@ -952,7 +952,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
 
     def setup_main_window(self):
         self.window = self.app = Gtk.Window()
-        self.window.set_icon(_load_pixbuf_from_resource('gourmet.svg'))
+        self.window.set_icon(load_pixbuf_from_resource('gourmet.svg'))
         saver = WidgetSaver.WindowSaver(
             self.window,
             self.prefs.get('app_window', {'window_size': (800, 600)})

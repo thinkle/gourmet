@@ -1,9 +1,9 @@
-import os as _os
+import os as os
 import time
 import xml.sax.saxutils
 from gettext import gettext as _
-from pkgutil import get_data as _get_data
-from tempfile import mkstemp as _mkstemp
+from pkgutil import get_data
+from tempfile import mkstemp
 from typing import Callable, List, Optional
 
 from gi.repository import GLib, Gtk
@@ -148,7 +148,7 @@ class TimerDialog:
     def __init__ (self):
         self.init_player()
         self.ui = Gtk.Builder()
-        self.ui.add_from_string(_get_data('gourmet', 'ui/timerDialog.ui').decode())
+        self.ui.add_from_string(get_data('gourmet', 'ui/timerDialog.ui').decode())
         self.timer = TimeSpinnerUI(
             self.ui.get_object('hoursSpinButton'),
             self.ui.get_object('minutesSpinButton'),
@@ -191,14 +191,14 @@ class TimerDialog:
 
     def play_tune (self) -> None:
         sound = self.sounds_and_files[cb.cb_get_active_text(self.soundComboBox)]
-        data = _get_data('gourmet', f'data/sound/{sound}')
+        data = get_data('gourmet', f'data/sound/{sound}')
         assert data
 
-        # TODO!!! Delete the tempfile when we're done
+        # FIXME: Delete the tempfile when we're done
         # TODO: Figure out how to make GStreamer play raw bytes
-        fd, fname = _mkstemp('.opus')
-        _os.write(fd, data)
-        _os.close(fd)
+        fd, fname = mkstemp('.opus')
+        os.write(fd, data)
+        os.close(fd)
         self.player.play_file(fname)
 
     def annoy_user (self):

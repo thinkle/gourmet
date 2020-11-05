@@ -2,7 +2,7 @@ import io
 from collections import defaultdict
 from enum import Enum
 from pathlib import Path
-from pkgutil import get_data as _get_data
+from pkgutil import get_data
 from typing import Dict, List, Optional
 from urllib.parse import unquote, urlparse
 
@@ -89,7 +89,7 @@ def image_to_bytes(image: Image.Image) -> bytes:
 
 
 def load_pixbuf_from_resource(resource_name: str) -> Pixbuf:
-    data = _get_data('gourmet', f'data/images/{resource_name}')
+    data = get_data('gourmet', f'data/images/{resource_name}')
     assert data
     return bytes_to_pixbuf(data)
 

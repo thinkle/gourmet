@@ -5,7 +5,7 @@ import traceback
 import xml.sax.saxutils
 from gettext import gettext as _
 from pathlib import Path
-from pkgutil import get_data as _get_data
+from pkgutil import get_data
 from typing import List, Optional
 
 from gi.repository import GObject, Gtk, Pango
@@ -682,7 +682,7 @@ class SimpleFaqDialog (ModalDialog):
         self.index_dic = {}
         self.text = ""
 
-        faq = _get_data('gourmet', 'data/FAQ').decode()
+        faq = get_data('gourmet', 'data/FAQ').decode()
         assert faq
         for l in faq.split('\n'):
             line = l.strip()

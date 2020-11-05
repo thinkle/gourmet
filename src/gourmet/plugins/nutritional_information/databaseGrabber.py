@@ -3,7 +3,7 @@ import tempfile
 import urllib.request
 import zipfile
 from gettext import gettext as _
-from pkgutil import get_data as _get_data
+from pkgutil import get_data
 
 from gourmet.gdebug import TimeAction
 
@@ -64,7 +64,7 @@ class DatabaseGrabber:
         return tofi2
 
     def get_abbrev(self) -> None:
-        abbreviations = _get_data('gourmet', f'data/{self.ABBREV_FILE_NAME}')
+        abbreviations = get_data('gourmet', f'data/{self.ABBREV_FILE_NAME}')
         assert abbreviations
         self.parse_abbrevfile(abbreviations)
         del self.foodgroups_by_ndbno
@@ -74,7 +74,7 @@ class DatabaseGrabber:
         self.foodgroups_by_ndbno = {}
 
         # TODO: Convert FOOD_DES.txt to UTF-8
-        groups = _get_data('gourmet', f'data/{self.DESC_FILE_NAME}').decode('iso-8859-1')
+        groups = get_data('gourmet', f'data/{self.DESC_FILE_NAME}').decode('iso-8859-1')
         assert groups
         for l in groups.splitlines():
             flds = l.split('^')
@@ -83,7 +83,7 @@ class DatabaseGrabber:
             self.foodgroups_by_ndbno[ndbno] = grpno
 
     def get_weight(self) -> None:
-        weights = _get_data('gourmet', f'data/{self.WEIGHT_FILE_NAME}')
+        weights = get_data('gourmet', f'data/{self.WEIGHT_FILE_NAME}')
         assert weights
         self.parse_weightfile(weights)
 

@@ -1,4 +1,4 @@
-from pkgutil import get_data as _get_data
+from pkgutil import get_data
 
 from gi.repository import Gtk
 
@@ -14,7 +14,7 @@ class BatchEditor:
 
     def setup_ui (self):
         self.ui = Gtk.Builder()
-        self.ui.add_from_string(_get_data('gourmet', 'ui/batchEditor.ui').decode())
+        self.ui.add_from_string(get_data('gourmet', 'ui/batchEditor.ui').decode())
         self.dialog = self.ui.get_object('batchEditorDialog')
         self.setFieldWhereBlankButton = self.ui.get_object('setFieldWhereBlankButton')
         self.setup_boxes()

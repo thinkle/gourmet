@@ -1,7 +1,7 @@
 import re
 from gettext import gettext as _
 from gettext import ngettext
-from pkgutil import get_data as _get_data
+from pkgutil import get_data
 
 import sqlalchemy
 from gi.repository import GObject, Gtk, Pango
@@ -21,7 +21,7 @@ class NutritionInfoIndex:
             self.ui = ui
         else:
             self.ui = Gtk.Builder()
-            self.ui.add_from_string(_get_data('gourmet', 'ui/nutritionDruid.ui').decode())
+            self.ui.add_from_string(get_data('gourmet', 'ui/nutritionDruid.ui').decode())
 
         self.rd = rd
         self.prefs = prefs

@@ -1,6 +1,6 @@
 from gettext import gettext as _
 from gettext import ngettext
-from pkgutil import get_data as _get_data
+from pkgutil import get_data
 
 from gi.repository import Gtk
 
@@ -20,7 +20,7 @@ class FieldEditor:
         self.field = None; self.other_field = None
         self.rd = rd; self.rg = rg
         self.ui = Gtk.Builder()
-        self.ui.add_from_string(_get_data('gourmet', 'ui/valueEditor.ui').decode())
+        self.ui.add_from_string(get_data('gourmet', 'ui/valueEditor.ui').decode())
         self.__setup_widgets__()
         self.__setup_treeview__()
         self.ui.connect_signals({

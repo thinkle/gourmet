@@ -1,4 +1,4 @@
-from pkgutil import get_data as _get_data
+from pkgutil import get_data
 
 from gi.repository import Gtk
 
@@ -56,7 +56,7 @@ class PreferencesGui (plugin_loader.Pluggable):
 
         self.prefs = prefs
         self.ui = Gtk.Builder()
-        self.ui.add_from_string(_get_data('gourmet', 'ui/preferenceDialog.ui').decode())
+        self.ui.add_from_string(get_data('gourmet', 'ui/preferenceDialog.ui').decode())
         self.notebook = self.ui.get_object('notebook')
         # pref name: {'buttonName':VALUE,...}
         self.radio_options = radio_options
