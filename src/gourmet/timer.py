@@ -54,12 +54,14 @@ class TimeSpinnerUI:
                 self.minutesSpin.get_value() * 60 +
                 self.secondsSpin.get_value())
 
-    def val_changed_cb(self, widg: Gtk.SpinButton) -> None:
+    def val_changed_cb(self, widget: Gtk.SpinButton):
         """On input callback to set the values to be always two digits"""
-        if not widg.val_change_is_changing_entry:
-            widg.val_change_is_changing_entry = True
-            widg.set_text(widg.get_text().zfill(2))
-            widg.val_change_is_changing_entry = False
+        if not widget.val_change_is_changing_entry:
+            widget.val_change_is_changing_entry = True
+            value = widget.get_value_as_int()
+            value = min(value, 59)
+            widget.set_text(str(value).zfill(2))
+            widget.val_change_is_changing_entry = False
 
     def tick(self) -> bool:
         """Run the timer
