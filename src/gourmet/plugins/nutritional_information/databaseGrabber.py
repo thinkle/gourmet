@@ -1,12 +1,9 @@
-import os.path
 import re
-import sys
 import tempfile
-import urllib.error
-import urllib.parse
 import urllib.request
 import zipfile
 from gettext import gettext as _
+from pkgutil import get_data as _get_data
 
 from gourmet.gdebug import TimeAction
 
@@ -66,47 +63,35 @@ class DatabaseGrabber:
         tofi2.seek(0)
         return tofi2
 
-    def get_abbrev (self, filename=None):
-        if filename:
-            afi = open(filename,'r')
-        else:
-            afi = self.get_file_from_url(self.ABBREV_FILE_NAME)
-        self.parse_abbrevfile(afi)
-        afi.close()
+    def get_abbrev(self) -> None:
+        abbreviations = _get_data('gourmet', f'data/{self.ABBREV_FILE_NAME}')
+        assert abbreviations
+        self.parse_abbrevfile(abbreviations)
         del self.foodgroups_by_ndbno
 
-    def get_groups (self, filename=None):
+    def get_groups(self) -> None:
         self.group_dict = {}
-        if filename:
-            afi = open(filename,'r')
-        else:
-            afi = self.get_file_from_url(self.DESC_FILE_NAME)
         self.foodgroups_by_ndbno = {}
-        for l in afi.readlines():
+
+        # TODO: Convert FOOD_DES.txt to UTF-8
+        groups = _get_data('gourmet', f'data/{self.DESC_FILE_NAME}').decode('iso-8859-1')
+        assert groups
+        for l in groups.splitlines():
             flds = l.split('^')
             ndbno = int(flds[0].strip('~'))
             grpno = int(flds[1].strip('~'))
             self.foodgroups_by_ndbno[ndbno] = grpno
 
-    def get_weight (self, filename=None):
-        if filename:
-            wfi = open(filename,'r')
-        else:
-            wfi = self.get_file_from_url(self.WEIGHT_FILE_NAME)
-        self.parse_weightfile(wfi)
-        wfi.close()
+    def get_weight(self) -> None:
+        weights = _get_data('gourmet', f'data/{self.WEIGHT_FILE_NAME}')
+        assert weights
+        self.parse_weightfile(weights)
 
-    def grab_data (self, directory=None):
+    def grab_data(self) -> None:
         self.db.changed = True
-        self.get_groups((isinstance(directory,str)
-                         and
-                         os.path.join(directory,self.DESC_FILE_NAME)))
-        self.get_abbrev((isinstance(directory,str)
-                         and
-                         os.path.join(directory,self.ABBREV_FILE_NAME)))
-        self.get_weight((isinstance(directory,str)
-                         and
-                         os.path.join(directory,self.WEIGHT_FILE_NAME)))
+        self.get_groups()
+        self.get_abbrev()
+        self.get_weight()
 
     def parse_line (self, line, field_defs, split_on='^'):
         """Handed a line and field definitions, return a dictionary of
@@ -154,11 +139,12 @@ class DatabaseGrabber:
         if self.show_progress:
             self.show_progress(float(0.03),_('Parsing nutritional data...'))
         self.datafile = tempfile.TemporaryFile()
-        ll=abbrevfile.readlines()
+        ll=abbrevfile.splitlines()
         tot=len(ll)
         n = 0
         for n,l in enumerate(ll):
-            l = str(l.decode('latin_1'))
+            # TODO: Convert ABBREV.txt to UTF-8
+            l = str(l.decode('iso-8859-1'))
             tline=TimeAction('1 line iteration',2)
             t=TimeAction('split fields',2)
             d = self.parse_line(l,NUTRITION_FIELDS)
@@ -193,11 +179,12 @@ class DatabaseGrabber:
     def parse_weightfile (self, weightfile):
         if self.show_progress:
             self.show_progress(float(0.03),_('Parsing weight data...'))
-        ll=weightfile.readlines()
+        ll=weightfile.splitlines()
         tot=len(ll)
         n=0
         for n,l in enumerate(ll):
-            l = str(l.decode('latin_1'))
+            # TODO: Convert WEIGHT.txt to UTF-8
+            l = str(l.decode('iso-8859-1'))
             if self.show_progress and n % 50 == 0:
                 self.show_progress(
                     float(n)/tot,

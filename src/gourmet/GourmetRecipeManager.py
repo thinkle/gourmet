@@ -1,5 +1,4 @@
-import os
-import os.path
+from pkgutil import get_data as _get_data
 import re
 import threading
 from gettext import gettext as _
@@ -15,8 +14,7 @@ from gourmet.defaults.defaults import lang as defaults
 from gourmet.exporters.exportManager import ExportManager
 from gourmet.exporters.printer import PrintManager
 from gourmet.gdebug import debug
-from gourmet.gglobals import (DEFAULT_HIDDEN_COLUMNS, REC_ATTRS, doc_base,
-                              icondir, uibase)
+from gourmet.gglobals import DEFAULT_HIDDEN_COLUMNS, REC_ATTRS
 from gourmet.gtk_extras import WidgetSaver
 from gourmet.gtk_extras import dialog_extras as de
 from gourmet.gtk_extras import (fix_action_group_importance, mnemonic_manager,
@@ -27,6 +25,9 @@ from gourmet.recindex import RecIndex
 from gourmet.threadManager import (SuspendableThread, get_thread_manager,
                                    get_thread_manager_gui)
 from gourmet.timer import show_timer
+
+from .image_utils import load_pixbuf_from_resource as _load_pixbuf_from_resource
+
 
 UNDO = 1
 SHOW_TRASH = 2
@@ -347,15 +348,11 @@ class GourmetApplication:
             else:
                 translator = defaults.CREDITS
 
-        logo=GdkPixbuf.Pixbuf.new_from_file(os.path.join(icondir,"gourmet.png"))
+        logo = _load_pixbuf_from_resource('gourmet.svg')
 
         # load LICENSE text file
-        try:
-            license_text = open(os.path.join(doc_base,'LICENSE'),'r').read()
-        except IOError as err:
-            print("IO Error %s" % err)
-        except:
-            print("Unexpexted error")
+        license_text = _get_data('gourmet', 'data/LICENSE').decode()
+        assert license_text
 
         paypal_link = """https://www.paypal.com/cgi-bin/webscr?cmd=_donations
 &business=Thomas_Hinkle%40alumni%2ebrown%2eedu
@@ -364,7 +361,7 @@ class GourmetApplication:
         gratipay_link = "https://gratipay.com/on/github/thinkle/"
         flattr_link = "http://flattr.com/profile/Thomas_Hinkle/things"
 
-        about = Gtk.AboutDialog()
+        about = Gtk.AboutDialog(parent=self.window)
         about.set_artists(version.artists)
         about.set_authors(version.authors)
         about.set_comments(version.description)
@@ -404,7 +401,7 @@ class GourmetApplication:
         about.destroy()
 
     def show_help (self, *args):
-        de.show_faq(os.path.join(doc_base,'FAQ'))
+        de.show_faq(parent=self.window)
 
     def save (self, file=None, db=None, xml=None):
         debug("save (self, file=None, db=None, xml=None):",5)
@@ -504,7 +501,7 @@ class RecTrash (RecIndex):
         self.rg = rg
         self.rmodel = self.rg.rmodel
         self.ui=Gtk.Builder()
-        self.ui.add_from_file(os.path.join(uibase,'recipe_index.ui'))
+        self.ui.add_from_string(_get_data('gourmet', 'ui/recipe_index.ui').decode())
         RecIndex.__init__(self, self.ui, self.rg.rd, self.rg)
         self.setup_main_window()
 
@@ -871,7 +868,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
         self.setup_index_columns()
         self.setup_hacks()
         self.ui=Gtk.Builder()
-        self.ui.add_from_file(os.path.join(uibase,'recipe_index.ui'))
+        self.ui.add_from_string(_get_data('gourmet', 'ui/recipe_index.ui').decode())
         self.setup_actions()
         RecIndex.__init__(self,
                           ui=self.ui,
@@ -955,7 +952,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
 
     def setup_main_window(self):
         self.window = self.app = Gtk.Window()
-        self.window.set_icon_from_file(os.path.join(icondir, 'gourmet.png'))
+        self.window.set_icon(_load_pixbuf_from_resource('gourmet.svg'))
         saver = WidgetSaver.WindowSaver(
             self.window,
             self.prefs.get('app_window', {'window_size': (800, 600)})

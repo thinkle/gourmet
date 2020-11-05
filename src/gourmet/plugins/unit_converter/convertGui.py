@@ -180,6 +180,5 @@ class ConvGui:
             Gtk.main_quit()
 
 if __name__ == '__main__':
-    uibase="/home/tom/Projects/gourmet/glade/"
     cg=ConvGui()
     Gtk.main()

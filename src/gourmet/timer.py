@@ -1,12 +1,13 @@
-import os
+import os as _os
 import time
 import xml.sax.saxutils
 from gettext import gettext as _
+from pkgutil import get_data as _get_data
+from tempfile import mkstemp as _mkstemp
 from typing import Callable, List, Optional
 
 from gi.repository import GLib, Gtk
 
-from gourmet import gglobals
 from gourmet.gtk_extras import cb_extras as cb
 from gourmet.gtk_extras.dialog_extras import UserCancelledError, getBoolean
 from gourmet.sound import Player
@@ -147,7 +148,7 @@ class TimerDialog:
     def __init__ (self):
         self.init_player()
         self.ui = Gtk.Builder()
-        self.ui.add_from_file(os.path.join(gglobals.uibase,'timerDialog.ui'))
+        self.ui.add_from_string(_get_data('gourmet', 'ui/timerDialog.ui').decode())
         self.timer = TimeSpinnerUI(
             self.ui.get_object('hoursSpinButton'),
             self.ui.get_object('minutesSpinButton'),
@@ -188,10 +189,17 @@ class TimerDialog:
     def init_player (self):
         self.player = Player()
 
-    def play_tune (self):
-        sound_file = self.sounds_and_files[cb.cb_get_active_text(self.soundComboBox)]
-        sound_file = os.path.join(gglobals.data_dir,'sound',sound_file)
-        self.player.play_file(sound_file)
+    def play_tune (self) -> None:
+        sound = self.sounds_and_files[cb.cb_get_active_text(self.soundComboBox)]
+        data = _get_data('gourmet', f'data/sound/{sound}')
+        assert data
+
+        # TODO!!! Delete the tempfile when we're done
+        # TODO: Figure out how to make GStreamer play raw bytes
+        fd, fname = _mkstemp('.opus')
+        _os.write(fd, data)
+        _os.close(fd)
+        self.player.play_file(fname)
 
     def annoy_user (self):
         if self.keep_annoying:
@@ -203,6 +211,7 @@ class TimerDialog:
         self.play_tune()
         if self.repeatCheckButton.get_active():
             self.keep_annoying = True
+            # TODO: Timeout on when the audio file actually stops playing
             GLib.timeout_add(3000, self.annoy_user)
         self.timerBox.hide()
         self.expander1.hide()

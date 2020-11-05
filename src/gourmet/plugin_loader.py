@@ -58,12 +58,16 @@ class MasterLoader:
         return MasterLoader.__single
 
     def __init__(self):
-        self.plugin_directories = [os.path.join(gglobals.gourmetdir,'plugins'), # user plug-ins
-                                   os.path.join(current_path,'plugins'), # pre-installed plugins
-                                   os.path.join(current_path,'plugins','import_export'), # pre-installed exporter plugins
-                                   os.path.join(gglobals.plugin_base,'plugins'), # system-wide plug-ins (required for running from source)
-                                   os.path.join(gglobals.plugin_base,'plugins','import_export'), # exporter plug-ins (required for running from source)
-                                   ]
+        # TODO!!! Discover plugins using namespace packages(?)
+        # If gourmet is running as a built (i.e., non-source) distribution,
+        # this is probably not going to work with bundled plugins.
+        self.plugin_directories = [
+            # user plug-ins
+            os.path.join(gglobals.gourmetdir,'plugins'),
+            # bundled plugins
+            os.path.join(current_path,'plugins'),
+            os.path.join(current_path,'plugins','import_export'),
+        ]
         self.errors = {}
         self.pluggables_by_class = {}
         self.load_plugin_directories()
@@ -223,7 +227,7 @@ class PluginSet:
         with open(plugin_info_path, 'r') as fin:
             self.load_plugin_file_data(fin)
         self.curdir, plugin_info_file = os.path.split(plugin_info_path)
-        plugin_modules_dir = os.path.join(gglobals.lib_dir,"plugins")
+        plugin_modules_dir = os.path.join(os.path.dirname(__file__), 'plugins')
         self.plugin_modules_dir = plugin_modules_dir
         self.import_export_modules_dir = os.path.join(plugin_modules_dir,
                                                       "import_export")

@@ -1,5 +1,6 @@
 import os.path
 from gettext import gettext as _
+from pkgutil import get_data as _get_data
 
 from gi.repository import Gtk
 
@@ -20,9 +21,8 @@ class DatabaseChooser:
         self.default_file_directory = gglobals.gourmetdir
         self.default_files = {'sqlite':'recipes.db'
                               }
-        uifile = os.path.join(gglobals.uibase,'databaseChooser.ui')
         self.ui = Gtk.Builder()
-        self.ui.add_from_file(uifile)
+        self.ui.add_from_string(_get_data('gourmet', 'ui/databaseChooser.ui').decode())
         self.connection_widgets = ['hostEntry','userEntry','pwEntry','dbEntry',
                                    'hostLabel','userLabel','pwLabel','dbLabel',
                                    'pwCheckButton']

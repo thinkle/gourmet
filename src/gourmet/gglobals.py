@@ -5,48 +5,29 @@ from pathlib import Path
 
 from gi.repository import Gdk, GdkPixbuf, Gtk
 
-from . import settings
+from .image_utils import load_pixbuf_from_resource as _load_pixbuf_from_resource
 from .optionparser import args
 
-uibase = os.path.join(settings.ui_base)
-lib_dir = os.path.join(settings.lib_dir)
 
-gourmetdir: Path = Path(os.environ['HOME']).absolute() / '.gourmet'
-if os.name == 'nt':
-    gourmetdir = Path(os.environ['APPDATA']).absolute() / 'gourmet'
-
+# TODO: remove the gourmetdir global variable
+# Instead of making this a global, it should be passed as an argument to
+# interested parties.
+# TODO: use standard platform directories to store user-specific data
+# On linux, the "~/.gourmet" directory should go into the appropriate XDG user
+# directory (or directories). This should also be audited on other platforms.
 if args.gourmetdir:
     gourmetdir = Path(args.gourmetdir).absolute()
     print(f'User specified gourmetdir {gourmetdir}')
-
+elif os.name == 'nt':
+    gourmetdir = Path(os.environ['APPDATA']).absolute() / 'gourmet'
+else:
+    gourmetdir = Path(os.environ['HOME']).absolute() / '.gourmet'
 gourmetdir.mkdir(exist_ok=True)
 
 use_threads = args.threads
 # Uncomment the below to test FauxThreads
 # use_threads = False
 
-# note: this stuff must be kept in sync with changes in setup.py
-data_dir = settings.data_dir
-imagedir = os.path.join(settings.data_dir, 'images')
-style_dir = os.path.join(settings.data_dir, 'style')
-
-icondir = os.path.join(settings.icon_base, '48x48', 'apps')
-doc_base = settings.doc_base
-plugin_base = settings.plugin_base
-
-# GRAB PLUGIN DIR FOR HTML IMPORT
-if args.html_plugin_dir:
-    html_plugin_dir = args.html_plugin_dir
-else:
-    html_plugin_dir = os.path.join(gourmetdir, 'html_plugins')
-    if not os.path.exists(html_plugin_dir):
-        os.makedirs(html_plugin_dir)
-        template_file = os.path.join(settings.data_dir, 'RULES_TEMPLATE')
-        if os.path.exists(template_file):
-            import shutil
-            shutil.copy(template_file,
-                        os.path.join(html_plugin_dir, 'RULES_TEMPLATE')
-                        )
 
 REC_ATTRS = [('title', _('Title'), 'Entry'),
              ('category', _('Category'), 'Combo'),
@@ -104,18 +85,22 @@ DEFAULT_HIDDEN_COLUMNS = [REC_ATTR_DIC[attr] for attr in
 icon_factory = Gtk.IconFactory()
 
 
-def add_icon(file_name, stock_id, label=None, modifier=0, keyval=0):
-    pb = GdkPixbuf.Pixbuf.new_from_file(file_name)
-    iconset = Gtk.IconSet.new_from_pixbuf(pb)
+# TODO: Move this into GTK-specific code
+# TODO: Update/remove potentially-deprecated code?
+# GTK 3 has deprecated the use of stock icons, so this may need to be rewritten
+# (or removed altogether) to ensure this works in the future
+def add_icon(
+        pixbuf: GdkPixbuf.Pixbuf,
+        stock_id: str,
+        label: str = None,
+        modifier: Gdk.ModifierType = 0,
+        keyval: int = 0) -> None:
+    iconset = Gtk.IconSet.new_from_pixbuf(pixbuf)
     icon_factory.add(stock_id, iconset)
     icon_factory.add_default()
     # TODO: fix adding icons
     return
-    Gtk.stock_add([(stock_id,
-                    label,
-                    modifier,
-                    keyval,
-                    "")])
+    Gtk.stock_add([(stock_id, label, modifier, keyval, "")])
 
 
 for filename, stock_id, label, modifier, keyval in [
@@ -129,8 +114,7 @@ for filename, stock_id, label, modifier, keyval in [
 
     ('reccard_edit.png', 'edit-recipe-card', None, 0, 0),
      ]:
-    add_icon(os.path.join(imagedir, filename), stock_id,
-             label, modifier, keyval)
+    add_icon(_load_pixbuf_from_resource(filename), stock_id, label, modifier, keyval)
 
 
 # Color scheme preference

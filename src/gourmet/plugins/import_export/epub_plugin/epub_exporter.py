@@ -1,13 +1,15 @@
-import os
 import re
 import xml.sax.saxutils
 from gettext import gettext as _
+from pkgutil import get_data as _get_data
 from string import Template
+from typing import Optional
 
 from ebooklib import epub
 
 from gourmet import convert, gglobals
 from gourmet.exporters.exporter import ExporterMultirec, exporter_mult
+
 
 RECIPE_HEADER = Template('''<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
@@ -20,14 +22,16 @@ RECIPE_HEADER = Template('''<?xml version="1.0" encoding="utf-8" standalone="no"
 ''')
 RECIPE_FOOT= "</body></html>"
 
-EPUB_DEFAULT_CSS="epubdefault.css"
-
 
 class EpubWriter():
     """This class contains all things to write an epub and is a small wrapper
     around the EbookLib which is capable of producing epub files and maybe
     kindle in the future (it is under heavy development).
     """
+
+    _default_style = 'epubdefault.css'
+
+
     def __init__(self, outFileName):
         """
         @param outFileName The filename + path the ebook is written to on finish.
@@ -57,7 +61,7 @@ class EpubWriter():
         # This adds the field also known as keywords in some programs.
         self.ebook.add_metadata('DC', 'subject', "cooking")
 
-    def addRecipeCssFromFile(self, filename):
+    def addRecipeCssFromFile(self, filename: Optional[str] = None) -> str:
         """ Adds the CSS file from filename to the book. The style will be added
         to the books root.
         @param filename The file the css is read from and attached
@@ -65,14 +69,19 @@ class EpubWriter():
         """
         cssFileName = "Style/recipe.css"
 
-        style = open(filename, 'rb').read()
+        if filename:
+            with open(filename, 'rb') as fh:
+                style = fh.read()
+        else:
+            style = _get_data('gourmet', f'data/style/{self._default_style}')
+        assert style
         recipe_css = epub.EpubItem(  uid="style"
                                 , file_name=cssFileName
                                 , media_type="text/css"
                                 , content=style)
         self.ebook.add_item(recipe_css)
         self.recipeCss = recipe_css
-        return cssFileName;
+        return cssFileName
 
     def addJpegImage(self, imageData):
         """Adds a jpeg image from the imageData array to the book and returns
@@ -270,7 +279,7 @@ class epub_exporter (exporter_mult):
 
 class website_exporter (ExporterMultirec):
     def __init__ (self, rd, recipe_table, out, conv=None, ext='epub', copy_css=True,
-                  css=os.path.join(gglobals.style_dir,EPUB_DEFAULT_CSS),
+                  css: Optional[str] = None,
                   index_rows=['title','category','cuisine','rating','yields'],
                   change_units=False,
                   mult=1):
