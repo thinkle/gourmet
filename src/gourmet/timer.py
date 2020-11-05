@@ -196,7 +196,7 @@ class TimerDialog:
 
         # TODO!!! Delete the tempfile when we're done
         # TODO: Figure out how to make GStreamer play raw bytes
-        fd, fname = _mkstemp('.ogg')
+        fd, fname = _mkstemp('.opus')
         _os.write(fd, data)
         _os.close(fd)
         self.player.play_file(fname)
