@@ -31,7 +31,7 @@ from gettext import gettext as _
 from gettext import ngettext
 from typing import Any
 
-from gi.repository import GObject, Gtk, Pango
+from gi.repository import GLib, GObject, Gtk, Pango
 
 from gourmet.gtk_extras.dialog_extras import show_message
 
@@ -41,14 +41,15 @@ from gourmet.gtk_extras.dialog_extras import show_message
 class _IdleObject(GObject.GObject):
     """
     Override GObject.GObject to always emit signals in the main thread
-    by emmitting on an idle handler
+    by emitting on an idle handler
     """
     def __init__(self):
         GObject.GObject.__init__(self)
 
     def emit(self, *args):
-        if args[0]!='progress': print('emit', *args)
-        GObject.idle_add(GObject.GObject.emit,self,*args)
+        if args[0] != 'progress':
+            print('emit', *args)
+        GLib.idle_add(GObject.GObject.emit, self, *args)
 
 class Terminated (Exception):
     def __init__ (self, value):
