@@ -1,5 +1,3 @@
-import os
-import os.path
 import time
 from gettext import gettext as _
 

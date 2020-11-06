@@ -9,7 +9,7 @@ from . import nutrition, nutritionGrabberGui
 
 class NutritionMainPlugin (MainPlugin):
 
-    def activate (self, pluggable):
+    def activate(self, pluggable):
         """Setup nutritional database stuff."""
         pixbuf = load_pixbuf_from_resource('Nutrition.png')
         _add_icon(pixbuf, 'nutritional-info', _('Nutritional Information'))

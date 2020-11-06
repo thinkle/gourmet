@@ -218,7 +218,7 @@ class NumberEntry(ValidatingEntry):
         if not self.in_progress_matcher.match(text):
             return self.error_message
 
-    def find_completed_error(self, text: str):
+    def find_completed_errors(self, text: str):
         if text and frac_to_float(text) is None:
             return self.error_message
 

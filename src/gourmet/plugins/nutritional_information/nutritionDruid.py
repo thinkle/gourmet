@@ -2,6 +2,7 @@ import os
 import os.path
 import re
 from gettext import gettext as _
+from pkgutil import get_data
 
 from gi.repository import GObject, Gtk
 
@@ -105,11 +106,18 @@ class NutritionUSDAIndex:
         self._setup_nuttree_()
         self.__last_search__ = ''
         self.__override_search__ = False
+        # TODO: Fixing saving usdaSearchAsYouTypeToggle state
+        # Button state is not being saved across sessions and always starts off
+        # inactive. Of note, this problem seemed to also exist in the last
+        # release (0.17.4), but the button always started off active.
         WidgetSaver.WidgetSaver(
             self.usdaSearchAsYouTypeToggle,
             self.prefs.get('sautTog',
                            {'active':True}),
             ['toggled'])
+        # Ensure usdaFindButton is shown if usdaSearchAsYouTypeToggle is
+        # inactive
+        self.toggle_saut()
         # search
         self.usdaSearchEntry.connect('changed',self.search_type_cb)
         self.usdaFindButton.connect('clicked',self.search_cb)
@@ -265,7 +273,7 @@ class NutritionInfoDruid (GObject.GObject):
 
     def __init__ (self, nd, prefs, rec=None, in_string=''):
         self.ui = Gtk.Builder()
-        self.ui.add_from_file(os.path.join(current_path,'nutritionDruid.ui'))
+        self.ui.add_from_string(get_data('gourmet', 'ui/nutritionDruid.ui').decode())
         self.mm = MnemonicManager()
         self.mm.add_builder(self.ui)
         self.mm.fix_conflicts_peacefully()

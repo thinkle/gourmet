@@ -745,9 +745,6 @@
                         <child>
                           <object class="NumberEntry" id="fromAmountEntry">
                             <property name="visible">True</property>
-                            <property name="int1">0</property>
-                            <property name="int2">0</property>
-                            <property name="last_modification_time">Wed, 19 Oct 2005 23:46:08 GMT</property>
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
@@ -763,11 +760,12 @@
                             <property name="homogeneous">False</property>
                             <property name="spacing">0</property>
                             <child>
-                              <object class="GtkComboBoxEntry" id="fromUnitComboBoxEntry">
+                              <object class="GtkComboBox" id="fromUnitComboBoxEntry">
                                 <property name="visible">True</property>
                                 <property name="add_tearoffs">False</property>
                                 <property name="has_frame">True</property>
                                 <property name="focus_on_click">True</property>
+                                <property name="has_entry">True</property>
                               </object>
                               <packing>
                                 <property name="padding">0</property>
@@ -958,9 +956,6 @@
                         <child>
                           <object class="NumberEntry" id="toAmountEntry">
                             <property name="visible">True</property>
-                            <property name="int1">0</property>
-                            <property name="int2">0</property>
-                            <property name="last_modification_time">Wed, 19 Oct 2005 23:46:08 GMT</property>
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
@@ -1056,9 +1051,6 @@
                     <child>
                       <object class="NumberEntry" id="customNutritionAmountEntry">
                         <property name="visible">True</property>
-                        <property name="int1">0</property>
-                        <property name="int2">0</property>
-                        <property name="last_modification_time">Wed, 19 Oct 2005 23:46:08 GMT</property>
                       </object>
                       <packing>
                         <property name="padding">0</property>
@@ -1943,7 +1935,7 @@
                         <property name="visible">True</property>
                         <property name="orientation">GTK_ORIENTATION_HORIZONTAL</property>
                         <property name="toolbar_style">GTK_TOOLBAR_BOTH</property>
-                        <property name="tooltips">True</property>
+                        <property name="has-tooltip">True</property>
                         <property name="show_arrow">True</property>
                         <child>
                           <object class="GtkToolItem" id="toolitem17">
