@@ -6,7 +6,6 @@ from typing import List
 from gourmet import gglobals
 from gourmet.prefs import Prefs
 
-from . import plugin
 from .defaults.defaults import loc
 from .gdebug import debug
 
@@ -384,18 +383,3 @@ def pluggable_method (f):
         retval = self.run_post_hook(f.__name__,retval,*args,**kwargs)
         return retval
     return _
-
-if __name__ == '__main__':
-    class TestPlugin (plugin.Plugin):
-        def activate ():
-            print('Activate!')
-        def deactivate ():
-            print('Deactivate!')
-
-    class UniversalPluggable (Pluggable):
-        def __init__ (self):
-            Pluggable.__init__(self,[plugin.Plugin])
-
-    up = UniversalPluggable()
-    #up.loader.activate_plugin(
-    print(up.plugins)
