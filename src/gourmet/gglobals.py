@@ -8,7 +8,6 @@ from gi.repository import Gdk, GdkPixbuf, Gtk
 from .image_utils import load_pixbuf_from_resource
 from .optionparser import args
 
-
 # TODO: remove the gourmetdir global variable
 # Instead of making this a global, it should be passed as an argument to
 # interested parties.

@@ -11,7 +11,6 @@ from gourmet.prefs import Prefs
 
 from .state import WebsiteTestState
 
-
 global driver
 if 'driver' not in globals():
     driver = None

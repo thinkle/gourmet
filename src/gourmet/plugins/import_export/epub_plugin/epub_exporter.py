@@ -10,7 +10,6 @@ from ebooklib import epub
 from gourmet import convert, gglobals
 from gourmet.exporters.exporter import ExporterMultirec, exporter_mult
 
-
 RECIPE_HEADER = Template('''<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
   "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">

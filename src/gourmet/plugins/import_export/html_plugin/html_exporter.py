@@ -15,7 +15,6 @@ from typing import Optional
 from gourmet import convert, gglobals
 from gourmet.exporters.exporter import ExporterMultirec, exporter_mult
 
-
 HTML_HEADER_START = """<!DOCTYPE html>
 <html>
   <head>

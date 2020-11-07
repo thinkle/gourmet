@@ -16,7 +16,6 @@ from gourmet.image_utils import image_to_pixbuf, make_thumbnail
 
 from . import optionTable
 
-
 H_PADDING=12
 Y_PADDING=12
 
