@@ -15,7 +15,7 @@ jobs:
     - uses: actions/checkout@v2
       
     - name: Run isort
-      uses: nobze/isort-action@v1.1.0
+      uses: Nozbe/isort-action@v1.1.0
       with:
         args: .
       
