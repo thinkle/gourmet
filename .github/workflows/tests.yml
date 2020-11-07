@@ -41,6 +41,8 @@ jobs:
       - name: Test with pytest
         run: xvfb-run -a pytest -vv tests/test_*
 
-        # - name: Test with mypy
-        #   run: mypy gourmet/
-        #   if: always()
+      - name: Check imports ordering
+        run: >
+          isort --diff src/**/*.py &&
+          isort -c src/**/*.py
+        if: always()

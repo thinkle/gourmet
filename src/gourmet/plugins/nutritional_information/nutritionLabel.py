@@ -4,7 +4,6 @@ from gi.repository import Gdk, GObject, Gtk, Pango
 
 from gourmet.defaults import defaults as _defaults
 
-
 MAJOR = 0
 MINOR = 1
 TINY = 2

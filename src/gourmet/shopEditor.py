@@ -1,6 +1,6 @@
 import pickle
-from pkgutil import get_data
 import re
+from pkgutil import get_data
 
 from gi.repository import GObject, Gtk
 

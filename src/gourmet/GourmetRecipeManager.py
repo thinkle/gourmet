@@ -1,8 +1,8 @@
-from pkgutil import get_data
 import re
 import threading
 from gettext import gettext as _
 from gettext import ngettext
+from pkgutil import get_data
 from typing import Set
 
 from gi.repository import Gdk, GdkPixbuf, GLib, GObject, Gtk
@@ -27,7 +27,6 @@ from gourmet.threadManager import (SuspendableThread, get_thread_manager,
 from gourmet.timer import show_timer
 
 from .image_utils import load_pixbuf_from_resource
-
 
 UNDO = 1
 SHOW_TRASH = 2
