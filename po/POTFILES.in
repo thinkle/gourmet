@@ -1,7 +1,6 @@
 [type: gettext/glade]src/gourmet/ui/app.ui
 [type: gettext/glade]src/gourmet/ui/batchEditor.ui
 [type: gettext/glade]src/gourmet/ui/databaseChooser.ui
-[type: gettext/glade]src/gourmet/ui/generic_importer.ui
 [type: gettext/glade]src/gourmet/ui/preferenceDialog.ui
 [type: gettext/glade]src/gourmet/ui/recCardDescriptionEditor.ui
 [type: gettext/glade]src/gourmet/ui/recCardDisplay.ui
@@ -24,12 +23,10 @@ src/gourmet/gtk_extras/dialog_extras.py
 src/gourmet/shopping.py
 src/gourmet/check_encodings.py
 src/gourmet/GourmetRecipeManager.py
-src/gourmet/plugins/web_plugin/gourmetweb/recview/views.py
 src/gourmet/plugins/key_editor/keyEditorPlugin.py
 src/gourmet/plugins/key_editor/keyEditor.py
 src/gourmet/plugins/key_editor/recipeEditorPlugin.py
 [type: gettext/glade]src/gourmet/plugins/key_editor/keyeditor.ui
-src/gourmet/plugins/python_shell/__init__.py
 src/gourmet/plugins/shopping_associations/shopping_key_editor_plugin.py
 src/gourmet/plugins/unit_display_prefs/unit_prefs_dialog.py
 src/gourmet/plugins/unit_display_prefs/__init__.py
@@ -82,7 +79,6 @@ src/gourmet/plugins/nutritional_information/parser_data.py
 src/gourmet/plugins/nutritional_information/nutritionInfoEditor.py
 src/gourmet/plugins/nutritional_information/shopping_plugin.py
 [type: gettext/glade]src/gourmet/plugins/nutritional_information/nut_recipe_card_display.ui
-[type: gettext/glade]src/gourmet/plugins/nutritional_information/nutritionDruid.ui
 src/gourmet/exporters/exporter.py
 src/gourmet/exporters/recipe_emailer.py
 src/gourmet/exporters/exportManager.py
@@ -119,7 +115,6 @@ gourmet.desktop.in
 [type: gettext/ini]src/gourmet/plugins/key_editor.gourmet-plugin.in
 [type: gettext/ini]src/gourmet/plugins/listsaver.gourmet-plugin.in
 [type: gettext/ini]src/gourmet/plugins/nutritional_information.gourmet-plugin.in
-[type: gettext/ini]src/gourmet/plugins/python_shell.gourmet-plugin.in
 [type: gettext/ini]src/gourmet/plugins/shopping_associations.gourmet-plugin.in
 [type: gettext/ini]src/gourmet/plugins/spellcheck.gourmet-plugin.in
 [type: gettext/ini]src/gourmet/plugins/unit_converter.gourmet-plugin.in
