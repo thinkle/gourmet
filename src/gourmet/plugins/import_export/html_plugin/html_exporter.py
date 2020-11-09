@@ -1,18 +1,12 @@
 import os
 import os.path
 import re
-import shutil
-import textwrap
-import time
-import urllib.error
-import urllib.parse
-import urllib.request
 import xml.sax.saxutils
 from gettext import gettext as _
 from pkgutil import get_data
 from typing import Optional
 
-from gourmet import convert, gglobals
+from gourmet import gglobals
 from gourmet.exporters.exporter import ExporterMultirec, exporter_mult
 
 HTML_HEADER_START = """<!DOCTYPE html>
@@ -224,8 +218,9 @@ class website_exporter (ExporterMultirec):
                   index_rows=['title','category','cuisine','rating','yields'],
                   change_units=False,
                   mult=1):
-        self.ext=ext
-        self._css_file, self._css = _read_css(css)
+        self.ext = ext
+        self._css_file = css
+        self._css = _read_css(css)
         if copy_css:
             styleout = os.path.join(out, 'style.css')
             if not os.path.isdir(out):
