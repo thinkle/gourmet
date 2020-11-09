@@ -372,7 +372,7 @@ class GourmetApplication:
         about.set_translator_credits(translator)
         about.set_version(version.version)
         #about.set_wrap_license(True)
-        about.set_website(version.website)
+        about.set_website(version.url)
         #about.set_website_label('Gourmet website')
 
         donation_buttons = Gtk.HButtonBox()
