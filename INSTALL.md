@@ -3,13 +3,6 @@ Gourmet is currently available in the form of Flatpak and Python wheel.
 We recommend that you install it from the Flatpak.
 In both cases, you will need an internet connection.
 
-**We strongly recommend that you make a backup of your recipe database.**
-As Gourmet is still in early stage of (re)development, make a backup of your
-recipe database, typically found under `$HOME/.gourmet/recipe.db`:
-```sh
-cp $HOME/.gourmet/recipes.db $HOME/.gourmet/recipes.db.bak
-```
-
 ## Flatpak
 The Flatpak contains the full environment, but depends on other flatpak
 packages, which will be installed automatically.
@@ -20,12 +13,12 @@ sudo apt-get install flatpak
 ```
 
 As Gourmet is still under active development, the flatpak is not available from
-Flathub, and instead must be [downloaded and installed manually](https://github.com/kirienko/gourmet/releases/tag/v1-alpha2).
+Flathub, and instead must be [downloaded and installed manually](https://github.com/kirienko/gourmet/releases/tag/v1.0.0-rc1).
 
 In a terminal, execute the following:
 ```sh
 flatpak remote-add --if-not-exists --user flathub https://flathub.org/repo/flathub.flatpakrepo
-sudo flatpak install gourmet-2db9db8f.flatpak
+sudo flatpak install gourmet-c3ece056.flatpak
 ```
 
 You will be prompted with a message regarding the runtime:
@@ -53,7 +46,7 @@ flatpak remove io.github.thinkle.Gourmet
 
 ## Python Wheel
 
-[Download the wheel](https://github.com/kirienko/gourmet/releases/tag/v1-alpha2)
+[Download the wheel](https://github.com/kirienko/gourmet/releases/tag/v1.0.0-rc1)
 Dependencies must be manually installed.
 
 ### Unbutu 20.04, Linux Mint 20
@@ -73,7 +66,7 @@ sudo pip3 install scrape-schema-recipe
 Finally, install Gourmet:
 
 ```sh
-sudo pip3 install gourmet-2db9db8f-py3-none-any.whl
+sudo pip3 install gourmet-c3ece056-py3-none-any.whl
 ```
 
 You can now launch Gourmet from a terminal:
@@ -81,3 +74,24 @@ You can now launch Gourmet from a terminal:
 ```sh
 $ gourmet
 ```
+
+## Windows 10
+
+Running Gourmet on Windows is still experimental at this stage: the application can run fine, and even export to PDF. However, there are a couple of issues, and the installation is cumbersome.
+
+Download and install [MSYS2](https://www.msys2.org/)
+Within the MSYS2 terminal, synchronize your software sources:
+
+    pacman -Syu
+
+Then install some of the dependencies:
+
+    pacman -S mingw-w64-x86_64-gtk3 mingw-w64-x86_64-python3-gobject mingw-w64-x86_64-python-pillow mingw-w64-x86_64-python-sqlalchemy mingw-w64-x86_64-gstreamer mingw-w64-x86_64-poppler mingw-w64-x86_64-python-reportlab
+
+[Download the wheel](https://github.com/kirienko/gourmet/releases/tag/v1.0.0-rc1) and install it:
+
+    python3 -m pip install gourmet-c3ece056-py3-none-any.whl
+
+Then launch it:
+
+    python3 -m gourmet
