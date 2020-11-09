@@ -1,5 +1,4 @@
 import base64
-import sys
 import xml.sax.saxutils
 
 import gourmet.exporters.exporter as exporter
@@ -38,7 +37,7 @@ class rec_to_xml (XmlExporter):
     def write_image (self, image):
         image_el = self.create_element_with_attrs('image',{'format':'jpeg'})
         image_el.appendChild(
-            self.xmlDoc.createCDATASection(base64.b64encode(image))
+            self.xmlDoc.createCDATASection(base64.b64encode(image).decode())
             )
         self.rec_el.appendChild(image_el)
 
