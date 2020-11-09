@@ -1,4 +1,6 @@
 import os
+import re
+import sys
 from distutils.core import Command
 from pathlib import Path
 
@@ -80,18 +82,27 @@ class build_i18n(Command):
         merge_i18n()
 
 
-# TODO: Single-source this metadata with version.py?
-# https://packaging.python.org/guides/single-sourcing-package-version/ provides
-# some recommendations, however as noted under item 6, we do not want to import
-# our own package from setup.py as it may cause installation to fail
+def get_info(prop: str) -> str:
+    setup_py = sys.argv[0]
+    dirname = Path(setup_py).absolute().parent
+    with open(dirname / 'src' / 'gourmet' / 'version.py') as versfile:
+        content = versfile.read()
+    match = re.search(r'^{} = "(.+)"'.format(prop), content, re.M)
+    if match is not None:
+        return match.group(1)
+    raise RuntimeError(f"Unable to find {prop} string")
+
+
 setup(
-    name='gourmet',
-    version='0.17.5',
-    description='Recipe Organizer and Shopping List Generator',
-    author='Thomas Mills Hinkle',
-    author_email='Thomas_Hinkle@alumni.brown.edu',
-    url='http://thinkle.github.io/gourmet/',
-    license='GPL',
+    name=get_info('name'),
+    version=get_info('version'),
+    description=get_info('description'),
+    author=get_info('author'),
+    author_email=get_info('author_email'),
+    maintainer=get_info('maintainer'),
+    maintainer_email=get_info('maintainer_email'),
+    url=get_info('url'),
+    license=get_info('license'),
     package_dir={'': 'src'},
     packages=find_packages('src'),
     include_package_data=True,
