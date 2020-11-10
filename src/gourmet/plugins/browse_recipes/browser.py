@@ -43,18 +43,18 @@ class RecipeBrowserView(Gtk.IconView):
                              GdkPixbuf.Pixbuf,  # image
                              GObject.TYPE_PYOBJECT)
 
-    def switch_model (self, path, val=None):
+    def switch_model(self, path, val=None):
         if path not in self.models:
-            self.build_model(path,val)
+            self.build_model(path, val)
         self.set_model(self.models[path])
 
-    def build_model (self, path,val):
+    def build_model(self, path, val):
         if path == 'base':
             self.build_base_model()
-        elif not '>' in path:
+        elif '>' not in path:
             self.build_first_level_model(path)
         else:
-            self.build_recipe_model(path,val)
+            self.build_recipe_model(path, val)
 
     def build_base_model(self):
         m = self.models['base'] = self.new_model()
@@ -69,17 +69,17 @@ class RecipeBrowserView(Gtk.IconView):
         return attr_to_icon.get(item, attr_to_icon['category'])
 
     def get_pixbuf(self, attr: str, val: str) -> GdkPixbuf.Pixbuf:
-        if attr=='category':
+        if attr == 'category':
             tbl = self.rd.recipe_table.join(self.rd.categories_table)
             col = self.rd.categories_table.c.category
             if hasattr(self, 'category_images'):
-                stment = and_(col == val, self.rd.recipe_table.c.image != None,
+                stment = and_(col == val, self.rd.recipe_table.c.image is not None,
                               self.rd.recipe_table.c.image != bytes(),
                               not_(self.rd.recipe_table.c.title.in_(self.category_images)))
             else:
-                stment = and_(col == val, self.rd.recipe_table.c.image != None,
+                stment = and_(col == val, self.rd.recipe_table.c.image is not None,
                               self.rd.recipe_table.c.image != bytes())
-            result = tbl.select(stment,limit=1).execute().fetchone()
+            result = tbl.select(stment, limit=1).execute().fetchone()
             if not hasattr(self, 'category_images'):
                 self.category_images = []
             if result:
@@ -91,9 +91,9 @@ class RecipeBrowserView(Gtk.IconView):
         else:
             tbl = self.rd.recipe_table
             col = getattr(self.rd.recipe_table.c, attr)
-            stment = and_(col == val, self.rd.recipe_table.c.image != None,
+            stment = and_(col == val, self.rd.recipe_table.c.image is not None,
                           self.rd.recipe_table.c.image != bytes())
-            result = tbl.select(stment,limit=1).execute().fetchone()
+            result = tbl.select(stment, limit=1).execute().fetchone()
         if result and result.thumb:
             return scale_pb(bytes_to_pixbuf(result.image))
         else:
@@ -110,7 +110,7 @@ class RecipeBrowserView(Gtk.IconView):
                 return _('Unrated')
             else:
                 val = int(val)
-                txt = str(int(val) // 2)
+                txt = str(val // 2)
                 if val % 2:
                     txt += ' 1/2'
                 txt += ' ' + _('Stars')
@@ -143,8 +143,8 @@ class RecipeBrowserView(Gtk.IconView):
             if val is None:
                 searches.append({'column':attr,'search':val,'operator':'='})
             else:
-                searches.append({'column':attr,'search':val})
-        for recipe in self.rd.search_recipes(searches):
+                searches.append({'column': attr, 'search': val})
+        for recipe in self.rd.search_recipes(searches, sort_by=[('title', 1)]):
             pb = get_recipe_image(recipe)
             m.append((str(recipe.id),recipe.title,pb,None))
 

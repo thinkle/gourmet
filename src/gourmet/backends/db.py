@@ -486,7 +486,6 @@ class RecData (Pluggable):
         current_minor = int(version[2])
 
         stored_info = self.fetch_one(self.info_table)
-        print(stored_info)
 
         if not stored_info or not (stored_info.version_super or stored_info.version_major):
             # Default info -- the last version before we added the
