@@ -105,11 +105,12 @@ class RecipeBrowserView(Gtk.IconView):
                 return convert.seconds_to_timestring(val)
             else:
                 return 'None'
-        elif attr=='rating':
-            if not val: return 'Unrated'
+        elif attr == 'rating':
+            if not val:
+                return _('Unrated')
             else:
                 val = int(val)
-                txt = str(int(val) / 2)
+                txt = str(int(val) // 2)
                 if val % 2:
                     txt += ' 1/2'
                 txt += ' ' + _('Stars')
