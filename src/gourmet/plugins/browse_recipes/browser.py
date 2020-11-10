@@ -102,7 +102,7 @@ class RecipeBrowserView(Gtk.IconView):
     def convert_val(self, attr, val) -> str:
         if attr in ['preptime', 'cooktime']:
             if val:
-                return convert.seconds_to_timestring(val)
+                return convert.seconds_to_timestring(int(val))
             else:
                 return 'None'
         elif attr == 'rating':
@@ -227,7 +227,6 @@ class RecipeBrowser(Gtk.VBox):
     def append_button (self, path):
         if '>' in path:
             attribute, value = path.split('>')
-            value = int(value)
             txt = self.view.convert_val(attribute, value)
         else:
             txt = path
