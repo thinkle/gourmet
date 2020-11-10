@@ -1,13 +1,11 @@
 import os
-import os.path
-import re
-import time
 from gettext import gettext as _
 from gettext import ngettext
+from pathlib import Path
 
 from gi.repository import Gdk, GObject, Gtk
 
-from gourmet import convert, gglobals
+from gourmet.convert import frac_to_float
 from gourmet.gtk_extras import WidgetSaver
 from gourmet.gtk_extras import cb_extras as cb
 from gourmet.gtk_extras import dialog_extras as de
@@ -15,22 +13,16 @@ from gourmet.gtk_extras import mnemonic_manager, pageable_store
 
 from . import keyEditorPluggable
 
-#import nutrition.nutritionDruid as nutritionDruid
-
-try:
-    current_path = os.path.split(os.path.join(os.getcwd(),__file__))[0]
-except:
-    current_path = ''
 
 class KeyEditor:
-
-    """KeyEditor sets up a GUI to allow editing which keys correspond to which items throughout
-    the recipe database. It is useful for corrections or changes to keys en masse.
+    """KeyEditor sets up a GUI to allow editing which keys correspond to which
+    items throughout the recipe database.
+    It is useful for corrections or changes to keys en masse.
     """
 
-    def __init__ (self, rd=None, rg=None):
+    def __init__(self, rd=None, rg=None):
         self.ui = Gtk.Builder()
-        self.ui.add_from_file(os.path.join(current_path,'keyeditor.ui'))
+        self.ui.add_from_file(str(Path(__file__).parent / 'keyeditor.ui'))
         self.rd = rd
         self.rg = rg
         self.widget_names = ['treeview', 'searchByBox', 'searchEntry', 'searchButton', 'window',
@@ -210,7 +202,7 @@ class KeyEditor:
         elif field=='amount':
             amount = curdic['amount']; unit = curdic['unit']; key = curdic['ingkey']; item = curdic['item']
             try:
-                new_amount = convert.frac_to_float(text)
+                new_amount = frac_to_float(text)
             except:
                 de.show_amount_error(text)
                 return
@@ -230,8 +222,8 @@ class KeyEditor:
                 cond = curdic
             self.rd.update_by_criteria(
                 self.rd.ingredients_table,
-                {'unit':unit,'amount':convert.frac_to_float(amount)},
-                {'unit':unit,'amount':new_amount}
+                {'unit':unit,'amount': frac_to_float(amount)},
+                {'unit':unit,'amount': new_amount}
                 )
         else:
             return
@@ -283,8 +275,9 @@ class KeyEditor:
 
     def isearchCB (self, *args):
         if self.searchAsYouTypeToggle.get_active():
-            self.window.window.set_cursor(Gdk.Cursor.new(Gdk.CursorType.WATCH))
-            GObject.idle_add(lambda *args: (self.doSearch() or self.window.window.set_cursor(None)))
+            self.window.get_window().set_cursor(Gdk.Cursor.new(Gdk.CursorType.WATCH))
+            GObject.idle_add(lambda *args: (self.doSearch() or
+                                            self.window.get_window().set_cursor(None)))
 
     def searchCB (self, *args):
         self.doSearch()
@@ -347,19 +340,19 @@ class KeyEditor:
 
     def applyEntriesCB (self, *args):
         newdic = {}
-        for k,e in list(self.entries.items()):
+        for k, e in list(self.entries.items()):
             txt = e.get_text()
             if txt:
-                if k=='amount':
+                if k == 'amount':
                     try:
-                        newdic[k]=convert.frac_to_float(txt)
-                    except:
-                        print('Problem with amount:',txt)
+                        newdic[k] = frac_to_float(txt)
+                    except ValueError:
+                        print('Problem with amount:', txt)
                         import traceback; traceback.print_exc()
                         de.show_amount_error(txt)
                         return
                 else:
-                    newdic[k]=txt
+                    newdic[k] = txt
         if not newdic:
             print('We called applyEntriesCB with no text -- that shouldn\'t be possible')
             return
@@ -373,7 +366,6 @@ class KeyEditor:
         + ('amount' in newdic and _('\nAmount to %s')%newdic['amount'] or ''))):
             return
         # Now actually apply our lovely new logic...
-        changed_iters = True
         updated_iters = []
         for path in rows:
             itr=self.treeModel.get_iter(path)
@@ -403,10 +395,6 @@ class KeyEditor:
                         {'ingkey':curdic['ingkey']}
                         )
         self.resetTree()
-            #self.update_iter(itr,newdic) # A recursive method that
-            #                             # will set values for us and
-            #                             # our children as necessary
-            #updated_iters.append(itr)
 
     def editNutritionalInfoCB (self, *args):
         nid = nutritionDruid.NutritionInfoDruid(self.rg.nd, self.rg.prefs)
@@ -432,14 +420,13 @@ class KeyEditor:
                     while grandchild:
                         # Grand children are units...
                         unit = mod.get_value(grandchild,self.VALUE_COL)
-                        amounts = []
                         greatgrandchild = mod.iter_children(grandchild)
                         while greatgrandchild:
                             amount = mod.get_value(
                                 greatgrandchild,
                                 self.VALUE_COL
                                 )
-                            keys_to_update[curkey].append((convert.frac_to_float(amount),unit))
+                            keys_to_update[curkey].append((frac_to_float(amount), unit))
                             greatgrandchild = mod.iter_next(greatgrandchild)
                         grandchild = mod.iter_next(grandchild)
                     child = mod.iter_next(child)
@@ -560,11 +547,11 @@ class KeyStore (pageable_store.PageableTreeStore,pageable_store.PageableViewStor
                 itr = self.get_iter(path)
             except ValueError:
                 return
-            self.emit('row-changed',path,itr)
+            self.emit('row-changed', Gtk.TreePath.new_from_indices(path), itr)
             child = self.iter_children(itr)
             while child:
                 path = self.get_path(child)
-                self.emit('row-changed',path,child)
+                self.emit('row-changed', path, child)
                 child = self.iter_next(child)
         #self.keylookup_table = self.rd.filter(self.rd.keylookup_table,lambda row: row.item)
         # Limit ingredients_table to ingkeys only, then select the unique values of that, then
@@ -679,33 +666,19 @@ class KeyStore (pageable_store.PageableTreeStore,pageable_store.PageableViewStor
                             ])
 
         return ret
-        #row = row[0]
-        #return [[subrow,
-        #         row.ingkey,
-        #         subrow.item,
-        #         subrow.count,
-        #         self.get_recs(row.ingkey,subrow.item)] for subrow in row.grouped]
 
-
-    def get_recs (self, key, item):
-        """Return a string with a list of recipes containing an ingredient with key and item"""
-        recs = [i.recipe_id for i in self.rd.fetch_all(self.rd.ingredients_table,ingkey=key,item=item)]
+    def get_recs(self, key, item) -> str:
+        """Return a string with a list of recipes containing an ingredient with
+        key and item"""
+        recs = [i.recipe_id
+                for i in self.rd.fetch_all(self.rd.ingredients_table,
+                                           ingkey=key, item=item)]
         titles = []
         looked_at = []
         for r_id in recs:
-            if r_id in looked_at: continue
+            if r_id in looked_at:
+                continue
             rec = self.rd.get_rec(r_id)
             if rec:
                 titles.append(rec.title)
         return ", ".join(titles)
-
-if __name__ == '__main__':
-    import recipeManager
-    rm = recipeManager.default_rec_manager()
-    import sys
-    sys.path.append(os.path.realpath('../tests'))
-    import testExtras
-    rg = testExtras.FakeRecGui(rm)
-    ke=KeyEditor(rm,rg)
-    ke.window.connect('delete-event',Gtk.main_quit)
-    Gtk.main()

@@ -35,20 +35,22 @@ class IngredientKeyEditor (RecEditorModule):
     def setup (self):
         pass
 
-    def setup_main_interface (self):
+    def setup_main_interface(self):
         self.main = Gtk.VBox()
-        l = Gtk.Label()
-        l.set_markup('''<b>%s</b>\n<i>%s</i>'''%(
+        label = Gtk.Label()
+        label.set_markup('''<b>%s</b>\n<i>%s</i>''' % (
             _('Ingredient Keys'),
             _('Ingredient Keys are normalized ingredient names used for shopping lists and for calculations.')
             )
                      )
-        self.main.pack_start(l,expand=False,fill=False)
-        sw = Gtk.ScrolledWindow(); sw.set_policy(Gtk.PolicyType.AUTOMATIC,Gtk.PolicyType.AUTOMATIC)
+        self.main.pack_start(label, expand=False, fill=False, padding=0)
+        sw = Gtk.ScrolledWindow()
+        sw.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
         self.main.pack_start(sw, True, True, 0)
         self.extra_widget_table = Gtk.Table()
         ew_index = 1
-        self.main.pack_start(self.extra_widget_table,expand=False,fill=False)
+        self.main.pack_start(self.extra_widget_table, expand=False,
+                             fill=False, padding=0)
         self.tv = Gtk.TreeView()
         self.tv.get_selection().set_mode(Gtk.SelectionMode.MULTIPLE)
         self.tv.get_selection().connect('changed',
@@ -149,8 +151,8 @@ class IngredientKeyEditor (RecEditorModule):
         for key in self.rg.rd.key_search(item):
             mod.append((key,))
         renderer.set_property('model',mod)
-        renderer.set_property('text-column',0)
-        if isinstance(cbe,Gtk.ComboBoxEntry):
+        renderer.set_property('text-column', 0)
+        if isinstance(cbe, Gtk.ComboBoxText):
             entry = cbe.get_child()
             completion = Gtk.EntryCompletion()
             completion.set_model(mod); completion.set_text_column(0)

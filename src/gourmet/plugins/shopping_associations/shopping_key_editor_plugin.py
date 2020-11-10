@@ -115,7 +115,7 @@ class KeyEditorPlugin (PluginPlugin):
     def setup_edit_widget (self):
         '''Return an edit widget to let users edit your data.
         '''
-        self.cb = cb = Gtk.ComboBoxEntry()
+        self.cb = cb = Gtk.ComboBox.new_with_entry()
         cb.set_model(self.shopcat_model)
         cb.set_text_column(0)
         entry = cb.get_child()
