@@ -234,5 +234,22 @@ suite.addTests([
         ]
                )
 
-if __name__=='__main__':
+
+def test_format_amount_string_from_amount():
+    ret = db.RecData.format_amount_string_from_amount((0.5, 1))
+    assert ret == '½-1'
+
+    ret = db.RecData.format_amount_string_from_amount((1.0, 1.5))
+    assert ret == '1-1 ½'
+
+    ret = db.RecData.format_amount_string_from_amount((1.5, 2))
+    assert ret == '1 ½-2'
+
+    ret = db.RecData.format_amount_string_from_amount((1.5, 2.5))
+    assert ret == '1 ½-2 ½'
+
+    ret = db.RecData.format_amount_string_from_amount((1.5, 2.5))
+    assert ret == '1 ½-2 ½'
+
+if __name__ == '__main__':
     unittest.main()

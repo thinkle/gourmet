@@ -1176,9 +1176,8 @@ class IngredientEditorModule (RecEditorModule):
         d=self.rg.rd.parse_ingredient(line, conv=self.rg.conv)
         if d:
             if 'rangeamount' in d:
-                d['amount'] = self.rg.rd._format_amount_string_from_amount(
-                    (d['amount'],d['rangeamount'])
-                    )
+                d['amount'] = self.rg.rd.format_amount_string_from_amount(
+                    (d['amount'], d['rangeamount']))
                 del d['rangeamount']
             elif 'amount' in d:
                 d['amount'] = convert.float_to_frac(d['amount'])

@@ -1627,8 +1627,13 @@ class RecData (Pluggable):
             if ramount and unit != ing.unit:
                 # if we're changing units... convert the upper range too
                 ramount = ramount * conv.converter(ing.unit, unit)
-        if ramount: amt = (amt,ramount)
-        return (self._format_amount_string_from_amount(amt,fractions=fractions,unit=unit),unit)
+        if ramount:
+            amt = (amt, ramount)
+
+        famount = self.format_amount_string_from_amount(amt,
+                                                        fractions=fractions,
+                                                        unit=unit)
+        return famount, unit
 
     def get_amount_as_string (self,
                               ing,
@@ -1639,9 +1644,10 @@ class RecData (Pluggable):
         If we have a multiplier, multiply the amount before returning it.
         """
         amt = self.get_amount(ing,mult)
-        return self._format_amount_string_from_amount(amt, fractions=fractions)
+        return self.format_amount_string_from_amount(amt, fractions=fractions)
 
-    def _format_amount_string_from_amount (self, amt, fractions=None, unit=None):
+    @staticmethod
+    def format_amount_string_from_amount(amt, fractions=None, unit=None):
         """Format our amount string given an amount tuple.
 
         If fractions is None, we use the default setting from
@@ -1656,14 +1662,20 @@ class RecData (Pluggable):
             # None means use the default value
             fractions = convert.USE_FRACTIONS
         if unit:
-            approx = defaults.unit_rounding_guide.get(unit,0.01)
+            approx = defaults.unit_rounding_guide.get(unit, 0.01)
         else:
             approx = 0.01
         if isinstance(amt, tuple):
-            return "%s-%s"%(convert.float_to_frac(amt[0],fractions=fractions,approx=approx).strip(),
-                            convert.float_to_frac(amt[1],fractions=fractions,approx=approx).strip())
-        elif isinstance(amt, (float,int)):
-            return convert.float_to_frac(amt,fractions=fractions,approx=approx)
+            return "%s-%s" % (convert.float_to_frac(amt[0],
+                                                    fractions=fractions,
+                                                    approx=approx).strip(),
+                              convert.float_to_frac(amt[1],
+                                                    fractions=fractions,
+                                                    approx=approx).strip())
+        elif isinstance(amt, (float, int)):
+            return convert.float_to_frac(amt,
+                                         fractions=fractions,
+                                         approx=approx)
         else:
             return ""
 
