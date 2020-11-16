@@ -109,7 +109,7 @@ setup(
     install_requires=[
         'argcomplete',  # argument completion when parsing arguments
         'beautifulsoup4',  # converting pango to html
-        'pillow',  # image processing
+        'pillow>=7.0.0',  # image processing
         'pygobject',  # gobject bindings (for GTK, etc.)
         'requests',  # retrieving remote images
         'sqlalchemy',  # database driver
