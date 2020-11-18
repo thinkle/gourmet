@@ -5,6 +5,7 @@ from pathlib import Path
 
 from setuptools import find_packages, setup
 from setuptools.command.develop import develop
+from setuptools.command.sdist import sdist
 from wheel.bdist_wheel import bdist_wheel
 
 
@@ -65,6 +66,7 @@ class BuildI18n(Command):
 
             if 'desktop' in extension:
                 flag = '-d'
+            # TODO: is '.schema' used?
             elif 'schema' in extension:
                 flag = '-s'
             elif 'xml' in extension:
@@ -73,7 +75,7 @@ class BuildI18n(Command):
                 flag = '-k'
                 outfile = PACKAGEDIR / outfile.relative_to(DATADIR)
             else:
-                flag = ''
+                assert False, f'Unknown file type: {infile}'
 
             if flag:
                 os.system(f"{cmd} {flag} {infile} {outfile}")
@@ -86,6 +88,10 @@ class BuildWheel(bdist_wheel):
 
     def run(self):
         self.run_command('build_i18n')
+        # refresh metadata, if necessary
+        if self.distribution.have_run.get('egg_info', 0):
+            self.distribution.reinitialize_command('egg_info')
+            self.run_command('egg_info')
         super().run()
 
 
@@ -93,6 +99,40 @@ class Develop(develop):
 
     def run(self):
         self.run_command('build_i18n')
+        super().run()
+
+
+class SDist(sdist):
+
+    def run(self):
+        # Exclude built message catalogs and localized files
+        # NOTE: We can't just include these in MANIFEST.in as this excludes
+        # them from built distributions, which we don't want
+        for lang in LANGS:
+            mofile = LOCALEDIR / lang / 'LC_MESSAGES' / f'{PACKAGE}.mo'
+            rmfile(mofile)
+
+        for infile in DATADIR.rglob('*.in'):
+            # trim '.in' extension
+            outfile = infile.with_suffix('')
+            extension = outfile.suffix
+            if ('desktop' in extension
+                    or 'xml' in extension
+                    # TODO: is '.schema' used?
+                    or 'schema' in extension):
+                pass
+            elif 'gourmet-plugin' in extension:
+                outfile = PACKAGEDIR / outfile.relative_to(DATADIR)
+            else:
+                assert False, f'Unknown file type: {infile}'
+
+            if outfile:
+                rmfile(outfile)
+
+        # refresh metadata, if necessary
+        if self.distribution.have_run.get('egg_info', 0):
+            self.distribution.reinitialize_command('egg_info')
+            self.run_command('egg_info')
         super().run()
 
 
@@ -152,6 +192,7 @@ setup(
         'bdist_wheel': BuildWheel,
         'build_i18n': BuildI18n,
         'develop': Develop,
+        'sdist': SDist,
         'update_i18n': UpdateI18n,
     },
     entry_points={
