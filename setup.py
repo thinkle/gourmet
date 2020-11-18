@@ -1,6 +1,7 @@
 import os
 import re
 from distutils.core import Command
+from distutils.log import INFO
 from pathlib import Path
 
 from setuptools import find_packages, setup
@@ -147,15 +148,15 @@ class UpdateI18n(Command):
         pass
 
     def run(self):
-        self.announce("Creating POT file")
+        self.announce("Creating POT file", INFO)
         cmd = f"cd {PODIR}; intltool-update --pot --gettext-package={PACKAGE}"
         os.system(cmd)
 
         for lang in LANGS:
-            self.announce(f"Updating {lang} PO file")
-            cmd = (f"cd {PODIR}; intltool-update --dist"
-                   f"--gettext-package={PACKAGE} {lang} >/dev/null 2>&1")
-            os.system(cmd)
+            self.announce(f"Updating {lang}.po", INFO)
+            os.system(
+                f"cd {PODIR};"
+                f"intltool-update --dist --gettext-package={PACKAGE} {lang}")
 
 
 setup(
