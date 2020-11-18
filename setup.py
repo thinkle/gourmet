@@ -11,6 +11,13 @@ podir = Path('po')
 langs = sorted(f.name[:-3] for f in podir.glob('*.po'))
 
 
+def rmfile(filepath):
+    try:
+        os.remove(filepath)
+    except FileNotFoundError:
+        pass
+
+
 def modir(lang):
     mobase = Path("build")
     return mobase / "mo" / lang
@@ -46,6 +53,9 @@ def merge_i18n():
 
         if flag:
             os.system(f"{cmd} {flag} {infile} {outfile}")
+
+    rmfile('./po/.intltool-merge-cache')
+    rmfile('./po/.intltool-merge-cache.lock')
 
 
 def polist():
