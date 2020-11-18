@@ -45,7 +45,6 @@ def merge_i18n():
             flag = ''
 
         if flag:
-            print(f"Processing {infile} to {outfile}")
             os.system(f"{cmd} {flag} {infile} {outfile}")
 
 
@@ -58,6 +57,23 @@ def polist():
 
 
 class build_i18n(Command):
+    description = "Build localized message catalogs"
+    user_options = []
+
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        for lang in langs:
+            mkmo(lang)
+
+        merge_i18n()
+
+
+class update_i18n(Command):
     description = "Create/update po/pot translation files"
     user_options = []
 
@@ -77,9 +93,6 @@ class build_i18n(Command):
             cmd = ("cd po; intltool-update --dist"
                    f"--gettext-package={package} {lang} >/dev/null 2>&1")
             os.system(cmd)
-            mkmo(lang)
-
-        merge_i18n()
 
 
 def get_info(prop: str) -> str:
@@ -123,7 +136,10 @@ setup(
         'web-import': ['beautifulsoup4', 'keyring',
                        'scrape-schema-recipe', 'selenium'],
     },
-    cmdclass={'build_i18n': build_i18n},
+    cmdclass={
+        'build_i18n': build_i18n,
+        'update_i18n': update_i18n,
+    },
     entry_points={
         "console_scripts": [
             "gourmet = gourmet.GourmetRecipeManager:launch_app",
