@@ -5,10 +5,12 @@ from distutils.core import Command
 from pathlib import Path
 
 from setuptools import find_packages, setup
+from setuptools.command.develop import develop
+from wheel.bdist_wheel import bdist_wheel
 
-package = 'gourmet'
-podir = Path('po')
-langs = sorted(f.name[:-3] for f in podir.glob('*.po'))
+
+PODIR = Path('po')
+LANGS = sorted(f.name[:-3] for f in PODIR.glob('*.po'))
 
 
 def rmfile(filepath):
@@ -18,55 +20,7 @@ def rmfile(filepath):
         pass
 
 
-def modir(lang):
-    mobase = Path("build")
-    return mobase / "mo" / lang
-
-
-def mkmo(lang):
-    outpath = modir(lang)
-    os.makedirs(outpath, exist_ok=True)
-
-    inpath = podir / (lang + ".po")
-
-    cmd = f"msgfmt {inpath} -o {outpath}/{package}.mo"
-    os.system(cmd)
-
-
-def merge_i18n():
-    cmd = "LC_ALL=C intltool-merge -u -c ./po/.intltool-merge-cache ./po"
-
-    for infile in Path('.').rglob('*.in'):
-        outfile = Path(str(infile)[:-3])
-        extension = outfile.suffix
-
-        if 'desktop' in extension:
-            flag = '-d'
-        elif 'schema' in extension:
-            flag = '-s'
-        elif 'xml' in extension:
-            flag = '-x'
-        elif 'gourmet-plugin' in extension:
-            flag = '-k'
-        else:
-            flag = ''
-
-        if flag:
-            os.system(f"{cmd} {flag} {infile} {outfile}")
-
-    rmfile('./po/.intltool-merge-cache')
-    rmfile('./po/.intltool-merge-cache.lock')
-
-
-def polist():
-    dst_tmpl = "share/locale/%s/LC_MESSAGES/"
-    polist = [(dst_tmpl % x, ["%s/%s.mo" % (modir(x), package)])
-              for x in langs]
-
-    return polist
-
-
-class build_i18n(Command):
+class BuildI18n(Command):
     description = "Build localized message catalogs"
     user_options = []
 
@@ -77,13 +31,59 @@ class build_i18n(Command):
         pass
 
     def run(self):
-        for lang in langs:
-            mkmo(lang)
+        # compile message catalogs to binary format
+        package = get_info('name')
+        for lang in LANGS:
+            pofile = PODIR / f'{lang}.po'
 
-        merge_i18n()
+            mofile = Path('build') / 'mo' / lang
+            mofile.mkdir(parents=True, exist_ok=True)
+            mofile /= f'{package}.mo'
+
+            cmd = f'msgfmt {pofile} -o {mofile}'
+            os.system(cmd)
+
+        # merge translated strings into various file types
+        cachefile = PODIR / '.intltool-merge-cache'
+        cmd = f"LC_ALL=C intltool-merge -u -c {cachefile} {PODIR}"
+
+        for infile in Path('.').rglob('*.in'):
+            outfile = Path(str(infile)[:-3])
+            extension = outfile.suffix
+
+            if 'desktop' in extension:
+                flag = '-d'
+            elif 'schema' in extension:
+                flag = '-s'
+            elif 'xml' in extension:
+                flag = '-x'
+            elif 'gourmet-plugin' in extension:
+                flag = '-k'
+            else:
+                flag = ''
+
+            if flag:
+                os.system(f"{cmd} {flag} {infile} {outfile}")
+
+        rmfile(cachefile)
+        rmfile(f'{cachefile}.lock')
 
 
-class update_i18n(Command):
+class BuildWheel(bdist_wheel):
+
+    def run(self):
+        self.run_command('build_i18n')
+        super().run()
+
+
+class Develop(develop):
+
+    def run(self):
+        self.run_command('build_i18n')
+        super().run()
+
+
+class UpdateI18n(Command):
     description = "Create/update po/pot translation files"
     user_options = []
 
@@ -94,13 +94,15 @@ class update_i18n(Command):
         pass
 
     def run(self):
-        print("Creating POT file")
-        cmd = f"cd po; intltool-update --pot --gettext-package={package}"
+        package = get_info('name')
+
+        self.announce("Creating POT file")
+        cmd = f"cd {PODIR}; intltool-update --pot --gettext-package={package}"
         os.system(cmd)
 
-        for lang in langs:
-            print(f"Updating {lang} PO file")
-            cmd = ("cd po; intltool-update --dist"
+        for lang in LANGS:
+            self.announce(f"Updating {lang} PO file")
+            cmd = (f"cd {PODIR}; intltool-update --dist"
                    f"--gettext-package={package} {lang} >/dev/null 2>&1")
             os.system(cmd)
 
@@ -147,8 +149,10 @@ setup(
                        'scrape-schema-recipe', 'selenium'],
     },
     cmdclass={
-        'build_i18n': build_i18n,
-        'update_i18n': update_i18n,
+        'bdist_wheel': BuildWheel,
+        'build_i18n': BuildI18n,
+        'develop': Develop,
+        'update_i18n': UpdateI18n,
     },
     entry_points={
         "console_scripts": [
