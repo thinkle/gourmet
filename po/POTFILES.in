@@ -9,6 +9,7 @@
 [type: gettext/glade]src/gourmet/ui/shopCatEditor.ui
 [type: gettext/glade]src/gourmet/ui/timerDialog.ui
 [type: gettext/glade]src/gourmet/ui/valueEditor.ui
+[type: gettext/glade]src/gourmet/ui/nutritionDruid.ui
 src/gourmet/version.py
 src/gourmet/backends/DatabaseChooser.py
 src/gourmet/backends/db.py
