@@ -5,6 +5,7 @@ __pycache__/
 # Distribution / packaging
 *.egg-info/
 *.gourmet-plugin
+*.mo
 /build/
 /dist/
 gourmet.pot

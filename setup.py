@@ -1,6 +1,5 @@
 import os
 import re
-import sys
 from distutils.core import Command
 from pathlib import Path
 
@@ -9,8 +8,21 @@ from setuptools.command.develop import develop
 from wheel.bdist_wheel import bdist_wheel
 
 
+PACKAGE = 'gourmet'
+PACKAGEDIR = Path('src') / PACKAGE
+DATADIR = Path('data')
 PODIR = Path('po')
-LANGS = sorted(f.name[:-3] for f in PODIR.glob('*.po'))
+LANGS = sorted(f.stem for f in PODIR.glob('*.po'))
+LOCALEDIR = PACKAGEDIR / 'data' / 'locale'
+
+
+def get_info(prop: str) -> str:
+    with open(PACKAGEDIR / 'version.py') as versfile:
+        content = versfile.read()
+    match = re.search(r'^{} = "(.+)"'.format(prop), content, re.M)
+    if match is not None:
+        return match.group(1)
+    raise RuntimeError(f"Unable to find {prop} string")
 
 
 def rmfile(filepath):
@@ -32,13 +44,12 @@ class BuildI18n(Command):
 
     def run(self):
         # compile message catalogs to binary format
-        package = get_info('name')
         for lang in LANGS:
             pofile = PODIR / f'{lang}.po'
 
-            mofile = Path('build') / 'mo' / lang
+            mofile = LOCALEDIR / lang / 'LC_MESSAGES'
             mofile.mkdir(parents=True, exist_ok=True)
-            mofile /= f'{package}.mo'
+            mofile /= f'{PACKAGE}.mo'
 
             cmd = f'msgfmt {pofile} -o {mofile}'
             os.system(cmd)
@@ -47,8 +58,9 @@ class BuildI18n(Command):
         cachefile = PODIR / '.intltool-merge-cache'
         cmd = f"LC_ALL=C intltool-merge -u -c {cachefile} {PODIR}"
 
-        for infile in Path('.').rglob('*.in'):
-            outfile = Path(str(infile)[:-3])
+        for infile in DATADIR.rglob('*.in'):
+            # trim '.in' extension
+            outfile = infile.with_suffix('')
             extension = outfile.suffix
 
             if 'desktop' in extension:
@@ -59,6 +71,7 @@ class BuildI18n(Command):
                 flag = '-x'
             elif 'gourmet-plugin' in extension:
                 flag = '-k'
+                outfile = PACKAGEDIR / outfile.relative_to(DATADIR)
             else:
                 flag = ''
 
@@ -94,32 +107,19 @@ class UpdateI18n(Command):
         pass
 
     def run(self):
-        package = get_info('name')
-
         self.announce("Creating POT file")
-        cmd = f"cd {PODIR}; intltool-update --pot --gettext-package={package}"
+        cmd = f"cd {PODIR}; intltool-update --pot --gettext-package={PACKAGE}"
         os.system(cmd)
 
         for lang in LANGS:
             self.announce(f"Updating {lang} PO file")
             cmd = (f"cd {PODIR}; intltool-update --dist"
-                   f"--gettext-package={package} {lang} >/dev/null 2>&1")
+                   f"--gettext-package={PACKAGE} {lang} >/dev/null 2>&1")
             os.system(cmd)
 
 
-def get_info(prop: str) -> str:
-    setup_py = sys.argv[0]
-    dirname = Path(setup_py).absolute().parent
-    with open(dirname / 'src' / 'gourmet' / 'version.py') as versfile:
-        content = versfile.read()
-    match = re.search(r'^{} = "(.+)"'.format(prop), content, re.M)
-    if match is not None:
-        return match.group(1)
-    raise RuntimeError(f"Unable to find {prop} string")
-
-
 setup(
-    name=get_info('name'),
+    name=PACKAGE,
     version=get_info('version'),
     description=get_info('description'),
     author=get_info('author'),
