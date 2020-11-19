@@ -3,6 +3,7 @@ import re
 from distutils.core import Command
 from distutils.log import INFO
 from pathlib import Path
+from typing import Union
 
 from setuptools import find_packages, setup
 from setuptools.command.develop import develop
@@ -27,7 +28,19 @@ def get_info(prop: str) -> str:
     raise RuntimeError(f"Unable to find {prop} string")
 
 
-def rmfile(filepath):
+def refresh_metadata(cmd: Command) -> None:
+    # distutils remembers what commands are run during a build so that
+    # subsequent calls to the command are skipped. This means that metadata is
+    # normally only created once even if multiple builds are being done (e.g.,
+    # 'python setup.py sdist bdist_wheel'). Since package data is dynamically
+    # built depending on the type of build, we need to ensure that any stale
+    # metadata is refreshed.
+    if cmd.distribution.have_run.get('egg_info', 0):
+        cmd.distribution.reinitialize_command('egg_info')
+        cmd.run_command('egg_info')
+
+
+def rmfile(filepath: Union[Path, str]) -> None:
     try:
         os.remove(filepath)
     except FileNotFoundError:
@@ -39,9 +52,11 @@ class BuildI18n(Command):
     user_options = []
 
     def initialize_options(self):
+        # Command subclasses must implement this "abstract" method
         pass
 
     def finalize_options(self):
+        # Command subclasses must implement this "abstract" method
         pass
 
     def run(self):
@@ -63,8 +78,8 @@ class BuildI18n(Command):
         for infile in DATADIR.rglob('*.in'):
             # trim '.in' extension
             outfile = infile.with_suffix('')
-            extension = outfile.suffix
 
+            extension = outfile.suffix
             if 'desktop' in extension:
                 flag = '-d'
             # TODO: is '.schema' used?
@@ -78,37 +93,18 @@ class BuildI18n(Command):
             else:
                 assert False, f'Unknown file type: {infile}'
 
-            if flag:
-                os.system(f"{cmd} {flag} {infile} {outfile}")
+            os.system(f"{cmd} {flag} {infile} {outfile}")
 
         rmfile(cachefile)
         rmfile(f'{cachefile}.lock')
 
 
-class BuildWheel(bdist_wheel):
+class BuildSource(sdist):
 
     def run(self):
-        self.run_command('build_i18n')
-        # refresh metadata, if necessary
-        if self.distribution.have_run.get('egg_info', 0):
-            self.distribution.reinitialize_command('egg_info')
-            self.run_command('egg_info')
-        super().run()
-
-
-class Develop(develop):
-
-    def run(self):
-        self.run_command('build_i18n')
-        super().run()
-
-
-class SDist(sdist):
-
-    def run(self):
-        # Exclude built message catalogs and localized files
-        # NOTE: We can't just include these in MANIFEST.in as this excludes
-        # them from built distributions, which we don't want
+        # Exclude localization files that are created at build time
+        # NOTE: We can't use MANIFEST.in for this because these files will then
+        # also be excluded from built distributions
         for lang in LANGS:
             mofile = LOCALEDIR / lang / 'LC_MESSAGES' / f'{PACKAGE}.mo'
             rmfile(mofile)
@@ -121,19 +117,31 @@ class SDist(sdist):
                     or 'xml' in extension
                     # TODO: is '.schema' used?
                     or 'schema' in extension):
+                # these files aren't moved after they're built
                 pass
             elif 'gourmet-plugin' in extension:
                 outfile = PACKAGEDIR / outfile.relative_to(DATADIR)
             else:
                 assert False, f'Unknown file type: {infile}'
 
-            if outfile:
-                rmfile(outfile)
+            rmfile(outfile)
 
-        # refresh metadata, if necessary
-        if self.distribution.have_run.get('egg_info', 0):
-            self.distribution.reinitialize_command('egg_info')
-            self.run_command('egg_info')
+        refresh_metadata(self)
+        super().run()
+
+
+class BuildWheel(bdist_wheel):
+
+    def run(self):
+        self.run_command('build_i18n')
+        refresh_metadata(self)
+        super().run()
+
+
+class Develop(develop):
+
+    def run(self):
+        self.run_command('build_i18n')
         super().run()
 
 
@@ -142,9 +150,11 @@ class UpdateI18n(Command):
     user_options = []
 
     def initialize_options(self):
+        # Command subclasses must implement this "abstract" method
         pass
 
     def finalize_options(self):
+        # Command subclasses must implement this "abstract" method
         pass
 
     def run(self):
@@ -193,11 +203,11 @@ setup(
         'bdist_wheel': BuildWheel,
         'build_i18n': BuildI18n,
         'develop': Develop,
-        'sdist': SDist,
+        'sdist': BuildSource,
         'update_i18n': UpdateI18n,
     },
     entry_points={
-        "console_scripts": [
+        "gui_scripts": [
             "gourmet = gourmet.GourmetRecipeManager:launch_app",
         ]}
 )
