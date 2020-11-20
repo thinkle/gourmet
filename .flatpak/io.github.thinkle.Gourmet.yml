@@ -42,7 +42,6 @@ modules:
     build-commands:
       - python3 -m pip install --upgrade pip setuptools wheel
       - pip3 install pyenchant pygobject Sphinx
-      - python3 setup.py build_i18n
       - pip3 install --prefix=/app .[epub-export,mycookbook,pdf-export,spellcheck,web-import]
       - install -Dm644 .flatpak/io.github.thinkle.Gourmet.desktop -t /app/share/applications/
       - install -Dm644 .flatpak/io.github.thinkle.Gourmet.svg -t /app/share/icons/hicolor/scalable/apps/
