@@ -8,7 +8,6 @@ __pycache__/
 *.mo
 /build/
 /dist/
-gourmet.pot
 gourmet.appdata.xml
 gourmet.desktop
 /development.txt
