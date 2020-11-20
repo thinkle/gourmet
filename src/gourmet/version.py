@@ -1,6 +1,5 @@
 from gettext import gettext as _
 
-name = "gourmet"
 appname = _("Gourmet Recipe Manager")
 copyright = _("Copyright (c) 2004-2014 Thomas M. Hinkle and Contributors. GNU GPL v2")  # noqa
 version = "1.0.0"
