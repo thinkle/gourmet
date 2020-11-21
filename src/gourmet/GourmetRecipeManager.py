@@ -200,7 +200,7 @@ class GourmetApplication:
         separator.show()
         for rc in list(self.rc.values()):
             i=Gtk.MenuItem("_%s"%rc.current_rec.title)
-            i.connect('activate',rc.show)
+            i.connect('activate', lambda *args: rc.show())
             m.append(i)
             i.show()
         return m
@@ -228,8 +228,9 @@ class GourmetApplication:
 
             existing_action = self.goActionGroup.get_action(action_name)
             if not existing_action:
-                self.goActionGroup.add_actions([(action_name, None, title,
-                                                 None, None, rc.show)])
+                self.goActionGroup.add_actions([(
+                    action_name, None, title, None, None, lambda *args: rc.show()
+                )])
             else:
                 existing_action.set_property('label', title)
 
