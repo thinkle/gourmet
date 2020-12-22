@@ -1,3 +1,5 @@
+from typing import Any, Dict, Optional
+
 from gettext import gettext as _
 
 from gi.repository import GObject, Gtk, Pango
@@ -256,10 +258,14 @@ class KeyEditorIngredientControllerPlugin (IngredientControllerPlugin):
         pluggable.add_hook(POST,'get_extra_ingredient_attributes',
                            self.get_extra_ingattributes_post_hook)
 
-    def get_extra_ingattributes_post_hook (self, retval, ic, ing_obj, ingdict):
-        recipe_editor = ic.ingredient_editor_module.re
-        key_editor = [m for m in recipe_editor.modules if isinstance(m,IngredientKeyEditor)][0]
-        ingkey = key_editor.get_key_for_object(ing_obj)
-        if ingkey:
-            ingdict['ingkey'] = ingkey
+    def get_extra_ingattributes_post_hook (self,
+                                           retval: Optional[Any],
+                                           controller: 'IngredientController',
+                                           ing_obj: int,
+                                           ingdict: Dict[str, Any]) -> Dict[str, Any]:  # noqa
+        recipe_editor = controller.ingredient_editor_module.re
+        for module in recipe_editor.modules:
+            if isinstance(module, IngredientKeyEditor):
+                ingdict['ingkey'] = module.get_key_for_object(ing_obj)
+                break
         return ingdict
