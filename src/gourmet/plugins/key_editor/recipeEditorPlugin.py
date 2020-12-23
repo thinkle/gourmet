@@ -130,10 +130,9 @@ class IngredientKeyEditor (RecEditorModule):
                                                        instant_apply=False):
             self.tv.append_column(tvc)
 
-
-    def auto_wrap_columns (self):
+    def auto_wrap_columns(self):
         for col in self.tv.get_columns():
-            renderers = col.get_cell_renderers()
+            renderers = col.get_cells()
             for r in renderers:
                 if isinstance(r,Gtk.CellRendererText):
                     r.set_property('wrap-mode',Pango.WrapMode.WORD)
