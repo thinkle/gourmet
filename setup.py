@@ -107,7 +107,6 @@ setup(
     packages=find_packages('src'),
     include_package_data=True,
     install_requires=[
-        'argcomplete',  # argument completion when parsing arguments
         'beautifulsoup4',  # converting pango to html
         'pillow>=7.0.0',  # image processing
         'pygobject',  # gobject bindings (for GTK, etc.)
