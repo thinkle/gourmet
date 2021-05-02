@@ -1189,15 +1189,14 @@ def getEntry(*args, **kwargs):
     return d.run()
 
 
-def getBoolean(*args, **kwargs):
+def getBoolean(*args, **kwargs) -> bool:
     """Run BooleanDialog, passing along all args, waiting on input and
     passing along the results."""
     d = BooleanDialog(*args, **kwargs)
     retval = d.run()
     if retval is None:
-        raise UserCancelledError("getBoolean dialog cancelled!")
-    else:
-        return retval
+        retval = False
+    return retval
 
 
 def getOption(*args, **kwargs):

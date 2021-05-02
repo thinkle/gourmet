@@ -1,6 +1,6 @@
 from gettext import gettext as _
 from gettext import ngettext
-from typing import List, Union
+from typing import List, Tuple, Union
 
 from gi.repository import Gdk, GdkPixbuf, GObject, Gtk, Pango
 
@@ -244,7 +244,8 @@ class RecIndex:
             self.last_button.set_sensitive(True)
         self.set_reccount()
 
-    def rmodel_sort_cb(self, rmodel, sorts):
+    def rmodel_sort_cb(self, rmodel: 'RecipeModel',
+                       sorts: List[Tuple[str, int]]):
         self.sort_by = sorts
         self.last_search = {}
         self.search()
