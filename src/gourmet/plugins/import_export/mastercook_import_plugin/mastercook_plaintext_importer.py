@@ -1,18 +1,19 @@
 import re
 
-from gourmet import check_encodings
 from gourmet.gdebug import debug
 from gourmet.importers import importer, plaintext_importer
 
-MASTERCOOK_START_REGEXP=r'\s*\*\s*Exported\s*from\s*MasterCook.*\*\s*'
+MASTERCOOK_START_REGEXP = r'\s*\*\s*Exported\s*from\s*MasterCook.*\*\s*'
 
-class MastercookPlaintextImporter (plaintext_importer.TextImporter):
-    ATTR_DICT = {'Recipe By':'source',
-                 'Serving Size':'servings',
-                 'Preparation Time':'preptime',
-                 'Categories':'category',
+
+class MastercookPlaintextImporter(plaintext_importer.TextImporter):
+    ATTR_DICT = {'Recipe By': 'source',
+                 'Serving Size': 'servings',
+                 'Preparation Time': 'preptime',
+                 'Categories': 'category',
                  }
-    def __init__ (self, filename):
+
+    def __init__(self, filename):
         self.compile_regexps()
         self.instr = ""
         self.in_ings = False
@@ -20,12 +21,12 @@ class MastercookPlaintextImporter (plaintext_importer.TextImporter):
         self.in_or = False
         self.looking_for_title = False
         self.last_attr = ""
-        self.in_attrs=False
-        self.in_mods=False
+        self.in_attrs = False
+        self.in_mods = False
         self.reccol_headers = False
-        plaintext_importer.TextImporter.__init__(self,filename)
+        plaintext_importer.TextImporter.__init__(self, filename)
 
-    def compile_regexps (self):
+    def compile_regexps(self):
         plaintext_importer.TextImporter.compile_regexps(self)
         self.rec_start_matcher = re.compile(MASTERCOOK_START_REGEXP)
         self.blank_matcher = re.compile(r"^\s*$")
@@ -35,7 +36,8 @@ class MastercookPlaintextImporter (plaintext_importer.TextImporter):
         # rec_col_matcher, then parse fields using the ------
         # underlining, which appears to line up even in fubared
         # archives.
-        self.rec_col_matcher = re.compile(r"(\s*Amount\s*)(Measure\s*)(Ingredient.*)")
+        self.rec_col_matcher = re.compile(
+            r"(\s*Amount\s*)(Measure\s*)(Ingredient.*)")
         self.rec_col_underline_matcher = re.compile(r"(\s*-+)(\s*-+)(\s*-+.*)")
         # match a string enclosed in a possibly repeated non-word character
         # such as *Group* or ---group--- or =======GROUP======
@@ -47,14 +49,15 @@ class MastercookPlaintextImporter (plaintext_importer.TextImporter):
         attr_matcher = fr"\s*({'|'.join(list(self.ATTR_DICT.keys()))})\s*:(.*)"
         self.attr_matcher = re.compile(attr_matcher)
 
-    def handle_line (self, line):
+    def handle_line(self, line):
         if self.rec_start_matcher.match(line):
-            debug('rec_start! %s'%line,0)
+            debug('rec_start! %s' % line, 0)
             self.looking_for_title = True
-            if self.rec: self.commit_rec()
+            if self.rec:
+                self.commit_rec()
             self.instr = ""
             self.mods = ""
-            self.in_instructions=False
+            self.in_instructions = False
             self.in_mods = False
             self.in_ings = False
             self.in_attrs = False
@@ -64,45 +67,50 @@ class MastercookPlaintextImporter (plaintext_importer.TextImporter):
             # we try to parse underlining after our standard ing headers.
             rcm = self.rec_col_underline_matcher.match(line)
             # if there is no underlining, use our headers themselves for fields
-            if not rcm: rcm = self.reccol_headers
-            debug('Found ing columns',0)
+            if not rcm:
+                rcm = self.reccol_headers
+            debug('Found ing columns', 0)
             self.get_ing_cols(rcm)
             self.in_ings = True
-            self.reccol_headers=False
+            self.reccol_headers = False
 
-        if self.dash_matcher.match(line): return
+        if self.dash_matcher.match(line):
+            return
 
-        rcm=self.rec_col_matcher.match(line)
+        rcm = self.rec_col_matcher.match(line)
         if rcm:
             self.reccol_headers = rcm
-            self.looking_for_title=False
-            self.in_attrs=False
+            self.looking_for_title = False
+            self.in_attrs = False
             self.last_attr = ""
             return
         if self.blank_matcher.match(line):
             # blank line ends ingredients
             if self.in_ings:
-                debug('blank line, end of ings',0)
+                debug('blank line, end of ings', 0)
                 self.in_ings = False
                 self.in_instructions = True
-                if self.ing: self.commit_ing()
+                if self.ing:
+                    self.commit_ing()
             if self.in_instructions:
-                debug('blank line added to instructions: %s'%line,0)
-                if self.in_mods: self.mods += "\n"
-                else: self.instr+="\n"
+                debug('blank line added to instructions: %s' % line, 0)
+                if self.in_mods:
+                    self.mods += "\n"
+                else:
+                    self.instr += "\n"
             return
         if self.looking_for_title:
-            debug('found my title! %s'%line.strip(),0)
-            self.rec['title']=line.strip()
+            debug('found my title! %s' % line.strip(), 0)
+            self.rec['title'] = line.strip()
             self.looking_for_title = False
-            self.in_attrs=True
+            self.in_attrs = True
             return
         if self.in_ings:
-            debug('handling ingredient line %s'%line,0)
-            self.handle_ingline (line)
+            debug('handling ingredient line %s' % line, 0)
+            self.handle_ingline(line)
             return
         if self.in_attrs:
-            debug('handing attrline %s'%line,0)
+            debug('handing attrline %s' % line, 0)
             self.handle_attribute(line)
             return
         else:
@@ -110,78 +118,83 @@ class MastercookPlaintextImporter (plaintext_importer.TextImporter):
             if self.mods_matcher.match(line):
                 self.in_mods = True
             if self.in_mods:
-                debug('handling modifications line %s'%line,0)
-                self.add_to_attr('mods',line)
+                debug('handling modifications line %s' % line, 0)
+                self.add_to_attr('mods', line)
             else:
-                debug('handling instructions line %s'%line,0)
-                self.add_to_attr('instr',line)
+                debug('handling instructions line %s' % line, 0)
+                self.add_to_attr('instr', line)
 
-    def add_to_attr (self, attr, txt):
-        orig = getattr(self,attr)
+    def add_to_attr(self, attr, txt):
+        orig = getattr(self, attr)
         if orig:
             if len(txt.strip()) < 50:
-                setattr(self,attr,orig+"%s\n"%txt.strip())
+                setattr(self, attr, orig+"%s\n" % txt.strip())
             elif not self.blank_matcher.match(orig[-1]):
-                setattr(self,attr,orig+" %s"%txt.strip())
+                setattr(self, attr, orig+" %s" % txt.strip())
             else:
-                setattr(self,attr,orig+txt.strip())
+                setattr(self, attr, orig+txt.strip())
         else:
-            setattr(self,attr,txt)
+            setattr(self, attr, txt)
 
-    def get_ing_cols (self,rcm):
-        amt,unit,itm=rcm.groups()
-        lamt,lunit,litm = len(amt),len(unit),len(itm)
-        self.amt_col = 0,lamt
-        self.unit_col = lamt,lamt+lunit
-        self.itm_col = lamt+lunit,None
+    def get_ing_cols(self, rcm):
+        amt, unit, itm = rcm.groups()
+        lamt, lunit, litm = len(amt), len(unit), len(itm)
+        self.amt_col = 0, lamt
+        self.unit_col = lamt, lamt+lunit
+        self.itm_col = lamt+lunit, None
 
-    def handle_attribute (self,line):
-        m=self.attr_matcher.match(line)
+    def handle_attribute(self, line):
+        m = self.attr_matcher.match(line)
         if m:
-            attr,val = m.groups()
+            attr, val = m.groups()
             SecndColMatch = self.attr_matcher.search(val)
             if SecndColMatch:
-                s=SecndColMatch.start()
+                s = SecndColMatch.start()
                 self.handle_attribute(val[s:])
                 val = val[:s]
             val = self.join_multiple_attvals(val.strip())
             attr = attr.strip()
             self.last_attr = self.ATTR_DICT[attr]
-            self.rec[self.ATTR_DICT[attr]]=val
+            self.rec[self.ATTR_DICT[attr]] = val
         else:
             if self.last_attr:
                 # attribute values can run over one line...
-                self.rec[self.last_attr]=', '.join([self.rec[self.last_attr],
-                                                    self.join_multiple_attvals(line.strip())
-                                                    ])
+                self.rec[self.last_attr] = ', '.join([self.rec[self.last_attr],
+                                                      self.join_multiple_attvals(
+                    line.strip())
+                ])
             else:
                 # otherwise, we add this to instructions, like we do with all junk
                 self.instr += line
 
-    def join_multiple_attvals (self, txt):
+    def join_multiple_attvals(self, txt):
         """We take replace more than one space with a comma."""
-        return ', '.join(re.split('  +',txt))
+        return ', '.join(re.split('  +', txt))
 
-    def handle_ingline (self,line):
+    def handle_ingline(self, line):
         if self.ing_or_matcher.match(line):
             self.in_or = True
             return
         amt = line[slice(*self.amt_col)].strip()
         unit = line[slice(*self.unit_col)].strip()
         itm = line[self.itm_col[0]:].strip()
-        gm=self.ing_group_matcher.match(itm)
+        gm = self.ing_group_matcher.match(itm)
         if gm:
-            if self.ing: self.commit_ing()
+            if self.ing:
+                self.commit_ing()
             self.group = gm.groups()[1]
             # undo grouping if it has no letters...
-            if re.match('^[^A-Za-z]*$',self.group): self.group=None
+            if re.match('^[^A-Za-z]*$', self.group):
+                self.group = None
             return
         if amt or unit:
-            if self.in_or: self.ing['optional']=True
-            if self.ing: self.commit_ing()
+            if self.in_or:
+                self.ing['optional'] = True
+            if self.ing:
+                self.commit_ing()
             self.start_ing()
             if self.in_or:
-                self.ing['optional']=True
+                self.ing['optional'] = True
                 self.in_or = False
             self.add_amt(amt)
             self.add_unit(unit)
