@@ -363,6 +363,7 @@ class UndoableTextView (UndoableTextContainer):
         return self.buffer.get_text(self.buffer.get_start_iter(),
                                     self.buffer.get_end_iter())
 
+
 class UndoHistoryList (list):
     """An UndoHistoryList."""
     def __init__ (self, undo_widget, redo_widget, reapply_widget=None, signal='activate'):
@@ -426,13 +427,14 @@ class UndoHistoryList (list):
         action.reapply()
         for h in self.action_hooks: h(self,action,'reapply')
 
-    def set_sensitive (self,w,val):
-        debug('set_sensitive',0)
+    def set_sensitive (self, w: Gtk.Action, is_sensitive: bool):
+        # FIXME: this function should not exist.
+        # It's only here to deal with the case where self.reapply_widget is
+        # None. This function is only used within this object.
+        debug('set_sensitive', 0)
         if not w:
-            #import traceback; traceback.print_stack()
-            #print 'No widget to sensitize',w,val
             return
-        w.set_sensitive(val)
+        w.set_sensitive(is_sensitive)
 
     def gui_update (self):
         debug('gui_update',0)

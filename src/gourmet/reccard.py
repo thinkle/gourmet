@@ -640,9 +640,7 @@ class RecCardDisplay (plugin_loader.Pluggable):
     def forget_remembered_optional_ingredients (self):
         pass
 
-    def offer_url (self, label, url, from_thread=False):
-        if from_thread:
-            gt.gtk_enter()
+    def offer_url (self, label, url):
         if hasattr(self,'progress_dialog'):
             self.hide_progress_dialog()
         # Clear existing messages...
@@ -651,16 +649,16 @@ class RecCardDisplay (plugin_loader.Pluggable):
         # Add new message
         l = Gtk.Label()
         l.set_markup(label)
-        l.connect('activate-link',lambda lbl, uri: webbrowser.open_new_tab(uri))
+        l.connect('activate-link', lambda lbl,
+                  uri: webbrowser.open_new_tab(uri))
         infobar = Gtk.InfoBar()
         infobar.set_message_type(Gtk.MessageType.INFO)
         infobar.get_content_area().add(l)
         infobar.add_button(Gtk.STOCK_CLOSE, Gtk.ResponseType.CLOSE)
-        infobar.connect('response', lambda ib, response_id: self.messagebox.hide())
+        infobar.connect('response',
+                        lambda ib, response_id: self.messagebox.hide())
         self.messagebox.pack_start(infobar, True, True, 0)
         self.messagebox.show_all()
-        if from_thread:
-            gt.gtk_leave()
 
 
 class IngredientDisplay:
@@ -1029,7 +1027,8 @@ class RecEditor(WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
         self.rg.rd.update_hashes(self.current_rec)
         self.rg.rmodel.update_recipe(self.current_rec)
         if 'title' in newdict:
-            self.window.set_title("%s %s"%(self.edit_title,self.current_rec.title.strip()))
+            self.window.set_title(f'{self.edit_title} '
+                                  f'{self.current_rec.title.strip()}')
         self.set_edited(False)
         self.reccard.new = False
         self.reccard.update_recipe(self.current_rec) # update display (if any)
