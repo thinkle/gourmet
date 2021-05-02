@@ -203,48 +203,22 @@ class MastercookPlaintextImporter(plaintext_importer.TextImporter):
         elif self.ing and 'item' in self.ing:
             # otherwise, we assume we are a continuation and
             # add onto the previous item
-            self.ing['item']=self.ing['item']+' '+itm.strip()
+            self.ing['item'] = self.ing['item'] + ' ' + itm.strip()
         else:
-            debug('"%s" in the midst of ingredients looks like instructions!'%itm.strip(),2)
+            debug('"%s" in the midst of ingredients looks like instructions!' %
+                  itm.strip(), 2)
             self.instr += "\n"+itm.strip()
 
-    def commit_ing (self):
+    def commit_ing(self):
         if 'item' not in self.ing:
             return
         key_base = self.ing['item'].split('--')[0]
-        self.ing['ingkey']=self.km.get_key_fast(key_base)
+        self.ing['ingkey'] = self.km.get_key_fast(key_base)
         importer.Importer.commit_ing(self)
         self.ing = {}
 
-    def commit_rec (self):
-        ll=self.instr.split('\n')
-        self.rec['instructions']=self.unwrap_lines(self.instr)
-        self.rec['modifications']=self.unwrap_lines(self.mods)
+    def commit_rec(self):
+        ll = self.instr.split('\n')
+        self.rec['instructions'] = self.unwrap_lines(self.instr)
+        self.rec['modifications'] = self.unwrap_lines(self.mods)
         importer.Importer.commit_rec(self)
-
-class Tester (importer.Tester):
-    def __init__ (self):
-        importer.Tester.__init__(self,regexp=MASTERCOOK_START_REGEXP)
-        self.not_me = "<[?]?(xml|mx2|RcpE|RTxt)[^>]*>"
-
-    def test (self, filename):
-        if not hasattr(self,'matcher'):
-            self.matcher=re.compile(self.regexp)
-            self.not_matcher = re.compile(self.not_me)
-        if isinstance(filename, str):
-            self.ofi = open(filename,'r')
-            CLOSE = True
-        else:
-            self.ofi = filename
-            CLOSE = False
-        l = self.ofi.readline()
-        while l:
-            if self.not_matcher.match(l):
-                self.ofi.close()
-                return False
-            if self.matcher.match(l):
-                self.ofi.close()
-                return True
-            l = self.ofi.readline()
-        if CLOSE: self.ofi.close()
-        else: self.ofi.seek(0)
