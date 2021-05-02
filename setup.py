@@ -111,7 +111,7 @@ setup(
         'pillow>=7.0.0',  # image processing
         'pygobject',  # gobject bindings (for GTK, etc.)
         'requests',  # retrieving remote images
-        'sqlalchemy',  # database driver
+        'sqlalchemy==1.3.22',  # database driver
         'toml',  # parsing preferences file(s)
     ],
     extras_require={
