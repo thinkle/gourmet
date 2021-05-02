@@ -166,8 +166,8 @@ class MastercookPlaintextImporter (plaintext_importer.TextImporter):
         if self.ing_or_matcher.match(line):
             self.in_or = True
             return
-        amt = line.__getslice__(*self.amt_col).strip()
-        unit = line.__getslice__(*self.unit_col).strip()
+        amt = line[slice(*self.amt_col)].strip()
+        unit = line[slice(*self.unit_col)].strip()
         itm = line[self.itm_col[0]:].strip()
         gm=self.ing_group_matcher.match(itm)
         if gm:
