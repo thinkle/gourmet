@@ -1,6 +1,6 @@
 app-id: io.github.thinkle.Gourmet
 runtime: org.gnome.Platform
-runtime-version: '3.40'
+runtime-version: '40'
 sdk: org.gnome.Sdk
 command: gourmet
 
