@@ -226,27 +226,14 @@ class RecData (Pluggable):
         Session.configure(bind=self.db)
         debug('Done initializing DB connection',1)
 
-    def save (self):
-        """Save our database (if we have a separate 'save' concept)"""
+    def save(self):
+        """Save our database (if there is a separate 'save')"""
         row = self.fetch_one(self.info_table)
         if row:
-            self.do_modify(
-                self.info_table,
-                row,
-                {'last_access':time.time()},
-                id_col = None
-                )
+            self.do_modify(self.info_table, row,
+                           {'last_access': time.time()}, id_col=None)
         else:
-            self.do_add(
-                self.info_table,
-                {'last_access':time.time()}
-                )
-        try:
-            #self.base_connection.commit()
-            pass
-        except IndexError:
-            print('Ignoring sqlalchemy problem')
-            import traceback; traceback.print_exc()
+            self.do_add(self.info_table, {'last_access': time.time()})
 
     def _setup_object_for_table (self, table, klass):
         self.__table_to_object__[table] = klass
@@ -1263,7 +1250,8 @@ class RecData (Pluggable):
                     del dic['servings']
                 except:
                     del dic['servings']
-        if 'deleted' not in dic: dic['deleted']=False
+        if 'deleted' not in dic:
+            dic['deleted'] = False
         self.validate_recdic(dic)
         try:
             ret = self.do_add_rec(dic)
@@ -1416,7 +1404,7 @@ class RecData (Pluggable):
             try:
                 table_val = getattr(table.c, id_col)
                 row_val = getattr(row, id_col)
-                qr: 'ResultProxy' = table.update(table_val == row_val).execute(**d)
+                table.update(table_val == row_val).execute(**d)
             except Exception as e:
                 print('do_modify failed with args')
                 print('table=',table,'row=',row)
@@ -1425,7 +1413,7 @@ class RecData (Pluggable):
                 raise
             select = table.select(getattr(table.c,id_col)==getattr(row,id_col))
         else:
-            qr: 'ResultProxy' = table.update().execute(**d)
+            table.update().execute(**d)
             select = table.select()
         return select.execute().fetchone()
 
@@ -1500,17 +1488,12 @@ class RecData (Pluggable):
         self.delete_by_criteria(self.ingredients_table,{'recipe_id':rec})
         debug('deleted recipe ID %s'%rec,0)
 
-    def new_rec (self):
+    def new_rec(self):
         """Create and return a new, empty recipe"""
-        blankdict = {'title':_('New Recipe'),
-                     #'servings':'4'}
-                     }
-        return self.add_rec(blankdict)
+        return self.add_rec({'title': _('New Recipe')})
 
-    def new_id (self):
-        #raise NotImplementedError("WARNING: NEW_ID IS NO LONGER FUNCTIONAL, FIND A NEW WAY AROUND THE PROBLEM")
-        #rec = self.new_rec()
-        rec = self.do_add_rec({'deleted':1})
+    def new_id(self) -> int:
+        rec = self.do_add_rec({'deleted': 1})
         self.new_ids.append(rec.id)
         return rec.id
 

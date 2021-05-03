@@ -65,7 +65,7 @@ class RecCard:
         self.__rec_editor: Optional[RecEditor] = None
         self.__rec_display: Optional[RecCardDisplay] = None
         self.__new: bool = True if recipe is None else False
-        self.__current_rec: 'RowProxy' = recipe if recipe else rec_gui.rd.new_rec()
+        self.__current_rec: 'RowProxy' = recipe if recipe else rec_gui.rd.new_rec()  # noqa
 
         self.conf = []  # This list is unused, and should be refactored out
 
@@ -183,8 +183,10 @@ class RecCardDisplay (plugin_loader.Pluggable):
                        'category', 'instructions', 'modifications']
 
     def __init__ (self, reccard, recGui, recipe=None):
-        self.reccard = reccard; self.rg = recGui; self.current_rec = recipe
-        self.mult = 1 # parameter
+        self.reccard = reccard
+        self.rg = recGui
+        self.current_rec = recipe
+        self.mult = 1  # parameter
         self.conf: List[Gtk.Widget] = []
         self.prefs = prefs.Prefs.instance()
         self.setup_ui()
@@ -331,7 +333,8 @@ class RecCardDisplay (plugin_loader.Pluggable):
             widget.set_label(t)
         # Flow our image...
         image_width = int(xsize * 0.75)
-        if not hasattr(self,'orig_pixbuf') or not self.orig_pixbuf: return
+        if not hasattr(self, 'orig_pixbuf') or not self.orig_pixbuf:
+            return
         pb = self.imageDisplay.get_pixbuf()
         iwidth = pb.get_width()
         origwidth = self.orig_pixbuf.get_width()
@@ -1031,7 +1034,7 @@ class RecEditor(WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
                                   f'{self.current_rec.title.strip()}')
         self.set_edited(False)
         self.reccard.new = False
-        self.reccard.update_recipe(self.current_rec) # update display (if any)
+        self.reccard.update_recipe(self.current_rec)  # update display (if any)
         self.rg.update_go_menu()
         self.rg.rd.save()
 
