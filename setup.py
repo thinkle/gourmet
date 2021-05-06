@@ -1,91 +1,26 @@
 import os
 import re
-import sys
 from distutils.core import Command
+from distutils.log import INFO
 from pathlib import Path
+from typing import Union
 
 from setuptools import find_packages, setup
-
-package = 'gourmet'
-podir = Path('po')
-langs = sorted(f.name[:-3] for f in podir.glob('*.po'))
-
-
-def modir(lang):
-    mobase = Path("build")
-    return mobase / "mo" / lang
+from setuptools.command.develop import develop
+from setuptools.command.sdist import sdist
+from wheel.bdist_wheel import bdist_wheel
 
 
-def mkmo(lang):
-    outpath = modir(lang)
-    os.makedirs(outpath, exist_ok=True)
-
-    inpath = podir / (lang + ".po")
-
-    cmd = f"msgfmt {inpath} -o {outpath}/{package}.mo"
-    os.system(cmd)
-
-
-def merge_i18n():
-    cmd = "LC_ALL=C intltool-merge -u -c ./po/.intltool-merge-cache ./po"
-
-    for infile in Path('.').rglob('*.in'):
-        outfile = Path(str(infile)[:-3])
-        extension = outfile.suffix
-
-        if 'desktop' in extension:
-            flag = '-d'
-        elif 'schema' in extension:
-            flag = '-s'
-        elif 'xml' in extension:
-            flag = '-x'
-        elif 'gourmet-plugin' in extension:
-            flag = '-k'
-        else:
-            flag = ''
-
-        if flag:
-            print(f"Processing {infile} to {outfile}")
-            os.system(f"{cmd} {flag} {infile} {outfile}")
-
-
-def polist():
-    dst_tmpl = "share/locale/%s/LC_MESSAGES/"
-    polist = [(dst_tmpl % x, ["%s/%s.mo" % (modir(x), package)])
-              for x in langs]
-
-    return polist
-
-
-class build_i18n(Command):
-    description = "Create/update po/pot translation files"
-    user_options = []
-
-    def initialize_options(self):
-        pass
-
-    def finalize_options(self):
-        pass
-
-    def run(self):
-        print("Creating POT file")
-        cmd = f"cd po; intltool-update --pot --gettext-package={package}"
-        os.system(cmd)
-
-        for lang in langs:
-            print(f"Updating {lang} PO file")
-            cmd = ("cd po; intltool-update --dist"
-                   f"--gettext-package={package} {lang} >/dev/null 2>&1")
-            os.system(cmd)
-            mkmo(lang)
-
-        merge_i18n()
+PACKAGE = 'gourmet'
+PACKAGEDIR = Path('src') / PACKAGE
+DATADIR = Path('data')
+PODIR = Path('po')
+LANGS = sorted(f.stem for f in PODIR.glob('*.po'))
+LOCALEDIR = PACKAGEDIR / 'data' / 'locale'
 
 
 def get_info(prop: str) -> str:
-    setup_py = sys.argv[0]
-    dirname = Path(setup_py).absolute().parent
-    with open(dirname / 'src' / 'gourmet' / 'version.py') as versfile:
+    with open(PACKAGEDIR / 'version.py') as versfile:
         content = versfile.read()
     match = re.search(r'^{} = "(.+)"'.format(prop), content, re.M)
     if match is not None:
@@ -93,8 +28,149 @@ def get_info(prop: str) -> str:
     raise RuntimeError(f"Unable to find {prop} string")
 
 
+def refresh_metadata(cmd: Command) -> None:
+    # distutils remembers what commands are run during a build so that
+    # subsequent calls to the command are skipped. This means that metadata is
+    # normally only created once even if multiple builds are being done (e.g.,
+    # 'python setup.py sdist bdist_wheel'). Since package data is dynamically
+    # built depending on the type of build, we need to ensure that any stale
+    # metadata is refreshed.
+    if cmd.distribution.have_run.get('egg_info', 0):
+        cmd.distribution.reinitialize_command('egg_info')
+        cmd.run_command('egg_info')
+
+
+def rmfile(filepath: Union[Path, str]) -> None:
+    try:
+        os.remove(filepath)
+    except FileNotFoundError:
+        pass
+
+
+class BuildI18n(Command):
+    description = "Build localized message catalogs"
+    user_options = []
+
+    def initialize_options(self):
+        # Command subclasses must implement this "abstract" method
+        pass
+
+    def finalize_options(self):
+        # Command subclasses must implement this "abstract" method
+        pass
+
+    def run(self):
+        # compile message catalogs to binary format
+        for lang in LANGS:
+            pofile = PODIR / f'{lang}.po'
+
+            mofile = LOCALEDIR / lang / 'LC_MESSAGES'
+            mofile.mkdir(parents=True, exist_ok=True)
+            mofile /= f'{PACKAGE}.mo'
+
+            cmd = f'msgfmt {pofile} -o {mofile}'
+            os.system(cmd)
+
+        # merge translated strings into various file types
+        cachefile = PODIR / '.intltool-merge-cache'
+        cmd = f"LC_ALL=C intltool-merge -u -c {cachefile} {PODIR}"
+
+        for infile in DATADIR.rglob('*.in'):
+            # trim '.in' extension
+            outfile = infile.with_suffix('')
+
+            extension = outfile.suffix
+            if 'desktop' in extension:
+                flag = '-d'
+            # TODO: is '.schema' used?
+            elif 'schema' in extension:
+                flag = '-s'
+            elif 'xml' in extension:
+                flag = '-x'
+            elif 'gourmet-plugin' in extension:
+                flag = '-k'
+                outfile = PACKAGEDIR / outfile.relative_to(DATADIR)
+            else:
+                assert False, f'Unknown file type: {infile}'
+
+            os.system(f"{cmd} {flag} {infile} {outfile}")
+
+        rmfile(cachefile)
+        rmfile(f'{cachefile}.lock')
+
+
+class BuildSource(sdist):
+
+    def run(self):
+        # Exclude localization files that are created at build time
+        # NOTE: We can't use MANIFEST.in for this because these files will then
+        # also be excluded from built distributions
+        for lang in LANGS:
+            mofile = LOCALEDIR / lang / 'LC_MESSAGES' / f'{PACKAGE}.mo'
+            rmfile(mofile)
+
+        for infile in DATADIR.rglob('*.in'):
+            # trim '.in' extension
+            outfile = infile.with_suffix('')
+            extension = outfile.suffix
+            if ('desktop' in extension
+                    or 'xml' in extension
+                    # TODO: is '.schema' used?
+                    or 'schema' in extension):
+                # these files aren't moved after they're built
+                pass
+            elif 'gourmet-plugin' in extension:
+                outfile = PACKAGEDIR / outfile.relative_to(DATADIR)
+            else:
+                assert False, f'Unknown file type: {infile}'
+
+            rmfile(outfile)
+
+        refresh_metadata(self)
+        super().run()
+
+
+class BuildWheel(bdist_wheel):
+
+    def run(self):
+        self.run_command('build_i18n')
+        refresh_metadata(self)
+        super().run()
+
+
+class Develop(develop):
+
+    def run(self):
+        self.run_command('build_i18n')
+        super().run()
+
+
+class UpdateI18n(Command):
+    description = "Create/update po/pot translation files"
+    user_options = []
+
+    def initialize_options(self):
+        # Command subclasses must implement this "abstract" method
+        pass
+
+    def finalize_options(self):
+        # Command subclasses must implement this "abstract" method
+        pass
+
+    def run(self):
+        self.announce("Creating POT file", INFO)
+        cmd = f"cd {PODIR}; intltool-update --pot --gettext-package={PACKAGE}"
+        os.system(cmd)
+
+        for lang in LANGS:
+            self.announce(f"Updating {lang}.po", INFO)
+            os.system(
+                f"cd {PODIR};"
+                f"intltool-update --dist --gettext-package={PACKAGE} {lang}")
+
+
 setup(
-    name=get_info('name'),
+    name=PACKAGE,
     version=get_info('version'),
     description=get_info('description'),
     author=get_info('author'),
@@ -124,9 +200,15 @@ setup(
                        'scrape-schema-recipe==0.1.3',
                        'selenium==3.141.0'],
     },
-    cmdclass={'build_i18n': build_i18n},
+    cmdclass={
+        'bdist_wheel': BuildWheel,
+        'build_i18n': BuildI18n,
+        'develop': Develop,
+        'sdist': BuildSource,
+        'update_i18n': UpdateI18n,
+    },
     entry_points={
-        "console_scripts": [
+        "gui_scripts": [
             "gourmet = gourmet.GourmetRecipeManager:launch_app",
         ]}
 )

@@ -9,6 +9,7 @@
 [type: gettext/glade]src/gourmet/ui/shopCatEditor.ui
 [type: gettext/glade]src/gourmet/ui/timerDialog.ui
 [type: gettext/glade]src/gourmet/ui/valueEditor.ui
+[type: gettext/glade]src/gourmet/ui/nutritionDruid.ui
 src/gourmet/version.py
 src/gourmet/backends/DatabaseChooser.py
 src/gourmet/backends/db.py
@@ -95,28 +96,29 @@ src/gourmet/importers/interactive_importer.py
 src/gourmet/recindex.py
 src/gourmet/threadManager.py
 src/gourmet/convert.py
-gourmet.appdata.xml.in
-gourmet.desktop.in
-[type: gettext/ini]src/gourmet/plugins/browse_plugin.gourmet-plugin.in
-[type: gettext/ini]src/gourmet/plugins/duplicate_finder.gourmet-plugin.in
-[type: gettext/ini]src/gourmet/plugins/email.gourmet-plugin.in
-[type: gettext/ini]src/gourmet/plugins/field_editor.gourmet-plugin.in
-[type: gettext/ini]src/gourmet/plugins/import_export/archive.gourmet-plugin.in
-[type: gettext/ini]src/gourmet/plugins/import_export/gxml.gourmet-plugin.in
-[type: gettext/ini]src/gourmet/plugins/import_export/html.gourmet-plugin.in
-[type: gettext/ini]src/gourmet/plugins/import_export/krecipe_plugin.gourmet-plugin.in
-[type: gettext/ini]src/gourmet/plugins/import_export/mastercook_plugin.gourmet-plugin.in
-[type: gettext/ini]src/gourmet/plugins/import_export/mycookbook_plugin.gourmet-plugin.in
-[type: gettext/ini]src/gourmet/plugins/import_export/mealmaster.gourmet-plugin.in
-[type: gettext/ini]src/gourmet/plugins/import_export/pdf.gourmet-plugin.in
-[type: gettext/ini]src/gourmet/plugins/import_export/plaintext.gourmet-plugin.in
-[type: gettext/ini]src/gourmet/plugins/import_export/webimport.gourmet-plugin.in
-[type: gettext/ini]src/gourmet/plugins/import_export/website_import.gourmet-plugin.in
-[type: gettext/ini]src/gourmet/plugins/key_editor.gourmet-plugin.in
-[type: gettext/ini]src/gourmet/plugins/listsaver.gourmet-plugin.in
-[type: gettext/ini]src/gourmet/plugins/nutritional_information.gourmet-plugin.in
-[type: gettext/ini]src/gourmet/plugins/shopping_associations.gourmet-plugin.in
-[type: gettext/ini]src/gourmet/plugins/spellcheck.gourmet-plugin.in
-[type: gettext/ini]src/gourmet/plugins/unit_converter.gourmet-plugin.in
-[type: gettext/ini]src/gourmet/plugins/unit_display_prefs.gourmet-plugin.in
-[type: gettext/ini]src/gourmet/plugins/utf16.gourmet-plugin.in
+data/gourmet.appdata.xml.in
+data/gourmet.desktop.in
+[type: gettext/ini]data/plugins/browse_plugin.gourmet-plugin.in
+[type: gettext/ini]data/plugins/duplicate_finder.gourmet-plugin.in
+[type: gettext/ini]data/plugins/email.gourmet-plugin.in
+[type: gettext/ini]data/plugins/field_editor.gourmet-plugin.in
+[type: gettext/ini]data/plugins/import_export/archive.gourmet-plugin.in
+[type: gettext/ini]data/plugins/import_export/epub.gourmet-plugin.in
+[type: gettext/ini]data/plugins/import_export/gxml.gourmet-plugin.in
+[type: gettext/ini]data/plugins/import_export/html.gourmet-plugin.in
+[type: gettext/ini]data/plugins/import_export/krecipe_plugin.gourmet-plugin.in
+[type: gettext/ini]data/plugins/import_export/mastercook_plugin.gourmet-plugin.in
+[type: gettext/ini]data/plugins/import_export/mycookbook_plugin.gourmet-plugin.in
+[type: gettext/ini]data/plugins/import_export/mealmaster.gourmet-plugin.in
+[type: gettext/ini]data/plugins/import_export/pdf.gourmet-plugin.in
+[type: gettext/ini]data/plugins/import_export/plaintext.gourmet-plugin.in
+[type: gettext/ini]data/plugins/import_export/webimport.gourmet-plugin.in
+[type: gettext/ini]data/plugins/import_export/website_import.gourmet-plugin.in
+[type: gettext/ini]data/plugins/key_editor.gourmet-plugin.in
+[type: gettext/ini]data/plugins/listsaver.gourmet-plugin.in
+[type: gettext/ini]data/plugins/nutritional_information.gourmet-plugin.in
+[type: gettext/ini]data/plugins/shopping_associations.gourmet-plugin.in
+[type: gettext/ini]data/plugins/spellcheck.gourmet-plugin.in
+[type: gettext/ini]data/plugins/unit_converter.gourmet-plugin.in
+[type: gettext/ini]data/plugins/unit_display_prefs.gourmet-plugin.in
+[type: gettext/ini]data/plugins/utf16.gourmet-plugin.in
