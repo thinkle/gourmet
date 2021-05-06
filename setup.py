@@ -107,20 +107,22 @@ setup(
     packages=find_packages('src'),
     include_package_data=True,
     install_requires=[
-        'beautifulsoup4',  # converting pango to html
-        'pillow>=7.0.0',  # image processing
-        'pygobject',  # gobject bindings (for GTK, etc.)
-        'requests',  # retrieving remote images
-        'sqlalchemy==1.3.22',  # database driver
-        'toml',  # parsing preferences file(s)
+        'beautifulsoup4==4.9.3',
+        'lxml==4.6.3',
+        'pillow>=7.0.0',
+        'pygobject==3.40.1',
+        'requests==2.25.1',
+        'sqlalchemy==1.3.22',
+        'toml==0.10.2',
     ],
     extras_require={
-        'epub-export': ['ebooklib'],
-        'mycookbook': ['lxml'],
-        'pdf-export': ['reportlab'],
-        'spellcheck': ['pyenchant', 'pygtkspellcheck'],
-        'web-import': ['beautifulsoup4', 'keyring',
-                       'scrape-schema-recipe', 'selenium'],
+        'epub-export': ['ebooklib==0.17.1'],
+        'pdf-export': ['reportlab==3.5.67'],
+        'spellcheck': ['pyenchant',
+                       'pygtkspellcheck'],
+        'web-import': ['keyring==21.0.0',
+                       'scrape-schema-recipe==0.1.3',
+                       'selenium==3.141.0'],
     },
     cmdclass={'build_i18n': build_i18n},
     entry_points={
