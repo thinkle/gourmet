@@ -6,7 +6,7 @@ import xml.sax.saxutils
 from gettext import gettext as _
 from pathlib import Path
 from pkgutil import get_data
-from typing import List, Optional
+from typing import List, Optional, Tuple, Union
 
 from gi.repository import GObject, Gtk, Pango
 from gi.repository.GLib import UserDirectory, get_user_special_dir
@@ -906,7 +906,7 @@ def saveas_file(title: str,
                 set_filter: bool = True,
                 buttons: List[Gtk.FileChooserButtonClass] = None,
                 parent: Gtk.Window = None,
-                show_filetype: bool = True):
+                show_filetype: bool = True) -> Tuple[str, str]:
     """Almost identical to select_file, except that we return a tuple containing
     the filename and the export type (the string the user selected)"""
     sfd = FileSelectorDialog(title,
@@ -917,17 +917,14 @@ def saveas_file(title: str,
                              buttons=buttons,
                              show_filetype=show_filetype,
                              parent=parent)
-    filename = sfd.run()
-    if not filename:
-        return None, None
-    filename, *_ = filename
+    # Get the filename, and the extension of the chosen filetype menu
+    filename, *extension = sfd.run()
+    extension = ''.join(extension)
 
-    exp_type = get_type_for_filters(filename, filters[:])
-    if not exp_type:
-        # If we don't have a type based on our regexps... then lets
-        # just see what the combobox was set to...
-        exp_type = filters[sfd.saveas.get_active()][0]
-    return filename, exp_type
+    # TODO: it would be cleaner to return the extension, rather than the
+    # output file type description
+    export_type = sfd.ext_to_filter[extension].get_name()
+    return filename, export_type
 
 
 def get_type_for_filters(fname, filters):
@@ -956,17 +953,17 @@ class FileSelectorDialog:
     of the filetype based on user input of an extension"""
 
     def __init__(self,
-                 title,
-                 filename=None,
-                 filters=[],
+                 title: str,
+                 filename: str = None,
+                 filters: List[List[Union[str, List]]] = None,
                  # filters are lists of a name, a list of mime types and a list of
                  # patterns ['Plain Text', ['text/plain'], '*txt']
-                 action=Gtk.FileChooserAction.SAVE,
-                 set_filter=True,
-                 buttons=None,
-                 show_filetype=True,
-                 parent=None,
-                 select_multiple=False
+                 action: Gtk.Action = Gtk.FileChooserAction.SAVE,
+                 set_filter: bool = True,
+                 buttons: Tuple[Union[str, Gtk.ResponseType]] = None,
+                 show_filetype: bool = True,
+                 parent: Gtk.Window = None,
+                 select_multiple: bool = False
                  ):
         self.parent = parent
         self.buttons = buttons
@@ -975,7 +972,7 @@ class FileSelectorDialog:
         self.action = action
         self.filename = filename
         self.title = title
-        self.filters = filters
+        self.filters = filters if filters is not None else []
         self.show_filetype = show_filetype
         self.setup_dialog()
         self.post_dialog()
