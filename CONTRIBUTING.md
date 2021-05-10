@@ -32,19 +32,26 @@ You'll want to clone Gourmet to your computer and probably
 [fork](https://github.com/thinkle/gourmet/fork) it as well.
 
 Ensure your system has the necessary prerequisites installed:
-- [Python](https://www.python.org/), which is what Gourmet is written in. Only
-  Python 3 is supported.
-- [PyGObject](https://pygobject.readthedocs.io/en/latest/) for GTK+ 3 and other
-  GNOME libraries. You may either install your system's `pygobject` package(s),
-  or (perhaps recommended) only install the necessary system requirements so
-  you can install `pygobject` using `pip` (described below).
+- [Python](https://www.python.org/), which is what Gourmet is written in.
+- [PyGObject](https://pygobject.readthedocs.io/en/latest/) for GTK+ 3 and
+  other GNOME libraries. You may either install your system's `pygobject`
+  package(s) or install the necessary system requirements to install
+  `pygobject` from PyPI with `pip`. The latter method is recommended if you
+  plan on doing development within a Python virtual environment.
 - [intltool](https://freedesktop.org/wiki/Software/intltool/) for
   internationalization.
+- (optional) [Enchant](https://abiword.github.io/enchant/) for spell-checking.
+  At least one of the backends must be installed as well.
+- (optional) [GStreamer](https://gstreamer.freedesktop.org/) for sound. The
+  GStreamer library itself and gst-plugins-base are required. Python bindings
+  are provided through PyGObject, so GObject introspection data is also needed.
 - (optional) [poppler](https://poppler.freedesktop.org/) for exporting PDFs.
   Python bindings are provided through PyGObject, so install the GLIB bindings
   and associated GObject introspection data.
-- (optional) [Enchant](https://abiword.github.io/enchant/) for spell-checking.
-  At least one of the backends must be installed as well.
+
+**Note:** Although some prerequisites are optional, the development install of
+Gourmet enables all plugins and features, so you probably want to install all
+prerequisites to avoid any issues.
 
 You may want to setup a [Python virtual
 environment](https://docs.python.org/3/library/venv.html). This is optional but
@@ -55,28 +62,22 @@ $ source env/bin/activate
 (gourmet) $ pip install -U pip setuptools wheel
 ```
 
-Next, you should build localized files. Although this step isn't strictly
-necessary, plugins will not work without it:
+Then install Gourmet itself:
 ```bash
-(gourmet) $ python setup.py build_i18n
-```
-
-Finally, you are ready to install Gourmet itself:
-```bash
-(gourmet) $ pip install -r development.in
-```
-**Note:** If you encounter an error during the installation of
-`pygtkspellcheck`, first install `pyenchant` and `pygobject` on their own:
-```bash
-(gourmet) $ pip install pyenchant pygobject
 (gourmet) $ pip install -r development.in
 ```
 This installs the remaining Python dependencies and Gourmet itself in editable
 mode, which allows you to run Gourmet and see your changes without having to
 reinstall it.
 
+**Note:** If you encounter an error during the installation of
+`pygtkspellcheck`, first install `pyenchant` and `pygobject` on their own:
+```bash
+(gourmet) $ pip install pyenchant pygobject
+(gourmet) $ pip install -r development.in
+```
 
-At this point, you should be able to launch and run Gourmet:
+You should now be able to launch and run Gourmet:
 ```bash
 (gourmet) $ gourmet
 ```
