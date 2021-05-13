@@ -22,9 +22,9 @@ from gourmet.gtk_extras import WidgetSaver  # noqa: imports needed for glade
 from gourmet.gtk_extras import cb_extras as cb
 from gourmet.gtk_extras import dialog_extras as de
 from gourmet.gtk_extras import (fix_action_group_importance, mnemonic_manager,
-                                ratingWidget)
+                                ratingWidget)  # noqa: imports needed for glade
 from gourmet.gtk_extras import treeview_extras as te
-from gourmet.gtk_extras import validation
+from gourmet.gtk_extras import validation  # noqa: imports needed for glade
 from gourmet.gtk_extras.dialog_extras import (UserCancelledError,
                                               show_amount_error)
 from gourmet.gtk_extras.pango_buffer import PangoBuffer
@@ -586,22 +586,22 @@ class RecCardDisplay (plugin_loader.Pluggable):
         self.reccard.hide()
         return True
 
-    # Future plugin callbacks
-    # def email_cb (self, *args):
-#         if self.reccard.edited:
-#             if de.getBoolean(label=_("You have unsaved changes."),
-#                              sublabel=_("Apply changes before e-mailing?")):
-#                 self.saveEditsCB()
-#         from exporters import recipe_emailer
-#         d=recipe_emailer.EmailerDialog([self.current_rec],
-#                                        self.rg.rd, self.prefs, self.rg.conv)
-#         d.setup_dialog()
-#         d.email()
-
-    def print_cb (self, *args):
+    def copy_cb(self, *args):
+        """Copy a recipe and its image to the clipboard."""
         if self.reccard.edited:
             if de.getBoolean(label=_("You have unsaved changes."),
-                             sublabel=_("Apply changes before printing?")):
+                             sublabel=_("Save changes before copying?")):
+                self.saveEditsCB()
+        # exporter = ClipboardExporter(self.current_rec)
+        # exporter.export()
+        self.current_rec
+        self.rg.rd
+        self.rg.conv
+
+    def print_cb(self, *args):
+        if self.reccard.edited:
+            if de.getBoolean(label=_("You have unsaved changes."),
+                             sublabel=_("Save changes before printing?")):
                 self.saveEditsCB()
         printManager = PrintManager.instance()
         printManager.print_recipes(
