@@ -5,7 +5,7 @@ from gettext import ngettext
 from pkgutil import get_data
 from typing import Set
 
-from gi.repository import Gdk, GdkPixbuf, GLib, GObject, Gtk
+from gi.repository import Gdk, GLib, GObject, Gtk
 
 from gourmet import (batchEditor, convert, plugin, plugin_gui, plugin_loader,
                      prefs, prefsGui, reccard, recipeManager, shopgui, version)
@@ -868,8 +868,8 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
         GourmetApplication.__init__(self)
         self.setup_index_columns()
         self.setup_hacks()
-        self.ui=Gtk.Builder()
-        self.ui.add_from_string(get_data('gourmet', 'ui/recipe_index.ui').decode())
+        self.ui = Gtk.Builder()
+        self.ui.add_from_string(get_data('gourmet', 'ui/recipe_index.ui').decode())  # noqa
         self.setup_actions()
         RecIndex.__init__(self,
                           ui=self.ui,
@@ -943,13 +943,10 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
             )
         self.rd.modify_hooks.append(self.rmodel.update_recipe)
 
-    def selection_changed (self, selected=False):
+    def selection_changed(self, selected=False):
         if selected != self.selected:
-            if selected: self.selected=True
-            else: self.selected=False
-            self.onSelectedActionGroup.set_sensitive(
-                self.selected
-                )
+            self.selected = selected
+            self.onSelectedActionGroup.set_sensitive(self.selected)
 
     def setup_main_window(self):
         self.window = self.app = Gtk.Window()
@@ -1072,7 +1069,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
             ])
 
         fix_action_group_importance(self.onSelectedActionGroup)
-        self.ui_manager.insert_action_group(self.onSelectedActionGroup,0)
+        self.ui_manager.insert_action_group(self.onSelectedActionGroup, 0)
         fix_action_group_importance(self.mainActionGroup)
         fix_action_group_importance(self.mainActionGroup)
         self.ui_manager.insert_action_group(self.mainActionGroup,0)
