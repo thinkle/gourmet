@@ -811,6 +811,7 @@ ui_string = '''<ui>
     <menuitem action="ShopRec"/>
     <menuitem action="DeleteRec"/>
     <separator/>
+    <menuitem action="CopyRecipe"/>
     <menuitem action="EditRec"/>
     <menuitem action="BatchEdit"/>
   </menu>
@@ -998,7 +999,10 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
         menu.popup_at_pointer(None)
         return True
 
-    def setup_actions (self):
+    def on_menu_click(self, widget, *args):
+        print(f"Menu item {widget.get_name()} was selected with {args}")
+
+    def setup_actions(self):
         self.onSelectedActionGroup = Gtk.ActionGroup(name='IndexOnSelectedActions')  # noqa
         self.onSelectedActionGroup.add_actions([
             ('OpenRec','recipe-card',_('Open recipe'),
@@ -1013,8 +1017,8 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
              lambda *args: self.do_export(export_all=False)),
             ('Print',Gtk.STOCK_PRINT,_('_Print'),
              '<Control>P',None,self.print_recs),
-            #('Email', None, _('E-_mail recipes'),
-            #None,None,self.email_recs),
+            ('CopyRecipe', Gtk.STOCK_COPY, _('_Copy recipe'),
+             '<Control>C', None, self.on_menu_click),
             ('BatchEdit',None,_('Batch _edit recipes'),
              '<Control><Shift>E',None,self.batch_edit_recs),
             ('ShopRec', 'add-to-shopping-list', _('Add to Shopping List'),

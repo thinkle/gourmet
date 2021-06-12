@@ -38,10 +38,10 @@
           </object>
         </child>
         <child>
-          <object class="GtkAction" id="e-mail_recipe1">
-            <property name="name">e-mail_recipe1</property>
-            <property name="tooltip" translatable="yes">E-mail selected recipe</property>
-            <property name="label" translatable="yes">_E-Mail recipe</property>
+          <object class="GtkAction" id="CopyRecipe">
+            <property name="name">CopyRecipe</property>
+            <property name="tooltip" translatable="yes">Copy selected recipe</property>
+            <property name="label" translatable="yes">_Copy recipe</property>
           </object>
         </child>
         <child>
@@ -61,7 +61,7 @@
         <menuitem action="delete_recipe1"/>
         <separator/>
         <menuitem action="batch_edit_recipe1"/>
-        <menuitem action="e-mail_recipe1"/>
+        <menuitem action="CopyRecipe"/>
         <menuitem action="print_recipe1"/>
       </popup>
     </ui>

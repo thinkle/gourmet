@@ -50,6 +50,7 @@ class MasterLoader:
         'krecipe_plugin',
         'mycookbook_plugin',
         'epub_plugin',
+        'copy_paste_plugin'
         ]
 
     @classmethod

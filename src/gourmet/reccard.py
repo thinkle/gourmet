@@ -256,8 +256,8 @@ class RecCardDisplay (plugin_loader.Pluggable):
                                                        )
         self.recipeDisplayFuturePluginActionGroup = Gtk.ActionGroup(name='RecipeDisplayFuturePluginActions')  # noqa
         self.recipeDisplayFuturePluginActionGroup.add_actions([
-            #('Email',None,_('E-_mail recipe'),
-            # None,None,self.email_cb),
+            ('Copy', Gtk.STOCK_COPY, _('Copy to clipboard'),
+             '<Control>C', None, self.copy_cb),
             ('Print',Gtk.STOCK_PRINT,_('Print recipe'),
              '<Control>P',None,self.print_cb),
             ('ShopRec', 'add-to-shopping-list', _('Add to Shopping List'),
