@@ -5,7 +5,7 @@ from gettext import ngettext
 from pkgutil import get_data
 from typing import Set
 
-from gi.repository import Gdk, GdkPixbuf, GLib, GObject, Gtk
+from gi.repository import Gdk, GLib, GObject, Gtk
 
 from gourmet import (batchEditor, convert, plugin, plugin_gui, plugin_loader,
                      prefs, prefsGui, reccard, recipeManager, shopgui, version)
@@ -21,6 +21,7 @@ from gourmet.gtk_extras import (fix_action_group_importance, mnemonic_manager,
                                 ratingWidget)
 from gourmet.gtk_extras import treeview_extras as te
 from gourmet.importers.importManager import ImportManager
+from gourmet.plugins.clipboard_exporter import ClipboardExporter
 from gourmet.recindex import RecIndex
 from gourmet.threadManager import (SuspendableThread, get_thread_manager,
                                    get_thread_manager_gui)
@@ -104,11 +105,13 @@ class GourmetApplication:
                         )
 
     # Convenience method for showing progress dialogs for import/export/deletion
-    def show_progress_dialog (self, thread, progress_dialog_kwargs={},message=_("Import paused"),
-                           stop_message=_("Stop import")):
+    def show_progress_dialog (self, thread, progress_dialog_kwargs=None,
+                              message=_("Import paused"),
+                              stop_message=_("Stop import")):
         """Show a progress dialog"""
-        if hasattr(thread,'name'): name=thread.name
-        else: name = ''
+        if progress_dialog_kwargs is None:
+            progress_dialog_kwargs = dict()
+        name = getattr(thread, 'name', '')
         for k,v in [('okay',True),
                     ('label',name),
                     ('parent',self.app),
@@ -419,6 +422,7 @@ class GourmetApplication:
         self.loader.save_active_plugins() # relies on us being a pluggable...
 
     def quit (self):
+        # TODO: check if this method is called.
         for c in self.conf:
             c.save_properties()
         for r in list(self.rc.values()):
@@ -739,6 +743,10 @@ class StuffThatShouldBePlugins:
             self.sl.addRec(r,mult,d)
             self.sl.show()
 
+    def copy_recipes_callback(self, action: Gtk.Action):
+        ce = ClipboardExporter(self.get_selected_recs_from_rec_tree())
+        ce.export()
+
     def batch_edit_recs (self, *args):
         recs = self.get_selected_recs_from_rec_tree()
         if not hasattr(self,'batchEditor'):
@@ -811,6 +819,7 @@ ui_string = '''<ui>
     <menuitem action="ShopRec"/>
     <menuitem action="DeleteRec"/>
     <separator/>
+    <menuitem action="CopyRecipes"/>
     <menuitem action="EditRec"/>
     <menuitem action="BatchEdit"/>
   </menu>
@@ -867,8 +876,8 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
         GourmetApplication.__init__(self)
         self.setup_index_columns()
         self.setup_hacks()
-        self.ui=Gtk.Builder()
-        self.ui.add_from_string(get_data('gourmet', 'ui/recipe_index.ui').decode())
+        self.ui = Gtk.Builder()
+        self.ui.add_from_string(get_data('gourmet', 'ui/recipe_index.ui').decode())  # noqa
         self.setup_actions()
         RecIndex.__init__(self,
                           ui=self.ui,
@@ -942,13 +951,10 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
             )
         self.rd.modify_hooks.append(self.rmodel.update_recipe)
 
-    def selection_changed (self, selected=False):
+    def selection_changed(self, selected=False):
         if selected != self.selected:
-            if selected: self.selected=True
-            else: self.selected=False
-            self.onSelectedActionGroup.set_sensitive(
-                self.selected
-                )
+            self.selected = selected
+            self.onSelectedActionGroup.set_sensitive(self.selected)
 
     def setup_main_window(self):
         self.window = self.app = Gtk.Window()
@@ -998,7 +1004,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
         menu.popup_at_pointer(None)
         return True
 
-    def setup_actions (self):
+    def setup_actions(self):
         self.onSelectedActionGroup = Gtk.ActionGroup(name='IndexOnSelectedActions')  # noqa
         self.onSelectedActionGroup.add_actions([
             ('OpenRec','recipe-card',_('Open recipe'),
@@ -1013,8 +1019,8 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
              lambda *args: self.do_export(export_all=False)),
             ('Print',Gtk.STOCK_PRINT,_('_Print'),
              '<Control>P',None,self.print_recs),
-            #('Email', None, _('E-_mail recipes'),
-            #None,None,self.email_recs),
+            ('CopyRecipes', Gtk.STOCK_COPY, _('_Copy recipes'),
+             '<Control>C', None, self.copy_recipes_callback),
             ('BatchEdit',None,_('Batch _edit recipes'),
              '<Control><Shift>E',None,self.batch_edit_recs),
             ('ShopRec', 'add-to-shopping-list', _('Add to Shopping List'),
@@ -1068,7 +1074,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
             ])
 
         fix_action_group_importance(self.onSelectedActionGroup)
-        self.ui_manager.insert_action_group(self.onSelectedActionGroup,0)
+        self.ui_manager.insert_action_group(self.onSelectedActionGroup, 0)
         fix_action_group_importance(self.mainActionGroup)
         fix_action_group_importance(self.mainActionGroup)
         self.ui_manager.insert_action_group(self.mainActionGroup,0)

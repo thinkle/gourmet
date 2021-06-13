@@ -18,19 +18,21 @@ from gourmet.exporters.printer import PrintManager
 from gourmet.gdebug import debug
 from gourmet.gglobals import (FLOAT_REC_ATTRS, INT_REC_ATTRS, REC_ATTR_DIC,
                               REC_ATTRS)
-from gourmet.gtk_extras import WidgetSaver  # noqa: imports needed for glade
+from gourmet.gtk_extras import \
+    WidgetSaver  # noqa: imports needed for glade; noqa: imports needed for glade
+from gourmet.gtk_extras import validation  # noqa: imports needed for glade
 from gourmet.gtk_extras import cb_extras as cb
 from gourmet.gtk_extras import dialog_extras as de
 from gourmet.gtk_extras import (fix_action_group_importance, mnemonic_manager,
                                 ratingWidget)
 from gourmet.gtk_extras import treeview_extras as te
-from gourmet.gtk_extras import validation
 from gourmet.gtk_extras.dialog_extras import (UserCancelledError,
                                               show_amount_error)
 from gourmet.gtk_extras.pango_buffer import PangoBuffer
 from gourmet.importers.importer import parse_range
 from gourmet.plugin import (IngredientControllerPlugin, RecDisplayPlugin,
                             RecEditorModule, RecEditorPlugin, ToolPlugin)
+from gourmet.plugins.clipboard_exporter import ClipboardExporter
 from gourmet.recindex import RecIndex
 
 from .image_utils import load_pixbuf_from_resource
@@ -151,7 +153,7 @@ class RecCardDisplay (plugin_loader.Pluggable):
           <menu name="Recipe" action="Recipe">
             <menuitem action="Export"/>
             <menuitem action="ShopRec"/>
-            <!-- <menuitem action="Email"/> -->
+            <menuitem action="CopyRecipe"/>
             <menuitem action="Print"/>
             <separator/>
             <menuitem action="Delete"/>
@@ -256,8 +258,8 @@ class RecCardDisplay (plugin_loader.Pluggable):
                                                        )
         self.recipeDisplayFuturePluginActionGroup = Gtk.ActionGroup(name='RecipeDisplayFuturePluginActions')  # noqa
         self.recipeDisplayFuturePluginActionGroup.add_actions([
-            #('Email',None,_('E-_mail recipe'),
-            # None,None,self.email_cb),
+            ('CopyRecipe', Gtk.STOCK_COPY, _('Copy to clipboard'),
+             '<Control>C', None, self.copy_cb),
             ('Print',Gtk.STOCK_PRINT,_('Print recipe'),
              '<Control>P',None,self.print_cb),
             ('ShopRec', 'add-to-shopping-list', _('Add to Shopping List'),
@@ -586,22 +588,19 @@ class RecCardDisplay (plugin_loader.Pluggable):
         self.reccard.hide()
         return True
 
-    # Future plugin callbacks
-    # def email_cb (self, *args):
-#         if self.reccard.edited:
-#             if de.getBoolean(label=_("You have unsaved changes."),
-#                              sublabel=_("Apply changes before e-mailing?")):
-#                 self.saveEditsCB()
-#         from exporters import recipe_emailer
-#         d=recipe_emailer.EmailerDialog([self.current_rec],
-#                                        self.rg.rd, self.prefs, self.rg.conv)
-#         d.setup_dialog()
-#         d.email()
-
-    def print_cb (self, *args):
+    def copy_cb(self, *args):
+        """Copy a recipe and its image to the clipboard."""
         if self.reccard.edited:
             if de.getBoolean(label=_("You have unsaved changes."),
-                             sublabel=_("Apply changes before printing?")):
+                             sublabel=_("Save changes before copying?")):
+                self.saveEditsCB()
+        ce = ClipboardExporter([self.current_rec])
+        ce.export()
+
+    def print_cb(self, *args):
+        if self.reccard.edited:
+            if de.getBoolean(label=_("You have unsaved changes."),
+                             sublabel=_("Save changes before printing?")):
                 self.saveEditsCB()
         printManager = PrintManager.instance()
         printManager.print_recipes(
