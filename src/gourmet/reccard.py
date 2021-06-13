@@ -21,8 +21,8 @@ from gourmet.gglobals import (FLOAT_REC_ATTRS, INT_REC_ATTRS, REC_ATTR_DIC,
 from gourmet.gtk_extras import WidgetSaver  # noqa: imports needed for glade
 from gourmet.gtk_extras import cb_extras as cb
 from gourmet.gtk_extras import dialog_extras as de
-from gourmet.gtk_extras import (fix_action_group_importance, mnemonic_manager,
-                                ratingWidget)  # noqa: imports needed for glade
+from gourmet.gtk_extras import (fix_action_group_importance, mnemonic_manager,   # noqa: imports needed for glade
+                                ratingWidget)
 from gourmet.gtk_extras import treeview_extras as te
 from gourmet.gtk_extras import validation  # noqa: imports needed for glade
 from gourmet.gtk_extras.dialog_extras import (UserCancelledError,
@@ -31,6 +31,7 @@ from gourmet.gtk_extras.pango_buffer import PangoBuffer
 from gourmet.importers.importer import parse_range
 from gourmet.plugin import (IngredientControllerPlugin, RecDisplayPlugin,
                             RecEditorModule, RecEditorPlugin, ToolPlugin)
+from gourmet.plugins.clipboard_exporter import ClipboardExporter
 from gourmet.recindex import RecIndex
 
 from .image_utils import load_pixbuf_from_resource
@@ -151,7 +152,7 @@ class RecCardDisplay (plugin_loader.Pluggable):
           <menu name="Recipe" action="Recipe">
             <menuitem action="Export"/>
             <menuitem action="ShopRec"/>
-            <!-- <menuitem action="Email"/> -->
+            <menuitem action="CopyRecipe"/>
             <menuitem action="Print"/>
             <separator/>
             <menuitem action="Delete"/>
@@ -256,7 +257,7 @@ class RecCardDisplay (plugin_loader.Pluggable):
                                                        )
         self.recipeDisplayFuturePluginActionGroup = Gtk.ActionGroup(name='RecipeDisplayFuturePluginActions')  # noqa
         self.recipeDisplayFuturePluginActionGroup.add_actions([
-            ('Copy', Gtk.STOCK_COPY, _('Copy to clipboard'),
+            ('CopyRecipe', Gtk.STOCK_COPY, _('Copy to clipboard'),
              '<Control>C', None, self.copy_cb),
             ('Print',Gtk.STOCK_PRINT,_('Print recipe'),
              '<Control>P',None,self.print_cb),
@@ -592,11 +593,8 @@ class RecCardDisplay (plugin_loader.Pluggable):
             if de.getBoolean(label=_("You have unsaved changes."),
                              sublabel=_("Save changes before copying?")):
                 self.saveEditsCB()
-        # exporter = ClipboardExporter(self.current_rec)
-        # exporter.export()
-        self.current_rec
-        self.rg.rd
-        self.rg.conv
+        ce = ClipboardExporter([self.current_rec])
+        ce.export()
 
     def print_cb(self, *args):
         if self.reccard.edited:

@@ -21,6 +21,7 @@ from gourmet.gtk_extras import (fix_action_group_importance, mnemonic_manager,
                                 ratingWidget)
 from gourmet.gtk_extras import treeview_extras as te
 from gourmet.importers.importManager import ImportManager
+from gourmet.plugins.clipboard_exporter import ClipboardExporter
 from gourmet.recindex import RecIndex
 from gourmet.threadManager import (SuspendableThread, get_thread_manager,
                                    get_thread_manager_gui)
@@ -739,6 +740,10 @@ class StuffThatShouldBePlugins:
             self.sl.addRec(r,mult,d)
             self.sl.show()
 
+    def copy_recipes_callback(self, action: Gtk.Action):
+        ce = ClipboardExporter(self.get_selected_recs_from_rec_tree())
+        ce.export()
+
     def batch_edit_recs (self, *args):
         recs = self.get_selected_recs_from_rec_tree()
         if not hasattr(self,'batchEditor'):
@@ -811,7 +816,7 @@ ui_string = '''<ui>
     <menuitem action="ShopRec"/>
     <menuitem action="DeleteRec"/>
     <separator/>
-    <menuitem action="CopyRecipe"/>
+    <menuitem action="CopyRecipes"/>
     <menuitem action="EditRec"/>
     <menuitem action="BatchEdit"/>
   </menu>
@@ -996,9 +1001,6 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
         menu.popup_at_pointer(None)
         return True
 
-    def on_menu_click(self, widget, *args):
-        print(f"Menu item {widget.get_name()} was selected with {args}")
-
     def setup_actions(self):
         self.onSelectedActionGroup = Gtk.ActionGroup(name='IndexOnSelectedActions')  # noqa
         self.onSelectedActionGroup.add_actions([
@@ -1014,8 +1016,8 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
              lambda *args: self.do_export(export_all=False)),
             ('Print',Gtk.STOCK_PRINT,_('_Print'),
              '<Control>P',None,self.print_recs),
-            ('CopyRecipe', Gtk.STOCK_COPY, _('_Copy recipe'),
-             '<Control>C', None, self.on_menu_click),
+            ('CopyRecipes', Gtk.STOCK_COPY, _('_Copy recipes'),
+             '<Control>C', None, self.copy_recipes_callback),
             ('BatchEdit',None,_('Batch _edit recipes'),
              '<Control><Shift>E',None,self.batch_edit_recs),
             ('ShopRec', 'add-to-shopping-list', _('Add to Shopping List'),
