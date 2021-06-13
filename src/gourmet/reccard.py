@@ -18,13 +18,14 @@ from gourmet.exporters.printer import PrintManager
 from gourmet.gdebug import debug
 from gourmet.gglobals import (FLOAT_REC_ATTRS, INT_REC_ATTRS, REC_ATTR_DIC,
                               REC_ATTRS)
-from gourmet.gtk_extras import WidgetSaver  # noqa: imports needed for glade
+from gourmet.gtk_extras import \
+    WidgetSaver  # noqa: imports needed for glade; noqa: imports needed for glade
+from gourmet.gtk_extras import validation  # noqa: imports needed for glade
 from gourmet.gtk_extras import cb_extras as cb
 from gourmet.gtk_extras import dialog_extras as de
-from gourmet.gtk_extras import (fix_action_group_importance, mnemonic_manager,   # noqa: imports needed for glade
+from gourmet.gtk_extras import (fix_action_group_importance, mnemonic_manager,
                                 ratingWidget)
 from gourmet.gtk_extras import treeview_extras as te
-from gourmet.gtk_extras import validation  # noqa: imports needed for glade
 from gourmet.gtk_extras.dialog_extras import (UserCancelledError,
                                               show_amount_error)
 from gourmet.gtk_extras.pango_buffer import PangoBuffer

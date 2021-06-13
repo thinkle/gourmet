@@ -1,10 +1,11 @@
 import glob
 import logging
 import os.path
-import pkg_resources
 import sys
 import traceback
 from typing import Dict, List
+
+import pkg_resources
 
 from gourmet import gglobals
 from gourmet.prefs import Prefs
@@ -74,7 +75,7 @@ class MasterLoader:
         self.errors = set()
         self.pluggables_by_class: Dict = dict()
         self.active_plugin_sets: List[str] = []
-        self.available_plugin_sets: Dict[str, LegacyPlugin] = self.load_legacy_plugins(self.plugin_directories)
+        self.available_plugin_sets: Dict[str, LegacyPlugin] = self.load_legacy_plugins(self.plugin_directories)  # noqa
         self.available_plugin_sets.update(self.load_plugins_from_namespace())
         self.load_active_plugins()
 

@@ -105,11 +105,13 @@ class GourmetApplication:
                         )
 
     # Convenience method for showing progress dialogs for import/export/deletion
-    def show_progress_dialog (self, thread, progress_dialog_kwargs={},message=_("Import paused"),
-                           stop_message=_("Stop import")):
+    def show_progress_dialog (self, thread, progress_dialog_kwargs=None,
+                              message=_("Import paused"),
+                              stop_message=_("Stop import")):
         """Show a progress dialog"""
-        if hasattr(thread,'name'): name=thread.name
-        else: name = ''
+        if progress_dialog_kwargs is None:
+            progress_dialog_kwargs = dict()
+        name = getattr(thread, 'name', '')
         for k,v in [('okay',True),
                     ('label',name),
                     ('parent',self.app),
@@ -420,6 +422,7 @@ class GourmetApplication:
         self.loader.save_active_plugins() # relies on us being a pluggable...
 
     def quit (self):
+        # TODO: check if this method is called.
         for c in self.conf:
             c.save_properties()
         for r in list(self.rc.values()):
