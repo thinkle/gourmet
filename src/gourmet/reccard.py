@@ -594,7 +594,10 @@ class RecCardDisplay (plugin_loader.Pluggable):
             if de.getBoolean(label=_("You have unsaved changes."),
                              sublabel=_("Save changes before copying?")):
                 self.saveEditsCB()
-        ce = ClipboardExporter([self.current_rec])
+
+        ingredients = self.rg.rd.get_ings(self.current_rec.id)
+        # The exporter can do several recipes at once, hence the list of tuples.
+        ce = ClipboardExporter([(self.current_rec, ingredients)])
         ce.export()
 
     def print_cb(self, *args):

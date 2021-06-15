@@ -744,7 +744,10 @@ class StuffThatShouldBePlugins:
             self.sl.show()
 
     def copy_recipes_callback(self, action: Gtk.Action):
-        ce = ClipboardExporter(self.get_selected_recs_from_rec_tree())
+        recipes = self.get_selected_recs_from_rec_tree()
+        ingredients = [self.rd.rd.get_ings(recipe.id)
+                       for recipe in recipes]
+        ce = ClipboardExporter(list(zip(recipes, ingredients)))
         ce.export()
 
     def batch_edit_recs (self, *args):

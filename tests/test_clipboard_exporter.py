@@ -12,19 +12,25 @@ Recipe = namedtuple('Recipe', ['title', 'source', 'yields', 'yield_unit',
 recipe1 = Recipe('Title1', 'Source1', 700.0, 'g.', None, 'Make the Dough.')
 recipe2 = Recipe('Title2', 'Source2', 2, 'litres', 'test', 'Directions.')
 
-recipe_input = [recipe1]
+Ingredient = namedtuple('Ingredient', ['amount', 'unit', 'item'])
+
+ingredients1 = (Ingredient(600, 'g.', 'flour'),)
+ingredients2 = (Ingredient(600, 'g.', 'flour'),
+                Ingredient(2, 'l.', 'water'))
+
+recipe_input = [(recipe1, ingredients1)]
 recipe_expected_output = """
 # Title1
 
 Source1
 700.0 g.
 
-
+600 g. flour
 
 Make the Dough.
 """
 
-two_recipes_input = [recipe1, recipe2]
+two_recipes_input = [(recipe1, ingredients1), (recipe2, ingredients2)]
 
 two_recipes_expected_output = """
 # Title1
@@ -32,7 +38,7 @@ two_recipes_expected_output = """
 Source1
 700.0 g.
 
-
+600 g. flour
 
 Make the Dough.
 
@@ -43,6 +49,9 @@ Source2
 2 litres
 
 test
+
+600 g. flour
+2 l. water
 
 Directions.
 """

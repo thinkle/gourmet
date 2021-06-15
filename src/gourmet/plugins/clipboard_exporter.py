@@ -1,6 +1,6 @@
 """Basic example of a Gourmet export plugin."""
 from pathlib import Path
-from typing import List
+from typing import List, Tuple
 from gi.repository import Gdk, Gtk
 
 
@@ -15,13 +15,14 @@ class ClipboardExporter:
     WEBSITE = ''
 
     def __init__(self,
-                 recipes: List['RowProxy'] = None,
+                 recipes: List[Tuple['RowProxy', 'RowProxy']] = None,
                  export_path: Path = None):
         """Create the exporter.
 
-        Two arguments are given to an exporter: the selected recipes themselves
-        (entry in the database, sqlalchemy.RowProxy objects), and the path to
-        export to, a pathlib.Path object.
+        Two arguments are given to an exporter: a list of selected recipes and
+        their ingredients (two entries in the database,
+        sqlalchemy.RowProxy objects), and the path to export to, a pathlib.Path
+        object.
 
         You can do here any setting up you need.
 
@@ -29,6 +30,7 @@ class ClipboardExporter:
         aiming for the clipboard!
         """
         self.recipes = recipes
+        self.export_path = export_path
 
     def export(self):
         """Copy a recipe and its image to the clipboard.
@@ -37,17 +39,45 @@ class ClipboardExporter:
         """
         clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
         recipes = []
-        for recipe in self.recipes:
+
+        # Each item in self.recipes is a set of (a recipe, its ingredients).
+        for recipe, ingredients in self.recipes:
+            # The ingredients have the name, quantity, and units attached
+            formatted_ingredients = []
+            for ingredient in ingredients:
+                formatted_ingredients.append(
+                    f"{ingredient.amount} {ingredient.unit} {ingredient.item}"
+                )
+            formatted_ingredients = '\n'.join(formatted_ingredients)
+
+            # The description is optional, but we add extra formatting, to make
+            # the text clearer.
+            if recipe.description is not None:
+                description = f'\n{recipe.description}\n'
+            else:
+                description = ''
+            # Now that the ingredients and description are formatted, the title,
+            # yields, description etc. can be extracted. The rating, for
+            # instance, is omitted: let the recipient make their own opinion!
             formatted_recipe = f"""
 # {recipe.title}
 
 {recipe.source}
 {recipe.yields} {recipe.yield_unit}
-
-{recipe.description if recipe.description is not None else ''}
+{description}
+{formatted_ingredients}
 
 {recipe.instructions}
 """
             recipes.append(formatted_recipe)
+
+        # Join all the recipes as one text to put in the clipboard.
         recipes = '\n'.join(recipes)
         clipboard.set_text(recipes, -1)
+
+        # Although not used here, the image can also be retrieved.
+        # They are stored as jpegs in the database:
+        # if recipe.image is not None:
+        #     image_filename = self.export_path / f'{recipe.title}.jpg'
+        #     with open(image_filename, 'wb') as fout:
+        #         fout.write(recipe.image)
