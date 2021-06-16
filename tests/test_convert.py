@@ -1,5 +1,7 @@
 import unittest
+
 from gourmet import convert
+
 
 class ConvertTest (unittest.TestCase):
 
@@ -58,4 +60,3 @@ class ConvertTest (unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-

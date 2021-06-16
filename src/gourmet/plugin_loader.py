@@ -1,13 +1,17 @@
 import glob
+import logging
 import os.path
 import sys
-from typing import List
+import traceback
+from typing import Dict, List
+
+import pkg_resources
 
 from gourmet import gglobals
 from gourmet.prefs import Prefs
-from . import plugin
-from .gdebug import debug
+
 from .defaults.defaults import loc
+from .gdebug import debug
 
 PRE = 0
 POST = 1
@@ -47,6 +51,7 @@ class MasterLoader:
         'krecipe_plugin',
         'mycookbook_plugin',
         'epub_plugin',
+        'copy_paste_plugin'
         ]
 
     @classmethod
@@ -57,37 +62,64 @@ class MasterLoader:
         return MasterLoader.__single
 
     def __init__(self):
-        self.plugin_directories = [os.path.join(gglobals.gourmetdir,'plugins'), # user plug-ins
-                                   os.path.join(current_path,'plugins'), # pre-installed plugins
-                                   os.path.join(current_path,'plugins','import_export'), # pre-installed exporter plugins
-                                   os.path.join(gglobals.plugin_base,'plugins'), # system-wide plug-ins (required for running from source)
-                                   os.path.join(gglobals.plugin_base,'plugins','import_export'), # exporter plug-ins (required for running from source)
-                                   ]
-        self.errors = {}
-        self.pluggables_by_class = {}
-        self.load_plugin_directories()
+        # TODO!!! Discover plugins using namespace packages(?)
+        # If gourmet is running as a built (i.e., non-source) distribution,
+        # this is probably not going to work with bundled plugins.
+        self.plugin_directories = [
+            # user plug-ins
+            os.path.join(gglobals.gourmetdir, 'plugins'),
+            # bundled plugins
+            os.path.join(current_path, 'plugins'),
+            os.path.join(current_path, 'plugins', 'import_export'),
+        ]
+        self.errors = set()
+        self.pluggables_by_class: Dict = dict()
         self.active_plugin_sets: List[str] = []
+        self.available_plugin_sets: Dict[str, LegacyPlugin] = self.load_legacy_plugins(self.plugin_directories)  # noqa
+        self.available_plugin_sets.update(self.load_plugins_from_namespace())
         self.load_active_plugins()
 
-    def load_plugin_directories (self):
-        """Look through plugin directories for plugins."""
-        self.available_plugin_sets = {}
-        for d in self.plugin_directories:
+    @staticmethod
+    def load_legacy_plugins(directories: List[str]) -> Dict[str, object]:
+        """Look through plugin directories for legacy gourmet-plugins."""
+        ret: Dict[str, object] = {}
+        for d in directories:
             debug('Loading plugins from %s'%os.path.realpath(d),1)
             plugins = glob.glob(os.path.join(d, '*.gourmet-plugin'))
             for ppath in plugins:
                 debug('Found %s'%ppath,1)
-                plugin_set = PluginSet(ppath)
-                if plugin_set.module in self.available_plugin_sets:
+                plugin_set = LegacyPlugin(ppath)
+                if plugin_set.module in ret.keys():
                     print('Ignoring duplicate plugin ',plugin_set.module,'found in ',ppath)
                 else:
-                    self.available_plugin_sets[plugin_set.module] = plugin_set
+                    ret[plugin_set.module] = plugin_set
+        return ret
+
+    @staticmethod
+    def load_plugins_from_namespace() -> Dict[str, object]:
+        """Look for plugins in the gourmet.plugins namespace."""
+        debug('Loading plugins from namespace', 1)
+        exporters = list(pkg_resources.iter_entry_points('gourmet.plugins.exporters'))
+        file_importers = list(pkg_resources.iter_entry_points('gourmet.plugins.fileimporters'))
+        web_importers = list(pkg_resources.iter_entry_points('gourmet.plugins.webimporters'))
+
+        ret: Dict[str, object] = {}
+        for entrypoint in exporters:
+            try:
+                plugin = entrypoint.load()
+            except BaseException as e:  # ModuleNotFoundError, ImportError, etc.
+                print(f'Could not load plugin {entrypoint}: {e}')
+            else:
+                ret[entrypoint.name] = Plugin(plugin)
+
+        return ret
 
     def load_active_plugins(self):
         """Enable plugins that were previously saved to the preferences"""
         prefs = Prefs.instance()
-        self.active_plugin_sets = prefs.get('plugins',
-                                           self.default_active_plugin_sets[:])
+        self.active_plugin_sets = prefs.get(
+            'plugins',
+            list(self.default_active_plugin_sets))
         self.active_plugins = []
         self.instantiated_plugins = {}
 
@@ -96,8 +128,6 @@ class MasterLoader:
                 try:
                     self.active_plugins.extend(self.available_plugin_sets[p].plugins)
                 except:
-                    import logging
-                    import traceback
                     print('WARNING: Failed to load plugin %s'%p)
                     self.errors[p] = traceback.format_exc()
                     logging.exception('')
@@ -136,7 +166,7 @@ class MasterLoader:
                         raise
         return depending_on_me
 
-    def activate_plugin_set (self, plugin_set: 'PluginSet'):
+    def activate_plugin_set(self, plugin_set: 'LegacyPlugin'):
         """Activate a set of plugins.
         """
         if plugin_set in self.active_plugin_sets:
@@ -156,7 +186,7 @@ class MasterLoader:
                     for pluggable in self.pluggables_by_class[klass]:
                         pluggable.plugin_plugin(self.get_instantiated_plugin(plugin))
 
-    def deactivate_plugin_set (self, plugin_set: 'PluginSet'):
+    def deactivate_plugin_set (self, plugin_set: 'LegacyPlugin'):
         # Deactivate any plugin sets that depend upon us...
         for ps in self.check_if_depended_upon(plugin_set):
             self.deactivate_plugin_set(ps)
@@ -194,19 +224,48 @@ class MasterLoader:
                 try:
                     plugin_instance = self.get_instantiated_plugin(p)
                 except:
-                    import traceback
                     print('WARNING: Failed to instantiate plugin %s of type %s'%(p,klass))
                     self.errors[p] = traceback.format_exc()
                     traceback.print_exc()
                 else:
-                    #print 'Instantiating plugin',p,plugin_instance,'of',klass
                     pluggable.plugin_plugin(plugin_instance)
 
     def unregister_pluggable (self, pluggable, klass):
         self.pluggables_by_class[klass].remove(pluggable)
 
 
-class PluginSet:
+class Plugin:
+    """Load a plugin from the gourmet-plugins namespace."""
+
+    def __init__(self, plugin_class: type):
+        self.props = dict.fromkeys(
+            ['Name', 'Comment', 'Authors', 'Version', 'API_Version', 'Website',
+             'Copyright','Dependencies'])
+        self._loaded = plugin_class
+        self.name = plugin_class.__name__
+        self.comment = self._loaded.__doc__.split('\n')[0]
+        self.authors = plugin_class.AUTHOR
+        self.api_version = 2.0
+        self.copyright = plugin_class.COPYRIGHT
+        self.website = plugin_class.WEBSITE
+        attrs = pkg_resources.require(self.name)[0]
+        self.version = attrs.version
+
+        # The following is a backward compatibility hack: pip took care to
+        # install the plugin and its dependencies.
+        # Moreover, Gtk bindings are packaged as pygobject but installed as gi.
+        # We have it anyway.
+        self.dependencies = [r.name for r in attrs.requires()]
+        self.dependencies.remove('pygobject')
+
+        self.module = plugin_class.__module__
+        self.plugins = [plugin_class]
+
+    def get_module(self):
+        return self._loaded
+
+
+class LegacyPlugin:
     """A lazy-loading set of plugins.
 
     This class encapsulates what to the end-user is a plugin.
@@ -215,50 +274,50 @@ class PluginSet:
     for example, your plugin might require a DatabasePlugin, a
     RecCardDisplayPlugin and a MainPlugin to function.
     """
-
-    _loaded = False
+    _loaded = None
 
     def __init__(self, plugin_info_path: str):
         with open(plugin_info_path, 'r') as fin:
             self.load_plugin_file_data(fin)
         self.curdir, plugin_info_file = os.path.split(plugin_info_path)
-        plugin_modules_dir = os.path.join(gglobals.lib_dir,"plugins")
-        self.plugin_modules_dir = plugin_modules_dir
-        self.import_export_modules_dir = os.path.join(plugin_modules_dir,
-                                                      "import_export")
+        self.plugin_modules_dir = os.path.join(os.path.dirname(__file__),
+                                               'plugins')
+        self.import_export_modules_dir = os.path.join(self.plugin_modules_dir,
+                                                      'import_export')
         self.module = self.props['Module']
 
-    def get_module (self):
-        if self._loaded:
+    def get_module(self):
+        if self._loaded is not None:
             return self._loaded
         else:
-            if not self.curdir in sys.path:
+            if self.curdir not in sys.path:
                 sys.path.append(self.curdir)
-            if not self.plugin_modules_dir in sys.path:
+            if self.plugin_modules_dir not in sys.path:
                 sys.path.append(self.plugin_modules_dir)
-            if not self.import_export_modules_dir in sys.path:
+            if self.import_export_modules_dir not in sys.path:
                 sys.path.append(self.import_export_modules_dir)
 
             try:
                 self._loaded = __import__(self.module)
-                #print 'Loaded plugin set',self._loaded
-                #print 'plugins=',self._loaded.plugins
             except ImportError as ie:
                 print('WARNING: Plugin module import failed')
-                print('PATH:',sys.path)
-                import traceback; traceback.print_exc()
+                print('PATH:', sys.path)
+                traceback.print_exc()
                 self.error = ie
                 return None
             else:
                 return self._loaded
 
     def __getattr__ (self, attr):
-        if attr == 'plugins': return self.get_plugins()
-        elif attr in self.props: return self.props[attr]
-        elif attr.capitalize() in self.props: return self.props[attr.capitalize()]
-        else: raise AttributeError
+        if attr == 'plugins':
+            return self.get_plugins()
+        elif attr in self.props:
+            return self.props[attr]
+        elif attr.capitalize() in self.props:
+            return self.props[attr.capitalize()]
+        raise AttributeError
 
-    def get_plugins (self):
+    def get_plugins(self):
         return self.get_module().plugins
 
     def load_plugin_file_data (self,plugin_info_file):
@@ -266,10 +325,13 @@ class PluginSet:
         # bindings that I can find atm. One possibility would be to
         # use this:
         # http://svn.async.com.br/cgi-bin/viewvc.cgi/kiwi/trunk/kiwi/desktopparser.py?revision=7336&view=markup
-        self.props = dict([(k,None) for k in ['Name','Comment','Authors','Version','API_Version','Website','Copyright','Dependencies']])
+        self.props = dict.fromkeys(
+            ['Name', 'Comment', 'Authors', 'Version', 'API_Version',
+             'Website', 'Copyright', 'Dependencies'])
 
         for line in plugin_info_file.readlines():
-            if line=='[Gourmet Plugin]\n': pass
+            if '[Gourmet Plugin]' in line:
+                pass
             elif line.find('=')>0:
                 key,val = line.split('=')
                 key = key.strip(); val = val.strip()
@@ -315,7 +377,7 @@ class Pluggable:
             plugin_instance.activate(self)
         except:
             print('WARNING: PLUGIN FAILED TO LOAD',plugin_instance)
-            import traceback; traceback.print_exc()
+            traceback.print_exc()
 
     def destroy (self):
         self.loader.unregister_pluggable(self,self.klass)
@@ -379,18 +441,3 @@ def pluggable_method (f):
         retval = self.run_post_hook(f.__name__,retval,*args,**kwargs)
         return retval
     return _
-
-if __name__ == '__main__':
-    class TestPlugin (plugin.Plugin):
-        def activate ():
-            print('Activate!')
-        def deactivate ():
-            print('Deactivate!')
-
-    class UniversalPluggable (Pluggable):
-        def __init__ (self):
-            Pluggable.__init__(self,[plugin.Plugin])
-
-    up = UniversalPluggable()
-    #up.loader.activate_plugin(
-    print(up.plugins)

@@ -1,8 +1,12 @@
-from gi.repository import Gtk
-import gourmet.gtk_extras.dialog_extras as de
-from gourmet.plugin import RecDisplayModule, UIPlugin, MainPlugin, ToolPlugin
-from .recipe_emailer import RecipeEmailer
 from gettext import gettext as _
+
+from gi.repository import Gtk
+
+import gourmet.gtk_extras.dialog_extras as de
+from gourmet.plugin import MainPlugin, RecDisplayModule, ToolPlugin, UIPlugin
+
+from .recipe_emailer import RecipeEmailer
+
 
 class EmailRecipePlugin (MainPlugin, UIPlugin):
 
@@ -50,6 +54,3 @@ class EmailRecipePlugin (MainPlugin, UIPlugin):
                 return
         re = RecipeEmailer(recs)
         re.send_email_with_attachments()
-
-
-

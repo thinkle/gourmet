@@ -1,5 +1,6 @@
 from gi.repository import Gtk
 
+
 def fix_action_group_importance (ag):
     for action in ag.list_actions():
         ifact = Gtk.IconFactory()

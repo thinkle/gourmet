@@ -1,9 +1,14 @@
-import sqlalchemy, sqlalchemy.orm
-from sqlalchemy import Integer, Binary, String, Float, Boolean, Numeric, Table, Column, ForeignKey, Text
+import sqlalchemy
+import sqlalchemy.orm
+from sqlalchemy import (Binary, Boolean, Column, Float, ForeignKey, Integer,
+                        Numeric, String, Table, Text)
 from sqlalchemy.sql import and_, or_
+
 import gourmet.backends.db
 from gourmet.plugin import DatabasePlugin
+
 from . import parser_data
+
 
 class NutritionDataPlugin (DatabasePlugin):
 

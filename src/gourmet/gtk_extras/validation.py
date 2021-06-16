@@ -1,15 +1,14 @@
 import re
 import time
+from gettext import gettext as _
 from typing import Optional, Tuple, Union
 
-from gettext import gettext as _
 from gi.repository import Gdk, GObject, Gtk
 
 import gourmet.convert
-from gourmet.convert import (
-    Converter, float_to_frac, FRACTIONS_ASCII, frac_to_float, NUMBER_MATCHER,
-    RANGE_MATCHER, seconds_to_timestring)
-
+from gourmet.convert import (FRACTIONS_ASCII, NUMBER_MATCHER, RANGE_MATCHER,
+                             Converter, float_to_frac, frac_to_float,
+                             seconds_to_timestring)
 
 TIME_TO_READ = 1000
 
@@ -219,7 +218,7 @@ class NumberEntry(ValidatingEntry):
         if not self.in_progress_matcher.match(text):
             return self.error_message
 
-    def find_completed_error(self, text: str):
+    def find_completed_errors(self, text: str):
         if text and frac_to_float(text) is None:
             return self.error_message
 

@@ -1,8 +1,15 @@
-import xml.sax, xml.sax.saxutils, re, sys
-from . import importer
+import re
+import sys
+import xml.sax
+import xml.sax.saxutils
+
 from gourmet.gdebug import TimeAction
-from gourmet.recipeManager import get_recipe_manager # for getting out database...
+from gourmet.recipeManager import \
+    get_recipe_manager  # for getting out database...
 from gourmet.threadManager import SuspendableThread
+
+from . import importer
+
 
 def unquoteattr (str):
     return xml.sax.saxutils.unescape(str).replace("_"," ")
@@ -74,6 +81,3 @@ class Converter (importer.Importer):
         self.added_ings = self.rh.added_ings
         self.added_recs = self.rh.added_recs
         importer.Importer._run_cleanup_(self.rh)
-
-
-

@@ -1,9 +1,13 @@
-from gi.repository import Gtk
 import re
-from . import parser_data
+from gettext import gettext as _
+
+from gi.repository import Gtk
+
 import gourmet.cb_extras as cb
 import gourmet.dialog_extras as de
-from gettext import gettext as _
+
+from . import parser_data
+
 
 class NutritionModel (Gtk.TreeStore):
     TITLE_FIELD = 'desc'

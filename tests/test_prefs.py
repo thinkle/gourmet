@@ -1,4 +1,5 @@
 import pytest
+
 from gourmet.prefs import Prefs
 
 

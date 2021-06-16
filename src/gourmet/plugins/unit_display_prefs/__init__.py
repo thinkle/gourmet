@@ -1,10 +1,14 @@
-from gourmet.plugin import ToolPlugin, DatabasePlugin
-from gourmet.reccard import RecCardDisplay
-from gi.repository import Gtk
-from gourmet.plugin_loader import PRE, POST
-from . import unit_prefs_dialog
-from gourmet.prefs import Prefs
 from gettext import gettext as _
+
+from gi.repository import Gtk
+
+from gourmet.plugin import DatabasePlugin, ToolPlugin
+from gourmet.plugin_loader import POST, PRE
+from gourmet.prefs import Prefs
+from gourmet.reccard import RecCardDisplay
+
+from . import unit_prefs_dialog
+
 
 class UnitDisplayPlugin (ToolPlugin):
     menu_items = '''<placeholder name="StandaloneTool">

@@ -1,7 +1,9 @@
-from gourmet.plugin import ExporterPlugin
-import gourmet.exporters.exporter as exporter
-from . import mycookbook_exporter
 from gettext import gettext as _
+
+import gourmet.exporters.exporter as exporter
+from gourmet.plugin import ExporterPlugin
+
+from . import mycookbook_exporter
 
 MCB = _('My CookBook MCB File')
 
@@ -34,5 +36,3 @@ class MCBExporterPlugin (ExporterPlugin):
 
     def run_extra_prefs_dialog (self):
         pass
-
-

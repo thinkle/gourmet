@@ -1,9 +1,11 @@
 import os.path
 import unittest
+
 from bs4 import BeautifulSoup
 
 from gourmet.plugins.import_export.website_import_plugins import nytimes_plugin
-from gourmet.plugins.import_export.website_import_plugins.state import WebsiteTestState
+from gourmet.plugins.import_export.website_import_plugins.state import \
+    WebsiteTestState
 
 
 class DummyImporter(object):

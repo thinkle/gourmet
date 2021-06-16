@@ -1,5 +1,5 @@
-from collections import defaultdict
 import re
+from collections import defaultdict
 from typing import List, Optional, Tuple
 
 from .defaults.defaults import lang as defaults

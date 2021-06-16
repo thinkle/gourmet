@@ -1,7 +1,12 @@
-from gourmet.plugin import ShoppingListPlugin
-from gi.repository import Gtk
-import gourmet.recipeManager, gourmet.GourmetRecipeManager, time
+import time
 from gettext import gettext as _
+
+from gi.repository import Gtk
+
+import gourmet.GourmetRecipeManager
+import gourmet.recipeManager
+from gourmet.plugin import ShoppingListPlugin
+
 
 class ShoppingListSaver (ShoppingListPlugin):
 
@@ -62,8 +67,3 @@ class ShoppingListSaver (ShoppingListPlugin):
                 'ingkey':item,
                 })
         rg.open_rec_card(rec)
-
-
-
-
-

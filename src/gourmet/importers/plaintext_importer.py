@@ -1,9 +1,10 @@
-from gourmet.importers import importer
-from gourmet import check_encodings
-from gourmet.gdebug import debug
+import re
 from gettext import gettext as _
 
-import re
+from gourmet import check_encodings
+from gourmet.gdebug import debug
+from gourmet.importers import importer
+
 
 class TextImporter (importer.Importer):
     ATTR_DICT = {'Recipe By':'source',

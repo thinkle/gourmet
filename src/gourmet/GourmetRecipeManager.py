@@ -1,42 +1,33 @@
-import os
-import os.path
 import re
 import threading
-from typing import Set
-
 from gettext import gettext as _
 from gettext import ngettext
-from gi.repository import Gdk, GdkPixbuf, GLib, GObject, Gtk
+from pkgutil import get_data
+from typing import Set
 
-from gourmet import (
-    batchEditor, convert, plugin, plugin_gui, plugin_loader, prefs, prefsGui,
-    reccard, recipeManager, shopgui, version
-)
+from gi.repository import Gdk, GLib, GObject, Gtk
 
-from gourmet.defaults.defaults import lang as defaults
+from gourmet import (batchEditor, convert, plugin, plugin_gui, plugin_loader,
+                     prefs, prefsGui, reccard, recipeManager, shopgui, version)
 from gourmet.defaults.defaults import get_pluralized_form
-
+from gourmet.defaults.defaults import lang as defaults
 from gourmet.exporters.exportManager import ExportManager
 from gourmet.exporters.printer import PrintManager
-
 from gourmet.gdebug import debug
-from gourmet.gglobals import (DEFAULT_HIDDEN_COLUMNS, REC_ATTRS, doc_base,
-                              icondir, uibase)
-from gourmet.importers.importManager import ImportManager
-
-
-from gourmet.gtk_extras import (
-    fix_action_group_importance, mnemonic_manager, ratingWidget, WidgetSaver
-)
-
+from gourmet.gglobals import DEFAULT_HIDDEN_COLUMNS, REC_ATTRS
+from gourmet.gtk_extras import WidgetSaver
 from gourmet.gtk_extras import dialog_extras as de
+from gourmet.gtk_extras import (fix_action_group_importance, mnemonic_manager,
+                                ratingWidget)
 from gourmet.gtk_extras import treeview_extras as te
-
+from gourmet.importers.importManager import ImportManager
+from gourmet.plugins.clipboard_exporter import ClipboardExporter
 from gourmet.recindex import RecIndex
-from gourmet.threadManager import (get_thread_manager, get_thread_manager_gui,
-                                   SuspendableThread)
+from gourmet.threadManager import (SuspendableThread, get_thread_manager,
+                                   get_thread_manager_gui)
 from gourmet.timer import show_timer
 
+from .image_utils import load_pixbuf_from_resource
 
 UNDO = 1
 SHOW_TRASH = 2
@@ -114,11 +105,13 @@ class GourmetApplication:
                         )
 
     # Convenience method for showing progress dialogs for import/export/deletion
-    def show_progress_dialog (self, thread, progress_dialog_kwargs={},message=_("Import paused"),
-                           stop_message=_("Stop import")):
+    def show_progress_dialog (self, thread, progress_dialog_kwargs=None,
+                              message=_("Import paused"),
+                              stop_message=_("Stop import")):
         """Show a progress dialog"""
-        if hasattr(thread,'name'): name=thread.name
-        else: name = ''
+        if progress_dialog_kwargs is None:
+            progress_dialog_kwargs = dict()
+        name = getattr(thread, 'name', '')
         for k,v in [('okay',True),
                     ('label',name),
                     ('parent',self.app),
@@ -210,7 +203,7 @@ class GourmetApplication:
         separator.show()
         for rc in list(self.rc.values()):
             i=Gtk.MenuItem("_%s"%rc.current_rec.title)
-            i.connect('activate',rc.show)
+            i.connect('activate', lambda *args: rc.show())
             m.append(i)
             i.show()
         return m
@@ -238,8 +231,9 @@ class GourmetApplication:
 
             existing_action = self.goActionGroup.get_action(action_name)
             if not existing_action:
-                self.goActionGroup.add_actions([(action_name, None, title,
-                                                 None, None, rc.show)])
+                self.goActionGroup.add_actions([(
+                    action_name, None, title, None, None, lambda *args: rc.show()
+                )])
             else:
                 existing_action.set_property('label', title)
 
@@ -357,15 +351,11 @@ class GourmetApplication:
             else:
                 translator = defaults.CREDITS
 
-        logo=GdkPixbuf.Pixbuf.new_from_file(os.path.join(icondir,"gourmet.png"))
+        logo = load_pixbuf_from_resource('gourmet.svg')
 
         # load LICENSE text file
-        try:
-            license_text = open(os.path.join(doc_base,'LICENSE'),'r').read()
-        except IOError as err:
-            print("IO Error %s" % err)
-        except:
-            print("Unexpexted error")
+        license_text = get_data('gourmet', 'data/LICENSE').decode()
+        assert license_text
 
         paypal_link = """https://www.paypal.com/cgi-bin/webscr?cmd=_donations
 &business=Thomas_Hinkle%40alumni%2ebrown%2eedu
@@ -374,7 +364,7 @@ class GourmetApplication:
         gratipay_link = "https://gratipay.com/on/github/thinkle/"
         flattr_link = "http://flattr.com/profile/Thomas_Hinkle/things"
 
-        about = Gtk.AboutDialog()
+        about = Gtk.AboutDialog(parent=self.window)
         about.set_artists(version.artists)
         about.set_authors(version.authors)
         about.set_comments(version.description)
@@ -386,7 +376,7 @@ class GourmetApplication:
         about.set_translator_credits(translator)
         about.set_version(version.version)
         #about.set_wrap_license(True)
-        about.set_website(version.website)
+        about.set_website(version.url)
         #about.set_website_label('Gourmet website')
 
         donation_buttons = Gtk.HButtonBox()
@@ -414,7 +404,7 @@ class GourmetApplication:
         about.destroy()
 
     def show_help (self, *args):
-        de.show_faq(os.path.join(doc_base,'FAQ'))
+        de.show_faq(parent=self.window)
 
     def save (self, file=None, db=None, xml=None):
         debug("save (self, file=None, db=None, xml=None):",5)
@@ -432,6 +422,7 @@ class GourmetApplication:
         self.loader.save_active_plugins() # relies on us being a pluggable...
 
     def quit (self):
+        # TODO: check if this method is called.
         for c in self.conf:
             c.save_properties()
         for r in list(self.rc.values()):
@@ -514,7 +505,7 @@ class RecTrash (RecIndex):
         self.rg = rg
         self.rmodel = self.rg.rmodel
         self.ui=Gtk.Builder()
-        self.ui.add_from_file(os.path.join(uibase,'recipe_index.ui'))
+        self.ui.add_from_string(get_data('gourmet', 'ui/recipe_index.ui').decode())
         RecIndex.__init__(self, self.ui, self.rg.rd, self.rg)
         self.setup_main_window()
 
@@ -752,6 +743,13 @@ class StuffThatShouldBePlugins:
             self.sl.addRec(r,mult,d)
             self.sl.show()
 
+    def copy_recipes_callback(self, action: Gtk.Action):
+        recipes = self.get_selected_recs_from_rec_tree()
+        ingredients = [self.rd.rd.get_ings(recipe.id)
+                       for recipe in recipes]
+        ce = ClipboardExporter(list(zip(recipes, ingredients)))
+        ce.export()
+
     def batch_edit_recs (self, *args):
         recs = self.get_selected_recs_from_rec_tree()
         if not hasattr(self,'batchEditor'):
@@ -824,6 +822,7 @@ ui_string = '''<ui>
     <menuitem action="ShopRec"/>
     <menuitem action="DeleteRec"/>
     <separator/>
+    <menuitem action="CopyRecipes"/>
     <menuitem action="EditRec"/>
     <menuitem action="BatchEdit"/>
   </menu>
@@ -880,8 +879,8 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
         GourmetApplication.__init__(self)
         self.setup_index_columns()
         self.setup_hacks()
-        self.ui=Gtk.Builder()
-        self.ui.add_from_file(os.path.join(uibase,'recipe_index.ui'))
+        self.ui = Gtk.Builder()
+        self.ui.add_from_string(get_data('gourmet', 'ui/recipe_index.ui').decode())  # noqa
         self.setup_actions()
         RecIndex.__init__(self,
                           ui=self.ui,
@@ -955,17 +954,14 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
             )
         self.rd.modify_hooks.append(self.rmodel.update_recipe)
 
-    def selection_changed (self, selected=False):
+    def selection_changed(self, selected=False):
         if selected != self.selected:
-            if selected: self.selected=True
-            else: self.selected=False
-            self.onSelectedActionGroup.set_sensitive(
-                self.selected
-                )
+            self.selected = selected
+            self.onSelectedActionGroup.set_sensitive(self.selected)
 
     def setup_main_window(self):
         self.window = self.app = Gtk.Window()
-        self.window.set_icon_from_file(os.path.join(icondir, 'gourmet.png'))
+        self.window.set_icon(load_pixbuf_from_resource('gourmet.svg'))
         saver = WidgetSaver.WindowSaver(
             self.window,
             self.prefs.get('app_window', {'window_size': (800, 600)})
@@ -1011,7 +1007,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
         menu.popup_at_pointer(None)
         return True
 
-    def setup_actions (self):
+    def setup_actions(self):
         self.onSelectedActionGroup = Gtk.ActionGroup(name='IndexOnSelectedActions')  # noqa
         self.onSelectedActionGroup.add_actions([
             ('OpenRec','recipe-card',_('Open recipe'),
@@ -1026,8 +1022,8 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
              lambda *args: self.do_export(export_all=False)),
             ('Print',Gtk.STOCK_PRINT,_('_Print'),
              '<Control>P',None,self.print_recs),
-            #('Email', None, _('E-_mail recipes'),
-            #None,None,self.email_recs),
+            ('CopyRecipes', Gtk.STOCK_COPY, _('_Copy recipes'),
+             '<Control>C', None, self.copy_recipes_callback),
             ('BatchEdit',None,_('Batch _edit recipes'),
              '<Control><Shift>E',None,self.batch_edit_recs),
             ('ShopRec', 'add-to-shopping-list', _('Add to Shopping List'),
@@ -1081,7 +1077,7 @@ class RecGui (RecIndex, GourmetApplication, ImporterExporter, StuffThatShouldBeP
             ])
 
         fix_action_group_importance(self.onSelectedActionGroup)
-        self.ui_manager.insert_action_group(self.onSelectedActionGroup,0)
+        self.ui_manager.insert_action_group(self.onSelectedActionGroup, 0)
         fix_action_group_importance(self.mainActionGroup)
         fix_action_group_importance(self.mainActionGroup)
         self.ui_manager.insert_action_group(self.mainActionGroup,0)

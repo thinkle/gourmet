@@ -1,6 +1,8 @@
-from gourmet.plugin import ExporterPlugin
-from . import epub_exporter
 from gettext import gettext as _
+
+from gourmet.plugin import ExporterPlugin
+
+from . import epub_exporter
 
 EPUBFILE = _('Epub File')
 

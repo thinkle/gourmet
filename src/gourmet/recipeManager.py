@@ -1,9 +1,11 @@
 import os.path
-from gourmet import convert
-from gourmet import shopping
-from .optionparser import args
+
+from gourmet import convert, shopping
+
 from . import gglobals
+from .backends.db import RecData, RecipeManager, dbDic
 from .gtk_extras import dialog_extras as de
+from .optionparser import args
 
 # Follow commandline db specification if given
 dbargs = {}
@@ -15,7 +17,6 @@ if args.db_url:
     dbargs['custom_url'] = args.db_url
 
 
-from .backends.db import RecData, RecipeManager, dbDic
 
 class DatabaseShopper (shopping.Shopper):
     """We are a Shopper class that conveniently saves our key dictionaries

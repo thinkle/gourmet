@@ -1,9 +1,15 @@
-from bs4 import (BeautifulSoup, BeautifulStoneSoup, CData, Comment, Declaration,
-                 ProcessingInstruction)
+import re
+import urllib.error
+import urllib.parse
+import urllib.request
+
+from bs4 import (BeautifulSoup, BeautifulStoneSoup, CData, Comment,
+                 Declaration, ProcessingInstruction)
+
+import gourmet.importers.importer
 from gourmet.importers.generic_recipe_parser import RecipeParser
 from gourmet.importers.interactive_importer import InteractiveImporter
-import gourmet.importers.importer
-import re, urllib.request, urllib.parse, urllib.error
+
 #import gourmet.plugin_loader
 
 class WebParser (InteractiveImporter):

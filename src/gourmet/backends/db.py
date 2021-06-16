@@ -1,34 +1,33 @@
 import os.path
-from pathlib import Path
 import re
-import time
 import shutil
-from typing import Mapping, Optional, List, Any, Tuple
-
+import time
 from gettext import gettext as _
-from gi.repository import Gtk
+from pathlib import Path
+from typing import Any, List, Mapping, Optional, Tuple
 
 import sqlalchemy
 import sqlalchemy.orm
-from sqlalchemy import (Integer, LargeBinary, String, Float, Boolean, Numeric,
-                        Table, Column, ForeignKey, Text)
-from sqlalchemy.sql import and_, or_, case
-from sqlalchemy import event, func
+from gi.repository import Gtk
+from sqlalchemy import (Boolean, Column, Float, ForeignKey, Integer,
+                        LargeBinary, Numeric, String, Table, Text, event, func)
+from sqlalchemy.sql import and_, case, or_
 
-from gourmet.gdebug import debug, TimeAction
 import gourmet.gglobals as gglobals
+import gourmet.recipeIdentifier as recipeIdentifier
+import gourmet.version
 from gourmet import Undo, convert, image_utils
 from gourmet.defaults import lang as defaults
+from gourmet.gdebug import TimeAction, debug
+from gourmet.gtk_extras.dialog_extras import show_message
 from gourmet.keymanager import KeyManager
-import gourmet.version
-import gourmet.recipeIdentifier as recipeIdentifier
-from gourmet.plugin_loader import Pluggable, pluggable_method
 from gourmet.plugin import DatabasePlugin
-
+from gourmet.plugin_loader import Pluggable, pluggable_method
 
 Session = sqlalchemy.orm.sessionmaker()
 
-def map_type_to_sqlalchemy (typ):
+
+def map_type_to_sqlalchemy(typ):
     """A convenience method -- take a string type and map it into a
     sqlalchemy type.
     """
@@ -199,7 +198,7 @@ class RecData (Pluggable):
 
         if self.url.startswith('mysql'):
             self.db = sqlalchemy.create_engine(self.url,
-                                               connect_args = {'charset':'utf8'})
+                                               connect_args={'charset': 'utf8'})
         else:
             self.db = sqlalchemy.create_engine(self.url)
 
@@ -227,27 +226,14 @@ class RecData (Pluggable):
         Session.configure(bind=self.db)
         debug('Done initializing DB connection',1)
 
-    def save (self):
-        """Save our database (if we have a separate 'save' concept)"""
+    def save(self):
+        """Save our database (if there is a separate 'save')"""
         row = self.fetch_one(self.info_table)
         if row:
-            self.do_modify(
-                self.info_table,
-                row,
-                {'last_access':time.time()},
-                id_col = None
-                )
+            self.do_modify(self.info_table, row,
+                           {'last_access': time.time()}, id_col=None)
         else:
-            self.do_add(
-                self.info_table,
-                {'last_access':time.time()}
-                )
-        try:
-            #self.base_connection.commit()
-            pass
-        except IndexError:
-            print('Ignoring sqlalchemy problem')
-            import traceback; traceback.print_exc()
+            self.do_add(self.info_table, {'last_access': time.time()})
 
     def _setup_object_for_table (self, table, klass):
         self.__table_to_object__[table] = klass
@@ -459,64 +445,61 @@ class RecData (Pluggable):
         self.setup_unitdict_table()
         self.setup_convtable_table()
 
-    def backup_db (self):
+    def backup_db(self):
         """Make a backup copy of the DB -- this ensures experimental
         code won't permanently screw our users."""
-        import time, os.path
         backup_file_name = self.filename + '.backup-' + time.strftime('%d-%m-%y')
         while os.path.exists(backup_file_name):
             backup_file_name += 'I'
-        print('Making a backup copy of DB in ',backup_file_name)
+        print(f'Making a backup copy of DB to {backup_file_name}')
         print('You can use it to restore if something ugly happens.')
-        shutil.copy(self.filename,backup_file_name) # Make a backup...
-        import gourmet.gtk_extras.dialog_extras as de
-        de.show_message(
+        shutil.copy(self.filename, backup_file_name)
+        show_message(
             title=_("Upgrading database"),
             label=_("Upgrading database"),
             sublabel=_("Depending on the size of your database, this may be an intensive process and may take  some time. Your data has been automatically backed up in case something goes wrong."),
-            expander=(_("Details"),_("A backup has been made in %s in case something goes wrong. If this upgrade fails, you can manually rename your backup file recipes.db to recover it for use with older Gourmet.")%backup_file_name),
+            expander=(_("Details"),
+                      _("A backup has been made in %s in case something goes wrong. If this upgrade fails, you can manually rename your backup file recipes.db to recover it for use with older Gourmet.")%backup_file_name),
             message_type=Gtk.MessageType.INFO)
 
-    def update_version_info (self, version_string):
+    def update_version_info(self, version_string: str):
         """Report our version to the database.
 
         If necessary, we'll do some version-dependent updates to the GUI
         """
-        stored_info = self.fetch_one(self.info_table)
-        version = [s for s in version_string.split('-')[0].split('.')]
+        version = version_string.split('.')
         current_super = int(version[0])
         current_major = int(version[1])
         current_minor = int(version[2])
-        if not stored_info or not stored_info.version_major:
+
+        stored_info = self.fetch_one(self.info_table)
+
+        if not stored_info or not (stored_info.version_super or stored_info.version_major):
             # Default info -- the last version before we added the
             # version tracker...
-            default_info = {'version_super':0,
-                             'version_major':11,
-                             'version_minor':0}
+            default_info = {'version_super': 0,
+                            'version_major': 11,
+                            'version_minor': 0}
             if not stored_info:
                 if not self.new_db:
                     self.do_add(self.info_table,
                                 default_info)
                 else:
                     self.do_add(self.info_table,
-                                {'version_super':current_super,
-                                 'version_major':current_major,
-                                 'version_minor':current_minor,}
-                                )
+                                {'version_super': current_super,
+                                 'version_major': current_major,
+                                 'version_minor': current_minor})
             else:
-                self.do_modify(
-                    self.info_table,
-                    stored_info,
-                    default_info)
+                self.do_modify(self.info_table, stored_info,
+                               default_info, id_col=None)
             stored_info = self.fetch_one(self.info_table)
 
-        ### Code for updates between versions...
+        # Code for updates between versions...
         if not self.new_db:
-            sv_text = "%s.%s.%s"%(stored_info.version_super,stored_info.version_major,stored_info.version_minor)
-            #print 'STORED_INFO:',stored_info.version_super,stored_info.version_major,stored_info.version_minor
+            sv_text = f"{stored_info.version_super}.{stored_info.version_major}.{stored_info.version_minor}"  # noqa
             # Change from servings to yields! ( we use the plural to avoid a headache with keywords)
             if stored_info.version_super == 0 and stored_info.version_major < 16:
-                print('Database older than 0.16.0 -- updating',sv_text)
+                print('Database older than 0.16.0 -- updating', sv_text)
                 self.backup_db()
                 from sqlalchemy.sql.expression import func
                 # We need to unpickle Booleans that have erroneously remained
@@ -679,21 +662,13 @@ class RecData (Pluggable):
                 self.update_plugin_version(plugin,
                                            (current_super,current_major,current_minor)
                                            )
-        ### End of code for updates between versions...
-        if (current_super!=stored_info.version_super
-            or
-            current_major!=stored_info.version_major
-            or
-            current_minor!=stored_info.version_minor
-            ):
-            self.do_modify(
-                self.info_table,
-                stored_info,
-                {'version_super':current_super,
-                 'version_major':current_major,
-                 'version_minor':current_minor,},
-                id_col=None
-                )
+
+        # Finally, update version stored in database
+        self.do_modify(self.info_table, stored_info,
+                       {'version_super': current_super,
+                        'version_major': current_major,
+                        'version_minor': current_minor},
+                       id_col=None)
 
     def update_plugin_version (self, plugin, current_version=None):
         if current_version:
@@ -1275,7 +1250,8 @@ class RecData (Pluggable):
                     del dic['servings']
                 except:
                     del dic['servings']
-        if 'deleted' not in dic: dic['deleted']=False
+        if 'deleted' not in dic:
+            dic['deleted'] = False
         self.validate_recdic(dic)
         try:
             ret = self.do_add_rec(dic)
@@ -1419,16 +1395,16 @@ class RecData (Pluggable):
         """modify ing based on dictionary of properties and new values."""
         return self.do_modify(self.ingredients_table,ing,ingdict)
 
-    def do_modify (self,
-                   table,  # sqlalchemy.sql.schema.Table
-                   row,  #  sqlalchemy.engine.result.RowProxy
-                   d, # Dict[str, Any]
-                   id_col='id'):  # Optional[str]
-        if id_col:
+    def do_modify(self,
+                  table,  # sqlalchemy.sql.schema.Table
+                  row,  # sqlalchemy.engine.result.RowProxy
+                  d,  # Dict[str, Any]
+                  id_col='id'):  # Optional[str]
+        if id_col is not None:
             try:
                 table_val = getattr(table.c, id_col)
                 row_val = getattr(row, id_col)
-                qr: 'ResultProxy'= table.update(table_val == row_val).execute(**d)
+                table.update(table_val == row_val).execute(**d)
             except Exception as e:
                 print('do_modify failed with args')
                 print('table=',table,'row=',row)
@@ -1437,7 +1413,7 @@ class RecData (Pluggable):
                 raise
             select = table.select(getattr(table.c,id_col)==getattr(row,id_col))
         else:
-            qr: 'ResultProxy' = table.update().execute(**d)
+            table.update().execute(**d)
             select = table.select()
         return select.execute().fetchone()
 
@@ -1512,17 +1488,12 @@ class RecData (Pluggable):
         self.delete_by_criteria(self.ingredients_table,{'recipe_id':rec})
         debug('deleted recipe ID %s'%rec,0)
 
-    def new_rec (self):
+    def new_rec(self):
         """Create and return a new, empty recipe"""
-        blankdict = {'title':_('New Recipe'),
-                     #'servings':'4'}
-                     }
-        return self.add_rec(blankdict)
+        return self.add_rec({'title': _('New Recipe')})
 
-    def new_id (self):
-        #raise NotImplementedError("WARNING: NEW_ID IS NO LONGER FUNCTIONAL, FIND A NEW WAY AROUND THE PROBLEM")
-        #rec = self.new_rec()
-        rec = self.do_add_rec({'deleted':1})
+    def new_id(self) -> int:
+        rec = self.do_add_rec({'deleted': 1})
         self.new_ids.append(rec.id)
         return rec.id
 
@@ -1639,8 +1610,13 @@ class RecData (Pluggable):
             if ramount and unit != ing.unit:
                 # if we're changing units... convert the upper range too
                 ramount = ramount * conv.converter(ing.unit, unit)
-        if ramount: amt = (amt,ramount)
-        return (self._format_amount_string_from_amount(amt,fractions=fractions,unit=unit),unit)
+        if ramount:
+            amt = (amt, ramount)
+
+        famount = self.format_amount_string_from_amount(amt,
+                                                        fractions=fractions,
+                                                        unit=unit)
+        return famount, unit
 
     def get_amount_as_string (self,
                               ing,
@@ -1651,9 +1627,10 @@ class RecData (Pluggable):
         If we have a multiplier, multiply the amount before returning it.
         """
         amt = self.get_amount(ing,mult)
-        return self._format_amount_string_from_amount(amt, fractions=fractions)
+        return self.format_amount_string_from_amount(amt, fractions=fractions)
 
-    def _format_amount_string_from_amount (self, amt, fractions=None, unit=None):
+    @staticmethod
+    def format_amount_string_from_amount(amt, fractions=None, unit=None):
         """Format our amount string given an amount tuple.
 
         If fractions is None, we use the default setting from
@@ -1668,14 +1645,20 @@ class RecData (Pluggable):
             # None means use the default value
             fractions = convert.USE_FRACTIONS
         if unit:
-            approx = defaults.unit_rounding_guide.get(unit,0.01)
+            approx = defaults.unit_rounding_guide.get(unit, 0.01)
         else:
             approx = 0.01
         if isinstance(amt, tuple):
-            return "%s-%s"%(convert.float_to_frac(amt[0],fractions=fractions,approx=approx).strip(),
-                            convert.float_to_frac(amt[1],fractions=fractions,approx=approx).strip())
-        elif isinstance(amt, (float,int)):
-            return convert.float_to_frac(amt,fractions=fractions,approx=approx)
+            return "%s-%s" % (convert.float_to_frac(amt[0],
+                                                    fractions=fractions,
+                                                    approx=approx).strip(),
+                              convert.float_to_frac(amt[1],
+                                                    fractions=fractions,
+                                                    approx=approx).strip())
+        elif isinstance(amt, (float, int)):
+            return convert.float_to_frac(amt,
+                                         fractions=fractions,
+                                         approx=approx)
         else:
             return ""
 

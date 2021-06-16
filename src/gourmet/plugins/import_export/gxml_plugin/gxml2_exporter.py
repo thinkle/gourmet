@@ -1,6 +1,9 @@
+import base64
+import xml.sax.saxutils
+
 import gourmet.exporters.exporter as exporter
-import sys, xml.sax.saxutils, base64
 from gourmet.exporters.xml_exporter import XmlExporter
+
 
 class rec_to_xml (XmlExporter):
     """A vastly simplified recipe XML exporter.
@@ -34,7 +37,7 @@ class rec_to_xml (XmlExporter):
     def write_image (self, image):
         image_el = self.create_element_with_attrs('image',{'format':'jpeg'})
         image_el.appendChild(
-            self.xmlDoc.createCDATASection(base64.b64encode(image))
+            self.xmlDoc.createCDATASection(base64.b64encode(image).decode())
             )
         self.rec_el.appendChild(image_el)
 

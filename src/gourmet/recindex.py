@@ -1,17 +1,19 @@
-from typing import List, Union
+from gettext import gettext as _
+from gettext import ngettext
+from typing import List, Tuple, Union
 
-from gettext import gettext as _, ngettext
 from gi.repository import Gdk, GdkPixbuf, GObject, Gtk, Pango
 
+from . import Undo, convert
 from .backends.db import RecipeManager
-from . import convert
 from .gdebug import debug
-from .gglobals import REC_ATTRS, INT_REC_ATTRS, DEFAULT_HIDDEN_COLUMNS
-from .gtk_extras import WidgetSaver, ratingWidget, cb_extras as cb, \
-    mnemonic_manager, pageable_store, treeview_extras as te
+from .gglobals import DEFAULT_HIDDEN_COLUMNS, INT_REC_ATTRS, REC_ATTRS
+from .gtk_extras import WidgetSaver
+from .gtk_extras import cb_extras as cb
+from .gtk_extras import mnemonic_manager, pageable_store, ratingWidget
+from .gtk_extras import treeview_extras as te
 from .image_utils import bytes_to_pixbuf
 from .prefs import Prefs
-from . import Undo
 
 
 class RecIndex:
@@ -242,7 +244,8 @@ class RecIndex:
             self.last_button.set_sensitive(True)
         self.set_reccount()
 
-    def rmodel_sort_cb(self, rmodel, sorts):
+    def rmodel_sort_cb(self, rmodel: 'RecipeModel',
+                       sorts: List[Tuple[str, int]]):
         self.sort_by = sorts
         self.last_search = {}
         self.search()

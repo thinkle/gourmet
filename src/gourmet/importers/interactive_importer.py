@@ -1,15 +1,15 @@
 import re
-
 from gettext import gettext as _
+
 from gi.repository import Gtk
 
-import gourmet.gtk_extras.cb_extras as cb
 import gourmet.gglobals as gglobals
-from gourmet.image_utils import image_to_bytes, ImageBrowser
-from gourmet.recipeManager import get_recipe_manager
-from gourmet.threadManager import NotThreadSafe
+import gourmet.gtk_extras.cb_extras as cb
+from gourmet.image_utils import ImageBrowser, image_to_bytes
 from gourmet.importers import importer
 from gourmet.importers.generic_recipe_parser import RecipeParser
+from gourmet.recipeManager import get_recipe_manager
+from gourmet.threadManager import NotThreadSafe
 
 # TODO
 # 1. Make this interface actually import recipes...
@@ -539,4 +539,3 @@ Toss spaghetti in pesto and tomatoes.
 Ignore: this
 """)
     Gtk.main()
-

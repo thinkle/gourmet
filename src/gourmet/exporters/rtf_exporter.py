@@ -1,11 +1,16 @@
-from gi.repository import Pango
+import types
 import xml.sax.saxutils
-import PyRTF, types
-from . import exporter
+from gettext import gettext as _
+
+from gi.repository import Pango
+
+import PyRTF
 from gourmet import convert
 from gourmet.gdebug import debug
 from gourmet.image_utils import write_image_tempfile
-from gettext import gettext as _
+
+from . import exporter
+
 
 class rtf_exporter_multidoc (exporter.ExporterMultirec):
     def __init__ (self, rd, recipe_table, out, conv=None):
@@ -183,4 +188,3 @@ if __name__ == '__main__':
                     'prog':lambda *args,**kwargs: sys.stderr.write("%s%s"%(args,kwargs)),
                     'out':open('/tmp/test_rec.rtf', 'wb'),
                     })
-

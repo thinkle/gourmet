@@ -3,9 +3,9 @@
 # key. This will be used to show info in both the key editor and
 # recipe card view and possibly to allow editing etc.
 
-from gourmet.plugin_loader import Pluggable
-from gourmet.plugin import PluginPlugin
 from gourmet import gdebug
+from gourmet.plugin import PluginPlugin
+from gourmet.plugin_loader import Pluggable
 
 # Here's our template -- those implementing will have to take this as
 # boilerplate code rather than subclassing it, since it's not possible

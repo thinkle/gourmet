@@ -1,122 +1,214 @@
 import os
-from pathlib import Path
-
+import re
 from distutils.core import Command
-from setuptools import find_packages
-from setuptools import setup
+from distutils.log import INFO
+from pathlib import Path
+from typing import Union
+
+from setuptools import find_packages, setup
+from setuptools.command.develop import develop
+from setuptools.command.sdist import sdist
+from wheel.bdist_wheel import bdist_wheel
 
 
-package = 'gourmet'
-podir = Path('po')
-langs = sorted(f.name[:-3] for f in podir.glob('*.po'))
+PACKAGE = 'gourmet'
+PACKAGEDIR = Path('src') / PACKAGE
+DATADIR = Path('data')
+PODIR = Path('po')
+LANGS = sorted(f.stem for f in PODIR.glob('*.po'))
+LOCALEDIR = PACKAGEDIR / 'data' / 'locale'
 
 
-def modir(lang):
-    mobase = Path("build")
-    return mobase / "mo" / lang
+def get_info(prop: str) -> str:
+    with open(PACKAGEDIR / 'version.py') as versfile:
+        content = versfile.read()
+    match = re.search(r'^{} = "(.+)"'.format(prop), content, re.M)
+    if match is not None:
+        return match.group(1)
+    raise RuntimeError(f"Unable to find {prop} string")
 
 
-def mkmo(lang):
-    outpath = modir(lang)
-    os.makedirs(outpath, exist_ok=True)
+def refresh_metadata(cmd: Command) -> None:
+    # distutils remembers what commands are run during a build so that
+    # subsequent calls to the command are skipped. This means that metadata is
+    # normally only created once even if multiple builds are being done (e.g.,
+    # 'python setup.py sdist bdist_wheel'). Since package data is dynamically
+    # built depending on the type of build, we need to ensure that any stale
+    # metadata is refreshed.
+    if cmd.distribution.have_run.get('egg_info', 0):
+        cmd.distribution.reinitialize_command('egg_info')
+        cmd.run_command('egg_info')
 
-    inpath = podir / (lang + ".po")
 
-    cmd = f"msgfmt {inpath} -o {outpath}/{package}.mo"
-    os.system(cmd)
+def rmfile(filepath: Union[Path, str]) -> None:
+    try:
+        os.remove(filepath)
+    except FileNotFoundError:
+        pass
 
 
-def merge_i18n():
-    cmd = "LC_ALL=C intltool-merge -u -c ./po/.intltool-merge-cache ./po"
+class BuildI18n(Command):
+    description = "Build localized message catalogs"
+    user_options = []
 
-    for infile in Path('.').rglob('*.in'):
-        outfile = Path(str(infile)[:-3])
-        extension = outfile.suffix
+    def initialize_options(self):
+        # Command subclasses must implement this "abstract" method
+        pass
 
-        if 'desktop' in extension:
-            flag = '-d'
-        elif 'schema' in extension:
-            flag = '-s'
-        elif 'xml' in extension:
-            flag = '-x'
-        elif 'gourmet-plugin' in extension:
-            flag = '-k'
-        else:
-            flag = ''
+    def finalize_options(self):
+        # Command subclasses must implement this "abstract" method
+        pass
 
-        if flag:
-            print(f"Processing {infile} to {outfile}")
+    def run(self):
+        # compile message catalogs to binary format
+        for lang in LANGS:
+            pofile = PODIR / f'{lang}.po'
+
+            mofile = LOCALEDIR / lang / 'LC_MESSAGES'
+            mofile.mkdir(parents=True, exist_ok=True)
+            mofile /= f'{PACKAGE}.mo'
+
+            cmd = f'msgfmt {pofile} -o {mofile}'
+            os.system(cmd)
+
+        # merge translated strings into various file types
+        cachefile = PODIR / '.intltool-merge-cache'
+        cmd = f"LC_ALL=C intltool-merge -u -c {cachefile} {PODIR}"
+
+        for infile in DATADIR.rglob('*.in'):
+            # trim '.in' extension
+            outfile = infile.with_suffix('')
+
+            extension = outfile.suffix
+            if 'desktop' in extension:
+                flag = '-d'
+            # TODO: is '.schema' used?
+            elif 'schema' in extension:
+                flag = '-s'
+            elif 'xml' in extension:
+                flag = '-x'
+            elif 'gourmet-plugin' in extension:
+                flag = '-k'
+                outfile = PACKAGEDIR / outfile.relative_to(DATADIR)
+            else:
+                assert False, f'Unknown file type: {infile}'
+
             os.system(f"{cmd} {flag} {infile} {outfile}")
 
-
-def polist():
-    dst_tmpl = "share/locale/%s/LC_MESSAGES/"
-    polist = [(dst_tmpl % x, ["%s/%s.mo" % (modir(x), package)])
-              for x in langs]
-
-    return polist
+        rmfile(cachefile)
+        rmfile(f'{cachefile}.lock')
 
 
-class build_i18n(Command):
+class BuildSource(sdist):
+
+    def run(self):
+        # Exclude localization files that are created at build time
+        # NOTE: We can't use MANIFEST.in for this because these files will then
+        # also be excluded from built distributions
+        for lang in LANGS:
+            mofile = LOCALEDIR / lang / 'LC_MESSAGES' / f'{PACKAGE}.mo'
+            rmfile(mofile)
+
+        for infile in DATADIR.rglob('*.in'):
+            # trim '.in' extension
+            outfile = infile.with_suffix('')
+            extension = outfile.suffix
+            if ('desktop' in extension
+                    or 'xml' in extension
+                    # TODO: is '.schema' used?
+                    or 'schema' in extension):
+                # these files aren't moved after they're built
+                pass
+            elif 'gourmet-plugin' in extension:
+                outfile = PACKAGEDIR / outfile.relative_to(DATADIR)
+            else:
+                assert False, f'Unknown file type: {infile}'
+
+            rmfile(outfile)
+
+        refresh_metadata(self)
+        super().run()
+
+
+class BuildWheel(bdist_wheel):
+
+    def run(self):
+        self.run_command('build_i18n')
+        refresh_metadata(self)
+        super().run()
+
+
+class Develop(develop):
+
+    def run(self):
+        self.run_command('build_i18n')
+        super().run()
+
+
+class UpdateI18n(Command):
     description = "Create/update po/pot translation files"
     user_options = []
 
     def initialize_options(self):
+        # Command subclasses must implement this "abstract" method
         pass
 
     def finalize_options(self):
+        # Command subclasses must implement this "abstract" method
         pass
 
     def run(self):
-        print("Creating POT file")
-        cmd = f"cd po; intltool-update --pot --gettext-package={package}"
+        self.announce("Creating POT file", INFO)
+        cmd = f"cd {PODIR}; intltool-update --pot --gettext-package={PACKAGE}"
         os.system(cmd)
 
-        for lang in langs:
-            print(f"Updating {lang} PO file")
-            cmd = ("cd po; intltool-update --dist"
-                   f"--gettext-package={package} {lang} >/dev/null 2>&1")
-            os.system(cmd)
-            mkmo(lang)
-
-        merge_i18n()
+        for lang in LANGS:
+            self.announce(f"Updating {lang}.po", INFO)
+            os.system(
+                f"cd {PODIR};"
+                f"intltool-update --dist --gettext-package={PACKAGE} {lang}")
 
 
-# TODO: Single-source this metadata with version.py?
-# https://packaging.python.org/guides/single-sourcing-package-version/ provides
-# some recommendations, however as noted under item 6, we do not want to import
-# our own package from setup.py as it may cause installation to fail
 setup(
-    name='gourmet',
-    version='0.17.5',
-    description='Recipe Organizer and Shopping List Generator',
-    author='Thomas Mills Hinkle',
-    author_email='Thomas_Hinkle@alumni.brown.edu',
-    url='http://thinkle.github.io/gourmet/',
-    license='GPL',
+    name=PACKAGE,
+    version=get_info('version'),
+    description=get_info('description'),
+    author=get_info('author'),
+    author_email=get_info('author_email'),
+    maintainer=get_info('maintainer'),
+    maintainer_email=get_info('maintainer_email'),
+    url=get_info('url'),
+    license=get_info('license'),
     package_dir={'': 'src'},
     packages=find_packages('src'),
     include_package_data=True,
     install_requires=[
-        'argcomplete',  # argument completion when parsing arguments
-        'beautifulsoup4',  # converting pango to html
-        'pillow',  # image processing
-        'pygobject',  # gobject bindings (for GTK, etc.)
-        'requests',  # retrieving remote images
-        'sqlalchemy',  # database driver
-        'toml',  # parsing preferences file(s)
+        'beautifulsoup4==4.9.3',
+        'lxml==4.6.3',
+        'pillow>=7.0.0',
+        'pygobject==3.40.1',
+        'requests==2.25.1',
+        'sqlalchemy==1.3.22',
+        'toml==0.10.2',
     ],
     extras_require={
-        'epub-export': ['ebooklib'],
-        'mycookbook': ['lxml'],
-        'pdf-export': ['reportlab'],
-        'spellcheck': ['pyenchant', 'pygtkspellcheck'],
-        'web-import': ['beautifulsoup4', 'keyring',
-                       'scrape-schema-recipe', 'selenium'],
+        'epub-export': ['ebooklib==0.17.1'],
+        'pdf-export': ['reportlab==3.5.67'],
+        'spellcheck': ['pyenchant',
+                       'pygtkspellcheck'],
+        'web-import': ['keyring==21.0.0',
+                       'scrape-schema-recipe==0.1.3',
+                       'selenium==3.141.0'],
     },
-    cmdclass={'build_i18n': build_i18n},
+    cmdclass={
+        'bdist_wheel': BuildWheel,
+        'build_i18n': BuildI18n,
+        'develop': Develop,
+        'sdist': BuildSource,
+        'update_i18n': UpdateI18n,
+    },
     entry_points={
-        "console_scripts": [
+        "gui_scripts": [
             "gourmet = gourmet.GourmetRecipeManager:launch_app",
         ]}
 )

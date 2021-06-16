@@ -8,6 +8,7 @@
 
 from gi.repository import Gtk
 
+
 class TimeEntry (Gtk.Entry):
     __gtype_name__ = 'TimeEntry'
 

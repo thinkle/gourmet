@@ -1,6 +1,12 @@
-import re, os.path, os, xml.sax.saxutils, time, shutil, urllib.request, urllib.parse, urllib.error, textwrap
+import os
+import os.path
+import re
+import xml.sax.saxutils
 from gettext import gettext as _
-from gourmet import convert,gglobals
+from pkgutil import get_data
+from typing import Optional
+
+from gourmet import gglobals
 from gourmet.exporters.exporter import ExporterMultirec, exporter_mult
 
 HTML_HEADER_START = """<!DOCTYPE html>
@@ -11,9 +17,19 @@ HTML_HEADER_CLOSE = """<meta http-equiv="Content-Type" content="text/html;charse
      </head>"""
 
 
+def _read_css(filename: Optional[str] = None) -> str:
+    if filename:
+        with open(filename, 'r') as fh:
+            style = fh.read()
+    else:
+        style = get_data('gourmet', 'data/style/default.css').decode()
+    assert style
+    return style
+
+
 class html_exporter (exporter_mult):
     def __init__ (self, rd, r, out, conv=None,
-                  css=os.path.join(gglobals.style_dir,"default.css"),
+                  css: Optional[str] = None,
                   embed_css=True, start_html=True, end_html=True, imagedir="pics/", imgcount=1,
                   link_generator=None,
                   # exporter_mult args
@@ -32,8 +48,9 @@ class html_exporter (exporter_mult):
         or None if it can't reference the recipe based on the ID."""
         self.start_html=start_html
         self.end_html=end_html
-        self.embed_css=embed_css
-        self.css=css
+        self._css_file = css
+        self._css = _read_css(css)
+        self._embed_css = embed_css if css else True
         self.link_generator=link_generator
         if imagedir and imagedir[-1] != os.path.sep: imagedir += os.path.sep #make sure we end w/ slash
         if not imagedir: imagedir = "" #make sure it's a string
@@ -64,16 +81,14 @@ class html_exporter (exporter_mult):
         if self.start_html:
             self.out.write(HTML_HEADER_START)
             self.out.write("<title>%s</title>"%self.get_title())
-            if self.css:
-                if self.embed_css:
-                    self.out.write("<style type='text/css'><!--\n")
-                    f=open(self.css,'r')
-                    for l in f.readlines():
-                        self.out.write(l)
-                    f.close()
-                    self.out.write("--></style>")
-                else:
-                    self.out.write("<link rel='stylesheet' href='%s' type='text/css'>"%self.make_relative_link(self.css))
+            if self._embed_css:
+                self.out.write("<style type='text/css'><!--\n")
+                self.out.write(self._css)
+                self.out.write("--></style>")
+            else:
+                assert self._css_file
+                link = self.make_relative_link(self._css_file)
+                self.out.write(f"<link rel='stylesheet' href='{link}' type='text/css'>")
             self.out.write(HTML_HEADER_CLOSE)
             self.out.write('<body>')
         self.out.write('<div class="recipe" itemscope itemtype="http://schema.org/Recipe">')
@@ -198,35 +213,34 @@ class html_exporter (exporter_mult):
 
 class website_exporter (ExporterMultirec):
     def __init__ (self, rd, recipe_table, out, conv=None, ext='htm', copy_css=True,
-                  css=os.path.join(gglobals.style_dir,'default.css'),
+                  css: Optional[str] = None,
                   imagedir='pics' + os.path.sep,
                   index_rows=['title','category','cuisine','rating','yields'],
                   change_units=False,
                   mult=1):
-        self.ext=ext
-        self.css=css
-        self.embed_css = False
+        self.ext = ext
+        self._css_file = css
+        self._css = _read_css(css)
         if copy_css:
-            styleout = os.path.join(out,'style.css')
+            styleout = os.path.join(out, 'style.css')
             if not os.path.isdir(out):
                 os.makedirs(out)
-            to_copy = open(self.css,'r')
-            print('writing css to ',styleout)
-            to_paste = open(styleout,'w')
-            to_paste.write(to_copy.read())
-            to_copy.close(); to_paste.close()
-            self.css = styleout
+            print('writing css to ', styleout)
+            with open(styleout, 'w') as fh:
+                fh.write(self._css)
+            self._css_file = styleout
+        self._embed_css = not self._css_file
         self.imagedir=imagedir
         self.index_rows=index_rows
         self.imgcount=1
         self.added_dict={}
         self.exportargs={'embed_css': False,
-                          'css': self.css,
-                          'imgcount': self.imgcount,
-                         'imagedir':self.imagedir,
+                         'css': self._css_file,
+                         'imgcount': self.imgcount,
+                         'imagedir': self.imagedir,
                          'link_generator': self.generate_link,
-                         'change_units':change_units,
-                         'mult':mult}
+                         'change_units': change_units,
+                         'mult': mult}
         if conv:
             self.exportargs['conv']=conv
         ExporterMultirec.__init__(self, rd, recipe_table, out,
@@ -240,15 +254,14 @@ class website_exporter (ExporterMultirec):
         self.indexf = open(self.indexfn,'w')
         self.indexf.write(HTML_HEADER_START)
         self.indexf.write("<title>Recipe Index</title>")
-        if self.embed_css:
+        if self._embed_css:
             self.indexf.write("<style type='text/css'><!--\n")
-            f=open(self.css,'r')
-            for l in f.readlines():
-                self.indexf.write(l)
-            f.close()
+            self.indexf.write(self._css)
             self.indexf.write("--></style>")
         else:
-            self.indexf.write("<link rel='stylesheet' href='%s' type='text/css'>"%self.make_relative_link(self.css))
+            assert self._css_file
+            link = self.make_relative_link(self._css_file)
+            self.indexf.write(f"<link rel='stylesheet' href='{link}' type='text/css'>")
         self.indexf.write(HTML_HEADER_CLOSE)
         self.indexf.write('<body>')
         self.indexf.write('<div class="index"><table class="index">\n<tr>')
@@ -300,4 +313,3 @@ def linkify (filename):
     ret = filename.replace('\\','/')
     ret = filename.replace(' ','%20')
     return xml.sax.saxutils.escape(filename)
-

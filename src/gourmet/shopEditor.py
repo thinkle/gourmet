@@ -1,14 +1,14 @@
-import os
 import pickle
 import re
+from pkgutil import get_data
 
 from gi.repository import GObject, Gtk
 
 from .backends import db
-from .gglobals import uibase
 from .gtk_extras import WidgetSaver
 from .gtk_extras import cb_extras as cb
 from .gtk_extras import dialog_extras as de
+
 
 class ShopEditor:
 
@@ -19,7 +19,7 @@ class ShopEditor:
 
     def __init__ (self, rd=db.recipeManager(), rg=None):
         self.ui = Gtk.Builder()
-        self.ui.add_from_file(os.path.join(uibase,'shopCatEditor.ui'))
+        self.ui.add_from_string(get_data('gourmet', 'ui/shopCatEditor.ui').decode())
         self.rd = rd
         self.rg = rg
         self.prefs = self.rg.prefs

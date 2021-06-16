@@ -15,7 +15,9 @@
 # along with this library; if not, write to the Free Software
 # Foundation, 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 from typing import Optional, Union
+
 from gi.repository import Gtk, Pango
+
 from gourmet.gtk_extras.pango_html import PangoToHtml
 
 

@@ -1,0 +1,49 @@
+name: Create AppImage
+
+on:
+  push:
+    tags:
+      - '*'
+  workflow_dispatch:
+
+jobs:
+  AppImage:
+
+    runs-on: ubuntu-20.04
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup AppImage Environment
+      run: |
+        sudo apt-get update -q
+        sudo apt-get -y install python3-testresources intltool imagemagick libgirepository1.0-dev
+        wget https://github.com/niess/python-appimage/releases/download/python3.8/python3.8.10-cp38-cp38-manylinux1_x86_64.AppImage
+        chmod +x ./python3.8.10-cp38-cp38-manylinux1_x86_64.AppImage
+        ./python3.8.10-cp38-cp38-manylinux1_x86_64.AppImage --appimage-extract
+        wget -c https://github.com/$(wget -q https://github.com/probonopd/go-appimage/releases -O - | grep "appimagetool-.*-x86_64.AppImage" | head -n 1 | cut -d '"' -f 2)
+        chmod +x appimagetool-*.AppImage
+
+    - name: Install Gourmet in AppImage
+      run: |
+          ./squashfs-root/AppRun -m pip install --upgrade pip
+          ./squashfs-root/AppRun -m pip install decorator six BeautifulSoup4 html5lib lxml pyenchant pygobject Sphinx
+
+          ./squashfs-root/AppRun setup.py bdist_wheel
+          ./squashfs-root/AppRun -m pip install .[epub-export,mycookbook,pdf-export,spellcheck,web-import]
+          ./squashfs-root/AppRun -m pip install dist/gourmet*.whl
+          sed -i -e 's|/opt/python3.8/bin/python3.8|/usr/bin/gourmet|g' ./squashfs-root/AppRun
+          rm squashfs-root/*.desktop
+          cp .flatpak/io.github.thinkle.Gourmet.desktop squashfs-root/usr/share/applications/io.github.thinkle.Gourmet.desktop
+          cp .flatpak/io.github.thinkle.Gourmet.desktop squashfs-root/
+          convert .flatpak/io.github.thinkle.Gourmet.svg squashfs-root/usr/share/icons/hicolor/256x256/apps/io.github.thinkle.Gourmet.png
+          convert .flatpak/io.github.thinkle.Gourmet.svg squashfs-root/io.github.thinkle.Gourmet.png
+
+    - name: Pack AppImage
+      run: |
+          VERSION=${GITHUB_SHA::8} ./appimagetool-*.AppImage squashfs-root/
+
+    - name: Upload AppImage
+      uses: actions/upload-artifact@v2
+      with:
+        name: gourmet.AppImage
+        path: ./Gourmet-*.AppImage

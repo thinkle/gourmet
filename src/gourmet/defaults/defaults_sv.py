@@ -16,8 +16,10 @@
 # Translator: jens persson (jens@persson.cx)
 # Last-updated: 2006-06-28
 
+from typing import Any, List, Mapping
+
 from .abstractLang import AbstractLanguage
-from typing import List, Mapping, Any
+
 
 class Language(AbstractLanguage):
 

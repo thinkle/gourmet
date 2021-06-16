@@ -1,8 +1,13 @@
-import xml.sax, re, sys, xml.sax.saxutils
-from gourmet.importers import xml_importer
+import base64
+import re
+import sys
+import xml.sax
+import xml.sax.saxutils
+
 from gourmet.convert import NUMBER_FINDER
 from gourmet.gglobals import REC_ATTRS, TEXT_ATTR_DIC
-import base64
+from gourmet.importers import xml_importer
+
 
 class RecHandler (xml_importer.RecHandler):
     ING_ATTRS =  {

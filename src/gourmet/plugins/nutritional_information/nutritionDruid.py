@@ -1,18 +1,23 @@
+import os
+import os.path
+import re
+from gettext import gettext as _
+from pkgutil import get_data
+
 from gi.repository import GObject, Gtk
+
 import gourmet.convert as convert
 import gourmet.gglobals as gglobals
-from gourmet.gtk_extras.mnemonic_manager import MnemonicManager
-from gourmet.defaults import lang as defaults
-from gourmet.gtk_extras.pageable_store import PageableViewStore
-from .nutritionLabel import NUT_LAYOUT, SEP, RECOMMENDED_INTAKE
-from .nutritionInfoEditor import NutritionInfoIndex,MockObject
-from gourmet.gtk_extras.validation import NumberEntry
 import gourmet.gtk_extras.cb_extras as cb
 import gourmet.gtk_extras.dialog_extras as de
 import gourmet.gtk_extras.WidgetSaver as WidgetSaver
-import re
-import os,os.path
-from gettext import gettext as _
+from gourmet.defaults import lang as defaults
+from gourmet.gtk_extras.mnemonic_manager import MnemonicManager
+from gourmet.gtk_extras.pageable_store import PageableViewStore
+from gourmet.gtk_extras.validation import NumberEntry
+
+from .nutritionInfoEditor import MockObject, NutritionInfoIndex
+from .nutritionLabel import NUT_LAYOUT, RECOMMENDED_INTAKE, SEP
 
 try:
     current_path = os.path.split(os.path.join(os.getcwd(),__file__))[0]
@@ -101,11 +106,18 @@ class NutritionUSDAIndex:
         self._setup_nuttree_()
         self.__last_search__ = ''
         self.__override_search__ = False
+        # TODO: Fixing saving usdaSearchAsYouTypeToggle state
+        # Button state is not being saved across sessions and always starts off
+        # inactive. Of note, this problem seemed to also exist in the last
+        # release (0.17.4), but the button always started off active.
         WidgetSaver.WidgetSaver(
             self.usdaSearchAsYouTypeToggle,
             self.prefs.get('sautTog',
                            {'active':True}),
             ['toggled'])
+        # Ensure usdaFindButton is shown if usdaSearchAsYouTypeToggle is
+        # inactive
+        self.toggle_saut()
         # search
         self.usdaSearchEntry.connect('changed',self.search_type_cb)
         self.usdaFindButton.connect('clicked',self.search_cb)
@@ -261,7 +273,7 @@ class NutritionInfoDruid (GObject.GObject):
 
     def __init__ (self, nd, prefs, rec=None, in_string=''):
         self.ui = Gtk.Builder()
-        self.ui.add_from_file(os.path.join(current_path,'nutritionDruid.ui'))
+        self.ui.add_from_string(get_data('gourmet', 'ui/nutritionDruid.ui').decode())
         self.mm = MnemonicManager()
         self.mm.add_builder(self.ui)
         self.mm.fix_conflicts_peacefully()

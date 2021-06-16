@@ -1,9 +1,9 @@
-from gourmet.plugin import PluginPlugin
 from bs4 import BeautifulSoup
+
+from gourmet.plugin import PluginPlugin
 
 from . import schema_org_parser
 from .state import WebsiteTestState
-
 
 NYT_CUISINES = [
     "African",
@@ -90,4 +90,3 @@ class NYTPlugin(PluginPlugin):
 
 
         return NYTParser
-

@@ -1,6 +1,8 @@
 from gourmet.plugin import MainPlugin
+from gourmet.plugin_loader import POST, PRE
+
 from . import browser
-from gourmet.plugin_loader import PRE, POST
+
 
 class BrowserPlugin (MainPlugin):
 

@@ -1,9 +1,13 @@
-import re, locale, math
 import collections.abc
-from typing import Optional
-from .defaults.defaults import lang as defaults
+import locale
+import math
+import re
+from functools import cmp_to_key
 from gettext import gettext as _
 from gettext import ngettext
+from typing import Optional
+
+from .defaults.defaults import lang as defaults
 from .gdebug import debug
 
 # TODO: these should be turned into Enums
@@ -675,7 +679,6 @@ if hasattr(defaults,'NUMBERS'):
         for w in words:
             NUMBER_WORDS[w] = n
 all_number_words = list(NUMBER_WORDS.keys())
-from functools import cmp_to_key
 all_number_words.sort(
     key=cmp_to_key(
         lambda x,y: ((len(y)>len(x) and 1) or (len(x)>len(y) and -1) or 0)

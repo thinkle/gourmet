@@ -4,8 +4,10 @@
 ## first, easy to maintain lists which can eventually be moved to
 ## files.
 
-from .abstractLang import AbstractLanguage
 from typing import Collection, List, Mapping
+
+from .abstractLang import AbstractLanguage
+
 
 class Language(AbstractLanguage):
 

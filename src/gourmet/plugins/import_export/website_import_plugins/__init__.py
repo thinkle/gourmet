@@ -1,10 +1,7 @@
-from . import about_dot_com_plugin
-from . import foodnetwork_plugin
-from . import allrecipes_plugin
-from . import ica_se_plugin
-from . import epicurious_plugin
-from . import nytimes_plugin
-from . import cooksillustrated_plugin
+from . import (about_dot_com_plugin, allrecipes_plugin,
+               cooksillustrated_plugin, epicurious_plugin, foodnetwork_plugin,
+               ica_se_plugin, nytimes_plugin)
+
 plugins = [about_dot_com_plugin.AboutDotComPlugin,
            foodnetwork_plugin.FoodNetworkPlugin,
            allrecipes_plugin.AllRecipesPlugin,

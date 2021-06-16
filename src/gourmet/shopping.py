@@ -1,8 +1,12 @@
 import sys
-from gourmet import convert
+import time
+import unittest
 from gettext import gettext as _
+
+from gourmet import convert
+
 from .gdebug import debug
-import unittest, time
+
 
 class Shopper:
     def __init__ (self, inglist):

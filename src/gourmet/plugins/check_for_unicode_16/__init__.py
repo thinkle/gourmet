@@ -1,6 +1,7 @@
 from gourmet.plugin import ToolPlugin
 from gourmet.prefs import Prefs
 
+
 class EnableUTF16Plugin (ToolPlugin):
     ui_string = ''
 

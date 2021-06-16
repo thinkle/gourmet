@@ -1,5 +1,6 @@
-from gourmet.plugin import PluginPlugin
 import re
+
+from gourmet.plugin import PluginPlugin
 
 from .state import WebsiteTestState
 
@@ -66,4 +67,3 @@ class AboutDotComPlugin (PluginPlugin):
                 webpage_importer.MenuAndAdStrippingWebParser.cut_menus(self)
 
         return AboutDotComWebParser
-

@@ -1,10 +1,9 @@
 from gettext import gettext as _
 
-name = 'gourmet'
 appname = _("Gourmet Recipe Manager")
-copyright = _("Copyright (c) 2004-2014 Thomas M. Hinkle. GNU GPL v2")
-version = "0.17.5"
-website = "http://thinkle.github.io/gourmet/"
+copyright = _("Copyright (c) 2004-2014 Thomas M. Hinkle and Contributors. GNU GPL v2")  # noqa
+version = "1.0.0"
+url = "http://thinkle.github.io/gourmet/"
 description = "Recipe Organizer and Shopping List Generator"
 long_description = _("""\
 Gourmet Recipe Manager is an application to store, organize and search recipes.
@@ -18,10 +17,10 @@ Features:
 * Supports linking images with recipes.
 * Can calculate nutritional information for recipes based on the ingredients.
 """)
-author = 'Thomas Mills Hinkle'
-author_email = 'Thomas_Hinkle@alumni.brown.edu'
-maintainer = 'Bernhard Reiter'
-maintainer_email = 'ockham@raz.or.at'
+author = "Thomas Mills Hinkle and Contributors"
+author_email = "Thomas_Hinkle@alumni.brown.edu"
+maintainer = "Bernhard Reiter"
+maintainer_email = "ockham@raz.or.at"
 authors = ["Thomas M. Hinkle <Thomas_Hinkle@alumni.brown.edu>",
            _("Roland Duhaime (Windows porting assistance)"),
            _("Daniel Folkinshteyn <nanotube@gmail.com> (Windows installer)"),
@@ -34,4 +33,4 @@ authors = ["Thomas M. Hinkle <Thomas_Hinkle@alumni.brown.edu>",
            ]
 artists = [_("Nyall Dawson (cookie icon)"),
            _("Kati Pregartner (splash screen image)")]
-license = 'GPL'
+license = "GPL"

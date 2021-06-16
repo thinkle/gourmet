@@ -1,7 +1,10 @@
+from gettext import gettext as _
+
+from gi.repository import Gtk
+
 from gourmet.plugin import PluginPlugin
 from gourmet.recipeManager import get_recipe_manager
-from gi.repository import Gtk
-from gettext import gettext as _
+
 
 class KeyEditorPlugin (PluginPlugin):
 
@@ -109,12 +112,11 @@ class KeyEditorPlugin (PluginPlugin):
         '''
         return True
 
-    def setup_edit_widget (self):
-        '''Return an edit widget to let users edit your data.
-        '''
-        self.cb = cb = Gtk.ComboBoxEntry()
+    def setup_edit_widget(self):
+        """Return an edit widget to let users edit your data"""
+        self.cb = cb = Gtk.ComboBox.new_with_entry()
         cb.set_model(self.shopcat_model)
-        cb.set_text_column(0)
+        cb.set_entry_text_column(0)
         entry = cb.get_child()
         completion = Gtk.EntryCompletion()
         completion.set_model(self.shopcat_model)

@@ -4,10 +4,10 @@ so to speak. These tests cannot access Gourmet internals, but they can
 simulate actual user clicks, etc.
 
 '''
-import unittest
-import time
-import tempfile
 import os.path
+import tempfile
+import time
+import unittest
 
 import dogtail
 import dogtail.procedural as dp

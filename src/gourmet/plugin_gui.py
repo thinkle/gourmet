@@ -1,11 +1,11 @@
-from typing import Any, List, Tuple
+from gettext import gettext as _
+from typing import Any, List, Tuple, Union
 from xml.sax.saxutils import escape
 
-from gettext import gettext as _
 from gi.repository import GObject, Gtk
 
-from .plugin_loader import DependencyError, MasterLoader
 from .gtk_extras import dialog_extras as de
+from .plugin_loader import DependencyError, MasterLoader
 
 
 class PluginChooser:
@@ -52,7 +52,7 @@ class PluginChooser:
             categorized[cat].append((module_name,plugin_set))
         return categorized
 
-    def make_list_store(self, plugin_list: List[Tuple[str, 'PluginSet']]) -> Gtk.ListStore:
+    def make_list_store(self, plugin_list: List[Tuple[str, Union['LegacyPlugin', 'Plugin']]]) -> Gtk.ListStore:
         ls = Gtk.ListStore(bool,  # plugin activated
                            GObject.TYPE_PYOBJECT)  # plugin and its info
         for module_name, plugin_set in plugin_list:

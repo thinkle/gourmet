@@ -1,7 +1,6 @@
 import argparse
-import argcomplete
-from . import version
 
+from . import version
 
 parser = argparse.ArgumentParser(prog='gourmet',
                                  description=version.description)
@@ -12,11 +11,6 @@ parser.add_argument('--database-url',
                     action='store',
                     dest='db_url',
                     help='Database uri formatted like driver://path/to/db',
-                    default='')
-parser.add_argument('--plugin-directory',
-                    action='store',
-                    dest='html_plugin_dir',
-                    help='Directory for webpage import filter plugins.',
                     default='')
 parser.add_argument('--use-threads',
                     action='store_const',
@@ -66,8 +60,6 @@ group.add_argument('-v',
                    action='count',
                    dest='debug',
                    help="Be verbose (extra v's increase the verbosity level)")
-
-argcomplete.autocomplete(parser)
 
 args = parser.parse_known_args()[0]
 print(f"args = {args}")

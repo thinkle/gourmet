@@ -15,8 +15,10 @@
 # Translator:
 # Last-updated: 2005-01-15 (07/18/05)
 
+from typing import Any, Collection, Mapping
+
 from .abstractLang import AbstractLanguage
-from typing import Collection, Mapping, Any
+
 
 class Language(AbstractLanguage):
 

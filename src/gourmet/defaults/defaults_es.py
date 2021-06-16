@@ -8,8 +8,10 @@
 # Translator: Thomas M. Hinkle
 # Last-updated: 4/27/05
 
+from typing import Collection, List, Mapping
+
 from .abstractLang import AbstractLanguage
-from typing import Collection, Mapping, List
+
 
 class Language(AbstractLanguage):
 

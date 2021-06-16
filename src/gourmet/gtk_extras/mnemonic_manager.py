@@ -1,5 +1,6 @@
 from gi.repository import Gdk, Gtk
 
+
 def collect_descendants (parent, descendants=None):
     """Return all descendants of parent widget.
 
@@ -315,11 +316,10 @@ class MnemonicManager:
 
 
 if __name__ == '__main__':
-    from gourmet import gglobals
-    import os.path
+    from pkgutil import get_data
     mm=MnemonicManager()
     ui = Gtk.Builder()
-    ui.add_from_file(os.path.join(gglobals.uibase,'app.ui'))
+    ui.add_from_string(get_data('gourmet', 'ui/app.ui').decode())
     mm.add_builder(ui)
     #tree = ui.get_widget('recTree')
     #rend = Gtk.CellRendererText()

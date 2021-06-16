@@ -1,5 +1,6 @@
 from gi.repository import Gtk
 
+
 class PageDrawer (Gtk.DrawingArea):
 
     def __init__(self, page_width=None, page_height=None,

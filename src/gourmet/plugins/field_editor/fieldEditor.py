@@ -1,11 +1,14 @@
+from gettext import gettext as _
+from gettext import ngettext
+from pkgutil import get_data
+
 from gi.repository import Gtk
-import os.path
-import gourmet.gglobals as gglobals
+
 import gourmet.convert as convert
+import gourmet.gglobals as gglobals
 from gourmet.gtk_extras import cb_extras as cb
 from gourmet.gtk_extras import dialog_extras as de
-from gettext import ngettext
-from gettext import gettext as _
+
 
 class FieldEditor:
     """A generic "value" editor for mucking about with the database.
@@ -17,7 +20,7 @@ class FieldEditor:
         self.field = None; self.other_field = None
         self.rd = rd; self.rg = rg
         self.ui = Gtk.Builder()
-        self.ui.add_from_file(os.path.join(gglobals.uibase,'valueEditor.ui'))
+        self.ui.add_from_string(get_data('gourmet', 'ui/valueEditor.ui').decode())
         self.__setup_widgets__()
         self.__setup_treeview__()
         self.ui.connect_signals({

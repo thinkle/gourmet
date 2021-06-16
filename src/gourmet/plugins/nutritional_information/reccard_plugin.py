@@ -1,10 +1,13 @@
-from gi.repository import Gtk, Pango
-from .nutritionLabel import NutritionLabel
-from .nutrition import NutritionInfoList, NutritionVapor
-#from gourmet.gglobals import gladeCustomHandlers
-from gourmet.plugin import RecDisplayModule, RecDisplayPlugin
 import os.path
 from gettext import gettext as _
+
+from gi.repository import Gtk, Pango
+
+#from gourmet.gglobals import gladeCustomHandlers
+from gourmet.plugin import RecDisplayModule, RecDisplayPlugin
+
+from .nutrition import NutritionInfoList, NutritionVapor
+from .nutritionLabel import NutritionLabel
 
 try:
     current_path = os.path.split(os.path.join(os.getcwd(),__file__))[0]
@@ -136,6 +139,3 @@ class NutritionDisplayModule (RecDisplayModule):
 class NutritionDisplayPlugin (RecDisplayPlugin):
 
     moduleKlass = NutritionDisplayModule
-
-
-

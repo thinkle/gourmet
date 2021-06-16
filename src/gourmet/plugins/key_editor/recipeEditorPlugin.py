@@ -1,9 +1,15 @@
-from gi.repository import GObject, Gtk, Pango
-from gourmet.plugin import RecEditorModule, RecEditorPlugin, IngredientControllerPlugin
-from gourmet.plugin_loader import PRE,POST
-from gourmet.reccard import IngredientEditorModule, RecRef
-from . import keyEditorPluggable
+from typing import Any, Dict, Optional
+
 from gettext import gettext as _
+
+from gi.repository import GObject, Gtk, Pango
+
+from gourmet.plugin import (IngredientControllerPlugin, RecEditorModule,
+                            RecEditorPlugin)
+from gourmet.plugin_loader import POST, PRE
+from gourmet.reccard import IngredientEditorModule, RecRef
+
+from . import keyEditorPluggable
 
 ING = 0
 ITM = 1
@@ -31,20 +37,22 @@ class IngredientKeyEditor (RecEditorModule):
     def setup (self):
         pass
 
-    def setup_main_interface (self):
+    def setup_main_interface(self):
         self.main = Gtk.VBox()
-        l = Gtk.Label()
-        l.set_markup('''<b>%s</b>\n<i>%s</i>'''%(
+        label = Gtk.Label()
+        label.set_markup('''<b>%s</b>\n<i>%s</i>''' % (
             _('Ingredient Keys'),
             _('Ingredient Keys are normalized ingredient names used for shopping lists and for calculations.')
             )
                      )
-        self.main.pack_start(l,expand=False,fill=False)
-        sw = Gtk.ScrolledWindow(); sw.set_policy(Gtk.PolicyType.AUTOMATIC,Gtk.PolicyType.AUTOMATIC)
+        self.main.pack_start(label, expand=False, fill=False, padding=0)
+        sw = Gtk.ScrolledWindow()
+        sw.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
         self.main.pack_start(sw, True, True, 0)
         self.extra_widget_table = Gtk.Table()
         ew_index = 1
-        self.main.pack_start(self.extra_widget_table,expand=False,fill=False)
+        self.main.pack_start(self.extra_widget_table, expand=False,
+                             fill=False, padding=0)
         self.tv = Gtk.TreeView()
         self.tv.get_selection().set_mode(Gtk.SelectionMode.MULTIPLE)
         self.tv.get_selection().connect('changed',
@@ -122,10 +130,9 @@ class IngredientKeyEditor (RecEditorModule):
                                                        instant_apply=False):
             self.tv.append_column(tvc)
 
-
-    def auto_wrap_columns (self):
+    def auto_wrap_columns(self):
         for col in self.tv.get_columns():
-            renderers = col.get_cell_renderers()
+            renderers = col.get_cells()
             for r in renderers:
                 if isinstance(r,Gtk.CellRendererText):
                     r.set_property('wrap-mode',Pango.WrapMode.WORD)
@@ -145,8 +152,8 @@ class IngredientKeyEditor (RecEditorModule):
         for key in self.rg.rd.key_search(item):
             mod.append((key,))
         renderer.set_property('model',mod)
-        renderer.set_property('text-column',0)
-        if isinstance(cbe,Gtk.ComboBoxEntry):
+        renderer.set_property('text-column', 0)
+        if isinstance(cbe, Gtk.ComboBoxText):
             entry = cbe.get_child()
             completion = Gtk.EntryCompletion()
             completion.set_model(mod); completion.set_text_column(0)
@@ -250,10 +257,14 @@ class KeyEditorIngredientControllerPlugin (IngredientControllerPlugin):
         pluggable.add_hook(POST,'get_extra_ingredient_attributes',
                            self.get_extra_ingattributes_post_hook)
 
-    def get_extra_ingattributes_post_hook (self, retval, ic, ing_obj, ingdict):
-        recipe_editor = ic.ingredient_editor_module.re
-        key_editor = [m for m in recipe_editor.modules if isinstance(m,IngredientKeyEditor)][0]
-        ingkey = key_editor.get_key_for_object(ing_obj)
-        if ingkey:
-            ingdict['ingkey'] = ingkey
+    def get_extra_ingattributes_post_hook (self,
+                                           retval: Optional[Any],
+                                           controller: 'IngredientController',
+                                           ing_obj: int,
+                                           ingdict: Dict[str, Any]) -> Dict[str, Any]:  # noqa
+        recipe_editor = controller.ingredient_editor_module.re
+        for module in recipe_editor.modules:
+            if isinstance(module, IngredientKeyEditor):
+                ingdict['ingkey'] = module.get_key_for_object(ing_obj)
+                break
         return ingdict

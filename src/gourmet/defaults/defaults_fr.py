@@ -15,8 +15,10 @@
 # Translator: Luc Charest.
 # Last-updated: 2005-07-18 (07/18/05)
 
-from .abstractLang import AbstractLanguage
 from typing import Collection, Mapping
+
+from .abstractLang import AbstractLanguage
+
 
 class Language(AbstractLanguage):
 

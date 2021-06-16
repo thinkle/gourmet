@@ -1,36 +1,41 @@
 import gc
-from typing import Any, Callable, Dict, List, Optional, Tuple
 import os.path
-from pathlib import Path
 import webbrowser
-
+import xml.sax.saxutils
 from gettext import gettext as _
+from pathlib import Path
+from pkgutil import get_data
+from typing import Any, Callable, Dict, List, Optional, Tuple
+
 from gi.repository import Gdk, GdkPixbuf, GLib, GObject, Gtk, Pango
 from PIL import Image
-import xml.sax.saxutils
 
-from gourmet import convert, defaults, prefs, plugin_loader, timeScanner, Undo
+from gourmet import Undo, convert, defaults
+from gourmet import image_utils as iu
+from gourmet import plugin_loader, prefs, timeScanner
 from gourmet.exporters.exportManager import ExportManager
 from gourmet.exporters.printer import PrintManager
-
 from gourmet.gdebug import debug
 from gourmet.gglobals import (FLOAT_REC_ATTRS, INT_REC_ATTRS, REC_ATTR_DIC,
-                              REC_ATTRS, doc_base, uibase, imagedir)
-from gourmet.gtk_extras import (  # noqa: imports needed for glade
-    fix_action_group_importance, mnemonic_manager, ratingWidget,
-    validation, WidgetSaver)
+                              REC_ATTRS)
+from gourmet.gtk_extras import \
+    WidgetSaver  # noqa: imports needed for glade; noqa: imports needed for glade
+from gourmet.gtk_extras import validation  # noqa: imports needed for glade
 from gourmet.gtk_extras import cb_extras as cb
 from gourmet.gtk_extras import dialog_extras as de
+from gourmet.gtk_extras import (fix_action_group_importance, mnemonic_manager,
+                                ratingWidget)
+from gourmet.gtk_extras import treeview_extras as te
 from gourmet.gtk_extras.dialog_extras import (UserCancelledError,
                                               show_amount_error)
 from gourmet.gtk_extras.pango_buffer import PangoBuffer
-from gourmet.gtk_extras import treeview_extras as te
-
-from gourmet import image_utils as iu
 from gourmet.importers.importer import parse_range
 from gourmet.plugin import (IngredientControllerPlugin, RecDisplayPlugin,
                             RecEditorModule, RecEditorPlugin, ToolPlugin)
+from gourmet.plugins.clipboard_exporter import ClipboardExporter
 from gourmet.recindex import RecIndex
+
+from .image_utils import load_pixbuf_from_resource
 
 
 def find_entry(w) -> Optional[Gtk.Entry]:
@@ -62,7 +67,7 @@ class RecCard:
         self.__rec_editor: Optional[RecEditor] = None
         self.__rec_display: Optional[RecCardDisplay] = None
         self.__new: bool = True if recipe is None else False
-        self.__current_rec: 'RowProxy' = recipe if recipe else rec_gui.rd.new_rec()
+        self.__current_rec: 'RowProxy' = recipe if recipe else rec_gui.rd.new_rec()  # noqa
 
         self.conf = []  # This list is unused, and should be refactored out
 
@@ -148,7 +153,7 @@ class RecCardDisplay (plugin_loader.Pluggable):
           <menu name="Recipe" action="Recipe">
             <menuitem action="Export"/>
             <menuitem action="ShopRec"/>
-            <!-- <menuitem action="Email"/> -->
+            <menuitem action="CopyRecipe"/>
             <menuitem action="Print"/>
             <separator/>
             <menuitem action="Delete"/>
@@ -180,8 +185,10 @@ class RecCardDisplay (plugin_loader.Pluggable):
                        'category', 'instructions', 'modifications']
 
     def __init__ (self, reccard, recGui, recipe=None):
-        self.reccard = reccard; self.rg = recGui; self.current_rec = recipe
-        self.mult = 1 # parameter
+        self.reccard = reccard
+        self.rg = recGui
+        self.current_rec = recipe
+        self.mult = 1  # parameter
         self.conf: List[Gtk.Widget] = []
         self.prefs = prefs.Prefs.instance()
         self.setup_ui()
@@ -236,7 +243,10 @@ class RecCardDisplay (plugin_loader.Pluggable):
             ('Preferences',Gtk.STOCK_PREFERENCES,None,
              None,None,self.preferences_cb),
             ('Help',Gtk.STOCK_HELP,_('_Help'),
-             None,None,lambda *args: de.show_faq(os.path.join(doc_base,'FAQ'),jump_to='Entering and Editing recipes')),
+             None,None,
+             lambda *args: de.show_faq(parent=self.window,
+                                       jump_to='Entering and Editing recipes')
+            ),
             ]
                                                 )
         self.recipeDisplayActionGroup.add_toggle_actions([
@@ -248,8 +258,8 @@ class RecCardDisplay (plugin_loader.Pluggable):
                                                        )
         self.recipeDisplayFuturePluginActionGroup = Gtk.ActionGroup(name='RecipeDisplayFuturePluginActions')  # noqa
         self.recipeDisplayFuturePluginActionGroup.add_actions([
-            #('Email',None,_('E-_mail recipe'),
-            # None,None,self.email_cb),
+            ('CopyRecipe', Gtk.STOCK_COPY, _('Copy to clipboard'),
+             '<Control>C', None, self.copy_cb),
             ('Print',Gtk.STOCK_PRINT,_('Print recipe'),
              '<Control>P',None,self.print_cb),
             ('ShopRec', 'add-to-shopping-list', _('Add to Shopping List'),
@@ -262,7 +272,7 @@ class RecCardDisplay (plugin_loader.Pluggable):
 
     def setup_ui (self):
         self.ui = Gtk.Builder()
-        self.ui.add_from_file(os.path.join(uibase,'recCardDisplay.ui'))
+        self.ui.add_from_string(get_data('gourmet', 'ui/recCardDisplay.ui').decode())
 
         self.ui.connect_signals({
             'shop_for_recipe':self.shop_for_recipe_cb,
@@ -325,7 +335,8 @@ class RecCardDisplay (plugin_loader.Pluggable):
             widget.set_label(t)
         # Flow our image...
         image_width = int(xsize * 0.75)
-        if not hasattr(self,'orig_pixbuf') or not self.orig_pixbuf: return
+        if not hasattr(self, 'orig_pixbuf') or not self.orig_pixbuf:
+            return
         pb = self.imageDisplay.get_pixbuf()
         iwidth = pb.get_width()
         origwidth = self.orig_pixbuf.get_width()
@@ -359,7 +370,7 @@ class RecCardDisplay (plugin_loader.Pluggable):
     # Main GUI setup
     def setup_main_window (self):
         self.window = Gtk.Window()
-        self.window.set_icon_from_file(os.path.join(imagedir,'reccard.png'))
+        self.window.set_icon(load_pixbuf_from_resource('reccard.png'))
         self.window.connect('delete-event',self.hide)
         self.conf.append(WidgetSaver.WindowSaver(self.window,
                                                  self.prefs.get('reccard_window_%s'%self.current_rec.id,
@@ -577,22 +588,22 @@ class RecCardDisplay (plugin_loader.Pluggable):
         self.reccard.hide()
         return True
 
-    # Future plugin callbacks
-    # def email_cb (self, *args):
-#         if self.reccard.edited:
-#             if de.getBoolean(label=_("You have unsaved changes."),
-#                              sublabel=_("Apply changes before e-mailing?")):
-#                 self.saveEditsCB()
-#         from exporters import recipe_emailer
-#         d=recipe_emailer.EmailerDialog([self.current_rec],
-#                                        self.rg.rd, self.prefs, self.rg.conv)
-#         d.setup_dialog()
-#         d.email()
-
-    def print_cb (self, *args):
+    def copy_cb(self, *args):
+        """Copy a recipe and its image to the clipboard."""
         if self.reccard.edited:
             if de.getBoolean(label=_("You have unsaved changes."),
-                             sublabel=_("Apply changes before printing?")):
+                             sublabel=_("Save changes before copying?")):
+                self.saveEditsCB()
+
+        ingredients = self.rg.rd.get_ings(self.current_rec.id)
+        # The exporter can do several recipes at once, hence the list of tuples.
+        ce = ClipboardExporter([(self.current_rec, ingredients)])
+        ce.export()
+
+    def print_cb(self, *args):
+        if self.reccard.edited:
+            if de.getBoolean(label=_("You have unsaved changes."),
+                             sublabel=_("Save changes before printing?")):
                 self.saveEditsCB()
         printManager = PrintManager.instance()
         printManager.print_recipes(
@@ -634,9 +645,7 @@ class RecCardDisplay (plugin_loader.Pluggable):
     def forget_remembered_optional_ingredients (self):
         pass
 
-    def offer_url (self, label, url, from_thread=False):
-        if from_thread:
-            gt.gtk_enter()
+    def offer_url (self, label, url):
         if hasattr(self,'progress_dialog'):
             self.hide_progress_dialog()
         # Clear existing messages...
@@ -645,16 +654,16 @@ class RecCardDisplay (plugin_loader.Pluggable):
         # Add new message
         l = Gtk.Label()
         l.set_markup(label)
-        l.connect('activate-link',lambda lbl, uri: webbrowser.open_new_tab(uri))
+        l.connect('activate-link', lambda lbl,
+                  uri: webbrowser.open_new_tab(uri))
         infobar = Gtk.InfoBar()
         infobar.set_message_type(Gtk.MessageType.INFO)
         infobar.get_content_area().add(l)
         infobar.add_button(Gtk.STOCK_CLOSE, Gtk.ResponseType.CLOSE)
-        infobar.connect('response', lambda ib, response_id: self.messagebox.hide())
+        infobar.connect('response',
+                        lambda ib, response_id: self.messagebox.hide())
         self.messagebox.pack_start(infobar, True, True, 0)
         self.messagebox.show_all()
-        if from_thread:
-            gt.gtk_leave()
 
 
 class IngredientDisplay:
@@ -946,7 +955,7 @@ class RecEditor(WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
 
     def setup_main_interface (self):
         self.window = Gtk.Window()
-        self.window.set_icon_from_file(os.path.join(imagedir,'reccard_edit.png'))
+        self.window.set_icon(load_pixbuf_from_resource('reccard_edit.png'))
         title = ((self.current_rec and self.current_rec.title) or _('New Recipe')) + ' (%s)'%_('Edit')
         self.window.set_title(title)
         self.window.connect('delete-event',
@@ -1023,10 +1032,11 @@ class RecEditor(WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
         self.rg.rd.update_hashes(self.current_rec)
         self.rg.rmodel.update_recipe(self.current_rec)
         if 'title' in newdict:
-            self.window.set_title("%s %s"%(self.edit_title,self.current_rec.title.strip()))
+            self.window.set_title(f'{self.edit_title} '
+                                  f'{self.current_rec.title.strip()}')
         self.set_edited(False)
         self.reccard.new = False
-        self.reccard.update_recipe(self.current_rec) # update display (if any)
+        self.reccard.update_recipe(self.current_rec)  # update display (if any)
         self.rg.update_go_menu()
         self.rg.rd.save()
 
@@ -1108,7 +1118,7 @@ class IngredientEditorModule (RecEditorModule):
 
     def setup_main_interface (self):
         self.ui = Gtk.Builder()
-        self.ui.add_from_file(os.path.join(uibase,'recCardIngredientsEditor.ui'))
+        self.ui.add_from_string(get_data('gourmet', 'ui/recCardIngredientsEditor.ui').decode())
         self.main = self.ui.get_object('ingredientsNotebook')
         self.main.unparent()
         self.ingtree_ui = IngredientTreeUI(self, self.ui.get_object('ingTree'))
@@ -1170,9 +1180,8 @@ class IngredientEditorModule (RecEditorModule):
         d=self.rg.rd.parse_ingredient(line, conv=self.rg.conv)
         if d:
             if 'rangeamount' in d:
-                d['amount'] = self.rg.rd._format_amount_string_from_amount(
-                    (d['amount'],d['rangeamount'])
-                    )
+                d['amount'] = self.rg.rd.format_amount_string_from_amount(
+                    (d['amount'], d['rangeamount']))
                 del d['rangeamount']
             elif 'amount' in d:
                 d['amount'] = convert.float_to_frac(d['amount'])
@@ -1341,8 +1350,7 @@ class DescriptionEditorModule (TextEditor, RecEditorModule):
 
     def setup_main_interface (self):
         self.ui = Gtk.Builder()
-        self.ui.add_from_file(os.path.join(uibase,
-                                           'recCardDescriptionEditor.ui'))
+        self.ui.add_from_string(get_data('gourmet', 'ui/recCardDescriptionEditor.ui').decode())
         self.imageBox = ImageBox(self)
         self.init_recipe_widgets()
         self.ui.connect_signals({
@@ -2970,7 +2978,7 @@ class RecSelector (RecIndex):
     def __init__(self, recGui, ingEditor):
         self.prefs = prefs.Prefs.instance()
         self.ui=Gtk.Builder()
-        self.ui.add_from_file(os.path.join(uibase,'recipe_index.ui'))
+        self.ui.add_from_string(get_data('gourmet', 'ui/recipe_index.ui').decode())
         self.rg=recGui
         self.ingEditor = ingEditor
         self.re = self.ingEditor.re

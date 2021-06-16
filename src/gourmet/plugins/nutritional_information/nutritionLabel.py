@@ -1,6 +1,8 @@
-from gi.repository import Gdk, GObject, Gtk, Pango
 from gettext import gettext as _
-import gourmet.defaults
+
+from gi.repository import Gdk, GObject, Gtk, Pango
+
+from gourmet.defaults import defaults as _defaults
 
 MAJOR = 0
 MINOR = 1
@@ -174,7 +176,6 @@ class NutritionLabel (Gtk.VBox):
         Gtk.VBox.__init__(self)
         #,2,len(NUT_LAYOUT)+start_at)
         self.show()
-        self.tt = Gtk.Tooltips()
         self.yieldLabel = Gtk.Label()
         self.set_yields(0)
         self.nutrition_display_info = []
@@ -184,8 +185,8 @@ class NutritionLabel (Gtk.VBox):
         self.yieldLabel.set_alignment(0,0.5)
         self.missingLabel = self.make_missing_label()
         #self.attach(self.missingLabel,0,2,1,2)
-        self.pack_start(self.missingLabel,fill=False,expand=False)
-        self.pack_start(self.yieldLabel,fill=False,expand=False)
+        self.pack_start(self.missingLabel, False, False, 0)
+        self.pack_start(self.yieldLabel, False, False, 0)
         # setup daily value button to display calories/day assumption
         # and to allow changing it via a nifty little button
         dvb,eb = self.make_dv_boxes()
@@ -193,17 +194,16 @@ class NutritionLabel (Gtk.VBox):
         self.cal_per_day_box = Gtk.HBox();
         self.cal_per_day_box.show()
         vb = Gtk.VBox(); vb.show()
-        vb.pack_start(dvb,fill=False,expand=False)
-        vb.pack_start(eb,fill=False,expand=False)
+        vb.pack_start(dvb, False, False, 0)
+        vb.pack_start(eb, False, False, 0)
         self.cal_per_day_box.pack_end(vb, True, True, 0)
         self.pack_start(self.cal_per_day_box, True, True, 0)
-        self.tt.enable()
         self.main_table = Gtk.Table(); self.main_table.show()
         self.main_table.set_col_spacings(18)
         self.pack_start(self.main_table, True, True, 0)
         self.sub_table = Gtk.Table(); self.sub_table.show()
         self.sub_table.set_col_spacings(18)
-        self.nutexpander = Gtk.Expander(_('Vitamins and minerals'))
+        self.nutexpander = Gtk.Expander(label=_('Vitamins and minerals'))
         self.nutexpander.show()
         self.nutexpander.add(self.sub_table)
         self.pack_start(self.nutexpander, True, True, 0)
@@ -227,10 +227,11 @@ class NutritionLabel (Gtk.VBox):
                 elif typ==TINY:
                     permanentl.set_markup('  <span size="smaller">'+label+'</span>')
                 if self.pressable:
-                    b = Gtk.Button(); b.add(permanentl)
+                    b = Gtk.Button()
+                    b.add(permanentl)
                     b.set_relief(Gtk.ReliefStyle.NONE)
                     b.connect('clicked',self.toggle_label,label,name,properties,unit)
-                    hb.pack_start(b,expand=False)
+                    hb.pack_start(b, False, True, 0)
                     self.toggles[name] = b
                 else:
                     hb.pack_start(permanentl, True, True, 0)
@@ -277,9 +278,9 @@ class NutritionLabel (Gtk.VBox):
                 if b != button:
                     orig = lab.get_label()
                     if orig.find(self.active_button_markup[0])==0:
-                        lab.set_label(orig[len(self.active_button_markup[0]):(- len(self.active_button_markup[1]))])
+                        lab.set_markup_with_mnemonic(orig[len(self.active_button_markup[0]):(- len(self.active_button_markup[1]))])
                 else:
-                    lab.set_label(self.active_button_markup[0]+lab.get_label()+self.active_button_markup[1])
+                    lab.set_markup_with_mnemonic(self.active_button_markup[0]+lab.get_label()+self.active_button_markup[1])
             self.active_name = name
             self.active_unit = unit
             self.active_label = label
@@ -291,7 +292,7 @@ class NutritionLabel (Gtk.VBox):
             lab = button.get_children()[0]
             orig = lab.get_label()
             if orig.find(self.active_button_markup[0])==0:
-                lab.set_label(orig[len(self.active_button_markup[0]):(- len(self.active_button_markup[1]))])
+                lab.set_markup_with_mnemonic(orig[len(self.active_button_markup[0]):(- len(self.active_button_markup[1]))])
         self.emit('label-changed')
         self.__toggling__ = False
 
@@ -338,9 +339,9 @@ class NutritionLabel (Gtk.VBox):
         i = Gtk.Image()
         i.set_from_stock(Gtk.STOCK_EDIT,Gtk.IconSize.MENU)
         self.edit_button.add(i)
-        hb.pack_end(dvLabel,fill=False,expand=False)
+        hb.pack_end(dvLabel, False, False, 0)
         self.edit_button.set_alignment(1,0.5)
-        hb.pack_end(self.edit_button,fill=False,expand=False,padding=6)
+        hb.pack_end(self.edit_button, False, False, 6)
         self.edit_button.show_all()
         self.set_edit_tip()
         self.edit_button.connect('clicked',self.toggle_edit_calories_per_day)
@@ -370,10 +371,9 @@ class NutritionLabel (Gtk.VBox):
         return hb,self.cpd_editor
 
     def set_edit_tip (self):
-        self.tt.set_tip(
-            self.edit_button,
+        self.edit_button.set_tooltip_text(
             _("Percentage of recommended daily value based on %i calories per day. Click to edit number of calories per day.")%self.calories_per_day
-            )
+        )
 
     def toggle_edit_calories_per_day (self, b):
         if b.get_active():
@@ -461,7 +461,7 @@ class NutritionLabel (Gtk.VBox):
         if self.custom_label:
             self.yieldLabel.set_markup('<b>'+self.custom_label+'</b>')
         elif self.yields:
-            singular_unit = gourmet.defaults.get_pluralized_form(self.yield_unit,1)
+            singular_unit = _defaults.get_pluralized_form(self.yield_unit,1)
             self.yieldLabel.set_markup('<b>'+_('Amount per %s'%singular_unit)+'</b>')
         else:
             self.yieldLabel.set_markup('<b>'+_('Amount per recipe')+'</b>')
@@ -548,8 +548,8 @@ if __name__ == '__main__':
     vb=Gtk.VBox()
     w.add(vb)
     hb = Gtk.HBox()
-    vb.pack_start(hb,expand=False,fill=False)
-    hb.pack_start(nl,expand=False,fill=False)
+    vb.pack_start(hb, False, False, 0)
+    hb.pack_start(nl, False, False, 0)
     vb.show()
     b = Gtk.Button('Test me')
     vb.add(b)
@@ -565,5 +565,3 @@ if __name__ == '__main__':
     w.show()
     w.connect('delete-event',lambda *args: Gtk.main_quit())
     Gtk.main()
-
-

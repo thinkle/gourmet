@@ -1,8 +1,11 @@
-from . import convertGui
-from gi.repository import Gtk
 from gettext import gettext as _
 
+from gi.repository import Gtk
+
 from gourmet.plugin import ToolPlugin
+
+from . import convertGui
+
 
 class ConverterPlugin (ToolPlugin):
     menu_items = '''<placeholder name="StandaloneTool">

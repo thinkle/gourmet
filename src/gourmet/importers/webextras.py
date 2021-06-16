@@ -1,5 +1,11 @@
-import socket, gourmet.threadManager, urllib.request, urllib.parse, urllib.error
+import socket
+import urllib.error
+import urllib.parse
+import urllib.request
 from gettext import gettext as _
+
+import gourmet.threadManager
+
 DEFAULT_SOCKET_TIMEOUT=45.0
 URLOPEN_SOCKET_TIMEOUT=15.0
 
@@ -84,4 +90,3 @@ def get_url (url, suspendableThread):
     else:
         sock = url
         return read_socket_w_progress(sock,suspendableThread,_('Retrieving file'))
-

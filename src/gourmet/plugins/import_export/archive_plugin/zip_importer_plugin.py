@@ -1,8 +1,11 @@
-from gourmet.plugin import ImporterPlugin
-from gourmet.importers.importManager import ImportFileList
-from .zip_readers import archive_to_filelist
-from gettext import gettext as _
 import fnmatch
+from gettext import gettext as _
+
+from gourmet.importers.importManager import ImportFileList
+from gourmet.plugin import ImporterPlugin
+
+from .zip_readers import archive_to_filelist
+
 
 class ArchiveImporterPlugin (ImporterPlugin):
 

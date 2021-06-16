@@ -1,7 +1,12 @@
+import array
+import os.path
+import re
+import string
+
+from gourmet import check_encodings, convert
+from gourmet.gdebug import TimeAction, debug
 from gourmet.importers import importer, plaintext_importer
-import re, os.path, string, array
-from gourmet import convert, check_encodings
-from gourmet.gdebug import debug,TimeAction
+
 #from gourmet.gglobals import gt
 
 class mmf_constants:

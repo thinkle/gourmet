@@ -1,7 +1,11 @@
 # -*- coding: utf-8 -*-
-import mealmaster_importer, plaintext_importer, re
+import re
+
 import gourmet.convert as convert
-from gourmet.gdebug import debug, TimeAction
+import mealmaster_importer
+import plaintext_importer
+from gourmet.gdebug import TimeAction, debug
+
 
 class rezconf_constants (mealmaster_importer.mmf_constants):
     def __init__ (self):
@@ -64,5 +68,3 @@ class rezkonv_importer (mealmaster_importer.mmf_importer):
             return True
         if len(l) >= 5 and self.blank_matcher.match(l[0:2]):
             return True
-
-

@@ -1,8 +1,12 @@
-from . import exporter
-import sys, xml.sax.saxutils
+import base64
+import sys
+import xml.sax.saxutils
+
 from gourmet.gdebug import debug
 from gourmet.gglobals import NAME_TO_ATTR
-import base64
+
+from . import exporter
+
 
 class rec_to_xml (exporter.exporter):
     def __init__ (self, rd, r, out,attdics={}):

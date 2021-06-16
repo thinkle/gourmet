@@ -65,4 +65,3 @@ def generate(BaseParser):
                 BaseParser.preparse(self)
 
     return SchemaOrgParser
-

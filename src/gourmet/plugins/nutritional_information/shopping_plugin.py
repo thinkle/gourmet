@@ -1,10 +1,15 @@
-from gourmet.plugin import ShoppingListPlugin
-from gi.repository import Gtk
-import gourmet.recipeManager, gourmet.GourmetRecipeManager
-from gourmet.prefs import Prefs
-from .nutritionLabel import NutritionLabel
 import os.path
 from gettext import gettext as _
+
+from gi.repository import Gtk
+
+import gourmet.GourmetRecipeManager
+import gourmet.recipeManager
+from gourmet.plugin import ShoppingListPlugin
+from gourmet.prefs import Prefs
+
+from .nutritionLabel import NutritionLabel
+
 
 class ShoppingNutritionalInfoPlugin (ShoppingListPlugin):
 
@@ -85,8 +90,3 @@ class ShoppingNutritionalInfoPlugin (ShoppingListPlugin):
     def response_cb (self, *args):
         # We only allow one response -- closing the window!
         self.nutrition_window.hide()
-
-
-
-
-

@@ -1,6 +1,8 @@
-from gourmet.plugin import ExporterPlugin
-from . import pdf_exporter
 from gettext import gettext as _
+
+from gourmet.plugin import ExporterPlugin
+
+from . import pdf_exporter
 
 PDF = _('PDF (Portable Document Format)')
 

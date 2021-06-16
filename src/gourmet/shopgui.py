@@ -1,18 +1,22 @@
 #!/usr/bin/env python
-from gi.repository import Gdk, GObject, Gtk
-import sys, os.path, time, os, string
-from . import recipeManager, convert, reccard, prefs
-from .gtk_extras import WidgetSaver, mnemonic_manager
-from .gtk_extras import dialog_extras as de
-from .gtk_extras import treeview_extras as te
-from .gtk_extras import fix_action_group_importance
-from .exporters.printer import PrintManager
-from .gdebug import debug
+import os
+import os.path
+import string
+import sys
+import time
 from gettext import gettext as _
-from .gglobals import doc_base
+
+from gi.repository import Gdk, GObject, Gtk
+
 # from nutrition.nutritionLabel import NutritionLabel
 # from nutrition.nutrition import NutritionInfoList
-from . import plugin_loader, plugin
+from . import convert, plugin, plugin_loader, prefs, reccard, recipeManager
+from .exporters.printer import PrintManager
+from .gdebug import debug
+from .gtk_extras import WidgetSaver
+from .gtk_extras import dialog_extras as de
+from .gtk_extras import fix_action_group_importance, mnemonic_manager
+from .gtk_extras import treeview_extras as te
 from .shopping import ShoppingList
 
 ui_string = '''
@@ -679,7 +683,8 @@ class ShopGui (ShoppingList, plugin_loader.Pluggable, IngredientAndPantryList):
              ),
             ('File',None,_('_File')),
             ('Help',Gtk.STOCK_HELP,_('_Help'),None,None,
-             lambda *args: de.show_faq(os.path.join(doc_base,'FAQ'),jump_to='Shopping')),
+             lambda *args: de.show_faq(parent=self.w, jump_to='Shopping')
+            ),
             ('HelpMenu',None,_('_Help')),
         ])
         self.mainActionGroup.add_toggle_actions([

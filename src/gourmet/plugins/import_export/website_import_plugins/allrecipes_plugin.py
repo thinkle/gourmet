@@ -30,4 +30,3 @@ class AllRecipesPlugin (PluginPlugin):
                     self.preparsed_elements.append((yields, "yields"))
 
         return AllRecipesParser
-

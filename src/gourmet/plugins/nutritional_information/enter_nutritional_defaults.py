@@ -1,17 +1,20 @@
-from gourmet.defaults import lang as defaults
 from gi.repository import Gtk
-ingredients_to_check = list(defaults.keydic.keys())
-from .nutritionDruid import NutritionInfoDruid
-from .nutrition import NutritionData
+
 import gourmet.convert
-from gourmet.recipeManager import RecipeManager,dbargs
+from gourmet.defaults import lang as defaults
+from gourmet.recipeManager import RecipeManager, dbargs
+
+from . import nutritionGrabberGui
+from .nutrition import NutritionData
+from .nutritionDruid import NutritionInfoDruid
+
+ingredients_to_check = list(defaults.keydic.keys())
 
 # This is intended to be run as a simple script to get nutritional
 # equivalents which can then be copied into DEFAULTS for your locale.
 
 rd = RecipeManager(**dbargs)
 
-from . import nutritionGrabberGui
 
 try:
     nutritionGrabberGui.check_for_db(rd)
@@ -48,4 +51,3 @@ with open(ofi,'w') as outfi:
         else:
             print('No information for ',k)
     outfi.write('}')
-

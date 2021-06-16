@@ -1,7 +1,11 @@
-import xml.sax, re, sys, xml.sax.saxutils
-from gourmet.importers import xml_importer
-from gourmet.gdebug import debug
 import base64
+import re
+import sys
+import xml.sax
+import xml.sax.saxutils
+
+from gourmet.gdebug import debug
+from gourmet.importers import xml_importer
 
 unquoteattr = xml_importer.unquoteattr
 

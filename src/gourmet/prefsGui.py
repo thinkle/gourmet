@@ -1,8 +1,10 @@
+from pkgutil import get_data
+
 from gi.repository import Gtk
-import os.path
-from . import gglobals
+
+from . import plugin, plugin_loader
 from .gtk_extras import optionTable
-from . import plugin_loader, plugin
+
 
 class PreferencesGui (plugin_loader.Pluggable):
     """The glue between our preferences dialog UI and our prefs modules.
@@ -20,8 +22,6 @@ class PreferencesGui (plugin_loader.Pluggable):
     def __init__ (
         self,
         prefs,
-        uifile=os.path.join(gglobals.uibase,
-                            'preferenceDialog.ui'),
         radio_options={'shop_handle_optional':{'optional_ask':0,
                                                'optional_add':1,
                                                'optional_dont_add':-1
@@ -43,8 +43,6 @@ class PreferencesGui (plugin_loader.Pluggable):
         ):
         """Set up our PreferencesGui
 
-        uifile points us to our UI file
-
         radio_options is a dictionary of preferences controlled by radio buttons.
                       {preference_name: {radio_widget: value,
                                          radio_widget: value, ...}
@@ -58,7 +56,7 @@ class PreferencesGui (plugin_loader.Pluggable):
 
         self.prefs = prefs
         self.ui = Gtk.Builder()
-        self.ui.add_from_file(uifile)
+        self.ui.add_from_string(get_data('gourmet', 'ui/preferenceDialog.ui').decode())
         self.notebook = self.ui.get_object('notebook')
         # pref name: {'buttonName':VALUE,...}
         self.radio_options = radio_options

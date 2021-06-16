@@ -2,6 +2,7 @@
 A plugin that tries to import recipes from the ica.se site
 """
 from gourmet.plugin import PluginPlugin
+
 from . import schema_org_parser
 from .state import WebsiteTestState
 
@@ -49,4 +50,3 @@ class IcaSePlugin (PluginPlugin):
                         self.preparsed_elements.append((category, "category"))
 
         return IcaSeParser
-

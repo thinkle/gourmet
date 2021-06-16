@@ -5,13 +5,13 @@ recipes.
 """
 import os.path
 import time
+from gettext import gettext as _
 from typing import Union
 
-from gettext import gettext as _
 from gi.repository import Gtk, Pango
 
 from gourmet import convert, gglobals, recipeIdentifier, recipeManager
-from gourmet.gtk_extras import ratingWidget, mnemonic_manager, dialog_extras
+from gourmet.gtk_extras import dialog_extras, mnemonic_manager, ratingWidget
 
 NEWER = 1
 OLDER = 2
@@ -626,6 +626,3 @@ if __name__ == '__main__':
     #dups = rd.find_complete_duplicates()
     #for d in dups[5:]:
     #    test_merger(rd,d)
-
-
-

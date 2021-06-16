@@ -12,17 +12,7 @@ of import and export plugins that let Gourmet read and write recipes in various
 formats.
 
 # Requirements and Installation
-**We strongly recommend that you make a backup of your recipe database.**  
-As Gourmet is still in early stage of (re)development, make a backup of your
-recipe database, typically found under `$HOME/.gourmet/recipe.db`:
-```sh
-cp $HOME/.gourmet/recipes.db $HOME/.gourmet/recipes.db.bak
-```
-
 Installation instruction are found in [INSTALL.md](INSTALL.md).
-
-*Note: pdf support is not enabled in Flatpak. PDF and Print exports are thus
-not available.*
 
 # Issues and Contributions
 See the [contribution guide](CONTRIBUTING.md).

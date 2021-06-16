@@ -1,9 +1,12 @@
-from gi.repository import Gtk
-from . import databaseGrabber
-import os, os.path, time
-import gourmet.gtk_extras.dialog_extras as de
-from gourmet.gglobals import data_dir
+import time
 from gettext import gettext as _
+
+from gi.repository import Gtk
+
+import gourmet.gtk_extras.dialog_extras as de
+
+from . import databaseGrabber
+
 
 class DatabaseGrabberGui (databaseGrabber.DatabaseGrabber):
     def __init__ (self, db):
@@ -35,7 +38,7 @@ class DatabaseGrabberGui (databaseGrabber.DatabaseGrabber):
                                             pause=self.pausecb,
                                             stop=self.stopcb)
         self.progdialog.show()
-        self.grab_data(data_dir)
+        self.grab_data()
         self.show_progress(1,_('Nutritonal database import complete!'))
         self.progdialog.set_response_sensitive(Gtk.ResponseType.OK,True)
         self.progdialog.hide()
@@ -63,12 +66,14 @@ class DatabaseGrabberGui (databaseGrabber.DatabaseGrabber):
         return databaseGrabber.DatabaseGrabber.get_abbrev_from_url(self)
 
 def check_for_db (db):
+    if not hasattr(db, 'nutrition_table'):
+        return
     if db.fetch_len(db.nutrition_table) < 10:
         print('Grabbing nutrition database!')
         dgg = DatabaseGrabberGui(db)
         dgg.load_db()
     # Check if we have choline in our DB... butter (1123) has choline...
-    elif not db.fetch_one(db.nutrition_table,ndbno=1123).choline:
+    elif not db.fetch_one(db.nutrition_table, ndbno=1123).choline:
         dgg = DatabaseGrabberGui(db)
         dgg.load_db()
 

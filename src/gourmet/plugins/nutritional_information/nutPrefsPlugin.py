@@ -1,7 +1,9 @@
+from gettext import gettext as _
+
+from gi.repository import Gtk
+
 from gourmet.plugin import PrefsPlugin
 from gourmet.prefs import Prefs
-from gi.repository import Gtk
-from gettext import gettext as _
 
 partialp = 'include_partial_nutritional_info'
 includep = 'include_nutritional_info_in_export'
@@ -21,8 +23,8 @@ class NutritionPrefs (PrefsPlugin):
         self.partial_tb.set_active(self.prefs.get(partialp,False))
         self.include_tb.connect('toggled',self.toggle_cb)
         self.partial_tb.connect('toggled',self.toggle_cb)
-        self.widget.pack_start(self.include_tb, expand=False, fill=False)
-        self.widget.pack_start(self.partial_tb, expand=False, fill=False)
+        self.widget.pack_start(self.include_tb, False, False, 0)
+        self.widget.pack_start(self.partial_tb, False, False, 0)
         self.widget.set_border_width(12)
         self.widget.set_spacing(6)
         self.widget.show_all()
