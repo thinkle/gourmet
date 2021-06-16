@@ -1,7 +1,23 @@
 # Installation
-Gourmet is currently available in the form of Flatpak and Python wheel.
+Gourmet is currently available in the form of Flatpak, AppImage, and Python wheel.
 We recommend that you install it from the Flatpak.
 In both cases, you will need an internet connection.
+
+## AppImage
+Gourmet is tentatively packaged as an AppImage.  
+This means that we're evaluating AppImages for the long run, but you may encounter some issues.  
+Please report any problems!  
+
+The AppImage is available from the [release page]().
+Download the AppImage and mark it as executable:
+```sh
+chmod +x Gourmet-c3ece056.AppImage
+```
+
+It can then be executed by double-clicking on it or launching it from a terminal:
+```sh
+./Gourmet-c3ece056.AppImage
+```
 
 ## Flatpak
 The Flatpak contains the full environment, but depends on other flatpak
