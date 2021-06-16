@@ -1,22 +1,22 @@
 # Installation
 Gourmet is currently available in the form of Flatpak, AppImage, and Python wheel.
 We recommend that you install it from the Flatpak.
-In both cases, you will need an internet connection.
+For wheels and Flatpak installations, you will need an internet connection. The AppImage can be copied.
 
 ## AppImage
 Gourmet is tentatively packaged as an AppImage.  
 This means that we're evaluating AppImages for the long run, but you may encounter some issues.  
 Please report any problems!  
 
-The AppImage is available from the [release page]().
+The AppImage is available from the [release page](https://github.com/kirienko/gourmet/releases/tag/v1.0.0-rc2).
 Download the AppImage and mark it as executable:
 ```sh
-chmod +x Gourmet-c3ece056.AppImage
+chmod +x Gourmet-cb604da9.AppImage
 ```
 
 It can then be executed by double-clicking on it or launching it from a terminal:
 ```sh
-./Gourmet-c3ece056.AppImage
+./Gourmet-cb604da9.AppImage
 ```
 
 ## Flatpak
@@ -29,12 +29,12 @@ sudo apt-get install flatpak
 ```
 
 As Gourmet is still under active development, the flatpak is not available from
-Flathub, and instead must be [downloaded and installed manually](https://github.com/kirienko/gourmet/releases/tag/v1.0.0-rc1).
+Flathub, and instead must be [downloaded and installed manually](https://github.com/kirienko/gourmet/releases/tag/v1.0.0-rc2).
 
 In a terminal, execute the following:
 ```sh
 flatpak remote-add --if-not-exists --user flathub https://flathub.org/repo/flathub.flatpakrepo
-sudo flatpak install gourmet-c3ece056.flatpak
+sudo flatpak install gourmet-cb604da9.flatpak
 ```
 
 You will be prompted with a message regarding the runtime:
@@ -62,7 +62,7 @@ flatpak remove io.github.thinkle.Gourmet
 
 ## Python Wheel
 
-[Download the wheel](https://github.com/kirienko/gourmet/releases/tag/v1.0.0-rc1)
+[Download the wheel](https://github.com/kirienko/gourmet/releases/tag/v1.0.0-rc2)
 Dependencies must be manually installed.
 
 ### Unbutu 20.04, Linux Mint 20
@@ -82,7 +82,7 @@ sudo pip3 install scrape-schema-recipe
 Finally, install Gourmet:
 
 ```sh
-sudo pip3 install gourmet-c3ece056-py3-none-any.whl
+sudo pip3 install gourmet-cb604da9-py3-none-any.whl
 ```
 
 You can now launch Gourmet from a terminal:
@@ -104,9 +104,9 @@ Then install some of the dependencies:
 
     pacman -S mingw-w64-x86_64-gtk3 mingw-w64-x86_64-python3-gobject mingw-w64-x86_64-python-pillow mingw-w64-x86_64-python-sqlalchemy mingw-w64-x86_64-gstreamer mingw-w64-x86_64-poppler mingw-w64-x86_64-python-reportlab
 
-[Download the wheel](https://github.com/kirienko/gourmet/releases/tag/v1.0.0-rc1) and install it:
+[Download the wheel](https://github.com/kirienko/gourmet/releases/tag/v1.0.0-rc2) and install it:
 
-    python3 -m pip install gourmet-c3ece056-py3-none-any.whl
+    python3 -m pip install gourmet-cb604da9-py3-none-any.whl
 
 Then launch it:
 
