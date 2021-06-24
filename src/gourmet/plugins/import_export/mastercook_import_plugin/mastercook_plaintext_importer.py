@@ -222,3 +222,33 @@ class MastercookPlaintextImporter(plaintext_importer.TextImporter):
         self.rec['instructions'] = self.unwrap_lines(self.instr)
         self.rec['modifications'] = self.unwrap_lines(self.mods)
         importer.Importer.commit_rec(self)
+
+
+class Tester(importer.Tester):
+    def __init__(self):
+        importer.Tester.__init__(self, regexp=MASTERCOOK_START_REGEXP)
+        self.not_me = "<[?]?(xml|mx2|RcpE|RTxt)[^>]*>"
+
+    def test(self, filename):
+        if not hasattr(self, 'matcher'):
+            self.matcher = re.compile(self.regexp)
+            self.not_matcher = re.compile(self.not_me)
+        if isinstance(filename, str):
+            self.ofi = open(filename, 'r')
+            CLOSE = True
+        else:
+            self.ofi = filename
+            CLOSE = False
+        l = self.ofi.readline()
+        while l:
+            if self.not_matcher.match(l):
+                self.ofi.close()
+                return False
+            if self.matcher.match(l):
+                self.ofi.close()
+                return True
+            l = self.ofi.readline()
+        if CLOSE:
+            self.ofi.close()
+        else:
+            self.ofi.seek(0)
