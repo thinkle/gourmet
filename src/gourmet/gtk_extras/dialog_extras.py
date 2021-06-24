@@ -880,7 +880,7 @@ def show_message(*args, **kwargs):
 
 def select_file(title,
                 filename=None,
-                filters=[],
+                filters=None,
                 # filters are lists of a name, a list of mime types and a list of
                 # patterns ['Plain Text', ['text/plain'], '*txt']
                 action=Gtk.FileChooserAction.OPEN,
@@ -889,6 +889,8 @@ def select_file(title,
                 buttons=None,
                 parent=None
                 ):
+    if filters is None:
+        filters = []
     sfd = FileSelectorDialog(title,
                              filename=filename,
                              filters=filters,
