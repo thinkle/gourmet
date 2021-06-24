@@ -920,7 +920,7 @@ def saveas_file(title: str,
     try:
         filename, export_type = sfd.run()
         return filename, export_type
-    except ValueError:
+    except TypeError:
         return None, None
 
 
@@ -938,10 +938,18 @@ def get_type_for_filters(fname, filters):
 def select_image(title,
                  filename=None,
                  action=Gtk.FileChooserAction.OPEN,
-                 buttons=None):
+                 buttons=None) -> Optional[Path]:
     sfd = ImageSelectorDialog(title, filename=filename,
                               action=action, buttons=buttons)
-    return sfd.run()
+    filename = sfd.run()
+    if not filename:
+        return
+
+    filename = Path(filename[-1])
+    if not filename.is_file():
+        return
+
+    return filename
 
 
 class FileSelectorDialog:
@@ -1095,11 +1103,15 @@ class FileSelectorDialog:
         In that case, it is assumed that all file are of the same type.
         """
         response = self.fsd.run()
-        filenames: List[str] = self.fsd.get_filenames()
+
         if response == Gtk.ResponseType.OK:
+            filenames = self.fsd.get_filenames()
             if self.action == Gtk.FileChooserAction.SAVE and self.do_saveas:
                 export_type = self.fsd.get_filter().get_name()
                 filenames.append(export_type)
+        else:  # response == Gtk.ResponseType.CANCEL:
+            filenames = None
+
         self.quit()
         return filenames
 
