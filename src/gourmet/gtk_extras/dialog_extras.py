@@ -917,14 +917,11 @@ def saveas_file(title: str,
                              buttons=buttons,
                              show_filetype=show_filetype,
                              parent=parent)
-    # Get the filename, and the extension of the chosen filetype menu
-    filename, *extension = sfd.run()
-    extension = ''.join(extension)
-
-    # TODO: it would be cleaner to return the extension, rather than the
-    # output file type description
-    export_type = sfd.ext_to_filter[extension].get_name()
-    return filename, export_type
+    try:
+        filename, export_type = sfd.run()
+        return filename, export_type
+    except ValueError:
+        return None, None
 
 
 def get_type_for_filters(fname, filters):
@@ -1091,32 +1088,20 @@ class FileSelectorDialog:
         return False
 
     def run(self) -> List[str]:
-        """Run our dialog and return the filename(s)"""
+        """Return a list of filenames.
+
+        If saving files, the file type is also returned as the last entry in
+        the list.
+        In that case, it is assumed that all file are of the same type.
+        """
         response = self.fsd.run()
+        filenames: List[str] = self.fsd.get_filenames()
         if response == Gtk.ResponseType.OK:
-            if self.multiple:
-                fn = self.fsd.get_filenames()
-            else:
-                fn = [self.fsd.get_filename()]
-            if not fn:
-                show_message(label=_('No file selected'),
-                             sublabel=_(
-                                 'No file was selected, so the action has been cancelled')
-                             )
-                return []
-            if self.action == Gtk.FileChooserAction.SAVE:
-                # add the extension if need be...
-                if self.do_saveas and not self.is_extension_legal(fn):
-                    if self.fsd.get_filter().get_name() in self.name_to_ext:
-                        add_ext = self.name_to_ext[self.fsd.get_filter(
-                        ).get_name()]
-                        if add_ext:
-                            fn += add_ext
-            self.quit()
-            return fn
-        else:
-            self.quit()
-            return []
+            if self.action == Gtk.FileChooserAction.SAVE and self.do_saveas:
+                export_type = self.fsd.get_filter().get_name()
+                filenames.append(export_type)
+        self.quit()
+        return filenames
 
     def quit(self, *args):
         if hasattr(self, 'timeout'):
