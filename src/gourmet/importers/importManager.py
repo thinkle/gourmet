@@ -127,7 +127,7 @@ class ImportManager (plugin_loader.Pluggable):
                                    filters=self.get_filters(),
                                    parent=parent,
                                    select_multiple=True)
-        if not filenames:
+        if filenames is None:
             return
         self.import_filenames(filenames)
 

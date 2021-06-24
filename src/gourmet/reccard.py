@@ -1550,12 +1550,10 @@ class ImageBox: # used in DescriptionEditor for recipe image.
         self.draw_image()
 
     def set_from_fileCB(self, widget: Gtk.Button):
-        filenames = de.select_image("Select Image",
+        filename = de.select_image("Select Image",
                                     action=Gtk.FileChooserAction.OPEN)
-        if filenames:
-            fname, *_ = filenames
-            fname = Path(fname)
-            Undo.UndoableObject(lambda *args: self.set_from_file(fname),
+        if filename is not None:
+            Undo.UndoableObject(lambda *args: self.set_from_file(filename),
                                 lambda *args: self.remove_image(),
                                 self.rc.history,
                                 widget=self.imageW).perform()
