@@ -1086,16 +1086,7 @@ class FileSelectorDialog:
         else:
             self.fsd.set_current_name(stem)
 
-    def is_extension_legal(self, filenames: List[str]) -> bool:
-        if filenames:
-            for extension in self.extensions:
-                if not extension:
-                    extension = ""
-                if fnmatch.fnmatch(filenames[0], extension):
-                    return True
-        return False
-
-    def run(self) -> List[str]:
+    def run(self) -> Optional[List[str]]:
         """Return a list of filenames.
 
         If saving files, the file type is also returned as the last entry in
