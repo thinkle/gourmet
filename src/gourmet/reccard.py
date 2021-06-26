@@ -561,7 +561,6 @@ class RecCardDisplay (plugin_loader.Pluggable):
             self.linkDisplayLabel.hide()
 
     def export_cb (self, *args):
-        opt = self.prefs.get('save_recipe_as','html')
         fn = ExportManager.instance().offer_single_export(self.current_rec,
                                                           self.prefs,
                                                           parent=self.window,
@@ -588,23 +587,30 @@ class RecCardDisplay (plugin_loader.Pluggable):
         self.reccard.hide()
         return True
 
-    def copy_cb(self, *args):
+    def copy_cb(self, action: Gtk.Action):
         """Copy a recipe and its image to the clipboard."""
         if self.reccard.edited:
-            if de.getBoolean(label=_("You have unsaved changes."),
-                             sublabel=_("Save changes before copying?")):
-                self.saveEditsCB()
+            do_save = de.getBoolean(label=_("You have unsaved changes."),
+                                sublabel=_("Save changes before copying?"))
+            if do_save:
+                self.save_cb(action)
+            elif do_save is None:  # Gtk.ResponseType.CANCEL
+                return
 
         ingredients = self.rg.rd.get_ings(self.current_rec.id)
         # The exporter can do several recipes at once, hence the list of tuples.
         ce = ClipboardExporter([(self.current_rec, ingredients)])
         ce.export()
 
-    def print_cb(self, *args):
+    def print_cb(self, action: Gtk.Action):
         if self.reccard.edited:
-            if de.getBoolean(label=_("You have unsaved changes."),
-                             sublabel=_("Save changes before printing?")):
-                self.saveEditsCB()
+            do_save = de.getBoolean(label=_("You have unsaved changes."),
+                                sublabel=_("Save changes before printing?"))
+            if do_save:
+                self.save_cb(action)
+            elif do_save is None:  # Gtk.ResponseType.CANCEL
+                return
+
         printManager = PrintManager.instance()
         printManager.print_recipes(
             self.rg.rd, [self.current_rec], mult=self.mult,
@@ -1021,7 +1027,8 @@ class RecEditor(WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
             if hasattr(module,'enter_page'): module.enter_page()
             self._last_module = module
 
-    def save_cb (self, *args):
+    def save_cb(self, action: Gtk.Action):
+        """Save an edited recipe."""
         self.widgets_changed_since_save = {}
         self.mainRecEditActionGroup.get_action('ShowRecipeCard').set_sensitive(True)
         self.new = False

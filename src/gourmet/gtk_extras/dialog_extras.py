@@ -1170,10 +1170,7 @@ def getBoolean(*args, **kwargs) -> bool:
     """Run BooleanDialog, passing along all args, waiting on input and
     passing along the results."""
     d = BooleanDialog(*args, **kwargs)
-    retval = d.run()
-    if retval is None:
-        retval = False
-    return retval
+    return d.run()
 
 
 def getOption(*args, **kwargs):
