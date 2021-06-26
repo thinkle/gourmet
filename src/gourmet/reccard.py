@@ -593,7 +593,7 @@ class RecCardDisplay (plugin_loader.Pluggable):
             do_save = de.getBoolean(label=_("You have unsaved changes."),
                                 sublabel=_("Save changes before copying?"))
             if do_save:
-                self.save_cb(action)
+                self.reccard._RecCard__rec_editor.save_cb(action)
             elif do_save is None:  # Gtk.ResponseType.CANCEL
                 return
 
@@ -607,7 +607,7 @@ class RecCardDisplay (plugin_loader.Pluggable):
             do_save = de.getBoolean(label=_("You have unsaved changes."),
                                 sublabel=_("Save changes before printing?"))
             if do_save:
-                self.save_cb(action)
+                self.reccard._RecCard__rec_editor.save_cb(action)
             elif do_save is None:  # Gtk.ResponseType.CANCEL
                 return
 
