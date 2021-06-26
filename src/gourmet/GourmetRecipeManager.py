@@ -141,28 +141,24 @@ class GourmetApplication:
             self.progress_dialog = None
 
     # setup recipe database
-    def setup_recipes (self):
-        """Initialize recipe database.
-
-        We load our recipe database from recipeManager. If there's any problem,
-        we display the traceback to the user so they can send it out for debugging
-        (or possibly make sense of it themselves!)."""
+    def setup_recipes(self):
+        """Initialize recipe database from the recipe manager."""
         self.rd = recipeManager.default_rec_manager()
-        # initiate autosave stuff autosave every 3 minutes
-        # (milliseconds * 1000 milliseconds/second * 60
-        # seconds/minute)
-        def autosave ():
+
+        # Add auto save
+        def autosave():
             self.rd.save()
             return True
-        AUTOSAVE_EACH_N_MINUTES = 2
-        GLib.timeout_add(1000 * 60 * AUTOSAVE_EACH_N_MINUTES, autosave)
-        # connect hooks to modify our view whenever and
-        # whenceever our recipes are updated...
+
+        autosave_timeout = 2 * 60 * 1000  # in milliseconds
+        GLib.timeout_add(autosave_timeout, autosave)
+
+        # Connect views to update on modifications
         self.rd.modify_hooks.append(self.update_attribute_models)
         self.rd.add_hooks.append(self.update_attribute_models)
         self.rd.delete_hooks.append(self.update_attribute_models)
-        # we'll need to hand these to various other places
-        # that want a list of units.
+
+        # Create models that are accessed by other objects
         self.umodel = UnitModel(self.conv)
         self.attributeModels = []
         self.inginfo = reccard.IngInfo(self.rd)

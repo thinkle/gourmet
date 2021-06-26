@@ -1400,7 +1400,7 @@ class RecData (Pluggable):
                   row,  # sqlalchemy.engine.result.RowProxy
                   d,  # Dict[str, Any]
                   id_col='id'):  # Optional[str]
-        if id_col is not None:
+        if id_col is not None:  # Saving a particular entry in the recipe
             try:
                 table_val = getattr(table.c, id_col)
                 row_val = getattr(row, id_col)
@@ -1412,7 +1412,7 @@ class RecData (Pluggable):
                 print(e)
                 raise
             select = table.select(getattr(table.c,id_col)==getattr(row,id_col))
-        else:
+        else:  # Saving the recipe as a whole
             table.update().execute(**d)
             select = table.select()
         return select.execute().fetchone()
