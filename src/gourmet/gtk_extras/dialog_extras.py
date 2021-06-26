@@ -1,4 +1,3 @@
-import fnmatch
 import os.path
 import re
 import traceback
@@ -22,14 +21,6 @@ Y_PADDING = 12
 
 class UserCancelledError(Exception):
     pass
-
-
-def is_markup(s):
-    try:
-        Pango.parse_markup(s, '0')
-        return True
-    except:
-        return False
 
 
 class ModalDialog (Gtk.Dialog):
@@ -178,8 +169,7 @@ class MessageDialog(Gtk.MessageDialog, ModalDialog):
         self.set_title(title)
 
     def setup_label(self, label: str):
-        if not is_markup(label):
-            label = xml.sax.saxutils.escape(label)
+        label = xml.sax.saxutils.escape(label)
         label = f'<span weight="bold" size="larger">{label}</span>'
         self.set_markup(label)
 

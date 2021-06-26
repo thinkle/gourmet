@@ -225,30 +225,26 @@ class MastercookPlaintextImporter(plaintext_importer.TextImporter):
 
 
 class Tester(importer.Tester):
+    """Check whether the given file is a Mastercook export."""
+
     def __init__(self):
+        """Initialize the tester with Mastercook regexps.
+
+        For this type, there is also another check to ensure that unsupported
+        look alike are not accepted.
+        """
         importer.Tester.__init__(self, regexp=MASTERCOOK_START_REGEXP)
         self.not_me = "<[?]?(xml|mx2|RcpE|RTxt)[^>]*>"
 
-    def test(self, filename):
+    def test(self, filename: str) -> bool:
+        """Test that the provided file is a Mastercook file."""
         if not hasattr(self, 'matcher'):
             self.matcher = re.compile(self.regexp)
             self.not_matcher = re.compile(self.not_me)
-        if isinstance(filename, str):
-            self.ofi = open(filename, 'r')
-            CLOSE = True
-        else:
-            self.ofi = filename
-            CLOSE = False
-        l = self.ofi.readline()
-        while l:
-            if self.not_matcher.match(l):
-                self.ofi.close()
-                return False
-            if self.matcher.match(l):
-                self.ofi.close()
-                return True
-            l = self.ofi.readline()
-        if CLOSE:
-            self.ofi.close()
-        else:
-            self.ofi.seek(0)
+
+        with open(filename) as fin:
+            for line in fin.readlines():
+                if self.not_matcher.match(line):
+                    return False
+                if self.matcher.match(line):
+                    return True
