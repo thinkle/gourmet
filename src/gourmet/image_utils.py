@@ -134,6 +134,8 @@ class ImageBrowser(Gtk.Dialog):
 
         for uri in uris:
             image = make_thumbnail(uri, ThumbnailSize.SMALL)
+            if image is None:
+                continue
             pixbuf = bytes_to_pixbuf(image_to_bytes(image))
             self.liststore.append([pixbuf])
 
