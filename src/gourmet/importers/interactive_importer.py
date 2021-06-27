@@ -461,13 +461,13 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
             for rec in self.added_recs:
                 browser = ImageBrowser(self.w, self.images)
                 response = browser.run()
+                browser.destroy()
                 if response == Gtk.ResponseType.OK:
                     thumb = browser.image.copy()
                     thumb.thumbnail((40, 40))
                     self.rd.modify_rec(rec,
                                        {'image': image_to_bytes(browser.image),
                                         'thumb': image_to_bytes(thumb)})
-                browser.destroy()
 
         if self.modal:
             self.w.hide()
