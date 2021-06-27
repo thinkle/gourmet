@@ -3,6 +3,7 @@ from collections import defaultdict
 from enum import Enum
 from pathlib import Path
 from pkgutil import get_data
+from threading import Event, Thread
 from typing import Dict, List, Optional
 from urllib.parse import unquote, urlparse
 
@@ -121,18 +122,29 @@ def image_to_pixbuf(image: Image.Image) -> Pixbuf:
 
 class ImageBrowser(Gtk.Dialog):
     def __init__(self, parent: Gtk.Window, uris: List[str]):
+        """Retrieve the images from the uris and let user select one.
+
+        Image retrieval is done in another thread which is cancelled when the
+        dialog is destroyed, if not completed already.
+        """
         Gtk.Dialog.__init__(self, title="Choose an image",
                             transient_for=parent, flags=0)
         self.set_default_size(600, 600)
 
-        self.image: Image.Image = None
-
+        self.image: Optional[Image.Image] = None
         self.liststore = Gtk.ListStore(GdkPixbuf.Pixbuf)
         iconview = Gtk.IconView.new()
         iconview.set_model(self.liststore)
         iconview.set_pixbuf_column(0)
 
+        self._stop_retrieval = Event()
+        self._image_retrieve_task = Thread(target=self._load_uris, args=[uris])
+        self._image_retrieve_task.start()
+
+    def _load_uris(self, uris: List[str]):
         for uri in uris:
+            if self._stop_retrieval.is_set():
+                return  # Cancel retrieval of image as user selection is done.
             image = make_thumbnail(uri, ThumbnailSize.SMALL)
             if image is None:
                 continue
@@ -152,3 +164,8 @@ class ImageBrowser(Gtk.Dialog):
         if item:
             itr = self.liststore.get_iter(item[0])
             self.image = pixbuf_to_image(self.liststore.get_value(itr, 0))
+
+    def destroy(self):
+        self._stop_retrieval.set()
+        self._image_retrieve_task.join()
+        super().destroy()
