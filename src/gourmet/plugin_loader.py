@@ -72,7 +72,7 @@ class MasterLoader:
             os.path.join(current_path, 'plugins'),
             os.path.join(current_path, 'plugins', 'import_export'),
         ]
-        self.errors = set()
+        self.errors = dict()
         self.pluggables_by_class: Dict = dict()
         self.active_plugin_sets: List[str] = []
         self.available_plugin_sets: Dict[str, LegacyPlugin] = self.load_legacy_plugins(self.plugin_directories)  # noqa
