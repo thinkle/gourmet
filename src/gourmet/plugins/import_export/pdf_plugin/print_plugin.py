@@ -7,13 +7,17 @@ import reportlab.lib.pagesizes as pagesizes
 from gi.repository import Gtk
 
 from gourmet.plugin import PrinterPlugin
+from gourmet.gdebug import debug
 
 from . import pdf_exporter
 
 if sys.platform not in ["win32",'darwin']:
-    from gi import require_version
-    require_version('Poppler', '0.18')
-    from gi.repository import Poppler
+    try:
+        from gi import require_version
+        require_version('Poppler', '0.18')
+        from gi.repository import Poppler
+    except ValueError:  # require_version does not find the poppler namespace
+        debug('Poppler not available: no pdf export possible', 0)
 
 
 rl2gtk_papersizes = {
