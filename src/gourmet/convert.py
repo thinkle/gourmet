@@ -3,9 +3,10 @@ import locale
 import math
 import re
 from functools import cmp_to_key
-from gettext import gettext as _
 from gettext import ngettext
 from typing import Optional
+
+from gourmet.i18n import _
 
 from .defaults.defaults import lang as defaults
 from .gdebug import debug

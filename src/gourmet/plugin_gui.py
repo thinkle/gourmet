@@ -1,8 +1,9 @@
-from gettext import gettext as _
 from typing import Any, List, Tuple, Union
 from xml.sax.saxutils import escape
 
 from gi.repository import GObject, Gtk
+
+from gourmet.i18n import _
 
 from .gtk_extras import dialog_extras as de
 from .plugin_loader import DependencyError, MasterLoader

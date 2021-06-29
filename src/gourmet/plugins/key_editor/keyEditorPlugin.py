@@ -1,9 +1,8 @@
-from gettext import gettext as _
-
 from gi.repository import Gtk
 
 import gourmet.GourmetRecipeManager
 import gourmet.plugin
+from gourmet.i18n import _
 
 from . import keyEditor
 

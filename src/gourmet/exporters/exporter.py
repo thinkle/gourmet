@@ -3,7 +3,6 @@ import re
 import textwrap
 import time
 import xml.sax.saxutils
-from gettext import gettext as _
 
 from gi.repository import GLib, Pango
 
@@ -11,6 +10,7 @@ from gourmet import convert
 from gourmet.gdebug import TimeAction, debug, print_timer_info
 from gourmet.gglobals import (DEFAULT_ATTR_ORDER, DEFAULT_TEXT_ATTR_ORDER,
                               REC_ATTR_DIC, TEXT_ATTR_DIC, use_threads)
+from gourmet.i18n import _
 from gourmet.plugin import BaseExporterMultiRecPlugin, BaseExporterPlugin
 from gourmet.plugin_loader import Pluggable, pluggable_method
 from gourmet.threadManager import SuspendableThread

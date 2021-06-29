@@ -1,8 +1,8 @@
 import re
 import unittest
-from gettext import gettext as _
 
 import gourmet.convert as convert
+from gourmet.i18n import _
 
 
 def parse_group (match, text, group_number, tag):

@@ -2,7 +2,6 @@ import gc
 import os.path
 import webbrowser
 import xml.sax.saxutils
-from gettext import gettext as _
 from pathlib import Path
 from pkgutil import get_data
 from typing import Any, Callable, Dict, List, Optional, Tuple
@@ -29,6 +28,7 @@ from gourmet.gtk_extras import treeview_extras as te
 from gourmet.gtk_extras.dialog_extras import (UserCancelledError,
                                               show_amount_error)
 from gourmet.gtk_extras.pango_buffer import PangoBuffer
+from gourmet.i18n import _
 from gourmet.importers.importer import parse_range
 from gourmet.plugin import (IngredientControllerPlugin, RecDisplayPlugin,
                             RecEditorModule, RecEditorPlugin, ToolPlugin)

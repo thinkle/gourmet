@@ -2,12 +2,12 @@ import os
 import os.path
 import re
 import xml.sax.saxutils
-from gettext import gettext as _
 from pkgutil import get_data
 from typing import Optional
 
 from gourmet import gglobals
 from gourmet.exporters.exporter import ExporterMultirec, exporter_mult
+from gourmet.i18n import _
 
 HTML_HEADER_START = """<!DOCTYPE html>
 <html>

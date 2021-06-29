@@ -1,6 +1,5 @@
 import tempfile
 from fnmatch import fnmatch
-from gettext import gettext as _
 from typing import Any, List, Optional, Tuple
 from urllib.parse import urlparse
 
@@ -8,6 +7,7 @@ from gi.repository import Gtk
 
 import gourmet.gtk_extras.dialog_extras as de
 import gourmet.plugin_loader as plugin_loader
+from gourmet.i18n import _
 from gourmet.plugin import ImporterPlugin, ImportManagerPlugin
 from gourmet.threadManager import (NotThreadSafe, get_thread_manager,
                                    get_thread_manager_gui)

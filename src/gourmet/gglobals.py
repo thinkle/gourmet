@@ -1,9 +1,9 @@
-import os
 import os.path
-from gettext import gettext as _
 from pathlib import Path
 
 from gi.repository import Gdk, GdkPixbuf, Gtk
+
+from gourmet.i18n import _
 
 from .image_utils import load_pixbuf_from_resource
 from .optionparser import args

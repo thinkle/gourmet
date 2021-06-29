@@ -1,8 +1,8 @@
 import os.path
-from gettext import gettext as _
 
 from gi.repository import Gtk, Pango
 
+from gourmet.i18n import _
 #from gourmet.gglobals import gladeCustomHandlers
 from gourmet.plugin import RecDisplayModule, RecDisplayPlugin
 

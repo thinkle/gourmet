@@ -1,5 +1,4 @@
-from gettext import gettext as _
-
+from gourmet.i18n import _
 from gourmet.importers.importer import Tester
 from gourmet.plugin import ImporterPlugin
 from gourmet.threadManager import get_thread_manager

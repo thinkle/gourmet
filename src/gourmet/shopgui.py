@@ -4,9 +4,10 @@ import os.path
 import string
 import sys
 import time
-from gettext import gettext as _
 
 from gi.repository import Gdk, GObject, Gtk
+
+from gourmet.i18n import _
 
 # from nutrition.nutritionLabel import NutritionLabel
 # from nutrition.nutrition import NutritionInfoList

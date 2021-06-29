@@ -2,10 +2,10 @@ import os
 import os.path
 import tempfile
 import zipfile
-from gettext import gettext as _
 
 from lxml import etree
 
+from gourmet.i18n import _
 from gourmet.plugin import ImporterPlugin
 
 from . import mycookbook_importer

@@ -1,11 +1,10 @@
-from gettext import gettext as _
-
 import keyring
 from bs4 import BeautifulSoup
 from selenium import webdriver
 
 import gourmet.threadManager
 from gourmet.gtk_extras import dialog_extras as de
+from gourmet.i18n import _
 from gourmet.plugin import ImportManagerPlugin, PluginPlugin
 from gourmet.prefs import Prefs
 

@@ -1,11 +1,11 @@
 import os.path
 import re
 import xml.sax
-from gettext import gettext as _
 
 import gourmet.importers.importer as importer
 import gourmet.importers.xml_importer as xml_importer
 from gourmet.gdebug import debug
+from gourmet.i18n import _
 from gourmet.importers.xml_importer import unquoteattr
 
 

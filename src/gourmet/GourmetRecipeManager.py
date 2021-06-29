@@ -1,6 +1,5 @@
 import re
 import threading
-from gettext import gettext as _
 from gettext import ngettext
 from pkgutil import get_data
 from typing import Set
@@ -20,14 +19,14 @@ from gourmet.gtk_extras import dialog_extras as de
 from gourmet.gtk_extras import (fix_action_group_importance, mnemonic_manager,
                                 ratingWidget)
 from gourmet.gtk_extras import treeview_extras as te
+from gourmet.i18n import _
+from gourmet.image_utils import load_pixbuf_from_resource
 from gourmet.importers.importManager import ImportManager
 from gourmet.plugins.clipboard_exporter import ClipboardExporter
 from gourmet.recindex import RecIndex
 from gourmet.threadManager import (SuspendableThread, get_thread_manager,
                                    get_thread_manager_gui)
 from gourmet.timer import show_timer
-
-from .image_utils import load_pixbuf_from_resource
 
 UNDO = 1
 SHOW_TRASH = 2

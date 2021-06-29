@@ -27,13 +27,13 @@ import threading
 import time
 import traceback
 import webbrowser
-from gettext import gettext as _
 from gettext import ngettext
 from typing import Any
 
 from gi.repository import GLib, GObject, Gtk, Pango
 
 from gourmet.gtk_extras.dialog_extras import show_message
+from gourmet.i18n import _
 
 # _IdleObject etc. based on example John Stowers
 # <john.stowers@gmail.com>

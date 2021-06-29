@@ -1,9 +1,8 @@
 from typing import Any, Dict, Optional
 
-from gettext import gettext as _
-
 from gi.repository import GObject, Gtk, Pango
 
+from gourmet.i18n import _
 from gourmet.plugin import (IngredientControllerPlugin, RecEditorModule,
                             RecEditorPlugin)
 from gourmet.plugin_loader import POST, PRE

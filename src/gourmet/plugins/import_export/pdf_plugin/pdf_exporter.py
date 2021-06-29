@@ -5,7 +5,6 @@ import tempfile
 import types
 import webbrowser
 import xml.sax.saxutils
-from gettext import gettext as _
 from gettext import ngettext
 from io import BytesIO
 
@@ -27,6 +26,7 @@ from gourmet import convert, gglobals, image_utils
 from gourmet.gtk_extras import cb_extras
 from gourmet.gtk_extras import dialog_extras as de
 from gourmet.gtk_extras import optionTable
+from gourmet.i18n import _
 from gourmet.prefs import Prefs
 
 from .page_drawer import PageDrawer

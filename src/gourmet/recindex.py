@@ -1,8 +1,9 @@
-from gettext import gettext as _
 from gettext import ngettext
 from typing import List, Tuple, Union
 
 from gi.repository import Gdk, GdkPixbuf, GObject, Gtk, Pango
+
+from gourmet.i18n import _
 
 from . import Undo, convert
 from .backends.db import RecipeManager

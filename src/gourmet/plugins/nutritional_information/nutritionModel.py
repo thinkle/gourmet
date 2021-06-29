@@ -1,6 +1,6 @@
-from gettext import gettext as _
-
 from gi.repository import GObject, Gtk
+
+from gourmet.i18n import _
 
 
 class NutritionModel (Gtk.TreeStore):

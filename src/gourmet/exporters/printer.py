@@ -1,8 +1,8 @@
 import gettext
-from gettext import gettext as _
 
 import gourmet.plugin_loader as plugin_loader
 from gourmet.gtk_extras.dialog_extras import show_message, show_traceback
+from gourmet.i18n import _
 from gourmet.plugin import PrinterPlugin
 
 ERR_NO_PLUGIN_MSG = ("To print, activate a plugin that provides printing, "

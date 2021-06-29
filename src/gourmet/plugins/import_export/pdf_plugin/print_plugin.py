@@ -1,11 +1,11 @@
 import os.path
 import sys
 import tempfile
-from gettext import gettext as _
 
 import reportlab.lib.pagesizes as pagesizes
 from gi.repository import Gtk
 
+from gourmet.i18n import _
 from gourmet.plugin import PrinterPlugin
 from gourmet.gdebug import debug
 

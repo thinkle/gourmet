@@ -16,11 +16,11 @@ import hashlib
 import re
 import types
 import xml.sax.saxutils
-from gettext import gettext as _
 
 from gi.repository import Gtk
 
 from gourmet import convert
+from gourmet.i18n import _
 
 from .gglobals import INT_REC_ATTRS, REC_ATTRS, TEXT_ATTR_DIC
 

@@ -2,7 +2,6 @@ import os.path
 import re
 import traceback
 import xml.sax.saxutils
-from gettext import gettext as _
 from pathlib import Path
 from pkgutil import get_data
 from typing import List, Optional, Tuple, Union
@@ -11,6 +10,7 @@ from gi.repository import GObject, Gtk, Pango
 from gi.repository.GLib import UserDirectory, get_user_special_dir
 
 from gourmet.gdebug import debug
+from gourmet.i18n import _
 from gourmet.image_utils import image_to_pixbuf, make_thumbnail
 
 from . import optionTable

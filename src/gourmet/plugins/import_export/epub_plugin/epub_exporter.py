@@ -1,6 +1,5 @@
 import re
 import xml.sax.saxutils
-from gettext import gettext as _
 from pkgutil import get_data
 from string import Template
 from typing import Optional
@@ -9,6 +8,7 @@ from ebooklib import epub
 
 from gourmet import convert, gglobals
 from gourmet.exporters.exporter import ExporterMultirec, exporter_mult
+from gourmet.i18n import _
 
 RECIPE_HEADER = Template('''<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"

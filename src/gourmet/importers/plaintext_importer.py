@@ -1,8 +1,8 @@
 import re
-from gettext import gettext as _
 
 from gourmet import check_encodings
 from gourmet.gdebug import debug
+from gourmet.i18n import _
 from gourmet.importers import importer
 
 

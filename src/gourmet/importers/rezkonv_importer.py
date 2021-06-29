@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 import re
 
-import gourmet.convert as convert
 import mealmaster_importer
 import plaintext_importer
+
+import gourmet.convert as convert
 from gourmet.gdebug import TimeAction, debug
 
 

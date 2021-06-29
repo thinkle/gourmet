@@ -1,11 +1,11 @@
 import os.path
 import tempfile
-from gettext import gettext as _
 
 from gi.repository import Gdk, GdkPixbuf, GObject, Gtk
 from PIL import Image
 
 import gourmet.gglobals as gglobals
+from gourmet.i18n import _
 
 PLUS_ONE_KEYS = ['plus',
                  'greater',

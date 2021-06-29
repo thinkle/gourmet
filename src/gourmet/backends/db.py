@@ -2,7 +2,6 @@ import os.path
 import re
 import shutil
 import time
-from gettext import gettext as _
 from pathlib import Path
 from typing import Any, List, Mapping, Optional, Tuple
 
@@ -20,6 +19,7 @@ from gourmet import Undo, convert, image_utils
 from gourmet.defaults import lang as defaults
 from gourmet.gdebug import TimeAction, debug
 from gourmet.gtk_extras.dialog_extras import show_message
+from gourmet.i18n import _
 from gourmet.keymanager import KeyManager
 from gourmet.plugin import DatabasePlugin
 from gourmet.plugin_loader import Pluggable, pluggable_method
