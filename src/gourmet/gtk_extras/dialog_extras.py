@@ -629,7 +629,7 @@ class SimpleFaqDialog (ModalDialog):
 
     INDEX_MATCHER = re.compile("^[0-9]+[.][A-Za-z0-9.]* .*")
 
-    # We except one level of nesting in our headers.
+    # We expect one level of nesting in our headers.
     # NESTED_MATCHER should match nested headers
     NESTED_MATCHER = re.compile("^[0-9]+[.][A-Za-z0-9.]+ .*")
 

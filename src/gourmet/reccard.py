@@ -2,7 +2,6 @@ import gc
 import os.path
 import webbrowser
 import xml.sax.saxutils
-from pathlib import Path
 from pkgutil import get_data
 from typing import Any, Callable, Dict, List, Optional, Tuple
 
@@ -17,8 +16,7 @@ from gourmet.exporters.printer import PrintManager
 from gourmet.gdebug import debug
 from gourmet.gglobals import (FLOAT_REC_ATTRS, INT_REC_ATTRS, REC_ATTR_DIC,
                               REC_ATTRS)
-from gourmet.gtk_extras import \
-    WidgetSaver  # noqa: imports needed for glade; noqa: imports needed for glade
+from gourmet.gtk_extras import WidgetSaver  # noqa: imports needed for glade
 from gourmet.gtk_extras import validation  # noqa: imports needed for glade
 from gourmet.gtk_extras import cb_extras as cb
 from gourmet.gtk_extras import dialog_extras as de
@@ -43,10 +41,11 @@ def find_entry(w) -> Optional[Gtk.Entry]:
         return w
     else:
         if not hasattr(w,'get_children'):
-            return None
+            return
         for child in w.get_children():
             e = find_entry(child)
-            if e: return e
+            if e is not None:
+                return e
 
 class RecRef:
     def __init__ (self, refid, title):
@@ -1362,8 +1361,8 @@ class DescriptionEditorModule (TextEditor, RecEditorModule):
         self.imageBox = ImageBox(self)
         self.init_recipe_widgets()
         self.ui.connect_signals({
-            'setRecImage': self.imageBox.set_from_fileCB,
-            'delRecImage': self.imageBox.removeCB,
+            'setRecImage': self.imageBox.set_from_file_callback,
+            'delRecImage': self.imageBox.remove_image_callback,
             })
         self.main = self.ui.get_object('descriptionMainWidget')
         self.main.unparent()
@@ -1453,8 +1452,6 @@ class DescriptionEditorModule (TextEditor, RecEditorModule):
 
         if self.imageBox.edited:
             image, thumbnail = self.imageBox.commit()
-            if not image or not thumbnail:
-                image = thumbnail = None
             recdic['image'] = image
             recdic['thumb'] = thumbnail
             self.imageBox.edited = False
@@ -1472,16 +1469,16 @@ class ImageBox: # used in DescriptionEditor for recipe image.
         self.imageW = self.ui.get_object('recImage')
         self.addW = self.ui.get_object('addImage')
         self.delW = self.ui.get_object('delImageButton')
-        self.image = None
+        self.image: Image.Image = None
 
-    def get_image (self, rec=None):
+    def get_image(self, rec: Optional['RowProxy'] = None):
         """Set image based on current recipe."""
         debug("get_image (self, rec=None):",5)
-        if not rec:
-            rec=self.rc.current_rec
+        if rec is None:
+            rec = self.rc.current_rec
         if rec.image:
             try:
-                self.set_from_string(rec.image)
+                self.set_from_bytes(rec.image)
             except:
                 print('Problem with image from recipe.')
                 print('Moving ahead anyway.')
@@ -1509,15 +1506,15 @@ class ImageBox: # used in DescriptionEditor for recipe image.
         self.addW.show()
         return True
 
-    def commit (self):
-        debug("commit (self):",5)
-        """Return image and thumbnail data suitable for storage in the database"""
+    def commit(self) -> Optional[Tuple[bytes, bytes]]:
+        """Return image and thumbnail data for storage in the database."""
+        debug("commit (self):", 5)
         if self.image:
             self.imageW.show()
             return iu.image_to_bytes(self.image), iu.image_to_bytes(self.thumb)
         else:
             self.imageW.hide()
-            return '',''
+            return None, None
 
     def draw_image(self):
         """Put image onto widget"""
@@ -1536,28 +1533,33 @@ class ImageBox: # used in DescriptionEditor for recipe image.
         self.image.thumbnail(size)
         self.thumb = self.image.copy()
         self.thumb.thumbnail((40, 40))
-        self.set_from_string(iu.image_to_bytes(self.image))
+        self.set_from_bytes(iu.image_to_bytes(self.image))
 
     def show_image (self):
-        debug("show_image (self):",5)
         """Show widget and switch around buttons sensibly"""
+        debug("show_image (self):",5)
         self.addW.hide()
         self.imageW.show()
         self.delW.show()
 
-    def set_from_string (self, string):
-        debug("set_from_string (self, string):",5)
-        pb=iu.bytes_to_pixbuf(string)
+    def set_from_bytes(self, bytes_: bytes):
+        debug("set_from_bytes(self, bytes):", 5)
+
+        pb = iu.bytes_to_pixbuf(bytes_)
         self.imageW.set_from_pixbuf(pb)
         self.orig_pixbuf = pb
-        self.show_image()
 
-    def set_from_file (self, filename: str):
+        self.image = iu.bytes_to_image(bytes_)
+
+        self.show_image()
+        self.edited = True
+
+    def set_from_file(self, filename: str):
         debug("set_from_file (self, file):",5)
         self.image = Image.open(filename)
         self.draw_image()
 
-    def set_from_fileCB(self, widget: Gtk.Button):
+    def set_from_file_callback(self, widget: Gtk.Button):
         filename = de.select_image("Select Image",
                                     action=Gtk.FileChooserAction.OPEN)
         if filename is not None:
@@ -1567,25 +1569,22 @@ class ImageBox: # used in DescriptionEditor for recipe image.
                                 widget=self.imageW).perform()
             self.edited = True
 
-    def removeCB (self, *args):
-        debug("removeCB (self, *args):",5)
-        #if de.getBoolean(label="Are you sure you want to remove this image?",
-        #                 parent=self.rc.widget):
+    def remove_image_callback(self, *args):
         if self.image:
             current_image = iu.image_to_bytes(self.image)
         else:
-            current_image = self.orig_pixbuf.save_to_bufferv('jpeg', [], [])
+            _, current_image = self.orig_pixbuf.save_to_bufferv('jpeg', [], [])
         Undo.UndoableObject(
             lambda *args: self.remove_image(),
-            lambda *args: self.set_from_string(current_image),
+            lambda *args: self.set_from_bytes(current_image),
             self.rc.history,
             widget=self.imageW).perform()
 
-    def remove_image (self):
-        self.image=None
+    def remove_image(self):
+        self.image = None
         self.orig_pixbuf = None
         self.draw_image()
-        self.edited=True
+        self.edited = True
 
 
 class TextFieldEditor (TextEditor):
