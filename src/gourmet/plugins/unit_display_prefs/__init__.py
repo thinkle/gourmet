@@ -1,7 +1,6 @@
-from gettext import gettext as _
-
 from gi.repository import Gtk
 
+from gourmet.i18n import _
 from gourmet.plugin import DatabasePlugin, ToolPlugin
 from gourmet.plugin_loader import POST, PRE
 from gourmet.prefs import Prefs

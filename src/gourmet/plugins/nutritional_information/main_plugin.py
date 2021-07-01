@@ -1,6 +1,5 @@
-from gettext import gettext as _
-
 from gourmet.gglobals import add_icon as _add_icon
+from gourmet.i18n import _
 from gourmet.image_utils import load_pixbuf_from_resource
 from gourmet.plugin import MainPlugin
 

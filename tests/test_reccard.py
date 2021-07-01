@@ -51,7 +51,7 @@ def add_save_and_check(rc, lines_groups_and_dc):
 
     # Make a save via the callback, which would normally be called via the
     # Save button in the recipe editor window.
-    rc._RecCard__rec_editor.save_cb()
+    rc._RecCard__rec_editor.save_cb(None)
 
     ings = rc._RecCard__rec_gui.rd.get_ings(rc.current_rec)
     check_ings([i[2] for i in lines_groups_and_dc], ings)
@@ -137,7 +137,7 @@ def do_ingredients_undo(rc):
 
     # Make a save via the callback, which would normally be called via the
     # Save button in the recipe editor window.
-    rc._RecCard__rec_editor.save_cb()
+    rc._RecCard__rec_editor.save_cb(None)
 
     # Try to access the previously added ingredient.
     # If that raises an AssertionError, it means that the deletion
@@ -165,7 +165,7 @@ def do_ingredients_undo(rc):
 
     history = ing_controller.ingredient_editor_module.history
     print_(f"test_ingredient_revert: reverted - history: {history}")
-    rc._RecCard__rec_editor.save_cb()
+    rc._RecCard__rec_editor.save_cb(None)
 
     # Check that our ingredients have been put back properly by the undo action
     print_('Checking for ',[i[2] for i in ings_groups_and_dcs])
@@ -192,7 +192,7 @@ def do_ingredients_group_editing(rc):
 
     # Test setting a group
     ing_ui.change_group(itr, test_group)
-    rc._RecCard__rec_editor.save_cb()
+    rc._RecCard__rec_editor.save_cb(None)
 
     ings = rc._RecCard__rec_gui.rd.get_ings(rc.current_rec)
     assert(ings[0].inggroup == test_group)
@@ -201,7 +201,7 @@ def do_ingredients_group_editing(rc):
     # Test undoing the group
     action = ing_ui.ingredient_editor_module.action_groups[0].get_action("Undo")
     action.activate()
-    rc._RecCard__rec_editor.save_cb()
+    rc._RecCard__rec_editor.save_cb(None)
 
     ings = rc._RecCard__rec_gui.rd.get_ings(rc.current_rec)
     assert(ings[0].inggroup != test_group)
@@ -215,7 +215,7 @@ def do_undo_save_sensitivity(rc):
 
     # Make a save via the callback, which would normally be called via the
     # Save button in the recipe editor window.
-    rc._RecCard__rec_editor.save_cb()
+    rc._RecCard__rec_editor.save_cb(None)
 
     # Check that the `save` and `revert` push buttons are disabled.
     action = rc._RecCard__rec_editor.mainRecEditActionGroup.get_action('Save')

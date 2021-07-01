@@ -1,7 +1,7 @@
-from gettext import gettext as _
 from xml.sax.saxutils import escape
 
 from gourmet.defaults.defaults import get_pluralized_form
+from gourmet.i18n import _
 from gourmet.plugin import BaseExporterPlugin
 from gourmet.prefs import Prefs
 from gourmet.recipeManager import default_rec_manager

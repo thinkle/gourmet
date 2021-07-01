@@ -1,4 +1,3 @@
-from gettext import gettext as _
 from gettext import ngettext
 from pkgutil import get_data
 
@@ -8,6 +7,7 @@ import gourmet.convert as convert
 import gourmet.gglobals as gglobals
 from gourmet.gtk_extras import cb_extras as cb
 from gourmet.gtk_extras import dialog_extras as de
+from gourmet.i18n import _
 
 
 class FieldEditor:

@@ -4,12 +4,12 @@ import re
 import time
 import unittest
 import xml.sax.saxutils
-from gettext import gettext as _
 
 import gourmet.gglobals
 import gourmet.gtk_extras.dialog_extras as de
 from gourmet import convert, image_utils
 from gourmet.gdebug import TimeAction, debug, print_timer_info
+from gourmet.i18n import _
 from gourmet.keymanager import KeyManager
 from gourmet.recipeManager import get_recipe_manager  # Get hold of database
 from gourmet.threadManager import SuspendableThread, Terminated

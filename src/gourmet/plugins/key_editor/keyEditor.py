@@ -1,5 +1,4 @@
 import os
-from gettext import gettext as _
 from gettext import ngettext
 from pathlib import Path
 
@@ -10,6 +9,7 @@ from gourmet.gtk_extras import WidgetSaver
 from gourmet.gtk_extras import cb_extras as cb
 from gourmet.gtk_extras import dialog_extras as de
 from gourmet.gtk_extras import mnemonic_manager, pageable_store
+from gourmet.i18n import _
 
 from . import keyEditorPluggable
 

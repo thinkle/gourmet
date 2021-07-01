@@ -1,12 +1,12 @@
 import types
 import xml.sax.saxutils
-from gettext import gettext as _
-
-from gi.repository import Pango
 
 import PyRTF
+from gi.repository import Pango
+
 from gourmet import convert
 from gourmet.gdebug import debug
+from gourmet.i18n import _
 from gourmet.image_utils import write_image_tempfile
 
 from . import exporter

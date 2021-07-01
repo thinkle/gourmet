@@ -1,10 +1,10 @@
 import os.path
-from gettext import gettext as _
 
 from gi.repository import Gtk
 
 import gourmet.GourmetRecipeManager
 import gourmet.recipeManager
+from gourmet.i18n import _
 from gourmet.plugin import ShoppingListPlugin
 from gourmet.prefs import Prefs
 

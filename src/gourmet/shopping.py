@@ -1,9 +1,9 @@
 import sys
 import time
 import unittest
-from gettext import gettext as _
 
 from gourmet import convert
+from gourmet.i18n import _
 
 from .gdebug import debug
 

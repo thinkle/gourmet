@@ -1,6 +1,5 @@
-from gettext import gettext as _
-
 import gourmet.importers.importer as importer
+from gourmet.i18n import _
 from gourmet.plugin import ImporterPlugin
 
 from . import mastercook_importer, mastercook_plaintext_importer

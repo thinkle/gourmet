@@ -1,5 +1,4 @@
 import re
-from gettext import gettext as _
 from gettext import ngettext
 from pkgutil import get_data
 
@@ -9,6 +8,7 @@ from gi.repository import GObject, Gtk, Pango
 import gourmet.backends.db
 import gourmet.gtk_extras.cb_extras as cb
 import gourmet.gtk_extras.pageable_store as pageable_store
+from gourmet.i18n import _
 
 
 class NutritionInfoIndex:

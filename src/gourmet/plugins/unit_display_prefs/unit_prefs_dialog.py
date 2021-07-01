@@ -1,6 +1,5 @@
-from gettext import gettext as _
-
 from gourmet.gtk_extras import dialog_extras as de
+from gourmet.i18n import _
 from gourmet.prefs import Prefs
 
 

@@ -5,14 +5,15 @@ import urllib.error
 import urllib.parse
 import urllib.request
 import webbrowser
-from gettext import gettext as _
 
 import exporter
-import gourmet.gtk_extras.dialog_extras as de
 import html_exporter
 import pdf_exporter
+
+import gourmet.gtk_extras.dialog_extras as de
 from gourmet import gglobals
 from gourmet.gdebug import debug
+from gourmet.i18n import _
 
 
 class StringIOfaker (io.StringIO):

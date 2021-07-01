@@ -1,7 +1,7 @@
 import difflib
 import re
 from enum import Enum
-from typing import Optional
+from typing import List, Optional
 
 from gi.repository import Gtk
 
@@ -13,33 +13,50 @@ class UndoMode(Enum):
     DELETE = "delete"
 
 
-class TooManyChanges (Exception):
-    def __init__ (self, value):
-        self.value=value
+class TooManyChanges(Exception):
+    def __init__(self, value):
+        self.value = value
+
     def __str__(self):
         return repr(self.value)
 
-class UndoableObject:
-    """An UndoableObject. This must provide an action, an inverse and a history. Alternatively,
-    it can supply get_reapply_action_args, which will allow the action to be "reapplied" to new
-    arguments (for example, if the action is setting a text attribute, reapply might set that attribute
-    for the currently highlighted text)."""
 
-    def __init__ (self, action, inverse, history,
-                  action_args=None,
-                  undo_action_args=None,
-                  get_reapply_action_args=None,
-                  get_reundo_action_args=None,
-                  reapply_name=None,
-                  reundo_name=None,
-                  is_undo=False,
-                  widget=None, # Keep track of widget where this
-                               # action began (useful for GUIs to
-                               # check if actions have changed value
-                               # from "saved" state)
-                  ):
-        if not action_args: action_args = []
-        if not undo_action_args: undo_action_args = []
+class UndoableObject:
+    """An UndoableObject.
+
+    It must be provided an action, an inverse and a history.
+    Alternatively, it can be supplied a `get_reapply_action_args` or
+    `get_reundo_action_args` which will allow the action to be "reapplied" with
+    new arguments.
+    For example, if the action is setting a text attribute, reapply might set
+    that attribute for the currently highlighted text.
+    """
+
+    def __init__(self,
+                 action: callable,
+                 inverse: callable,
+                 history: 'UndoableObject',
+                 action_args: Optional[List] = None,
+                 undo_action_args: Optional[List] = None,
+                 get_reapply_action_args: Optional[List] = None,
+                 get_reundo_action_args: Optional[List] = None,
+                 reapply_name=None,
+                 reundo_name=None,
+                 is_undo: Optional[bool] = False,
+                 widget: Gtk.Widget = None):
+        """
+        history is an object derived from this class.
+
+        widget is used to keep track of where this action began, for GUIs to
+        check if actions have changed values from their "saved" state.
+
+        is_undo is used as a flag to know whether this is an undo of a previous
+        UndoableObject.
+        """
+        if action_args is None:
+            action_args = []
+        if undo_action_args is None:
+            undo_action_args = []
         self.history = history
         self.action = action
         self.inverse_action = inverse
@@ -48,7 +65,7 @@ class UndoableObject:
         self.get_reundo_action_args = get_reundo_action_args
         self.reapply_name = reapply_name
         self.reundo_name = reundo_name
-        self.is_undo = is_undo  # If our action itself is an undo
+        self.is_undo = is_undo
         self.widget = widget
         if self.get_reapply_action_args:
             self.reapplyable = True

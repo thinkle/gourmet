@@ -2,7 +2,6 @@ import os.path
 import re
 import shutil
 import time
-from gettext import gettext as _
 from pathlib import Path
 from typing import Any, List, Mapping, Optional, Tuple
 
@@ -20,6 +19,7 @@ from gourmet import Undo, convert, image_utils
 from gourmet.defaults import lang as defaults
 from gourmet.gdebug import TimeAction, debug
 from gourmet.gtk_extras.dialog_extras import show_message
+from gourmet.i18n import _
 from gourmet.keymanager import KeyManager
 from gourmet.plugin import DatabasePlugin
 from gourmet.plugin_loader import Pluggable, pluggable_method
@@ -1400,7 +1400,7 @@ class RecData (Pluggable):
                   row,  # sqlalchemy.engine.result.RowProxy
                   d,  # Dict[str, Any]
                   id_col='id'):  # Optional[str]
-        if id_col is not None:
+        if id_col is not None:  # Saving a particular entry in the recipe
             try:
                 table_val = getattr(table.c, id_col)
                 row_val = getattr(row, id_col)
@@ -1412,7 +1412,7 @@ class RecData (Pluggable):
                 print(e)
                 raise
             select = table.select(getattr(table.c,id_col)==getattr(row,id_col))
-        else:
+        else:  # Saving the recipe as a whole
             table.update().execute(**d)
             select = table.select()
         return select.execute().fetchone()

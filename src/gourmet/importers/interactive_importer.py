@@ -1,10 +1,10 @@
 import re
-from gettext import gettext as _
 
 from gi.repository import Gtk
 
 import gourmet.gglobals as gglobals
 import gourmet.gtk_extras.cb_extras as cb
+from gourmet.i18n import _
 from gourmet.image_utils import ImageBrowser, image_to_bytes
 from gourmet.importers import importer
 from gourmet.importers.generic_recipe_parser import RecipeParser
@@ -461,13 +461,13 @@ class InteractiveImporter (ConvenientImporter, NotThreadSafe):
             for rec in self.added_recs:
                 browser = ImageBrowser(self.w, self.images)
                 response = browser.run()
+                browser.destroy()
                 if response == Gtk.ResponseType.OK:
                     thumb = browser.image.copy()
                     thumb.thumbnail((40, 40))
                     self.rd.modify_rec(rec,
                                        {'image': image_to_bytes(browser.image),
                                         'thumb': image_to_bytes(thumb)})
-                browser.destroy()
 
         if self.modal:
             self.w.hide()

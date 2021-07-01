@@ -1,5 +1,4 @@
 import os
-from gettext import gettext as _
 
 from gi.repository import Gtk
 
@@ -8,6 +7,7 @@ import gourmet.GourmetRecipeManager
 from gourmet.gdebug import debug
 from gourmet.gtk_extras.cb_extras import (cb_get_active_text,
                                           cb_set_active_text, setup_typeahead)
+from gourmet.i18n import _
 
 try:
     current_path = os.path.split(os.path.join(os.getcwd(),__file__))[0]

@@ -1,5 +1,4 @@
 import os.path
-from gettext import gettext as _
 
 from gi.repository import GdkPixbuf, GObject, Gtk
 from sqlalchemy.sql import and_, not_
@@ -7,6 +6,7 @@ from sqlalchemy.sql import and_, not_
 import gourmet.convert as convert
 from gourmet.gglobals import DEFAULT_ATTR_ORDER, REC_ATTR_DIC
 from gourmet.gtk_extras.ratingWidget import star_generator
+from gourmet.i18n import _
 from gourmet.image_utils import bytes_to_pixbuf
 
 from .icon_helpers import (ICON_SIZE, attr_to_icon, get_recipe_image,

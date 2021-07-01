@@ -6,10 +6,11 @@ import traceback
 import urllib.error
 import urllib.parse
 import urllib.request
-from gettext import gettext as _
 
 import BeautifulSoup
+
 from gourmet.gdebug import debug
+from gourmet.i18n import _
 
 from . import importer
 

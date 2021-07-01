@@ -1,7 +1,6 @@
 import os as os
 import time
 import xml.sax.saxutils
-from gettext import gettext as _
 from pkgutil import get_data
 from tempfile import mkstemp
 from typing import Callable, List, Optional
@@ -10,6 +9,7 @@ from gi.repository import GLib, Gtk
 
 from gourmet.gtk_extras import cb_extras as cb
 from gourmet.gtk_extras.dialog_extras import UserCancelledError, getBoolean
+from gourmet.i18n import _
 from gourmet.sound import Player
 
 

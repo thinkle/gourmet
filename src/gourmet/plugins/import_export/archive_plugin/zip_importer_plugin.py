@@ -1,6 +1,6 @@
 import fnmatch
-from gettext import gettext as _
 
+from gourmet.i18n import _
 from gourmet.importers.importManager import ImportFileList
 from gourmet.plugin import ImporterPlugin
 

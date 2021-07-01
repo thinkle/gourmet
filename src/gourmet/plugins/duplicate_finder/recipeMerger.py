@@ -5,13 +5,13 @@ recipes.
 """
 import os.path
 import time
-from gettext import gettext as _
 from typing import Union
 
 from gi.repository import Gtk, Pango
 
 from gourmet import convert, gglobals, recipeIdentifier, recipeManager
 from gourmet.gtk_extras import dialog_extras, mnemonic_manager, ratingWidget
+from gourmet.i18n import _
 
 NEWER = 1
 OLDER = 2

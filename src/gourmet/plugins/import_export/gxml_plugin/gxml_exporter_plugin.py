@@ -1,7 +1,7 @@
 import re
-from gettext import gettext as _
 
 from gourmet.convert import float_to_frac, seconds_to_timestring
+from gourmet.i18n import _
 from gourmet.plugin import ExporterPlugin
 
 from . import gxml2_exporter

@@ -1,10 +1,10 @@
 import fnmatch
 import os.path
-from gettext import gettext as _
 
 from gi.repository import Gtk
 
 from gourmet import check_encodings
+from gourmet.i18n import _
 from gourmet.importers.importer import Tester
 from gourmet.importers.interactive_importer import InteractiveImporter
 from gourmet.plugin import ImporterPlugin

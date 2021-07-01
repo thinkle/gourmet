@@ -1,7 +1,8 @@
-from gettext import gettext as _
 from typing import Dict
 
 from gi.repository import Gtk
+
+from gourmet.i18n import _
 
 from .gdebug import debug
 from .gtk_extras import dialog_extras as de

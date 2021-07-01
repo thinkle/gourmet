@@ -1,10 +1,10 @@
 import textwrap
-from gettext import gettext as _
 from itertools import islice
 
 from gourmet import convert, gglobals
 from gourmet.exporters.exporter import exporter_mult
 from gourmet.gdebug import debug
+from gourmet.i18n import _
 from gourmet.plugin_loader import pluggable_method
 
 

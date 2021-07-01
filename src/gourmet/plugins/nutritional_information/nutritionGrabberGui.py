@@ -1,9 +1,9 @@
 import time
-from gettext import gettext as _
 
 from gi.repository import Gtk
 
 import gourmet.gtk_extras.dialog_extras as de
+from gourmet.i18n import _
 
 from . import databaseGrabber
 

@@ -1,4 +1,4 @@
-from gettext import gettext as _
+from gourmet.i18n import _
 
 appname = _("Gourmet Recipe Manager")
 copyright = _("Copyright (c) 2004-2014 Thomas M. Hinkle and Contributors. GNU GPL v2")  # noqa

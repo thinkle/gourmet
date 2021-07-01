@@ -1,6 +1,6 @@
 import os.path
-from gettext import gettext as _
 
+from gourmet.i18n import _
 from gourmet.importers.importer import Tester
 from gourmet.plugin import ImporterPlugin
 from gourmet.recipeManager import get_recipe_manager

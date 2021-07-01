@@ -2,9 +2,9 @@ import socket
 import urllib.error
 import urllib.parse
 import urllib.request
-from gettext import gettext as _
 
 import gourmet.threadManager
+from gourmet.i18n import _
 
 DEFAULT_SOCKET_TIMEOUT=45.0
 URLOPEN_SOCKET_TIMEOUT=15.0

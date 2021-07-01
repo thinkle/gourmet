@@ -1,11 +1,11 @@
 import os.path
-from gettext import gettext as _
 
 from gi.repository import Gtk
 from gi.repository.GLib import UserDirectory, get_user_special_dir
 
 import gourmet.gtk_extras.dialog_extras as de
 import gourmet.plugin_loader as plugin_loader
+from gourmet.i18n import _
 from gourmet.plugin import ExporterPlugin
 from gourmet.threadManager import get_thread_manager, get_thread_manager_gui
 

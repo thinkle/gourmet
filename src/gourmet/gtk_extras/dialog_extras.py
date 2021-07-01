@@ -1,9 +1,7 @@
-import fnmatch
 import os.path
 import re
 import traceback
 import xml.sax.saxutils
-from gettext import gettext as _
 from pathlib import Path
 from pkgutil import get_data
 from typing import List, Optional, Tuple, Union
@@ -12,6 +10,7 @@ from gi.repository import GObject, Gtk, Pango
 from gi.repository.GLib import UserDirectory, get_user_special_dir
 
 from gourmet.gdebug import debug
+from gourmet.i18n import _
 from gourmet.image_utils import image_to_pixbuf, make_thumbnail
 
 from . import optionTable
@@ -22,14 +21,6 @@ Y_PADDING = 12
 
 class UserCancelledError(Exception):
     pass
-
-
-def is_markup(s):
-    try:
-        Pango.parse_markup(s, '0')
-        return True
-    except:
-        return False
 
 
 class ModalDialog (Gtk.Dialog):
@@ -178,8 +169,7 @@ class MessageDialog(Gtk.MessageDialog, ModalDialog):
         self.set_title(title)
 
     def setup_label(self, label: str):
-        if not is_markup(label):
-            label = xml.sax.saxutils.escape(label)
+        label = xml.sax.saxutils.escape(label)
         label = f'<span weight="bold" size="larger">{label}</span>'
         self.set_markup(label)
 
@@ -639,7 +629,7 @@ class SimpleFaqDialog (ModalDialog):
 
     INDEX_MATCHER = re.compile("^[0-9]+[.][A-Za-z0-9.]* .*")
 
-    # We except one level of nesting in our headers.
+    # We expect one level of nesting in our headers.
     # NESTED_MATCHER should match nested headers
     NESTED_MATCHER = re.compile("^[0-9]+[.][A-Za-z0-9.]+ .*")
 
@@ -880,7 +870,7 @@ def show_message(*args, **kwargs):
 
 def select_file(title,
                 filename=None,
-                filters=[],
+                filters=None,
                 # filters are lists of a name, a list of mime types and a list of
                 # patterns ['Plain Text', ['text/plain'], '*txt']
                 action=Gtk.FileChooserAction.OPEN,
@@ -889,6 +879,8 @@ def select_file(title,
                 buttons=None,
                 parent=None
                 ):
+    if filters is None:
+        filters = []
     sfd = FileSelectorDialog(title,
                              filename=filename,
                              filters=filters,
@@ -917,14 +909,11 @@ def saveas_file(title: str,
                              buttons=buttons,
                              show_filetype=show_filetype,
                              parent=parent)
-    # Get the filename, and the extension of the chosen filetype menu
-    filename, *extension = sfd.run()
-    extension = ''.join(extension)
-
-    # TODO: it would be cleaner to return the extension, rather than the
-    # output file type description
-    export_type = sfd.ext_to_filter[extension].get_name()
-    return filename, export_type
+    try:
+        filename, export_type = sfd.run()
+        return filename, export_type
+    except TypeError:
+        return None, None
 
 
 def get_type_for_filters(fname, filters):
@@ -941,10 +930,18 @@ def get_type_for_filters(fname, filters):
 def select_image(title,
                  filename=None,
                  action=Gtk.FileChooserAction.OPEN,
-                 buttons=None):
+                 buttons=None) -> Optional[Path]:
     sfd = ImageSelectorDialog(title, filename=filename,
                               action=action, buttons=buttons)
-    return sfd.run()
+    filename = sfd.run()
+    if not filename:
+        return
+
+    filename = Path(filename[-1])
+    if not filename.is_file():
+        return
+
+    return filename
 
 
 class FileSelectorDialog:
@@ -1081,42 +1078,25 @@ class FileSelectorDialog:
         else:
             self.fsd.set_current_name(stem)
 
-    def is_extension_legal(self, filenames: List[str]) -> bool:
-        if filenames:
-            for extension in self.extensions:
-                if not extension:
-                    extension = ""
-                if fnmatch.fnmatch(filenames[0], extension):
-                    return True
-        return False
+    def run(self) -> Optional[List[str]]:
+        """Return a list of filenames.
 
-    def run(self) -> List[str]:
-        """Run our dialog and return the filename(s)"""
+        If saving files, the file type is also returned as the last entry in
+        the list.
+        In that case, it is assumed that all file are of the same type.
+        """
         response = self.fsd.run()
+
         if response == Gtk.ResponseType.OK:
-            if self.multiple:
-                fn = self.fsd.get_filenames()
-            else:
-                fn = [self.fsd.get_filename()]
-            if not fn:
-                show_message(label=_('No file selected'),
-                             sublabel=_(
-                                 'No file was selected, so the action has been cancelled')
-                             )
-                return []
-            if self.action == Gtk.FileChooserAction.SAVE:
-                # add the extension if need be...
-                if self.do_saveas and not self.is_extension_legal(fn):
-                    if self.fsd.get_filter().get_name() in self.name_to_ext:
-                        add_ext = self.name_to_ext[self.fsd.get_filter(
-                        ).get_name()]
-                        if add_ext:
-                            fn += add_ext
-            self.quit()
-            return fn
-        else:
-            self.quit()
-            return []
+            filenames = self.fsd.get_filenames()
+            if self.action == Gtk.FileChooserAction.SAVE and self.do_saveas:
+                export_type = self.fsd.get_filter().get_name()
+                filenames.append(export_type)
+        else:  # response == Gtk.ResponseType.CANCEL:
+            filenames = None
+
+        self.quit()
+        return filenames
 
     def quit(self, *args):
         if hasattr(self, 'timeout'):
@@ -1190,10 +1170,7 @@ def getBoolean(*args, **kwargs) -> bool:
     """Run BooleanDialog, passing along all args, waiting on input and
     passing along the results."""
     d = BooleanDialog(*args, **kwargs)
-    retval = d.run()
-    if retval is None:
-        retval = False
-    return retval
+    return d.run()
 
 
 def getOption(*args, **kwargs):

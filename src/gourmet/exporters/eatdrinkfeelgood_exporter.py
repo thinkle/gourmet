@@ -339,10 +339,11 @@ class ExportTestCase (unittest.TestCase):
     def setUp (self):
         import fake_db, tempfile
         from cozy_interactive_importer import CozyInteractiveImporter
+
         from gourmet.importers.interactive_importer import ConvenientImporter
         self.rd = fake_db.RecData(tempfile.mktemp('.db'))
-        import gourmet.nutrition.nutrition as nutrition
         import gourmet.convert
+        import gourmet.nutrition.nutrition as nutrition
         c = gourmet.convert.Converter()
         self.rd.nd = nutrition.NutritionData(self.rd,c)
 

@@ -1,7 +1,6 @@
 import os
 import os.path
 import re
-from gettext import gettext as _
 from pkgutil import get_data
 
 from gi.repository import GObject, Gtk
@@ -15,6 +14,7 @@ from gourmet.defaults import lang as defaults
 from gourmet.gtk_extras.mnemonic_manager import MnemonicManager
 from gourmet.gtk_extras.pageable_store import PageableViewStore
 from gourmet.gtk_extras.validation import NumberEntry
+from gourmet.i18n import _
 
 from .nutritionInfoEditor import MockObject, NutritionInfoIndex
 from .nutritionLabel import NUT_LAYOUT, RECOMMENDED_INTAKE, SEP

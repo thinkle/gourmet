@@ -1,5 +1,4 @@
 import os.path
-from gettext import gettext as _
 from pkgutil import get_data
 
 from gi.repository import Gtk
@@ -8,6 +7,7 @@ from gourmet import cb_extras as cb
 from gourmet import dialog_extras as de
 from gourmet import gglobals
 from gourmet.gdebug import debug
+from gourmet.i18n import _
 
 
 class DatabaseChooser:

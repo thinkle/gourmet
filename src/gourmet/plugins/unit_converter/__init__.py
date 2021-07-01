@@ -1,7 +1,6 @@
-from gettext import gettext as _
-
 from gi.repository import Gtk
 
+from gourmet.i18n import _
 from gourmet.plugin import ToolPlugin
 
 from . import convertGui

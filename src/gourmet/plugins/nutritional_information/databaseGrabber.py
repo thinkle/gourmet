@@ -2,10 +2,10 @@ import re
 import tempfile
 import urllib.request
 import zipfile
-from gettext import gettext as _
 from pkgutil import get_data
 
 from gourmet.gdebug import TimeAction
+from gourmet.i18n import _
 
 from .parser_data import (ABBREVS, ABBREVS_STRT, FOOD_GROUPS, NUTRITION_FIELDS,
                           WEIGHT_FIELDS)
