@@ -197,7 +197,7 @@ setup(
         'spellcheck': ['pyenchant',
                        'pygtkspellcheck'],
         'web-import': ['keyring==21.0.0',
-                       'scrape-schema-recipe==0.1.3',
+                       'scrape-schema-recipe==0.1.5',
                        'selenium==3.141.0'],
     },
     cmdclass={
