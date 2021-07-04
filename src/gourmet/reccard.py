@@ -3,7 +3,7 @@ import os.path
 import webbrowser
 import xml.sax.saxutils
 from pkgutil import get_data
-from typing import Any, Callable, Dict, List, Optional, Tuple
+from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 
 from gi.repository import Gdk, GdkPixbuf, GLib, GObject, Gtk, Pango
 from PIL import Image
@@ -1459,13 +1459,15 @@ class DescriptionEditorModule (TextEditor, RecEditorModule):
         self.emit('saved')
         return recdic
 
-class ImageBox: # used in DescriptionEditor for recipe image.
-    def __init__ (self, RecCard):
+
+class ImageBox:
+    """A widget for handling images in the DescriptionEditor."""
+    def __init__(self, rec_card):
         debug("__init__ (self, RecCard):",5)
         self.edited = False
-        self.rg = RecCard.rg
-        self.rc = RecCard
-        self.ui = self.rc.ui
+        self.rc = rec_card
+        self.rg = rec_card.rg
+        self.ui = rec_card.ui
         self.imageW = self.ui.get_object('recImage')
         self.addW = self.ui.get_object('addImage')
         self.delW = self.ui.get_object('delImageButton')
@@ -1506,7 +1508,7 @@ class ImageBox: # used in DescriptionEditor for recipe image.
         self.addW.show()
         return True
 
-    def commit(self) -> Optional[Tuple[bytes, bytes]]:
+    def commit(self) -> Union[Tuple[bytes, bytes], Tuple[None, None]]:
         """Return image and thumbnail data for storage in the database."""
         debug("commit (self):", 5)
         if self.image:
