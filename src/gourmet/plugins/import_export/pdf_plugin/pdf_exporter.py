@@ -1,28 +1,18 @@
 import math
 import os.path
-import re
 import tempfile
-import types
-import webbrowser
 import xml.sax.saxutils
 from gettext import ngettext
 from io import BytesIO
+from typing import List, Optional, Tuple, Union
 
-import reportlab
-import reportlab.lib.colors as colors
-import reportlab.lib.fonts as fonts
-import reportlab.lib.pagesizes as pagesizes
-import reportlab.lib.styles as styles
-import reportlab.lib.units as units
-import reportlab.platypus as platypus
 from gi.repository import Gtk
+from reportlab import platypus
+from reportlab.lib import colors, pagesizes, styles
 from reportlab.lib.units import inch, mm
-from reportlab.pdfbase import pdfmetrics
-from reportlab.pdfgen import canvas
-from reportlab.platypus.flowables import ParagraphAndImage
 
 import gourmet.exporters.exporter as exporter
-from gourmet import convert, gglobals, image_utils
+from gourmet import convert, gglobals
 from gourmet.gtk_extras import cb_extras
 from gourmet.gtk_extras import dialog_extras as de
 from gourmet.gtk_extras import optionTable
@@ -31,7 +21,16 @@ from gourmet.prefs import Prefs
 
 from .page_drawer import PageDrawer
 
-DEFAULT_PDF_ARGS = {'bottom_margin': 72, 'pagesize': 'letter', 'right_margin': 72, 'top_margin': 72, 'left_margin': 72, 'pagemode': 'portrait', 'base_font_size': 10, 'mode': ('column', 1)}
+DEFAULT_PDF_ARGS = {
+    'bottom_margin': 72,
+    'pagesize': 'letter',
+    'right_margin': 72,
+    'top_margin': 72,
+    'left_margin': 72,
+    'pagemode': 'portrait',
+    'base_font_size': 10,
+    'mode': ('column', 1)
+}
 
 # Code for MCLine from:
 # http://two.pairlist.net/pipermail/reportlab-users/2005-February/003695.html
@@ -217,7 +216,7 @@ class Bookmark(platypus.Flowable):
 
 class PdfWriter:
 
-    def __init__ (self, allrecs=[]):
+    def __init__ (self, allrecs=None):
         pass
 
     def setup_document (self, file, mode=('column',1), size='default', pagesize='letter',
@@ -226,9 +225,9 @@ class PdfWriter:
                         bottom_margin=inch,
                         base_font_size=10
                         ):
-        frames = self.setup_frames(mode,size,pagesize,pagemode,
-                                   left_margin,right_margin,top_margin,
-                                   bottom_margin,base_font_size)
+        frames = self.setup_frames(mode, size,pagesize, pagemode,
+                                   left_margin, right_margin, top_margin,
+                                   bottom_margin, base_font_size)
         pt = platypus.PageTemplate(frames=frames)
         self.doc = platypus.BaseDocTemplate(file,pagesize=self.pagesize,
                                             pageTemplates=[pt],)
@@ -240,24 +239,34 @@ class PdfWriter:
             self.scale_stylesheet(perc_scale)
         self.txt = []
 
-    def setup_frames (self,mode=('column',1), size='default', pagesize='letter',
-                        pagemode='portrait',left_margin=inch,right_margin=inch,
-                        top_margin=inch,
-                        bottom_margin=inch,
-                        base_font_size=10):
-        if not isinstance(mode, tuple):
-            raise Exception("What is this mode! %s" % str(mode))
+    def setup_frames(self,
+                     mode: Optional[Tuple[str, int]] = None,
+                     size: str = 'default',
+                     pagesize: Union[str, Tuple] = 'LETTER',
+                     pagemode: str = 'portrait',
+                     left_margin: float = inch,
+                     right_margin: float = inch,
+                     top_margin: float = inch,
+                     bottom_margin: float = inch,
+                     base_font_size: Optional[int] = 10) -> List['Frame']:
         if isinstance(pagesize, str):
-            self.pagesize = getattr(pagesizes,pagemode)(getattr(pagesizes,pagesize))
+            pagesize = getattr(pagesizes, pagesize)
+
+        self.pagesize = getattr(pagesizes, pagemode)(pagesize)
+        self.margins = (left_margin, right_margin, top_margin, bottom_margin)
+
+        if mode is not None:
+            mode, count = mode
         else:
-            self.pagesize = getattr(pagesizes,pagemode)(pagesize)
-        self.margins = (left_margin,right_margin,top_margin,bottom_margin)
-        if mode[0] == 'column':
-            frames = self.setup_column_frames(mode[1])
-        elif mode[0] == 'index_cards':
-            frames = self.setup_multiple_index_cards(mode[1])
+            mode, count = 'column', 1
+
+        if mode == 'column':
+            frames = self.setup_column_frames(count)
+        elif mode == 'index_cards':
+            frames = self.setup_multiple_index_cards(count)
         else:
-            raise Exception("WTF - mode = %s" % str(mode))
+            raise ValueError(f'Expected mode to be "column" or "index_cards" '
+                             f'not {mode}')
         return frames
 
     def scale_stylesheet (self, perc):
@@ -400,10 +409,13 @@ class PdfExporter (exporter.exporter_mult, PdfWriter):
     def __init__ (self, rd, r, out,
                   doc=None,
                   styleSheet=None,
-                  txt=[],
-                  pdf_args=DEFAULT_PDF_ARGS,
-                  all_recipes=[], # For learning about references...
+                  txt=None,
+                  pdf_args=None,
+                  all_recipes=None,  # For learning about references...
                   **kwargs):
+        txt = txt if txt is not None else []
+        pdf_args = pdf_args if pdf_args is not None else DEFAULT_PDF_ARGS
+        all_recipes = all_recipes if all_recipes is not None else []
         self.all_recipes = all_recipes
         PdfWriter.__init__(self)
         if isinstance(out, str):
@@ -682,11 +694,11 @@ class PdfExporterMultiDoc (exporter.ExporterMultirec, PdfWriter):
         self.close()
         self.output_file.close()
 
-class Sizer (PdfWriter):
 
-    def get_size (self, *args, **kwargs):
+class Sizer(PdfWriter):
+    def get_size(self, *args, **kwargs):
         frames = self.setup_frames(*args,**kwargs)
-        return self.pagesize,frames
+        return self.pagesize, frames
 
     def get_pagesize_and_frames_for_widget (self, *args, **kwargs):
         ps,ff = self.get_size(*args,**kwargs)
@@ -830,22 +842,20 @@ class PdfPrefGetter:
         'B0':'B0','B1':'B1','B2':'B2','B3':'B3','B4':'B4','B5':'B5','B6':'B6',
         }
 
-    INDEX_CARDS = [(3.5*inch,5*inch),(4*inch,6*inch),(5*inch,8*inch),(74*mm,105*mm)]
+    INDEX_CARDS = [(3.5*inch, 5*inch),
+                   (4*inch, 6*inch),
+                   (5*inch, 8*inch),
+                   (74*mm, 105*mm)]
     INDEX_CARD_LAYOUTS = [_('Index Cards (3.5x5)'),
                           _('Index Cards (4x6)'),
-                          _('Index Cards (A7)'),
-                          ]
-    layouts = {
-        _('Plain'):('column',1),
-        _('Index Cards (3.5x5)'):('index_cards',(5*inch,3.5*inch)),
-        _('Index Cards (4x6)'):('index_cards',(6*inch,4*inch)),
-        _('Index Cards (A7)'):('index_cards',(105*mm,74*mm)),
-        }
+                          _('Index Cards (A7)')]
+    layouts = {_('Plain'): ('column', 1),
+               _('Index Cards (3.5x5)'): ('index_cards', (5*inch, 3.5*inch)),
+               _('Index Cards (4x6)'): ('index_cards', (6*inch, 4*inch)),
+               _('Index Cards (A7)'): ('index_cards', (105*mm, 74*mm))}
 
-    page_modes = {
-        _('Portrait'):'portrait',
-        _('Landscape'):'landscape',
-        }
+    page_modes = {_('Portrait'): 'portrait',
+                  _('Landscape'): 'landscape'}
 
     OPT_PS,OPT_PO,OPT_FS,OPT_PL,OPT_LM,OPT_RM,OPT_TM,OPT_BM = list(range(8))
 
@@ -911,15 +921,23 @@ class PdfPrefGetter:
         self.pd.run()
         return self.get_args_from_opts(self.opts)
 
-    def get_args_from_opts (self, opts):
+    def get_args_from_opts(self, opts):
         args = {}
         prefs = self.prefs.get('PDF_EXP', {})
-        args['pagesize'] = self.page_sizes[opts[self.OPT_PS][1]] # PAGE SIZE
+        args['pagesize'] = self.page_sizes[opts[self.OPT_PS][1]]
         prefs['page_size'] = self.page_sizes_r[args['pagesize']]
-        args['pagemode'] = self.page_modes[opts[self.OPT_PO][1]] # PAGE MODE
+
+        try:
+            mode = self.page_modes[opts[self.OPT_PO][-1]]
+        except KeyError:  # the value was not set in the export dialog
+            mode = list(self.page_modes.items())[0][-1]
+        args['pagemode'] = mode
+
         prefs['orientation'] = self.page_modes_r[args['pagemode']]
-        prefs['font_size'] = args['base_font_size'] = opts[self.OPT_FS][1] # FONT SIZE
-        args['mode'] = self.layouts[opts[self.OPT_PL][1]] # LAYOUT/MODE
+
+        prefs['font_size'] = args['base_font_size'] = opts[self.OPT_FS][1]
+
+        args['mode'] = self.layouts[opts[self.OPT_PL][1]]
         prefs['page_layout'] = self.layouts_r[args['mode']]
         prefs['left_margin'] = args['left_margin'] = opts[self.OPT_LM][1]
         prefs['right_margin'] = args['right_margin'] = opts[self.OPT_RM][1]
@@ -1046,8 +1064,9 @@ if __name__ == '__main__':
     Gtk.main()
     raise Exception("Hell")
 
-    from tempfile import tempdir
     import os.path
+    from tempfile import tempdir
+
     #opts = get_pdf_prefs(); print opts
     test_3_x_5()
 
