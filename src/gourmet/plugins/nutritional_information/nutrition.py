@@ -71,7 +71,7 @@ class NutritionData:
         else:
             self.db.do_add(self.db.nutritionconversions_table,{'ingkey':key,'unit':unit,'factor':factor})
 
-    def get_matches (self, key, max=50):
+    def get_matches(self, key, max=50):
         """Handed a string, get a list of likely USDA database matches.
 
         We return a list of lists:
