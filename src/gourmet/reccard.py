@@ -33,19 +33,19 @@ from gourmet.plugin import (IngredientControllerPlugin, RecDisplayPlugin,
 from gourmet.plugins.clipboard_exporter import ClipboardExporter
 from gourmet.recindex import RecIndex
 
-from .image_utils import load_pixbuf_from_resource
 
-
-def find_entry(w) -> Optional[Gtk.Entry]:
-    if isinstance(w, Gtk.Entry):
-        return w
+def find_entry(widget) -> Optional[Gtk.Entry]:
+    """Recurse through all the children widgets to find the first Gtk.Entry."""
+    if isinstance(widget, Gtk.Entry):
+        return widget
     else:
-        if not hasattr(w,'get_children'):
+        if not hasattr(widget, 'get_children'):
             return
-        for child in w.get_children():
+        for child in widget.get_children():
             e = find_entry(child)
             if e is not None:
                 return e
+
 
 class RecRef:
     def __init__ (self, refid, title):
@@ -369,7 +369,7 @@ class RecCardDisplay (plugin_loader.Pluggable):
     # Main GUI setup
     def setup_main_window (self):
         self.window = Gtk.Window()
-        self.window.set_icon(load_pixbuf_from_resource('reccard.png'))
+        self.window.set_icon(iu.load_pixbuf_from_resource('reccard.png'))
         self.window.connect('delete-event',self.hide)
         self.conf.append(WidgetSaver.WindowSaver(self.window,
                                                  self.prefs.get('reccard_window_%s'%self.current_rec.id,
@@ -960,7 +960,7 @@ class RecEditor(WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
 
     def setup_main_interface (self):
         self.window = Gtk.Window()
-        self.window.set_icon(load_pixbuf_from_resource('reccard_edit.png'))
+        self.window.set_icon(iu.load_pixbuf_from_resource('reccard_edit.png'))
         title = ((self.current_rec and self.current_rec.title) or _('New Recipe')) + ' (%s)'%_('Edit')
         self.window.set_title(title)
         self.window.connect('delete-event',
