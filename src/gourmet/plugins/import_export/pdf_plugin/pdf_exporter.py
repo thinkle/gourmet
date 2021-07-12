@@ -269,14 +269,15 @@ class PdfWriter:
                              f'not {mode}')
         return frames
 
-    def scale_stylesheet (self, perc):
-        for name,sty in list(self.styleSheet.byName.items()):
+    def scale_stylesheet(self, perc: float):
+        for name, sty in list(self.styleSheet.byName.items()):
             for attr in ['firstLineIndent',
                          'fontSize',
                          'leftIndent',
                          'rightIndent',
                          'leading']:
-                setattr(sty,attr,int(perc*getattr(sty,attr)))
+                if hasattr(sty, attr):
+                    setattr(sty, attr, int(perc * getattr(sty, attr)))
 
     def setup_column_frames (self, n):
         COLUMN_SEPARATOR = 0.5 * inch
