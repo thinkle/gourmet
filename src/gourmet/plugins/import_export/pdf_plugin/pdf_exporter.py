@@ -863,13 +863,23 @@ class PdfPrefGetter:
                           _('Index Cards (4x6)'),
                           _('Index Cards (A7)')]
     layouts = {_('Plain'): ('column', 1),
+               _('2 Columns'): ('column', 2),
+               _('3 Columns'): ('column', 3),
+               _('4 Columns'): ('column', 4),
+               _('5 Columns'): ('column', 5),
                _('Index Cards (3.5x5)'): ('index_cards', (5 * inch, 3.5 * inch)),
                _('Index Cards (4x6)'): ('index_cards', (6 * inch, 4 * inch)),
                _('Index Cards (A7)'): ('index_cards', (105 * mm, 74 * mm))}
+    for n in range(2, 5):
+        layouts[ngettext('%s Column', '%s Columns', n) % n] = ('column', n)
 
     # These two dictionaries are here to be able to store the preferences in the persistent toml file.
     # This allows us to have a locale-agnostic GUI.
     _layouts_to_settings = {_('Plain'): 'plain',
+                            _('2 Columns'): '2_columns',
+                            _('3 Columns'): '3_columns',
+                            _('4 Columns'): '4_columns',
+                            _('5 Columns'): '5_columns',
                             _('Index Cards (3.5x5)'): 'index_cards_35_5',
                             _('Index Cards (4x6)'): 'index_cards_4_6',
                             _('Index Cards (A7)'): 'a7'}
@@ -884,9 +894,6 @@ class PdfPrefGetter:
     def __init__(self):
         self.size_strings = list(self.page_sizes.keys())
         self.size_strings.sort()
-        for n in range(2,5):
-            self.layouts[ngettext('%s Column','%s Columns',n)%n]=('column',n)
-
         self.page_sizes_r = {v: k for k, v in self.page_sizes.items()}
         self.layouts_r = {v: k for k, v in self.layouts.items()}
         self.page_modes_r = {v: k for k, v in self.page_modes.items()}
@@ -920,7 +927,6 @@ class PdfPrefGetter:
         default_layout = defaults.get('page_layout',
                                       PDF_PREF_DEFAULT['page_layout'])
         default_layout = self._settings_to_layout[default_layout]
-        # default_layout = self.layouts_r[default_layout]
         layout = [_('Page _Layout'),
                   (default_layout, self.layout_strings)]
 
