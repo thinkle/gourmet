@@ -874,7 +874,11 @@ class PdfPrefGetter:
         self.size_strings.sort()
         for n in range(2,5):
             self.layouts[ngettext('%s Column','%s Columns',n)%n]=('column',n)
-        self.make_reverse_dicts()
+
+        self.page_sizes_r = {v: k for k, v in self.page_sizes.items()}
+        self.layouts_r = {v: k for k, v in self.layouts.items()}
+        self.page_modes_r = {v: k for k, v in self.page_modes.items()}
+
         self.layout_strings = list(self.layouts.keys())
         self.layout_strings.sort()
 
@@ -927,14 +931,6 @@ class PdfPrefGetter:
         self.table.emit('changed')
         self.page_drawer.set_size_request(200,100)
         self.page_drawer.show()
-
-    def make_reverse_dicts (self):
-        self.page_sizes_r = {}; self.layouts_r = {}; self.page_modes_r = {}
-        for dict,dict_r in [
-            (self.page_sizes,self.page_sizes_r),
-            (self.layouts,self.layouts_r),
-            (self.page_modes,self.page_modes_r)]:
-            for k,v in list(dict.items()): dict_r[v]=k
 
     def setup_widgets (self):
         self.pd = de.PreferencesDialog(self.opts,option_label=None,value_label=None,
