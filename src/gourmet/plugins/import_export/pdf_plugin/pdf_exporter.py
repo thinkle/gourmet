@@ -721,14 +721,14 @@ class PdfPageDrawer (PageDrawer):
         self.set_page_area(size[0],size[1],areas)
 
 PDF_PREF_DEFAULT={
-    'page_size':_('Letter'),
-    'orientation':_('Portrait'),
-    'font_size':10,
-    'page_layout':_('Plain'),
-    'left_margin':1.0*inch,
-    'right_margin':1.0*inch,
-    'top_margin':1.0*inch,
-    'bottom_margin':1.0*inch,
+    'page_size': 'letter',
+    'orientation': 'portrait',
+    'font_size': 10,
+    'page_layout': 'plain',
+    'left_margin': 1.0 * inch,
+    'right_margin': 1.0 * inch,
+    'top_margin': 1.0 * inch,
+    'bottom_margin': 1.0 * inch,
     }
 
 class CustomUnitOption (optionTable.CustomOption):
@@ -832,28 +832,40 @@ class CustomUnitOption (optionTable.CustomOption):
 
 class PdfPrefGetter:
     page_sizes = {
-        _('11x17"'):'elevenSeventeen',
-        _('Index Card (3.5x5")'):(3.5*inch,5*inch),
-        _('Index Card (4x6")'):(4*inch,6*inch),
-        _('Index Card (5x8")'):(5*inch,8*inch),
-        _('Index Card (A7)'):(74*mm,105*mm),
-        _('Letter'):'letter',
-        _('Legal'):'legal',
-        'A0':'A0','A1':'A1','A2':'A2','A3':'A3','A4':'A4','A5':'A5','A6':'A6',
-        'B0':'B0','B1':'B1','B2':'B2','B3':'B3','B4':'B4','B5':'B5','B6':'B6',
+        _('11x17"'): 'elevenSeventeen',
+        _('Index Card (3.5x5")'): (3.5 * inch, 5 * inch),
+        _('Index Card (4x6")'): (4 * inch, 6 * inch),
+        _('Index Card (5x8")'): (5 * inch, 8 * inch),
+        _('Index Card (A7)'): (74 * mm, 105 * mm),
+        _('Letter'): 'letter',
+        _('Legal'): 'legal',
+        'A0': 'A0',
+        'A1': 'A1',
+        'A2': 'A2',
+        'A3': 'A3',
+        'A4': 'A4',
+        'A5': 'A5',
+        'A6': 'A6',
+        'B0': 'B0',
+        'B1': 'B1',
+        'B2': 'B2',
+        'B3': 'B3',
+        'B4': 'B4',
+        'B5': 'B5',
+        'B6': 'B6',
         }
 
-    INDEX_CARDS = [(3.5*inch, 5*inch),
-                   (4*inch, 6*inch),
-                   (5*inch, 8*inch),
-                   (74*mm, 105*mm)]
+    INDEX_CARDS = [(3.5 * inch, 5 * inch),
+                   (4 * inch, 6 * inch),
+                   (5 * inch, 8 * inch),
+                   (74 * mm, 105 * mm)]
     INDEX_CARD_LAYOUTS = [_('Index Cards (3.5x5)'),
                           _('Index Cards (4x6)'),
                           _('Index Cards (A7)')]
     layouts = {_('Plain'): ('column', 1),
-               _('Index Cards (3.5x5)'): ('index_cards', (5*inch, 3.5*inch)),
-               _('Index Cards (4x6)'): ('index_cards', (6*inch, 4*inch)),
-               _('Index Cards (A7)'): ('index_cards', (105*mm, 74*mm))}
+               _('Index Cards (3.5x5)'): ('index_cards', (5 * inch, 3.5 * inch)),
+               _('Index Cards (4x6)'): ('index_cards', (6 * inch, 4 * inch)),
+               _('Index Cards (A7)'): ('index_cards', (105 * mm, 74 * mm))}
 
     # These two dictionaries are here to be able to store the preferences in the persistent toml file.
     # This allows us to have a locale-agnostic GUI.
@@ -867,7 +879,7 @@ class PdfPrefGetter:
     page_modes = {_('Portrait'): 'portrait',
                   _('Landscape'): 'landscape'}
 
-    OPT_PS,OPT_PO,OPT_FS,OPT_PL,OPT_LM,OPT_RM,OPT_TM,OPT_BM = list(range(8))
+    OPT_PS, OPT_PO, OPT_FS, OPT_PL, OPT_LM, OPT_RM, OPT_TM, OPT_BM = list(range(8))
 
     def __init__(self):
         self.size_strings = list(self.page_sizes.keys())
@@ -970,7 +982,7 @@ class PdfPrefGetter:
         prefs['bottom_margin'] = args['bottom_margin'] = opts[self.OPT_BM][1]
         return args
 
-    def change_cb (self, option_table, *args,**kwargs):
+    def change_cb(self, option_table, *args,**kwargs):
         if self.in_ccb: return
         self.in_ccb = True
         option_table.apply()
