@@ -1018,10 +1018,6 @@ class PdfPrefGetter:
                 if n in [i[0] for i in self.index_card_layouts_to_put_back]:
                     default_pos = self.layout_strings.index(_('Plain'))
                     cb.set_active(default_pos)
-                self.index_card_layouts_to_put_back.reverse()
-                for pos,txt in self.index_card_layouts_to_put_back:
-                    cb.remove_text(pos)
-                self.index_card_layouts_to_put_back.reverse()
             elif pagesize not in self.INDEX_CARDS and last_pagesize in self.INDEX_CARDS:
                 changed = True
                 option_table.set_option(self.OPT_PO,_('Portrait'))
