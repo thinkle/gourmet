@@ -870,8 +870,6 @@ class PdfPrefGetter:
     OPT_PS,OPT_PO,OPT_FS,OPT_PL,OPT_LM,OPT_RM,OPT_TM,OPT_BM = list(range(8))
 
     def __init__(self):
-        self.prefs = Prefs.instance()
-        defaults = self.prefs.get('PDF_EXP', PDF_PREF_DEFAULT)
         self.size_strings = list(self.page_sizes.keys())
         self.size_strings.sort()
         for n in range(2,5):
@@ -879,10 +877,12 @@ class PdfPrefGetter:
         self.make_reverse_dicts()
         self.layout_strings = list(self.layouts.keys())
         self.layout_strings.sort()
-        margin_widgets = [
-            CustomUnitOption(defaults.get(pref,PDF_PREF_DEFAULT[pref]))
-            for pref in ['left_margin','right_margin','top_margin','bottom_margin']
-            ]
+
+        defaults = Prefs.instance().get('PDF_EXP', PDF_PREF_DEFAULT)
+
+        margin_widgets = [CustomUnitOption(defaults.get(pref, PDF_PREF_DEFAULT[pref]))
+                          for pref in ['left_margin', 'right_margin', 'top_margin', 'bottom_margin']
+                          ]
         # Make unit changes to one widget affect all the others!
         for m in margin_widgets:
             for mm in margin_widgets:
@@ -955,7 +955,7 @@ class PdfPrefGetter:
         system values, they are also saved to the persistent preferences.
         """
         args = {}
-        prefs = self.prefs.get('PDF_EXP', {})
+        prefs = Prefs.instance().get('PDF_EXP', {})
         args['pagesize'] = self.page_sizes[opts[self.OPT_PS][1]]
         prefs['page_size'] = args['pagesize']
 
