@@ -4,7 +4,7 @@ import tempfile
 import xml.sax.saxutils
 from gettext import ngettext
 from io import BytesIO
-from typing import List, Optional, Tuple, Union
+from typing import Dict, List, Optional, Tuple, Union
 
 from gi.repository import Gtk
 from reportlab import platypus
@@ -829,6 +829,7 @@ class CustomUnitOption (optionTable.CustomOption):
             self.__quiet__ = False
         cuo.connect('changed',change_cb)
 
+
 class PdfPrefGetter:
     page_sizes = {
         _('11x17"'):'elevenSeventeen',
@@ -853,6 +854,15 @@ class PdfPrefGetter:
                _('Index Cards (3.5x5)'): ('index_cards', (5*inch, 3.5*inch)),
                _('Index Cards (4x6)'): ('index_cards', (6*inch, 4*inch)),
                _('Index Cards (A7)'): ('index_cards', (105*mm, 74*mm))}
+
+    # These two dictionaries are here to be able to store the preferences in the persistent toml file.
+    # This allows us to have a locale-agnostic GUI.
+    _layouts_to_settings = {_('Plain'): 'plain',
+                            _('Index Cards (3.5x5)'): 'index_cards_35_5',
+                            _('Index Cards (4x6)'): 'index_cards_4_6',
+                            _('Index Cards (A7)'): 'a7'}
+
+    _settings_to_layout = {v: k for k, v in _layouts_to_settings.items()}
 
     page_modes = {_('Portrait'): 'portrait',
                   _('Landscape'): 'landscape'}
@@ -879,19 +889,36 @@ class PdfPrefGetter:
                 if mm is not m:
                     m.sync_to_other_cuo(mm)
 
-        self.opts = [
-            [_('Paper _Size')+':',(defaults.get('page_size',PDF_PREF_DEFAULT['page_size']),
-                                  self.size_strings)],
-            [_('_Orientation')+':',(defaults.get('orientation',PDF_PREF_DEFAULT['orientation']),
-                                    list(self.page_modes.keys()))],
-            [_('_Font Size')+':',int(defaults.get('font_size',PDF_PREF_DEFAULT['font_size']))],
-            [_('Page _Layout'),(defaults.get('page_layout',PDF_PREF_DEFAULT['page_layout']),
-                                self.layout_strings)],
-            [_('Left Margin')+':',margin_widgets[0]],
-            [_('Right Margin')+':',margin_widgets[1]],
-            [_('Top Margin')+':',margin_widgets[2]],
-            [_('Bottom Margin')+':',margin_widgets[3]],
-            ]
+        default_page_size = defaults.get('page_size',
+                                         PDF_PREF_DEFAULT['page_size'])
+        default_page_size = self.page_sizes_r[default_page_size]
+        page_size = [_('Paper _Size')+':',
+                     (default_page_size, self.size_strings)]
+
+        default_orientation = defaults.get('orientation',
+                                           PDF_PREF_DEFAULT['orientation'])
+        default_orientation = self.page_modes_r[default_orientation]
+        orientation = [_('_Orientation')+':',
+                       (default_orientation, list(self.page_modes.keys()))]
+
+        default_layout = defaults.get('page_layout',
+                                      PDF_PREF_DEFAULT['page_layout'])
+        default_layout = self._settings_to_layout[default_layout]
+        # default_layout = self.layouts_r[default_layout]
+        layout = [_('Page _Layout'),
+                  (default_layout, self.layout_strings)]
+
+        self.opts = (
+                page_size,
+                orientation,
+                [_('_Font Size')+':',
+                 int(defaults.get('font_size', PDF_PREF_DEFAULT['font_size']))],
+                layout,
+                [_('Left Margin')+':', margin_widgets[0]],
+                [_('Right Margin')+':', margin_widgets[1]],
+                [_('Top Margin')+':', margin_widgets[2]],
+                [_('Bottom Margin')+':', margin_widgets[3]],
+            )
 
         self.page_drawer = PdfPageDrawer(yalign=0.0)
         self.in_ccb = False
@@ -921,24 +948,26 @@ class PdfPrefGetter:
         self.pd.run()
         return self.get_args_from_opts(self.opts)
 
-    def get_args_from_opts(self, opts):
+    def get_args_from_opts(self, opts: Tuple[List]) -> Dict[str, Union[str, int, float]]:
+        """Get information from the dialog.
+
+        As the information is retrieved from the dialog and converted into
+        system values, they are also saved to the persistent preferences.
+        """
         args = {}
         prefs = self.prefs.get('PDF_EXP', {})
         args['pagesize'] = self.page_sizes[opts[self.OPT_PS][1]]
-        prefs['page_size'] = self.page_sizes_r[args['pagesize']]
+        prefs['page_size'] = args['pagesize']
 
-        try:
-            mode = self.page_modes[opts[self.OPT_PO][-1]]
-        except KeyError:  # the value was not set in the export dialog
-            mode = list(self.page_modes.items())[0][-1]
-        args['pagemode'] = mode
-
-        prefs['orientation'] = self.page_modes_r[args['pagemode']]
+        args['pagemode'] = self.page_modes[opts[self.OPT_PO][1]]
+        prefs['orientation'] = args['pagemode']
 
         prefs['font_size'] = args['base_font_size'] = opts[self.OPT_FS][1]
 
         args['mode'] = self.layouts[opts[self.OPT_PL][1]]
-        prefs['page_layout'] = self.layouts_r[args['mode']]
+        layout = self.layouts_r[args['mode']]
+        layout = self._layouts_to_settings[layout]
+        prefs['page_layout'] = layout
         prefs['left_margin'] = args['left_margin'] = opts[self.OPT_LM][1]
         prefs['right_margin'] = args['right_margin'] = opts[self.OPT_RM][1]
         prefs['top_margin'] = args['top_margin'] = opts[self.OPT_TM][1]
