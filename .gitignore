@@ -5,15 +5,17 @@ __pycache__/
 # Distribution / packaging
 *.egg-info/
 *.gourmet-plugin
+*.mo
 /build/
 /dist/
-gourmet.pot
 gourmet.appdata.xml
 gourmet.desktop
-po/.intltool-merge-cache
+/development.txt
+
 
 # Virtual environments
 /env/
+
 
 # Editors
 *.swp
