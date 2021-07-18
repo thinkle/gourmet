@@ -3,7 +3,7 @@ import os.path
 import webbrowser
 import xml.sax.saxutils
 from pkgutil import get_data
-from typing import Any, Callable, Dict, List, Optional, Tuple
+from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 
 from gi.repository import Gdk, GdkPixbuf, GLib, GObject, Gtk, Pango
 from PIL import Image
@@ -33,19 +33,19 @@ from gourmet.plugin import (IngredientControllerPlugin, RecDisplayPlugin,
 from gourmet.plugins.clipboard_exporter import ClipboardExporter
 from gourmet.recindex import RecIndex
 
-from .image_utils import load_pixbuf_from_resource
 
-
-def find_entry(w) -> Optional[Gtk.Entry]:
-    if isinstance(w, Gtk.Entry):
-        return w
+def find_entry(widget) -> Optional[Gtk.Entry]:
+    """Recurse through all the children widgets to find the first Gtk.Entry."""
+    if isinstance(widget, Gtk.Entry):
+        return widget
     else:
-        if not hasattr(w,'get_children'):
+        if not hasattr(widget, 'get_children'):
             return
-        for child in w.get_children():
+        for child in widget.get_children():
             e = find_entry(child)
             if e is not None:
                 return e
+
 
 class RecRef:
     def __init__ (self, refid, title):
@@ -369,7 +369,7 @@ class RecCardDisplay (plugin_loader.Pluggable):
     # Main GUI setup
     def setup_main_window (self):
         self.window = Gtk.Window()
-        self.window.set_icon(load_pixbuf_from_resource('reccard.png'))
+        self.window.set_icon(iu.load_pixbuf_from_resource('reccard.png'))
         self.window.connect('delete-event',self.hide)
         self.conf.append(WidgetSaver.WindowSaver(self.window,
                                                  self.prefs.get('reccard_window_%s'%self.current_rec.id,
@@ -960,7 +960,7 @@ class RecEditor(WidgetSaver.WidgetPrefs, plugin_loader.Pluggable):
 
     def setup_main_interface (self):
         self.window = Gtk.Window()
-        self.window.set_icon(load_pixbuf_from_resource('reccard_edit.png'))
+        self.window.set_icon(iu.load_pixbuf_from_resource('reccard_edit.png'))
         title = ((self.current_rec and self.current_rec.title) or _('New Recipe')) + ' (%s)'%_('Edit')
         self.window.set_title(title)
         self.window.connect('delete-event',
@@ -1459,17 +1459,20 @@ class DescriptionEditorModule (TextEditor, RecEditorModule):
         self.emit('saved')
         return recdic
 
-class ImageBox: # used in DescriptionEditor for recipe image.
-    def __init__ (self, RecCard):
+
+class ImageBox:
+    """A widget for handling images in the DescriptionEditor."""
+    def __init__(self, rec_card):
         debug("__init__ (self, RecCard):",5)
         self.edited = False
-        self.rg = RecCard.rg
-        self.rc = RecCard
-        self.ui = self.rc.ui
+        self.rc = rec_card
+        self.rg = rec_card.rg
+        self.ui = rec_card.ui
         self.imageW = self.ui.get_object('recImage')
         self.addW = self.ui.get_object('addImage')
         self.delW = self.ui.get_object('delImageButton')
         self.image: Image.Image = None
+        self.thumbnail: Image.Image = None
 
     def get_image(self, rec: Optional['RowProxy'] = None):
         """Set image based on current recipe."""
@@ -1506,12 +1509,12 @@ class ImageBox: # used in DescriptionEditor for recipe image.
         self.addW.show()
         return True
 
-    def commit(self) -> Optional[Tuple[bytes, bytes]]:
+    def commit(self) -> Union[Tuple[bytes, bytes], Tuple[None, None]]:
         """Return image and thumbnail data for storage in the database."""
         debug("commit (self):", 5)
         if self.image:
             self.imageW.show()
-            return iu.image_to_bytes(self.image), iu.image_to_bytes(self.thumb)
+            return iu.image_to_bytes(self.image), iu.image_to_bytes(self.thumbnail)
         else:
             self.imageW.hide()
             return None, None
@@ -1531,8 +1534,6 @@ class ImageBox: # used in DescriptionEditor for recipe image.
             size = (100, 100)
 
         self.image.thumbnail(size)
-        self.thumb = self.image.copy()
-        self.thumb.thumbnail((40, 40))
         self.set_from_bytes(iu.image_to_bytes(self.image))
 
     def show_image (self):
@@ -1550,6 +1551,8 @@ class ImageBox: # used in DescriptionEditor for recipe image.
         self.orig_pixbuf = pb
 
         self.image = iu.bytes_to_image(bytes_)
+        self.thumbnail = self.image.copy()
+        self.thumbnail.thumbnail((40, 40))
 
         self.show_image()
         self.edited = True

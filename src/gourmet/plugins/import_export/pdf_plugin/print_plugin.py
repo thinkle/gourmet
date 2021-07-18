@@ -183,16 +183,19 @@ class PDFRecipePrinter (PDFPrinter):
         self.recs = recs
         self.setup_printer(self.parent)
 
-    def begin_print (self, operation, context):
+    def begin_print(self,
+                    operation: Gtk.PrintOperation,
+                    context: Gtk.PrintContext):
         fn = tempfile.mktemp()
-        pe = pdf_exporter.PdfExporterMultiDoc(self.rd,self.recs,fn,pdf_args=self.args,
-                                              change_units=self.change_units, mult=self.mult)
-        pe.connect('error',self.handle_error)
+        pe = pdf_exporter.PdfExporterMultiDoc(self.rd, self.recs, fn,
+                                              change_units=self.change_units,
+                                              mult=self.mult)
+        pe.connect('error', self.handle_error)
         pe.run()
         if self.printing_error:
             print('PRINTING ERROR!')
             raise Exception("There was an error generating PDF")
-        self.set_document(fn, operation,context)
+        self.set_document(fn, operation, context)
 
     def handle_error (self,obj,errno, summary, traceback):
         print('There was an error generating a PDF to print.')
