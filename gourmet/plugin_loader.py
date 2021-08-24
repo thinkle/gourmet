@@ -260,7 +260,11 @@ class PluginSet:
         else: raise AttributeError
 
     def get_plugins (self):
-        return self.get_module().plugins
+        module = self.get_module()
+        if module is None:
+            # this plugin had loading errors
+            return []
+        return module.plugins
 
     def load_plugin_file_data (self,plugin_info_file):
         # This should really use GKeyFile but there are no python
