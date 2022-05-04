@@ -773,9 +773,11 @@ class RecData (Pluggable):
         """Return the number of rows in table that match criteria
         """
         if criteria:
-            return table.count(*make_simple_select_arg(criteria,table)).execute().fetchone()[0]
+            return sqlalchemy.select(
+                sqlalchemy.func.count(criteria)).select_from(table).scalar()
         else:
-            return table.count().execute().fetchone()[0]
+            return sqlalchemy.select(
+                sqlalchemy.func.count()).select_from(table).scalar()
 
     def fetch_join (self, table1, table2, col1, col2,
                     column_names=None, sort_by=[], **criteria):
